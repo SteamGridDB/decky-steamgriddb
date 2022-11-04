@@ -1,27 +1,23 @@
 import {
   ButtonItem,
   definePlugin,
-  DialogButton,
-  Menu,
-  MenuItem,
   PanelSection,
   PanelSectionRow,
   Router,
   ServerAPI,
-  showContextMenu,
-  staticClasses,
-} from "decky-frontend-lib";
-import { VFC } from "react";
-import { FaShip } from "react-icons/fa";
-
-import logo from "../assets/logo.png";
+  quickAccessMenuClasses,
+  useParams,
+} from 'decky-frontend-lib';
+import { VFC } from 'react';
+import MenuIcon from './MenuIcon';
+import patchLibraryAppPage from './patchLibraryAppPage';
 
 // interface AddMethodArgs {
 //   left: number;
 //   right: number;
 // }
 
-const Content: VFC<{ serverAPI: ServerAPI }> = ({}) => {
+const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   // const [result, setResult] = useState<number | undefined>();
 
   // const onClick = async () => {
@@ -40,26 +36,12 @@ const Content: VFC<{ serverAPI: ServerAPI }> = ({}) => {
   return (
     <PanelSection title="Panel Section">
       <PanelSectionRow>
-        <ButtonItem
-          layout="below"
-          onClick={(e) =>
-            showContextMenu(
-              <Menu label="Menu" cancelText="CAAAANCEL" onCancel={() => {}}>
-                <MenuItem onSelected={() => {}}>Item #1</MenuItem>
-                <MenuItem onSelected={() => {}}>Item #2</MenuItem>
-                <MenuItem onSelected={() => {}}>Item #3</MenuItem>
-              </Menu>,
-              e.currentTarget ?? window
-            )
-          }
-        >
-          Server says yolo
-        </ButtonItem>
+        Section 1
       </PanelSectionRow>
 
       <PanelSectionRow>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src={logo} />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          Ayy
         </div>
       </PanelSectionRow>
 
@@ -68,10 +50,10 @@ const Content: VFC<{ serverAPI: ServerAPI }> = ({}) => {
           layout="below"
           onClick={() => {
             Router.CloseSideMenus();
-            Router.Navigate("/decky-plugin-test");
+            Router.Navigate('/steamgriddb/220');
           }}
         >
-          Router
+          Go to /steamgriddb/220
         </ButtonItem>
       </PanelSectionRow>
     </PanelSection>
@@ -79,27 +61,33 @@ const Content: VFC<{ serverAPI: ServerAPI }> = ({}) => {
 };
 
 const DeckyPluginRouterTest: VFC = () => {
+  const { appid } = useParams<{ appid: string }>();
+  console.log(window.location.search);
   return (
-    <div style={{ marginTop: "50px", color: "white" }}>
-      Hello World!
-      <DialogButton onClick={() => Router.NavigateToStore()}>
-        Go to Store
-      </DialogButton>
+    <div style={{ marginTop: '50px', color: 'white' }}>
+      SteamGridDB
+      <br />
+      test {appid}
+      <br />
+      {window.location.search}
     </div>
   );
 };
 
 export default definePlugin((serverApi: ServerAPI) => {
-  serverApi.routerHook.addRoute("/decky-plugin-test", DeckyPluginRouterTest, {
+  serverApi.routerHook.addRoute('/steamgriddb/:appid', DeckyPluginRouterTest, {
     exact: true,
   });
 
+  const myPatch = patchLibraryAppPage(serverApi);
+
   return {
-    title: <div className={staticClasses.Title}>Example Plugin</div>,
+    title: <div className={quickAccessMenuClasses.Title}>SteamGridDB</div>,
     content: <Content serverAPI={serverApi} />,
-    icon: <FaShip />,
+    icon: <MenuIcon />,
     onDismount() {
-      serverApi.routerHook.removeRoute("/decky-plugin-test");
+      serverApi.routerHook.removeRoute('/steamgriddb/:appid');
+      serverApi.routerHook.removePatch('/library/app/:appid', myPatch);
     },
   };
 });
