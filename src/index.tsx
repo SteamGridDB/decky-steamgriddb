@@ -1,21 +1,26 @@
 import {
-  ButtonItem,
   definePlugin,
   PanelSection,
   PanelSectionRow,
   Router,
   ServerAPI,
   quickAccessMenuClasses,
-  useParams,
+  ToggleField,
 } from 'decky-frontend-lib';
 import { VFC } from 'react';
+import { SiPatreon, SiGithub, SiDiscord, SiTwitter } from 'react-icons/si';
+import BoopIcon from './BoopIcon';
+
 import MenuIcon from './MenuIcon';
+import PanelIconButton from './PanelIconButton';
 import patchLibraryAppPage from './patchLibraryAppPage';
+import SGDBPage from './SGDBPage';
 
 // interface AddMethodArgs {
 //   left: number;
 //   right: number;
 // }
+
 
 const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   // const [result, setResult] = useState<number | undefined>();
@@ -33,61 +38,88 @@ const Content: VFC<{ serverAPI: ServerAPI }> = () => {
   //   }
   // };
 
-  return (
-    <PanelSection title="Panel Section">
+  return (<>
+    <PanelSection title="Button Visibility">
+      Select where you want the &quot;Change artwork...&quot; button to show up. (wip)
       <PanelSectionRow>
-        Section 1
+        <ToggleField
+          label="Manage Popup"
+          checked={true}
+          disabled
+        />
       </PanelSectionRow>
-
       <PanelSectionRow>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          Ayy
-        </div>
-      </PanelSectionRow>
-
-      <PanelSectionRow>
-        <ButtonItem
-          layout="below"
-          onClick={() => {
-            Router.CloseSideMenus();
-            Router.Navigate('/steamgriddb/220');
-          }}
-        >
-          Go to /steamgriddb/220
-        </ButtonItem>
+        <ToggleField
+          label="Game Properties"
+          checked={false}
+          disabled
+        />
       </PanelSectionRow>
     </PanelSection>
-  );
-};
-
-const DeckyPluginRouterTest: VFC = () => {
-  const { appid } = useParams<{ appid: string }>();
-  console.log(window.location.search);
-  return (
-    <div style={{ marginTop: '50px', color: 'white' }}>
-      SteamGridDB
-      <br />
-      test {appid}
-      <br />
-      {window.location.search}
-    </div>
-  );
+    <PanelSection title="More SteamGridDB">
+      <PanelIconButton
+        icon={<SiDiscord fill="#5865F2" />}
+        onClick={() => {
+          Router.CloseSideMenus();
+          Router.NavigateToExternalWeb('https://discord.gg/invite/steamgriddb-488621078302949377');
+        }}
+      >
+        Join the Discord
+      </PanelIconButton>
+      <PanelIconButton
+        icon={<BoopIcon fill="#4e9ac6" />}
+        onClick={() => {
+          Router.CloseSideMenus();
+          Router.NavigateToExternalWeb('https://www.steamgriddb.com/boop');
+        }}
+      >
+        Check out SGDBoop
+      </PanelIconButton>
+      <PanelIconButton
+        icon={<SiGithub />}
+        onClick={() => {
+          Router.CloseSideMenus();
+          Router.NavigateToExternalWeb('https://github.com/SteamGridDB/');
+        }}
+      >
+        Open Source Projects
+      </PanelIconButton>
+      <PanelIconButton
+        icon={<SiPatreon fill="#FF424D" />}
+        onClick={() => {
+          Router.CloseSideMenus();
+          Router.NavigateToExternalWeb('https://www.patreon.com/steamgriddb');
+        }}
+      >
+        Support us on Patreon
+      </PanelIconButton>
+      <PanelIconButton
+        icon={<SiTwitter fill="#1DA1F2" />}
+        onClick={() => {
+          Router.CloseSideMenus();
+          Router.NavigateToExternalWeb('https://twitter.com/SteamGridDB');
+        }}
+      >
+        lol twitter
+      </PanelIconButton>
+    </PanelSection>
+  </>);
 };
 
 export default definePlugin((serverApi: ServerAPI) => {
-  serverApi.routerHook.addRoute('/steamgriddb/:appid', DeckyPluginRouterTest, {
+  serverApi.routerHook.addRoute('/steamgriddb/:appid/:appdetails', SGDBPage, {
     exact: true,
   });
 
-  const myPatch = patchLibraryAppPage(serverApi);
+  const appPagePath = patchLibraryAppPage(serverApi);
 
   return {
     title: <div className={quickAccessMenuClasses.Title}>SteamGridDB</div>,
     content: <Content serverAPI={serverApi} />,
     icon: <MenuIcon />,
     onDismount() {
-      serverApi.routerHook.removeRoute('/steamgriddb/:appid');
-      serverApi.routerHook.removePatch('/library/app/:appid', myPatch);
+      serverApi.routerHook.removeRoute('/steamgriddb/:appid/:appdetails');
+      serverApi.routerHook.removePatch('/library/app/:appid', appPagePath);
     },
   };
 });

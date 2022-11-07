@@ -1,7 +1,7 @@
 import { VFC } from 'react';
 
 // this will be blurry unless you're on 1x UI scale cause the quick access menu icons arent being scaled pixel perfect :(
-const Icon: VFC = () => <svg
+const MenuIcon: VFC = () => <svg
   xmlns="http://www.w3.org/2000/svg"
   xmlSpace="preserve"
   viewBox="0 0 16 16"
@@ -15,5 +15,5 @@ const Icon: VFC = () => <svg
   <rect x="4" y="7" width="12" height="6"/>
 </svg>;
 
-export default Icon;
+export default MenuIcon;
 
