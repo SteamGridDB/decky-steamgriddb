@@ -5,6 +5,7 @@ import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 import { defineConfig } from 'rollup';
 import importAssets from 'rollup-plugin-import-assets';
+import { string } from 'rollup-plugin-string';
 
 import { name } from './plugin.json';
 
@@ -15,13 +16,17 @@ export default defineConfig({
     nodeResolve(),
     typescript(),
     json(),
+    string({
+      include: 'src/styles/*.css',
+    }),
     replace({
       preventAssignment: false,
       'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.ROLLUP_ENV': JSON.stringify(process.env.ROLLUP_ENV),
     }),
     importAssets({
       publicPath: `http://127.0.0.1:1337/plugins/${name}/`
-    })
+    }),
   ],
   context: 'window',
   external: ['react', 'react-dom'],

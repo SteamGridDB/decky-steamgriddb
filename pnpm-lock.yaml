@@ -13,16 +13,19 @@ specifiers:
   decky-frontend-lib: ^3.7.14
   eslint: ^8.26.0
   eslint-plugin-react: ^7.31.10
-  react-icons: ^4.4.0
+  just-debounce: ^1.1.0
+  react-icons: ^4.6.0
   rollup: ^2.77.1
   rollup-plugin-import-assets: ^1.1.1
+  rollup-plugin-string: ^3.0.0
   shx: ^0.3.4
   tslib: ^2.4.0
   typescript: ^4.7.4
 
 dependencies:
   decky-frontend-lib: 3.7.14
-  react-icons: 4.4.0
+  just-debounce: 1.1.0
+  react-icons: 4.6.0
 
 devDependencies:
   '@rollup/plugin-commonjs': 21.1.0_rollup@2.77.1
@@ -38,6 +41,7 @@ devDependencies:
   eslint-plugin-react: 7.31.10_eslint@8.26.0
   rollup: 2.77.1
   rollup-plugin-import-assets: 1.1.1_rollup@2.77.1
+  rollup-plugin-string: 3.0.0
   shx: 0.3.4
   tslib: 2.4.0
   typescript: 4.7.4
@@ -1408,6 +1412,10 @@ packages:
       object.assign: 4.1.4
     dev: true
 
+  /just-debounce/1.1.0:
+    resolution: {integrity: sha512-qpcRocdkUmf+UTNBYx5w6dexX5J31AKK1OmPwH630a83DdVVUIngk55RSAiIGpQyoH0dlr872VHfPjnQnK1qDQ==}
+    dev: false
+
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
@@ -1669,8 +1677,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /react-icons/4.4.0:
-    resolution: {integrity: sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==}
+  /react-icons/4.6.0:
+    resolution: {integrity: sha512-rR/L9m9340yO8yv1QT1QurxWQvWpbNHqVX0fzMln2HEb9TEIrQRGsqiNFQfiv9/JEUbyHmHPlNTB2LWm2Ttz0g==}
     peerDependencies:
       react: '*'
     peerDependenciesMeta:
@@ -1746,6 +1754,12 @@ packages:
       rollup: 2.77.1
       rollup-pluginutils: 2.8.2
       url-join: 4.0.1
+    dev: true
+
+  /rollup-plugin-string/3.0.0:
+    resolution: {integrity: sha512-vqyzgn9QefAgeKi+Y4A7jETeIAU1zQmS6VotH6bzm/zmUQEnYkpIGRaOBPY41oiWYV4JyBoGAaBjYMYuv+6wVw==}
+    dependencies:
+      rollup-pluginutils: 2.8.2
     dev: true
 
   /rollup-pluginutils/2.8.2:

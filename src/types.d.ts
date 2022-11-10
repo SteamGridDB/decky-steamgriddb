@@ -13,11 +13,7 @@ declare module '*.jpg' {
   export default content;
 }
 
-interface SGDBPageAppDetails extends DialogButtonProps {
-  appType: bigint;
-  appId: bigint
-  gameId?: bigint | string;
-  gameName: string;
-  thirdPartyMod?: boolean;
-  parentAppId?: bigint;
+declare module '*.css' {
+  const content: string;
+  export default content;
 }
