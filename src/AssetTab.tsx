@@ -1,40 +1,39 @@
 import {
   Focusable,
   SliderField,
-  PanelSectionRow,
-  ButtonItem,
   DialogButton,
+  showModal,
+  ModalRoot,
   joinClassNames
 } from 'decky-frontend-lib';
-import { useState, VFC, useContext, useRef } from 'react';
+import { useState, VFC, useRef } from 'react';
 import useScrollDirection from './hooks/useScrollDirection';
-
+import { useSGDB } from './SGDBProvider';
 import AssetImage from './components/AssetImage';
-import SGDBContext from './contexts/SGDBContext';
 
 import i18n from './utils/i18n';
 import log from './utils/log';
   
 const AssetTab: VFC = () => {
-  const { appDetails }: any = useContext(SGDBContext);
+  const { appDetails, doSearch } = useSGDB();
   const [assetSize, setAssetSize] = useState<number>(120);
   
   const firstButtonRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+
   const scrollDirection = useScrollDirection(mainContentRef.current as HTMLElement, 300, mainContentRef.current?.parentElement as HTMLElement);
 
   const onAssetClick = () => {
     log('cliccc');
-
+    doSearch(String(appDetails?.unAppID));
   };
 
   const focusSettings = () => {
+    log('focusSettings');
     firstButtonRef.current?.focus();
   };
 
-  /* const restartSteam = () => {
-    SteamClient.User.StartRestart();
-  }; */
+  if (!appDetails) return null;
 
   return (<>
     <Focusable
@@ -50,17 +49,36 @@ const AssetTab: VFC = () => {
     >
       <Focusable className="action-buttons">
         <Focusable>
-          <DialogButton ref={firstButtonRef} noFocusRing>{i18n('Filter')}</DialogButton>
-        </Focusable>
-        <Focusable>
-          <DialogButton noFocusRing>Sort</DialogButton>
+          <DialogButton
+            ref={firstButtonRef}
+            noFocusRing
+            onOKActionDescription={i18n('Open Filters')}
+            onClick={(evt: Event) => {
+              evt.stopPropagation();
+              log('Open Filters');
+              showModal(
+                <ModalRoot bDisableBackgroundDismiss={false} bHideCloseIcon={false}>
+                  chungus
+                </ModalRoot>,
+                window,
+                {
+                  fnOnClose: () => {
+                    log('close filters modal');
+                  },
+                  strTitle: 'Search Filters',
+                }
+              );
+            }}
+          >
+            {i18n('Filter')}
+          </DialogButton>
         </Focusable>
         <SliderField
           /* @ts-ignore */
           className="size-slider"
           onChange={(size) => setAssetSize(size)}
+          onClick={(evt: Event) => evt.stopPropagation()}
           value={assetSize}
-          tooltip="Preview Size"
           layout="below"
           bottomSeparator="none"
           min={100}

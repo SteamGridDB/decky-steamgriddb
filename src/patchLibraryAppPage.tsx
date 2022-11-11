@@ -14,7 +14,6 @@ import i18n from './utils/i18n';
 export default (serverApi: ServerAPI, findModalManager: any) => serverApi.routerHook.addPatch('/library/app/:appid', (props: { path: string; children: ReactElement }) => {
   wrapReactType(findModalManager.type);
   afterPatch(findModalManager, 'type', (_: Record<string, unknown>[], pain: ReactElement) => {
-    log('a4');
     if (!pain) return pain;
     const modalFR = findInReactTree(pain, (x) => (
       x?.modal &&
@@ -24,9 +23,10 @@ export default (serverApi: ServerAPI, findModalManager: any) => serverApi.router
       Object.prototype.hasOwnProperty.call(x.modal.element.props.children.props, 'omitPrimaryAction') &&
       Object.prototype.hasOwnProperty.call(x.modal.element.props.children.props, 'details')
     ));
-
+      
     if (!modalFR) return pain;
     
+    log('a4');
     const modalComponent = modalFR.modal.element.props.children;
 
     // Finally, add a new button
