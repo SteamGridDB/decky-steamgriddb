@@ -8,7 +8,7 @@ import {
 import { useEffect, useState, VFC, useCallback } from 'react';
 import AssetTabs from './AssetTabs';
 import { useSGDB } from './SGDBProvider';
-import style from './styles/style.css';
+import style from './styles/style.scss';
 import log from './utils/log';
 
 const SGDBPage: VFC = () => {

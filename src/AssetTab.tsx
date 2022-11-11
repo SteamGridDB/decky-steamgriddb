@@ -4,7 +4,6 @@ import {
   DialogButton,
   showModal,
   ModalRoot,
-  joinClassNames
 } from 'decky-frontend-lib';
 import { useState, VFC, useRef } from 'react';
 import { useSGDB } from './SGDBProvider';

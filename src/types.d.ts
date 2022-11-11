@@ -13,7 +13,7 @@ declare module '*.jpg' {
   export default content;
 }
 
-declare module '*.css' {
+declare module '*.scss' {
   const content: string;
   export default content;
 }

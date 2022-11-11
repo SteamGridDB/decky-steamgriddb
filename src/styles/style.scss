@@ -1,0 +1,69 @@
+#sgdb-wrap {
+  --grid-size: 120px;
+  margin-top: 40px;
+  height: calc(100% - 40px);
+
+  .settings-container {
+    z-index: 10002; // above focusring
+    // offset to fill width, vw value is from .gamepadtabbedpage_TabContentsScroll
+    padding: .5em 2.8vw;
+    margin: 0 -2.8vw;
+    background-color: var(--gpSystemDarkestGrey, #0E141B);
+    &.force-show {
+      position: sticky;
+      top: 0;
+    }
+    > .action-buttons {
+      display: flex;
+      width: 100%;
+      gap: var(--gpSpace-Gap, .6em);
+      .size-slider {
+        flex: 1;
+        padding: .5em 1em;
+        justify-content: center;
+      }
+    }
+  }
+
+  .image-container {
+    display: grid;
+    padding-top: 1em;
+    margin-bottom: 1em;
+    justify-content: space-evenly;
+    grid-auto-flow: dense;
+    row-gap: 1em;
+    column-gap: .5em;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-size), 100%), var(--grid-size)));
+  }
+
+  .image-wrap {
+    display: flex;
+    position: relative;
+    /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
+
+    /* img and placeholder/error */
+    > img, > div {
+      position: absolute;
+      max-height: 100%;
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    /* fadein img on create */
+    > img {
+      animation: sgdb-image-fadein 1s linear;
+    }
+  }
+
+}
+
+@keyframes sgdb-image-fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
