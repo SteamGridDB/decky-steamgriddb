@@ -1,26 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import debounce from 'just-debounce';
 
-const useScrollDirection = (target: HTMLElement, debounceDelay = 300, scroller?: HTMLElement) => {
+const useScrollDirection = (target: HTMLElement | null, debounceDelay = 300) => {
   const [scrollDirection, setScrollDirection] = useState('up');
   const prevTop = useRef(0);
 
   useEffect(() => {
-    const targetListener = scroller || target;
-    if (!target || !targetListener) return;
-    prevTop.current = target.getBoundingClientRect().top;
+    if (!target) return;
+    prevTop.current = target.scrollTop;
 
     const onScroll = debounce(() => {
-      const scrollY = target.getBoundingClientRect().top;
-      const newScrollDirection = scrollY > prevTop.current ? 'up' : 'down';
+      const scrollTop = target.scrollTop;
+      const newScrollDirection = scrollTop > prevTop.current ? 'down' : 'up';
       setScrollDirection(newScrollDirection);
-      prevTop.current = scrollY;
+      prevTop.current = scrollTop;
     }, debounceDelay, true);
 
-    targetListener.addEventListener('scroll', onScroll);
+    target.addEventListener('scroll', onScroll);
 
-    return () => targetListener.removeEventListener('scroll', onScroll);
-  }, [target, scroller]);
+    return () => target.removeEventListener('scroll', onScroll);
+  }, [target]);
 
   return scrollDirection;
 };

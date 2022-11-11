@@ -13,15 +13,17 @@ import AssetImage from './components/AssetImage';
 
 import i18n from './utils/i18n';
 import log from './utils/log';
+import { useEffect } from 'react';
   
 const AssetTab: VFC = () => {
   const { appDetails, doSearch } = useSGDB();
   const [assetSize, setAssetSize] = useState<number>(120);
+  const [scrollerElement, setScrollerElement] = useState<HTMLElement | null>(null);
   
   const firstButtonRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
-  const scrollDirection = useScrollDirection(mainContentRef.current as HTMLElement, 300, mainContentRef.current?.parentElement as HTMLElement);
+  const scrollDirection = useScrollDirection(scrollerElement, 300);
 
   const onAssetClick = () => {
     log('cliccc');
@@ -32,6 +34,13 @@ const AssetTab: VFC = () => {
     log('focusSettings');
     firstButtonRef.current?.focus();
   };
+
+  // Need to wait for mainContentRef parent to be ready, can't pass it into useScrollDirection() directly
+  useEffect(() => {
+    if (mainContentRef.current?.parentElement) {
+      setScrollerElement(mainContentRef.current?.parentElement);
+    }
+  }, [mainContentRef]);
 
   if (!appDetails) return null;
 
