@@ -1,10 +1,10 @@
 import {
-  ButtonItem,
   PanelSection,
   PanelSectionRow,
   Router,
   ServerAPI,
-  TextField,
+  Field,
+  DialogButton,
   ToggleField,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
@@ -34,17 +34,12 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
   return (<>
     {process.env.ROLLUP_ENV === 'development' && (
       <PanelSection title="Debug">
-        <TextField value={debugAppid} onChange={(evt) => setDebugAppid(evt.target.value)} />
         <PanelSectionRow>
-          <ButtonItem
-            layout="inline"
-            onClick={() => {
-              Router.CloseSideMenus();
-              Router.Navigate(`/steamgriddb/${debugAppid}`);
-            }}
-          >
-            Go to appid
-          </ButtonItem>
+          <Field>
+            <DialogButton onClick={() => Router.Navigate(`/steamgriddb/${debugAppid}`)}>
+              Go to 220
+            </DialogButton>
+          </Field>
         </PanelSectionRow>
       </PanelSection>
     )}
@@ -65,7 +60,7 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
         />
       </PanelSectionRow>
     </PanelSection>
-    <PanelSection title={i18n('More SteamGridDB')}>
+    <PanelSection title={i18n('More SteamGridDB Stuff')}>
       <PanelIconButton
         icon={<SiDiscord fill="#5865F2" />}
         onClick={() => {
@@ -74,15 +69,6 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
         }}
       >
         {i18n('Join the Discord')}
-      </PanelIconButton>
-      <PanelIconButton
-        icon={<BoopIcon fill="#4e9ac6" />}
-        onClick={() => {
-          Router.CloseSideMenus();
-          Router.NavigateToExternalWeb('https://www.steamgriddb.com/boop');
-        }}
-      >
-        {i18n('Check out SGDBoop')}
       </PanelIconButton>
       <PanelIconButton
         icon={<SiGithub />}
@@ -101,6 +87,15 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
         }}
       >
         {i18n('Support us on Patreon')}
+      </PanelIconButton>
+      <PanelIconButton
+        icon={<BoopIcon fill="#4e9ac6" />}
+        onClick={() => {
+          Router.CloseSideMenus();
+          Router.NavigateToExternalWeb('https://www.steamgriddb.com/boop');
+        }}
+      >
+        {i18n('Check out SGDBoop')}
       </PanelIconButton>
       <PanelIconButton
         icon={<SiTwitter fill="#1DA1F2" />}
