@@ -5,22 +5,14 @@
 }
 
 #sgdb-wrap .settings-container {
-  position: sticky;
-  top: 0;
   z-index: 10002; /* above focusring */
   padding: .5em var(--gpSpace-Gutter, 24px);
   margin: 0 calc(-1 * var(--gpSpace-Gutter, 24px));
   background-color: var(--gpSystemDarkestGrey, #0E141B);
-  transition: transform ease-out 150ms, opacity ease-out 150ms;
-  opacity: 1;
 }
 #sgdb-wrap .settings-container.force-show {
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-}
-#sgdb-wrap .settings-container.scrolling-down {
-  transform: translateY(-100%);
-  opacity: 0;
+  position: sticky;
+  top: 0;
 }
 
 #sgdb-wrap .settings-container > .action-buttons {
