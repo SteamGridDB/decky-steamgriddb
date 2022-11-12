@@ -41,6 +41,11 @@ const AssetTabs: VFC<{
         content: <>logo</>,
         id: 'logo',
       },
+      {
+        title: 'Local Files',
+        content: <>change assets via file picker</>,
+        id: 'local',
+      },
     ]}
   />;
 };

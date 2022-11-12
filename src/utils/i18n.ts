@@ -35,7 +35,7 @@ const langs = {
 };
 
 export default (text: string) => {
-  // @ts-ignore
+  // @ts-ignore: LocalizationManager always exists
   const lang = window.LocalizationManager.m_rgLocalesToUse[0];
   if (lang === 'en') return text;
 

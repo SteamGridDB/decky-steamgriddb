@@ -17,3 +17,5 @@ declare module '*.scss' {
   const content: string;
   export default content;
 }
+
+type eAssetType = 0 | 1 | 2 | 3 | 4;

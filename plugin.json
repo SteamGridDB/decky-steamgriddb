@@ -4,7 +4,7 @@
   "flags": ["debug"],
   "publish": {
     "tags": ["artwork", "sgdb"],
-    "description": "Change artwork for Steam and non-Steam games.",
+    "description": "Change Steam artwork from SteamGridDB or local files.",
     "image": "https://opengraph.githubassets.com/1/SteamDeckHomebrew/PluginLoader"
   }
 }

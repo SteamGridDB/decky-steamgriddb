@@ -44,7 +44,7 @@
             "error",
             "always"
         ],
-        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/ban-ts-comment": [2, { "ts-ignore": "allow-with-description" }],
         "@typescript-eslint/no-explicit-any": "off"
     }
 }

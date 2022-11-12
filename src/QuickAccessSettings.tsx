@@ -36,7 +36,10 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
       <PanelSection title="Debug">
         <PanelSectionRow>
           <Field>
-            <DialogButton onClick={() => Router.Navigate(`/steamgriddb/${debugAppid}`)}>
+            <DialogButton onClick={() => {
+              Router.Navigate(`/steamgriddb/${debugAppid}`);
+              Router.CloseSideMenus();
+            }}>
               Go to 220
             </DialogButton>
           </Field>

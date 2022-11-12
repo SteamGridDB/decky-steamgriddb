@@ -5,29 +5,50 @@ import {
   showModal,
   ModalRoot,
 } from 'decky-frontend-lib';
-import { useState, VFC, useRef } from 'react';
+import { useState, VFC, useRef, useEffect } from 'react';
 import { useSGDB } from './SGDBProvider';
 import AssetImage from './components/AssetImage';
 
 import i18n from './utils/i18n';
 import log from './utils/log';
+import { ASSET_TYPE } from './constants';
   
 const AssetTab: VFC = () => {
-  const { appDetails, doSearch } = useSGDB();
+  const { isSearchReady, appDetails, doSearch, changeAssetFromUrl } = useSGDB();
   const [assetSize, setAssetSize] = useState<number>(120);
+  const [assets, setAssets] = useState<Array<any>>([]);
+  const [downloading, setDownloading] = useState<boolean>(false);
   
   const firstButtonRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
-  const onAssetClick = () => {
+  const onAssetClick = (url: string) => {
     log('cliccc');
-    doSearch(String(appDetails?.unAppID));
+    if (!downloading) {
+      try {
+        setDownloading(true);
+        changeAssetFromUrl(url, ASSET_TYPE.GRID_PORTRAIT);
+      } finally {
+        setDownloading(false);
+      }
+    }
   };
 
   const focusSettings = () => {
     log('focusSettings');
     firstButtonRef.current?.focus();
   };
+
+  useEffect(() => {
+    if (isSearchReady) {
+      (async () => {
+        const results = await doSearch();
+        setAssets(results);
+      })().catch((err) => {
+        //
+      });
+    }
+  }, [isSearchReady]);
 
   if (!appDetails) return null;
 
@@ -66,7 +87,7 @@ const AssetTab: VFC = () => {
           </DialogButton>
         </Focusable>
         <SliderField
-          /* @ts-ignore */
+          /* @ts-ignore: className is a valid prop */
           className="size-slider"
           onChange={(size) => setAssetSize(size)}
           onClick={(evt: Event) => evt.stopPropagation()}
@@ -86,14 +107,14 @@ const AssetTab: VFC = () => {
         ['--grid-size' as string]: `${assetSize}px`
       }}
     >
-      {Array(30).fill(0).map((_, i) => <AssetImage
-        onActivate={onAssetClick}
+      {assets.map((asset) => <AssetImage
+        key={asset.id}
+        src={asset.thumb}
+        onActivate={() => onAssetClick(asset.url)}
         onOptionsActionDescription={i18n('Change Filters')} // activate filter bar from anywhere
         onOptionsButton={focusSettings}
-        key={i}
-        width={600}
-        height={900}
-        src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${appDetails.unAppID}/library_600x900.jpg`}
+        width={asset.width}
+        height={asset.height}
       />)}
     </Focusable>
   </>);

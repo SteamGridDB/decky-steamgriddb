@@ -9,10 +9,9 @@ import { useEffect, useState, VFC, useCallback } from 'react';
 import AssetTabs from './AssetTabs';
 import { useSGDB } from './SGDBProvider';
 import style from './styles/style.scss';
-import log from './utils/log';
 
 const SGDBPage: VFC = () => {
-  const { setAppId, appDetails } = useSGDB();
+  const { setAppId, appDetails, doSearch } = useSGDB();
   const { appid } = useParams<{ appid: string }>();
   const [currentTab, setCurrentTab] = useState<string>('grid_p');
 

@@ -16,7 +16,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
-  // @ts-ignore
+  // @ts-ignore _reactRootContainer exists on the window object
   const reactRoot = document.getElementById('root')._reactRootContainer._internalRoot.current;
   const findModalManager = findInReactTree(reactRoot, (x) => x.pendingProps?.DialogWrapper && x.pendingProps?.ModalManager);
 
