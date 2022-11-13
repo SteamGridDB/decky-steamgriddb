@@ -6,10 +6,11 @@ interface AssetProps extends FooterLegendProps {
   width: number;
   height: number;
   src: string;
+  isAnimated: boolean;
   onActivate?: FocusableProps['onActivate'];
 }
 
-const Asset: VFC<AssetProps> = ({ width, height, src, onActivate, ...rest }) => (
+const Asset: VFC<AssetProps> = ({ width, height, src, isAnimated, onActivate, ...rest }) => (
   <div className="image-box-wrap">
     <Focusable
       onActivate={onActivate}
@@ -19,7 +20,7 @@ const Asset: VFC<AssetProps> = ({ width, height, src, onActivate, ...rest }) => 
       style={{ paddingBottom: `${height / width * 100}%` }}
       {...rest}
     >
-      <LazyImage src={src} />
+      <LazyImage src={src} isVideo={isAnimated} />
     </Focusable>
   </div>
 );

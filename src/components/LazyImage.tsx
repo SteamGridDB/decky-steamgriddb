@@ -1,28 +1,41 @@
-import { ImgHTMLAttributes, FC, useEffect, useState, useRef, SVGAttributes } from 'react';
+import { FC, useEffect, useState, useRef, SVGAttributes } from 'react';
 import { Spinner, IconsModule } from 'decky-frontend-lib';
 
 const ErrorIcon = Object.values(IconsModule).find((mod) => mod?.toString().includes('M27.7974 10L26.6274 2H33.3674L32.2374 10H27.7974Z')) as FC<SVGAttributes<SVGElement>>;
 
-export const LazyImage: FC<ImgHTMLAttributes<HTMLImageElement>> = (props) => {
+export const LazyImage: FC<{isVideo: boolean, src: string}> = ({isVideo = false, src, ...props}) => {
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const imgRef = useRef<HTMLElement>(null);
   const intersectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!imgRef.current) return;
     const img = imgRef.current;
-    const onLoad = () => setLoading(false);
+    const onLoad = () => {
+      if (isVideo) {
+        (img as HTMLVideoElement).play();
+      }
+      setLoading(false);
+    };
     const onError = () => setError(true);
 
-    img.addEventListener('load', onLoad);
+    if (isVideo) {
+      img.addEventListener('canplaythrough', onLoad);
+    } else {
+      img.addEventListener('load', onLoad);
+    }
     img.addEventListener('error', onError);
     return () => {
-      img.removeEventListener('load', onLoad);
+      if (isVideo) {
+        img.removeEventListener('canplaythrough', onLoad);
+      } else {
+        img.removeEventListener('load', onLoad);
+      }
       img.removeEventListener('error', onError);
     };
-  }, [props.src, inViewport]);
+  }, [src, isVideo, inViewport]);
 
   useEffect(() => {
     if (!intersectRef.current) return;
@@ -53,6 +66,21 @@ export const LazyImage: FC<ImgHTMLAttributes<HTMLImageElement>> = (props) => {
     }}
   >
     {error ? <ErrorIcon style={{ height: '2em' }} /> : <Spinner style={{ height: '2em' }} />}
-    {inViewport && <img ref={imgRef} data-loaded={loading ? undefined : 'true'} {...props} />}
+    {(inViewport && !isVideo) && <img
+      ref={imgRef as React.RefObject<HTMLImageElement>}
+      data-loaded={loading ? 'false' : 'true'}
+      src={src}
+      {...props}
+    />}
+    {(inViewport && isVideo) && <video
+      ref={imgRef as React.RefObject<HTMLVideoElement>}
+      data-loaded={loading ? 'false' : 'true'}
+      src={src}
+      autoPlay={false}
+      muted
+      loop
+      playsInline
+      {...props}
+    />}
   </div>;
 };

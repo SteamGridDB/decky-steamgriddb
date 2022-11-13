@@ -21,12 +21,12 @@ const AssetTab: VFC = () => {
   const firstButtonRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
-  const onAssetClick = (url: string) => {
+  const onAssetClick = async (url: string) => {
     log('cliccc');
     if (!downloading) {
       try {
         setDownloading(true);
-        changeAssetFromUrl(url, ASSET_TYPE.GRID_PORTRAIT);
+        await changeAssetFromUrl(url, ASSET_TYPE.GRID_PORTRAIT);
       } finally {
         setDownloading(false);
       }
@@ -109,11 +109,12 @@ const AssetTab: VFC = () => {
       {assets.map((asset) => <Asset
         key={asset.id}
         src={asset.thumb}
+        width={asset.width}
+        height={asset.height}
+        isAnimated={asset.thumb.includes('.webm')}
         onActivate={() => onAssetClick(asset.url)}
         onOptionsActionDescription={i18n('Change Filters')} // activate filter bar from anywhere
         onOptionsButton={focusSettings}
-        width={asset.width}
-        height={asset.height}
       />)}
     </Focusable>
   </>);

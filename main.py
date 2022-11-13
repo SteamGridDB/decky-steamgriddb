@@ -13,7 +13,7 @@ class Plugin:
     async def download_as_base64(self, url=""):
         context = ssl.create_default_context(cafile=certifi.where())
         req = Request(url, headers={'User-Agent': "decky-steamgriddb backend"})
-        content = urlopen(req, context=context).read().decode("utf-8")
+        content = urlopen(req, context=context).read()
         return b64encode(content).decode("utf-8")
 
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
