@@ -9,16 +9,19 @@ interface AssetImageProps extends FooterLegendProps {
 }
 
 const AssetImage: VFC<AssetImageProps> = ({ width, height, src, onActivate, ...rest }) => (
-  <Focusable
-    onActivate={onActivate}
-    onOKActionDescription="Set Image"
-    onSecondaryActionDescription="View Details"
-    className="image-wrap"
-    style={{ paddingBottom: `${height / width * 100}%` }}
-    {...rest}
-  >
-    <SuspensefulImage src={src} />
-  </Focusable>
+  <div className="image-box-wrap">
+    <Focusable
+      onActivate={onActivate}
+      onOKActionDescription="Set Image"
+      onSecondaryActionDescription="View Details"
+      className="image-wrap"
+      style={{ paddingBottom: `${height / width * 100}%` }}
+      {...rest}
+    >
+
+      <SuspensefulImage src={src} />
+    </Focusable>
+  </div>
 );
 
 export default AssetImage;

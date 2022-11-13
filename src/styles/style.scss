@@ -36,27 +36,31 @@
     grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-size), 100%), var(--grid-size)));
   }
 
-  .image-wrap {
+  // initial wrap so focusable element can variable focus ring sizes
+  .image-box-wrap {
     display: flex;
-    position: relative;
-    /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
-
-    /* img and placeholder/error */
-    > img, > div {
-      position: absolute;
-      max-height: 100%;
-      max-width: 100%;
+    align-items: center;
+    .image-wrap {
+      position: relative;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    
-    /* fadein img on create */
-    > img {
-      animation: sgdb-image-fadein 1s linear;
+      /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
+  
+      /* img and placeholder/error */
+      > img, > div {
+        position: absolute;
+        max-height: 100%;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      
+      /* fadein img on create */
+      > img {
+        animation: sgdb-image-fadein 1s linear;
+      }
     }
   }
-
 }
 
 @keyframes sgdb-image-fadein {
