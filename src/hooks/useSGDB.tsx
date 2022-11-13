@@ -1,9 +1,9 @@
-import { useState, createContext, FC, useEffect, useContext, useCallback } from 'react';
+import { useState, createContext, FC, useEffect, useContext } from 'react';
 import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 
-import getAppDetails from './utils/getAppDetails';
-import log from './utils/log';
-import i18n from './utils/i18n';
+import getAppDetails from '../utils/getAppDetails';
+import log from '../utils/log';
+import i18n from '../utils/i18n';
 
 /* 
   special key only for use with this decky plugin
@@ -114,3 +114,5 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
 };
 
 export const useSGDB = () => useContext(SGDBContext) as SGDBContextType;
+
+export default useSGDB;

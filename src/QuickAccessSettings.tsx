@@ -6,6 +6,7 @@ import {
   Field,
   DialogButton,
   ToggleField,
+  Button,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
 import { SiPatreon, SiGithub, SiDiscord, SiTwitter } from 'react-icons/si';
@@ -36,12 +37,18 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
       <PanelSection title="Debug">
         <PanelSectionRow>
           <Field>
-            <DialogButton onClick={() => {
+            <Button onClick={() => {
               Router.Navigate(`/steamgriddb/${debugAppid}`);
               Router.CloseSideMenus();
             }}>
-              Go to 220
-            </DialogButton>
+              220
+            </Button>
+            <Button onClick={() => {
+              Router.Navigate('/steamgriddb/1091500');
+              Router.CloseSideMenus();
+            }}>
+              1091500
+            </Button>
           </Field>
         </PanelSectionRow>
       </PanelSection>

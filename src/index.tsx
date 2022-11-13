@@ -8,7 +8,7 @@ import {
 import QuickAccessSettings from './QuickAccessSettings';
 import MenuIcon from './components/MenuIcon';
 import patchLibraryAppPage from './patchLibraryAppPage';
-import { SGDBProvider } from './SGDBProvider';
+import { SGDBProvider } from './hooks/useSGDB';
 import SGDBPage from './SGDBPage';
 
 export default definePlugin((serverApi: ServerAPI) => {
