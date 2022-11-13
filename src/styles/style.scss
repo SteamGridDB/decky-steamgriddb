@@ -45,8 +45,8 @@
       width: 100%;
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
   
-      /* img and placeholder/error */
-      > img, > div {
+      img,
+      > div {
         position: absolute;
         max-height: 100%;
         max-width: 100%;
@@ -54,20 +54,15 @@
         height: 100%;
         object-fit: contain;
       }
-      
-      /* fadein img on create */
-      > img {
-        animation: sgdb-image-fadein 1s linear;
+
+      img {
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 200ms linear;
+        &[data-loaded="true"] {
+          opacity: 1;
+        }
       }
     }
-  }
-}
-
-@keyframes sgdb-image-fadein {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
   }
 }

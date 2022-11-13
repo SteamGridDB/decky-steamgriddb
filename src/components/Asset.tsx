@@ -1,14 +1,15 @@
 import { VFC } from 'react';
-import { SuspensefulImage, Focusable, FocusableProps, FooterLegendProps } from 'decky-frontend-lib';
+import { Focusable, FocusableProps, FooterLegendProps } from 'decky-frontend-lib';
+import { LazyImage } from './LazyImage';
 
-interface AssetImageProps extends FooterLegendProps {
+interface AssetProps extends FooterLegendProps {
   width: number;
   height: number;
   src: string;
   onActivate?: FocusableProps['onActivate'];
 }
 
-const AssetImage: VFC<AssetImageProps> = ({ width, height, src, onActivate, ...rest }) => (
+const Asset: VFC<AssetProps> = ({ width, height, src, onActivate, ...rest }) => (
   <div className="image-box-wrap">
     <Focusable
       onActivate={onActivate}
@@ -18,10 +19,9 @@ const AssetImage: VFC<AssetImageProps> = ({ width, height, src, onActivate, ...r
       style={{ paddingBottom: `${height / width * 100}%` }}
       {...rest}
     >
-
-      <SuspensefulImage src={src} />
+      <LazyImage src={src} />
     </Focusable>
   </div>
 );
 
-export default AssetImage;
+export default Asset;

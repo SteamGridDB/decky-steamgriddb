@@ -6,13 +6,12 @@ import {
   ModalRoot,
 } from 'decky-frontend-lib';
 import { useState, VFC, useRef, useEffect } from 'react';
-import { useSGDB } from './SGDBProvider';
-import AssetImage from './components/AssetImage';
-
+import { useSGDB } from './hooks/useSGDB';
+import Asset from './components/Asset';
 import i18n from './utils/i18n';
 import log from './utils/log';
 import { ASSET_TYPE } from './constants';
-  
+
 const AssetTab: VFC = () => {
   const { isSearchReady, appDetails, doSearch, changeAssetFromUrl } = useSGDB();
   const [assetSize, setAssetSize] = useState<number>(120);
@@ -107,7 +106,7 @@ const AssetTab: VFC = () => {
         ['--grid-size' as string]: `${assetSize}px`
       }}
     >
-      {assets.map((asset) => <AssetImage
+      {assets.map((asset) => <Asset
         key={asset.id}
         src={asset.thumb}
         onActivate={() => onAssetClick(asset.url)}
