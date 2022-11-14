@@ -1,17 +1,11 @@
-import {
-  useParams,
-  Tabs,
-  Tab,
-  AppDetails,
-  ServerAPI
-} from 'decky-frontend-lib';
+import { useParams } from 'decky-frontend-lib';
 import { useEffect, useState, VFC, useCallback } from 'react';
 import AssetTabs from './AssetTabs';
 import { useSGDB } from './hooks/useSGDB';
 import style from './styles/style.scss';
 
 const SGDBPage: VFC = () => {
-  const { setAppId, appDetails, doSearch } = useSGDB();
+  const { setAppId, appDetails } = useSGDB();
   const { appid } = useParams<{ appid: string }>();
   const [currentTab, setCurrentTab] = useState<string>('grid_p');
 
@@ -21,7 +15,7 @@ const SGDBPage: VFC = () => {
 
   useEffect(() => {
     setAppId(parseInt(appid, 10));
-  }, [appid]);
+  }, [appid, setAppId]);
 
   if (!appDetails) return null;
 

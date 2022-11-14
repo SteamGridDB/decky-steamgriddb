@@ -25,6 +25,7 @@
     },
     "plugins": [
         "react",
+        "react-hooks",
         "@typescript-eslint"
     ],
     "rules": {
@@ -44,6 +45,8 @@
             "error",
             "always"
         ],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "@typescript-eslint/ban-ts-comment": [2, { "ts-ignore": "allow-with-description" }],
         "@typescript-eslint/no-explicit-any": "off"
     }

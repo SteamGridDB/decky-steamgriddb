@@ -1,4 +1,4 @@
-import { useState, createContext, FC, useEffect, useContext } from 'react';
+import { useState, createContext, FC, useEffect, useContext, useCallback } from 'react';
 import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 
 import getAppDetails from '../utils/getAppDetails';
@@ -29,7 +29,6 @@ export const SGDBContext = createContext({});
 export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
   const [appId, setAppId] = useState<number | null>(null);
   const [appDetails, setAppDetails] = useState<AppDetails | null>(null);
-  const [assetList, setAssetList] = useState([]);
 
   const restartSteam = () => {
     SteamClient.User.StartRestart();
@@ -44,7 +43,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     }
   };
 
-  const getUrlAsB64 = async (url: string) : Promise<string | null> => {
+  const getImageAsB64 = async (url: string) : Promise<string | null> => {
     /*
       Would use fetchNoCors() here but it doesn't return binary data due to parsing response as text
       https://github.com/SteamDeckHomebrew/decky-loader/blob/b44896524f44fd862f9a385147cd755104a09cdc/backend/utilities.py#L87
@@ -58,16 +57,16 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   };
 
   const changeAssetFromUrl = async (url: string, assetType: eAssetType) => {
-    const data = await getUrlAsB64(url);
+    const data = await getImageAsB64(url);
     if (!data) {
       throw new Error('Failed to download asset');
     }
     await changeAsset(data, assetType);
   };
 
-  const doSearch = async () => {
+  const doSearch = useCallback(async () => {
     log('do searchhh');
-    const res = await serverApi.fetchNoCors(`${API_BASE}/grids/steam/${appId}`, {
+    const res = await serverApi.fetchNoCors(`${API_BASE}/grids/steam/${appId}?dimensions=600x900,342x482,660x930&types=static,animated`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -83,7 +82,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     const assetRes = JSON.parse(res.result.body);
     log('search resp', assetRes);
     return assetRes.data as Array<any>;
-  };
+  }, [appId, serverApi]);
 
   useEffect(() => {
     if (appId) {
@@ -91,7 +90,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
         const details = await getAppDetails(appId);
         log('details', details);
         setAppDetails(details);
-      })().catch((err) => {
+      })().catch(() => {
         //
       });
     }
@@ -105,7 +104,6 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       setAppId,
       doSearch,
       restartSteam,
-      assetList,
       changeAssetFromUrl
     }}
   >

@@ -1,6 +1,7 @@
 import logging, ssl, certifi
 from urllib.request import Request, urlopen
 from base64 import b64encode
+from pathlib import Path
 
 logging.basicConfig(filename="/tmp/decky-steamgriddb.log",
                     format='[SGDB] %(asctime)s %(levelname)s %(message)s',
@@ -15,6 +16,16 @@ class Plugin:
         req = Request(url, headers={'User-Agent': "decky-steamgriddb backend"})
         content = urlopen(req, context=context).read()
         return b64encode(content).decode("utf-8")
+
+    async def load_settings(self):
+        settings = Path(Path(__file__).parent, "settings.json")
+        if settings.is_file():
+            return settings.read_text(encoding="utf-8")
+        return ""
+
+    async def save_settings(self, settings=""):
+        path = Path(Path(__file__).parent, "settings.json")
+        path.write_text(settings, encoding="utf-8")
 
     # Asyncio-compatible long-running code, executed in a task when the plugin is loaded
     async def _main(self):

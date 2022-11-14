@@ -9,10 +9,15 @@ import QuickAccessSettings from './QuickAccessSettings';
 import MenuIcon from './components/MenuIcon';
 import patchLibraryAppPage from './patchLibraryAppPage';
 import { SGDBProvider } from './hooks/useSGDB';
+import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './SGDBPage';
 
 export default definePlugin((serverApi: ServerAPI) => {
-  serverApi.routerHook.addRoute('/steamgriddb/:appid', () => <SGDBProvider serverApi={serverApi}><SGDBPage /></SGDBProvider>, {
+  serverApi.routerHook.addRoute('/steamgriddb/:appid', () => <SettingsProvider serverApi={serverApi}>
+    <SGDBProvider serverApi={serverApi}>
+      <SGDBPage />
+    </SGDBProvider>
+  </SettingsProvider>, {
     exact: true,
   });
 

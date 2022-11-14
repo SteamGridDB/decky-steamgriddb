@@ -4,6 +4,7 @@ import {
   DialogButton,
   showModal,
   ModalRoot,
+  SliderFieldProps,
 } from 'decky-frontend-lib';
 import { useState, VFC, useRef, useEffect } from 'react';
 import { useSGDB } from './hooks/useSGDB';
@@ -11,8 +12,10 @@ import Asset from './components/Asset';
 import i18n from './utils/i18n';
 import log from './utils/log';
 import { ASSET_TYPE } from './constants';
+import useSettings from './hooks/useSettings';
 
-const AssetTab: VFC = () => {
+const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
+  const { settings, set } = useSettings();
   const { isSearchReady, appDetails, doSearch, changeAssetFromUrl } = useSGDB();
   const [assetSize, setAssetSize] = useState<number>(120);
   const [assets, setAssets] = useState<Array<any>>([]);
@@ -33,6 +36,11 @@ const AssetTab: VFC = () => {
     }
   };
 
+  const handleSliderChange: SliderFieldProps['onChange'] = (size) => {
+    setAssetSize(size);
+    set(`assetSize_${assetType}`, size);
+  };
+
   const focusSettings = () => {
     log('focusSettings');
     firstButtonRef.current?.focus();
@@ -43,11 +51,15 @@ const AssetTab: VFC = () => {
       (async () => {
         const results = await doSearch();
         setAssets(results);
-      })().catch((err) => {
+      })().catch(() => {
         //
       });
     }
-  }, [isSearchReady]);
+  }, [doSearch, isSearchReady]);
+
+  useEffect(() => {
+    setAssetSize(settings[`assetSize_${assetType}`] ?? 120);
+  }, [assetType, settings]);
 
   if (!appDetails) return null;
 
@@ -88,7 +100,7 @@ const AssetTab: VFC = () => {
         <SliderField
           /* @ts-ignore: className is a valid prop */
           className="size-slider"
-          onChange={(size) => setAssetSize(size)}
+          onChange={handleSliderChange}
           onClick={(evt: Event) => evt.stopPropagation()}
           value={assetSize}
           layout="below"

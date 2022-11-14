@@ -19,3 +19,5 @@ declare module '*.scss' {
 }
 
 type eAssetType = 0 | 1 | 2 | 3 | 4;
+
+type SGDBAssetType = 'grid_p' | 'grid_l' | 'hero' | 'logo' | 'icon';

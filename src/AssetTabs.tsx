@@ -18,7 +18,7 @@ const AssetTabs: VFC<{
     tabs={[
       {
         title: 'Capsule',
-        content: <AssetTab />,
+        content: <AssetTab assetType="grid_p" />,
         renderTabAddon: () => <TabCount count={69} />,
         footer: {
           onOptionsActionDescription: i18n('Sort'),
