@@ -2,7 +2,7 @@ $image-load-timing: 200ms linear;
 $color-toolbar-bg: #0E141B;
 
 #sgdb-wrap {
-  --grid-size: 120px;
+  --asset-size: 120px;
   margin-top: 40px;
   height: calc(100% - 40px);
 
@@ -68,7 +68,7 @@ $color-toolbar-bg: #0E141B;
     grid-auto-flow: dense;
     row-gap: 1em;
     column-gap: .5em;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-size), 100%), var(--grid-size)));
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--asset-size), 100%), var(--asset-size)));
   }
 
   // initial wrap so focusable element can variable focus ring sizes

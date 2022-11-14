@@ -9,45 +9,57 @@ import {
   SteamSpinner,
   joinClassNames
 } from 'decky-frontend-lib';
-import { useState, VFC, useRef, useEffect } from 'react';
+import { useState, VFC, useRef, useEffect, useMemo } from 'react';
 import { useSGDB } from './hooks/useSGDB';
 import Asset from './components/Asset';
 import i18n from './utils/i18n';
 import log from './utils/log';
 import useSettings from './hooks/useSettings';
 
-const sliderSizes = {
-  'grid_p': {
+const sliderProps = {
+  grid_p: {
     min: 100,
     max: 200,
     step: 5,
   },
-  'grid_l': {
-    min: 200,
-    max: 300,
+  grid_l: {
+    min: 100,
+    max: 200,
     step: 5,
   },
-  'hero': {
-    min: 320,
-    max: 500,
-    step: 5,
+  hero: {
+    min: 1,
+    max: 6,
+    step: 1,
+    notchCount: 6,
+    notchTicksVisible: true
   },
-  'logo': {
-    min: 250,
-    max: 500,
-    step: 5,
+  logo: {
+    min: 1,
+    max: 6,
+    step: 1,
+    notchCount: 6,
+    notchTicksVisible: true
   },
-  'icon': {
+  icon: {
     min: 100,
     max: 200,
     step: 5,
   },
 };
 
+const defaultSliderSizes = {
+  grid_p: 120,
+  grid_l: 126,
+  hero: 4,
+  logo: 4,
+  icon: 120,
+};
+
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   const { settings, set } = useSettings();
   const { isSearchReady, appDetails, doSearch, changeAssetFromUrl } = useSGDB();
-  const [assetSize, setAssetSize] = useState<number>(120);
+  const [sliderValue, setSliderValue] = useState<number>(120);
   const [assets, setAssets] = useState<Array<any>>([]);
   const [downloading, setDownloading] = useState<boolean>(false);
   
@@ -67,9 +79,22 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   };
 
   const handleSliderChange: SliderFieldProps['onChange'] = (size) => {
-    setAssetSize(size);
+    log(size);
+    setSliderValue(size);
     set(`assetSize_${assetType}`, size);
   };
+
+  const assetSizeStyleAttr = useMemo(() => {
+    if (['hero', 'logo'].includes(assetType)) {
+      const percent = 100 / (sliderProps[assetType].max - sliderValue + sliderProps[assetType].min);
+      return {
+        gridTemplateColumns: `repeat(auto-fill, minmax(calc(${percent}% - .5em), 1fr))`
+      };
+    }
+    return {
+      ['--asset-size' as string]: `${sliderValue}px`
+    };
+  }, [assetType, sliderValue]);
 
   const focusSettings = () => {
     log('focusSettings');
@@ -88,7 +113,9 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   }, [assetType, doSearch, isSearchReady]);
 
   useEffect(() => {
-    setAssetSize(settings[`assetSize_${assetType}`] ?? 120);
+    // Set initial slider value
+    log('initial slider value', settings[`assetSize_${assetType}`] ?? defaultSliderSizes[assetType]);
+    setSliderValue(settings[`assetSize_${assetType}`] ?? defaultSliderSizes[assetType]);
   }, [assetType, settings]);
 
   if (!appDetails) return null;
@@ -102,7 +129,12 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
       onActivate={focusSettings}
     >
       <Focusable className="action-buttons">
-        <Focusable>
+        <Focusable
+          style={{
+            alignItems: 'center',
+            display: 'flex'
+          }}
+        >
           <DialogButton
             ref={firstButtonRef}
             noFocusRing
@@ -132,10 +164,10 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
           className="size-slider"
           onChange={handleSliderChange}
           onClick={(evt: Event) => evt.stopPropagation()}
-          value={assetSize}
+          value={sliderValue}
           layout="below"
           bottomSeparator="none"
-          {...sliderSizes[assetType]}
+          {...sliderProps[assetType]}
         />
       </Focusable>
     </Focusable>
@@ -145,9 +177,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     <Focusable
       ref={mainContentRef}
       className="image-container"
-      style={{
-        ['--grid-size' as string]: `${assetSize}px`
-      }}
+      style={assetSizeStyleAttr}
     >
       {assets.map((asset) => <Asset
         key={asset.id}

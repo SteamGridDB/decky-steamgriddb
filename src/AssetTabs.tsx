@@ -19,7 +19,6 @@ const AssetTabs: VFC<{
       {
         title: 'Capsule',
         content: <AssetTab assetType="grid_p" />,
-        renderTabAddon: () => <TabCount count={69} />,
         id: 'grid_p',
       },
       {
