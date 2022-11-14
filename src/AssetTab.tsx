@@ -5,7 +5,9 @@ import {
   showModal,
   ModalRoot,
   SliderFieldProps,
-  Spinner
+  Spinner,
+  SteamSpinner,
+  joinClassNames
 } from 'decky-frontend-lib';
 import { useState, VFC, useRef, useEffect } from 'react';
 import { useSGDB } from './hooks/useSGDB';
@@ -91,7 +93,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
 
   if (!appDetails) return null;
 
-  return (<>
+  return (<div className="tabcontents-wrap">
     <Focusable
       className="settings-container"
       focusClassName="force-show"
@@ -137,7 +139,9 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         />
       </Focusable>
     </Focusable>
-    {assets.length === 0 && <div className="initial-spinnyboi"><Spinner /></div>}
+    <div className={joinClassNames('spinnyboi', assets.length > 0 ? 'loaded' : '')}>
+      <img alt="Steam Spinner" src="/images/steam_spinner.png" />
+    </div>
     <Focusable
       ref={mainContentRef}
       className="image-container"
@@ -156,7 +160,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         onOptionsButton={focusSettings}
       />)}
     </Focusable>
-  </>);
+  </div>);
 };
   
 export default AssetTab;

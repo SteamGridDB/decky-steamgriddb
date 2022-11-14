@@ -1,14 +1,24 @@
+$image-load-timing: 200ms linear;
+$color-toolbar-bg: #0E141B;
+
 #sgdb-wrap {
   --grid-size: 120px;
   margin-top: 40px;
   height: calc(100% - 40px);
+
+  .tabcontents-wrap {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+  }
 
   .settings-container {
     z-index: 10002; // above focusring
     // offset to fill width, vw value is from .gamepadtabbedpage_TabContentsScroll
     padding: .5em 2.8vw;
     margin: 0 -2.8vw;
-    background-color: var(--gpSystemDarkestGrey, #0E141B);
+    background-color: var(--gpSystemDarkestGrey, $color-toolbar-bg);
     &.force-show {
       position: sticky;
       top: 0;
@@ -25,6 +35,31 @@
     }
   }
 
+  .spinnyboi {
+    display: flex;
+    width: 100%;
+    position: fixed;
+    align-items: center;
+    height: 100%;
+    flex: 1;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background: $color-toolbar-bg;
+    transition: opacity ease-out 300ms, z-index 0s 300ms;
+    > img {
+      transition: transform ease-out 300ms;
+    }
+    &.loaded {
+      z-index: -1;
+      opacity: 0;
+      > img {
+        transform: scale(.7);
+      }
+    }
+  }
+
   .image-container {
     display: grid;
     padding-top: 1em;
@@ -34,17 +69,6 @@
     row-gap: 1em;
     column-gap: .5em;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-size), 100%), var(--grid-size)));
-  }
-
-  .initial-spinnyboi {
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: calc(100% - 56px);
-    justify-content: center;
-    > svg {
-      width: 3em;
-    }
   }
 
   // initial wrap so focusable element can variable focus ring sizes
@@ -57,6 +81,15 @@
       position: relative;
       width: 100%;
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
+
+      .preload-spinner {
+        height: 2em;
+        opacity: 1;
+        transition: opacity $image-load-timing;
+        &[data-loaded="true"] {
+          opacity: 0;
+        }
+      }
   
       img,
       video,
@@ -72,7 +105,7 @@
       video {
         z-index: 1;
         opacity: 0;
-        transition: opacity 200ms linear;
+        transition: opacity $image-load-timing;
         &[data-loaded="true"] {
           opacity: 1;
         }

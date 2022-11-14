@@ -63,14 +63,21 @@ export const LazyImage: FC<{isVideo: boolean, src: string}> = ({isVideo = false,
       justifyContent: 'center',
     }}
   >
-    {error && <ErrorIcon style={{ height: '2em' }} />}
-    {(!error && loading) && <Spinner style={{ height: '2em' }} />}
+    {error ?
+      <ErrorIcon style={{ height: '2em' }} /> :
+      <Spinner
+        className="preload-spinner"
+        data-loaded={loading ? 'false' : 'true'}
+      />
+    }
+
     {(inViewport && !isVideo) && <img
       ref={imgRef as React.RefObject<HTMLImageElement>}
       data-loaded={loading ? 'false' : 'true'}
       src={src}
       {...props}
     />}
+
     {(inViewport && isVideo) && <video
       ref={imgRef as React.RefObject<HTMLVideoElement>}
       data-loaded={loading ? 'false' : 'true'}
