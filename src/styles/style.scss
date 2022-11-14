@@ -36,11 +36,24 @@
     grid-template-columns: repeat(auto-fill, minmax(min(var(--grid-size), 100%), var(--grid-size)));
   }
 
+  .initial-spinnyboi {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: calc(100% - 56px);
+    justify-content: center;
+    > svg {
+      width: 3em;
+    }
+  }
+
   // initial wrap so focusable element can variable focus ring sizes
   .image-box-wrap {
     display: flex;
     align-items: center;
     .image-wrap {
+      background: url('/images/defaultappimage.png') center center;
+      background-size: cover;
       position: relative;
       width: 100%;
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */

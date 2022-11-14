@@ -58,14 +58,13 @@ export const LazyImage: FC<{isVideo: boolean, src: string}> = ({isVideo = false,
   return <div
     ref={intersectRef}
     style={{
-      background: 'url(/images/defaultappimage.png) center center',
-      backgroundSize: 'cover',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}
   >
-    {error ? <ErrorIcon style={{ height: '2em' }} /> : <Spinner style={{ height: '2em' }} />}
+    {error && <ErrorIcon style={{ height: '2em' }} />}
+    {(!error && loading) && <Spinner style={{ height: '2em' }} />}
     {(inViewport && !isVideo) && <img
       ref={imgRef as React.RefObject<HTMLImageElement>}
       data-loaded={loading ? 'false' : 'true'}

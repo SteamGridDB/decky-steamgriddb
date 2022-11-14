@@ -17,7 +17,7 @@ const Asset: VFC<AssetProps> = ({ width, height, src, isAnimated, onActivate, ..
       onOKActionDescription="Set Image"
       onSecondaryActionDescription="View Details"
       className="image-wrap"
-      style={{ paddingBottom: `${height / width * 100}%` }}
+      style={{ paddingBottom: `${(width === height) ? 100 : (height / width * 100)}%` }}
       {...rest}
     >
       <LazyImage src={src} isVideo={isAnimated} />

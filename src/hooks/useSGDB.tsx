@@ -4,6 +4,7 @@ import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 import getAppDetails from '../utils/getAppDetails';
 import log from '../utils/log';
 import i18n from '../utils/i18n';
+import { ASSET_TYPE } from '../constants';
 
 /* 
   special key only for use with this decky plugin
@@ -18,10 +19,10 @@ export type SGDBContextType = {
   isSearchReady: boolean;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appDetails: AppDetails | null;
-  doSearch: () => Promise<Array<any>>;
+  doSearch: (assetType: SGDBAssetType) => Promise<Array<any>>;
   restartSteam: () => void;
   serverApi: ServerAPI;
-  changeAssetFromUrl: (url: string, assetType: eAssetType) => Promise<void>;
+  changeAssetFromUrl: (url: string, assetType: SGDBAssetType) => Promise<void>;
 }
 
 export const SGDBContext = createContext({});
@@ -56,17 +57,47 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     return download.result as string;
   };
 
-  const changeAssetFromUrl = async (url: string, assetType: eAssetType) => {
+  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = async (url, assetType) => {
+    const assetTypeMapping = {
+      'grid_p': ASSET_TYPE.GRID_PORTRAIT,
+      'grid_l': ASSET_TYPE.GRID_LANDSCAPE,
+      'hero': ASSET_TYPE.HERO,
+      'logo': ASSET_TYPE.LOGO,
+      'icon': ASSET_TYPE.ICON,
+    };
     const data = await getImageAsB64(url);
     if (!data) {
       throw new Error('Failed to download asset');
     }
-    await changeAsset(data, assetType);
+    await changeAsset(data, assetTypeMapping[assetType]);
   };
 
-  const doSearch = useCallback(async () => {
+  const doSearch: SGDBContextType['doSearch'] = useCallback(async (assetType) => {
     log('do searchhh');
-    const res = await serverApi.fetchNoCors(`${API_BASE}/grids/steam/${appId}?dimensions=600x900,342x482,660x930&types=static,animated`, {
+    let type = 'grids';
+    let dimensions = '600x900,342x482,660x930';
+    switch (assetType) {
+    case 'grid_l':
+      dimensions = '460x215,920x430';
+      break;
+    case 'hero':
+      type = 'heroes';
+      dimensions = '1920x620,3840x1240,1600x650';
+      break;
+    case 'icon':
+      type = 'icons';
+      dimensions = '';
+      break;
+    case 'logo':
+      type = 'logos';
+      dimensions = '';
+      break;
+    }
+    const qs = new URLSearchParams({
+      dimensions,
+      types: 'static,animated'
+    }).toString();
+    const res = await serverApi.fetchNoCors(`${API_BASE}/${type}/steam/${appId}?${qs}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

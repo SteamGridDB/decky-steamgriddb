@@ -20,26 +20,27 @@ const AssetTabs: VFC<{
         title: 'Capsule',
         content: <AssetTab assetType="grid_p" />,
         renderTabAddon: () => <TabCount count={69} />,
-        footer: {
-          onOptionsActionDescription: i18n('Sort'),
-          onMenuActionDescription: i18n('Filter'),
-        },
         id: 'grid_p',
       },
       {
         title: 'Wide Capsule',
-        content: <>grid</>,
+        content: <AssetTab assetType="grid_l" />,
         id: 'grid_l',
       },
       {
         title: 'Hero',
-        content: <>hero</>,
+        content: <AssetTab assetType="hero" />,
         id: 'hero',
       },
       {
         title: 'Logo',
-        content: <>logo</>,
+        content: <AssetTab assetType="logo" />,
         id: 'logo',
+      },
+      {
+        title: 'Icon',
+        content: <AssetTab assetType="icon" />,
+        id: 'icon',
       },
       {
         title: 'Local Files',

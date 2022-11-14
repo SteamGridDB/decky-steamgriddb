@@ -5,14 +5,42 @@ import {
   showModal,
   ModalRoot,
   SliderFieldProps,
+  Spinner
 } from 'decky-frontend-lib';
 import { useState, VFC, useRef, useEffect } from 'react';
 import { useSGDB } from './hooks/useSGDB';
 import Asset from './components/Asset';
 import i18n from './utils/i18n';
 import log from './utils/log';
-import { ASSET_TYPE } from './constants';
 import useSettings from './hooks/useSettings';
+
+const sliderSizes = {
+  'grid_p': {
+    min: 100,
+    max: 200,
+    step: 5,
+  },
+  'grid_l': {
+    min: 200,
+    max: 300,
+    step: 5,
+  },
+  'hero': {
+    min: 320,
+    max: 500,
+    step: 5,
+  },
+  'logo': {
+    min: 250,
+    max: 500,
+    step: 5,
+  },
+  'icon': {
+    min: 100,
+    max: 200,
+    step: 5,
+  },
+};
 
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   const { settings, set } = useSettings();
@@ -29,7 +57,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     if (!downloading) {
       try {
         setDownloading(true);
-        await changeAssetFromUrl(url, ASSET_TYPE.GRID_PORTRAIT);
+        await changeAssetFromUrl(url, assetType);
       } finally {
         setDownloading(false);
       }
@@ -49,13 +77,13 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   useEffect(() => {
     if (isSearchReady) {
       (async () => {
-        const results = await doSearch();
+        const results = await doSearch(assetType);
         setAssets(results);
       })().catch(() => {
         //
       });
     }
-  }, [doSearch, isSearchReady]);
+  }, [assetType, doSearch, isSearchReady]);
 
   useEffect(() => {
     setAssetSize(settings[`assetSize_${assetType}`] ?? 120);
@@ -105,12 +133,11 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
           value={assetSize}
           layout="below"
           bottomSeparator="none"
-          min={100}
-          max={200}
-          step={5}
+          {...sliderSizes[assetType]}
         />
       </Focusable>
     </Focusable>
+    {assets.length === 0 && <div className="initial-spinnyboi"><Spinner /></div>}
     <Focusable
       ref={mainContentRef}
       className="image-container"
