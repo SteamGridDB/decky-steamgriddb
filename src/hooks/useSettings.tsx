@@ -23,12 +23,12 @@ export const SettingsProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, chil
   const load = useCallback(async () => {
     try {
       const settingsStr = await serverApi.callPluginMethod('load_settings', {});
-      if (!settingsStr.success) return null;
+      if (!settingsStr.success) return;
       log('loaded settings', settingsStr.result);
-      setSettings(JSON.parse(settingsStr.result as string) ?? null);
+      setSettings(JSON.parse(settingsStr.result as string) ?? {});
       return settingsStr;
     } catch (error) {
-      return null;
+      return;
     }
   }, [serverApi]);
 
@@ -37,7 +37,7 @@ export const SettingsProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, chil
     setSettings((s) => {
       return { ...s, [key]: val };
     });
-  }, 2000), []);
+  }, 1500), []);
 
   const get: SettingsContextType['get'] = (key, fallback) => {
     log('getting', key, settings[key]);
