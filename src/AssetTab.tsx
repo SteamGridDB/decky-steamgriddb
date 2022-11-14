@@ -60,6 +60,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     >
       {assets.map((asset) => <Asset
         key={asset.id}
+        scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
         src={asset.thumb}
         width={asset.width}
         height={asset.height}

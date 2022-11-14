@@ -3,7 +3,13 @@ import { Spinner, IconsModule } from 'decky-frontend-lib';
 
 const ErrorIcon = Object.values(IconsModule).find((mod) => mod?.toString().includes('M27.7974 10L26.6274 2H33.3674L32.2374 10H27.7974Z')) as FC<SVGAttributes<SVGElement>>;
 
-export const LazyImage: FC<{isVideo: boolean, src: string}> = ({isVideo = false, src, ...props}) => {
+export const LazyImage: FC<{
+  isVideo: boolean,
+  unloadWhenOutside?: boolean,
+  marginOffset?: IntersectionObserverInit['rootMargin'];
+  scrollContainer?: IntersectionObserverInit['root'];
+  src: string
+}> = ({isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, ...props}) => {
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -42,18 +48,25 @@ export const LazyImage: FC<{isVideo: boolean, src: string}> = ({isVideo = false,
 
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && entry.intersectionRatio >= .5) {
           setInViewport(true);
-          observer.unobserve(entry.target);
+          if (!unloadWhenOutside) {
+            observer.unobserve(entry.target);
+          }
+        } else if (unloadWhenOutside && !loading && entry.intersectionRatio === 0) {
+          /* If completely out of view and already loaded, reset state.
+             images/videos should be cached by CEF so when back to view they will load instantly */
+          setInViewport(false);
+          setLoading(true);
         }
       });
-    }, { threshold: .5 });
+    }, { threshold: [.5, 0], rootMargin: marginOffset, root: scrollContainer });
 
     observer.observe(intersectRef.current);
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [loading, marginOffset, unloadWhenOutside, scrollContainer]);
 
   return <div
     ref={intersectRef}
