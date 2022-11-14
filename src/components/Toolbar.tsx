@@ -8,7 +8,7 @@ import {
 } from 'decky-frontend-lib';
 import { useState, useImperativeHandle, ForwardedRef, useRef, forwardRef, useEffect, useMemo, Ref } from 'react';
 
-import i18n from '../utils/i18n';
+import t from '../utils/i18n';
 import log from '../utils/log';
 import useSettings from '../hooks/useSettings';
 
@@ -105,7 +105,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange }: ToolbarProps, ref: Ref<
       className="settings-container"
       focusClassName="force-show"
       focusWithinClassName="force-show"
-      onOKActionDescription={i18n('Change Filters')}
+      onOKActionDescription={t('Change Filters')}
       onActivate={() => toolbarFocusRef.current?.focus()}
       onClick={(evt) => evt.preventDefault()} // Don't focus if using UI with a pointer
     >
@@ -119,7 +119,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange }: ToolbarProps, ref: Ref<
           <DialogButton
             ref={toolbarFocusRef}
             noFocusRing
-            onOKActionDescription={i18n('Open Filters')}
+            onOKActionDescription={t('Open Filters')}
             onClick={() => {
               log('Open Filters');
               showModal(
@@ -136,7 +136,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange }: ToolbarProps, ref: Ref<
               );
             }}
           >
-            {i18n('Filter')}
+            {t('Filter')}
           </DialogButton>
         </Focusable>
         <SliderField

@@ -4,7 +4,7 @@
   "flags": ["debug"],
   "publish": {
     "tags": ["artwork", "sgdb"],
-    "description": "Change Steam artwork from SteamGridDB or local files.",
+    "description": "Easily browse and manage Steam artwork from SteamGridDB or your local files from within gaming mode.",
     "image": "https://opengraph.githubassets.com/1/SteamDeckHomebrew/PluginLoader"
   }
 }

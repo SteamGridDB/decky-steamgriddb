@@ -5,7 +5,7 @@ import {
 import { useState, VFC, useRef, useEffect } from 'react';
 import { useSGDB } from './hooks/useSGDB';
 import Asset from './components/Asset';
-import i18n from './utils/i18n';
+import t from './utils/i18n';
 import log from './utils/log';
 import Toolbar, { ToolbarRefType } from './components/Toolbar';
 
@@ -65,7 +65,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         height={asset.height}
         isAnimated={asset.thumb.includes('.webm')}
         onActivate={() => onAssetClick(asset.url)}
-        onOptionsActionDescription={i18n('Change Filters')} // activate filter bar from anywhere
+        onOptionsActionDescription={t('Change Filters')} // activate filter bar from anywhere
         onOptionsButton={focusSettings}
       />)}
     </Focusable>

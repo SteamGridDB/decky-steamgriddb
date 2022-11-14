@@ -1,7 +1,7 @@
 {
   "name": "decky-steamgriddb",
   "version": "1.0.0",
-  "description": "Decky plugin to change Steam artwork from within gaming mode.",
+  "description": "Decky plugin to manage Steam artwork from within gaming mode.",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c --environment ROLLUP_ENV:production",
     "watch": "rollup -c -w --environment ROLLUP_ENV:development",

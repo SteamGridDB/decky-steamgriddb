@@ -9,7 +9,7 @@ import {
 } from 'decky-frontend-lib';
 import { ReactElement } from 'react';
 import log from './utils/log';
-import i18n from './utils/i18n';
+import t from './utils/i18n';
 
 export default (serverApi: ServerAPI, findModalManager: any) => serverApi.routerHook.addPatch('/library/app/:appid', (props: { path: string; children: ReactElement }) => {
   wrapReactType(findModalManager.type);
@@ -42,7 +42,7 @@ export default (serverApi: ServerAPI, findModalManager: any) => serverApi.router
             Router.Navigate(`/steamgriddb/${modalComponent.props.overview.appid}}`);
           }}
         >
-          {i18n('Change artwork...')}
+          {t('Change artwork...')}
         </MenuItem>
       ));
       return pain2;
