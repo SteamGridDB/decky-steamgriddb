@@ -79,7 +79,6 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   };
 
   const handleSliderChange: SliderFieldProps['onChange'] = (size) => {
-    log(size);
     setSliderValue(size);
     set(`assetSize_${assetType}`, size);
   };
@@ -112,9 +111,8 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     }
   }, [assetType, doSearch, isSearchReady]);
 
+  // Set initial slider value fron config or default
   useEffect(() => {
-    // Set initial slider value
-    log('initial slider value', settings[`assetSize_${assetType}`] ?? defaultSliderSizes[assetType]);
     setSliderValue(settings[`assetSize_${assetType}`] ?? defaultSliderSizes[assetType]);
   }, [assetType, settings]);
 

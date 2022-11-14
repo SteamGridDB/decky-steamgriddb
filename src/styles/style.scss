@@ -1,5 +1,7 @@
 $image-load-timing: 200ms linear;
 $color-toolbar-bg: #0E141B;
+$easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
+$easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
 #sgdb-wrap {
   --asset-size: 120px;
@@ -47,15 +49,16 @@ $color-toolbar-bg: #0E141B;
     right: 0;
     z-index: 3;
     background: $color-toolbar-bg;
-    transition: opacity ease-out 300ms, z-index 0s 300ms;
+    transition: opacity ease-out 250ms, z-index 0s 300ms;
     > img {
+      transform: scale(.8);
       transition: transform ease-out 300ms;
     }
     &.loaded {
       z-index: -1;
       opacity: 0;
       > img {
-        transform: scale(.7);
+        transform: scale(.6);
       }
     }
   }
