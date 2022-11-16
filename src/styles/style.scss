@@ -1,5 +1,6 @@
 $image-load-timing: 200ms linear;
 $color-toolbar-bg: #0E141B;
+$zIndexAboveRing: 10002;
 $easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
 $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
@@ -16,7 +17,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   .settings-container {
-    z-index: 10002; // above focusring
+    z-index: $zIndexAboveRing; // above focusring
     // offset to fill width, vw value is from .gamepadtabbedpage_TabContentsScroll
     padding: .5em 2.8vw;
     margin: 0 -2.8vw;
@@ -50,9 +51,11 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     z-index: 3;
     background: $color-toolbar-bg;
     transition: opacity ease-out 250ms, z-index 0s 300ms;
+    will-change: opacity;
     > img {
-      transform: scale(.8);
+      transform: scale(.75);
       transition: transform ease-out 300ms;
+      will-change: transform;
     }
     &.loaded {
       z-index: -1;
@@ -78,12 +81,18 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
   .image-box-wrap {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    position: relative;
     .image-wrap {
       background: url('/images/defaultappimage.png') center center;
       background-size: cover;
       position: relative;
       width: 100%;
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
+
+      &.gpfocus {
+        z-index: 4 + $zIndexAboveRing;
+      }
 
       .preload-spinner {
         height: 2em;
@@ -112,6 +121,48 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         &[data-loaded="true"] {
           opacity: 1;
         }
+      }
+    }
+    .author {
+      display: flex;
+      align-items: center;
+      gap: .5em;
+      font-size: .8em;
+      margin-top: .25em;
+      overflow: hidden;
+      > span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      img {
+        max-width: 1em;
+      }
+    }
+    .chips {
+      position: absolute;
+      right: -5px;
+      top: 0;
+      font-size: .75em;
+      font-weight: bold;
+      text-transform: uppercase;
+      z-index: -1;
+      transition: transform $easeOutCubic 300ms;
+      will-change: transform;
+      .chip {
+        background: #8a8a8a;
+        padding: 0.5em;
+        display: flex;
+        gap: .3em;
+        align-items: center;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+    .image-wrap.gpfocus {
+      ~ .chips {
+        transform: translateX(calc(100% - 6px)); // 1px more than how much is already sticking out
+        z-index: 3 + $zIndexAboveRing;
       }
     }
   }

@@ -39,7 +39,7 @@ export default (serverApi: ServerAPI, findModalManager: any) => serverApi.router
         <MenuItem
           key="sgdb-change-artwork"
           onSelected={() => {
-            Router.Navigate(`/steamgriddb/${modalComponent.props.overview.appid}}`);
+            Router.Navigate(`/steamgriddb/${modalComponent.props.overview.appid}`);
           }}
         >
           {t('Change artwork...')}

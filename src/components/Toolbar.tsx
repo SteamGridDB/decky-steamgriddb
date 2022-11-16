@@ -2,14 +2,11 @@ import {
   Focusable,
   SliderField,
   DialogButton,
-  showModal,
-  ModalRoot,
   SliderFieldProps
 } from 'decky-frontend-lib';
-import { useState, useImperativeHandle, ForwardedRef, useRef, forwardRef, useEffect, useMemo, Ref } from 'react';
+import { useState, useImperativeHandle, useRef, forwardRef, useEffect, useMemo, Ref } from 'react';
 
 import t from '../utils/i18n';
-import log from '../utils/log';
 import useSettings from '../hooks/useSettings';
 
 const sliderProps = {
@@ -55,6 +52,7 @@ const defaultSliderSizes = {
 export type ToolbarProps = {
   assetType: SGDBAssetType;
   onSizeChange: (size: any) => void;
+  onFilterClick: () => void;
 };
 
 export type ToolbarRefType = {
@@ -62,7 +60,7 @@ export type ToolbarRefType = {
   assetSizeStyleAttr: any;
 };
 
-const Toolbar = forwardRef(({ assetType, onSizeChange }: ToolbarProps, ref: Ref<ToolbarRefType>) => {
+const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarProps, ref: Ref<ToolbarRefType>) => {
   const { settings, set } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
@@ -120,21 +118,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange }: ToolbarProps, ref: Ref<
             ref={toolbarFocusRef}
             noFocusRing
             onOKActionDescription={t('Open Filters')}
-            onClick={() => {
-              log('Open Filters');
-              showModal(
-                <ModalRoot bDisableBackgroundDismiss={false} bHideCloseIcon={false}>
-                  chungus
-                </ModalRoot>,
-                window,
-                {
-                  fnOnClose: () => {
-                    log('close filters modal');
-                  },
-                  strTitle: 'Search Filters',
-                }
-              );
-            }}
+            onClick={onFilterClick}
           >
             {t('Filter')}
           </DialogButton>
