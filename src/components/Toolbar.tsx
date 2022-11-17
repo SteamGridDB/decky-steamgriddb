@@ -61,7 +61,7 @@ export type ToolbarRefType = {
 };
 
 const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarProps, ref: Ref<ToolbarRefType>) => {
-  const { settings, set } = useSettings();
+  const { set, get } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
 
@@ -93,10 +93,13 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarP
     onSizeChange?.(assetSizeStyleAttr);
   }, [assetSizeStyleAttr, onSizeChange]);
 
-  // Set initial slider value fron config or default
+  // Set initial slider value from config or default
   useEffect(() => {
-    setSliderValue(settings[`assetSize_${assetType}`] ?? defaultSliderSizes[assetType]);
-  }, [assetType, settings]);
+    (async () => {
+      const defSize = await get(`assetSize_${assetType}`, defaultSliderSizes[assetType]);
+      setSliderValue(defSize);
+    })();
+  }, [assetType, get]);
   
   return (
     <Focusable

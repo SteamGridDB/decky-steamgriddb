@@ -8,51 +8,34 @@ export const SettingsContext = createContext({});
 
 type SettingsContextType = {
   set: (key: any, value: any) => void;
-  get: (key: any, fallback: any) => any;
+  get: (key: any, fallback: any) => Promise<any>;
   settings: any;
 };
 
 export const SettingsProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
-  const [settings, setSettings] = useState({});
+  const [setting, setSetting] = useState<{key: any, value: any}>();
 
-  const save = useMemo(() => async (settings: any) => {
-    log('writing settings', settings);
-    await serverApi.callPluginMethod('save_settings', { settings: JSON.stringify(settings) });
+  const save = useMemo(() => async (setting: any) => {
+    log('writing setting', setting);
+    await serverApi.callPluginMethod('set_setting', setting);
   }, [serverApi]);
 
-  const load = useCallback(async () => {
-    try {
-      const settingsStr = await serverApi.callPluginMethod('load_settings', {});
-      if (!settingsStr.success) return;
-      log('loaded settings', settingsStr.result);
-      setSettings(JSON.parse(settingsStr.result as string) ?? {});
-      return settingsStr;
-    } catch (error) {
-      return;
-    }
-  }, [serverApi]);
-
-  const set = useMemo(() => debounce(async (key, val) => {
-    log('saving settings', key, val);
-    setSettings((s) => {
-      return { ...s, [key]: val };
-    });
+  const set = useMemo(() => debounce(async (key, value) => {
+    log('set setting state', key, value);
+    setSetting({ key, value });
   }, 1500), []);
 
-  const get: SettingsContextType['get'] = (key, fallback) => {
-    log('getting', key, settings[key]);
-    return settings[key] ?? fallback;
-  };
+  const get: SettingsContextType['get'] = useMemo(() => async (key, fallback) => {
+    return (await serverApi.callPluginMethod('get_setting', { key, default: fallback })).result;
+  }, [serverApi]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    if (setting) {
+      save(setting);
+    }
+  }, [save, setting]);
 
-  useEffect(() => {
-    save(settings);
-  }, [save, settings]);
-
-  return <SettingsContext.Provider value={{ set, get, settings }}>
+  return <SettingsContext.Provider value={{ set, get }}>
     {children}
   </SettingsContext.Provider>;
 };
