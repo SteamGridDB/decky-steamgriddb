@@ -3,6 +3,8 @@ import { Focusable, FocusableProps, FooterLegendProps } from 'decky-frontend-lib
 import { LazyImage } from './LazyImage';
 import FooterGlyph from './FooterGlyph';
 import t from '../utils/i18n';
+import Chips from './Chips';
+import Chip from './Chips/Chip';
 
 interface AssetProps extends FooterLegendProps {
   width: number;
@@ -47,11 +49,11 @@ const Asset: VFC<AssetProps> = ({
       <LazyImage src={author.avatar} />
       <span>{author.name}</span>
     </div>
-    <div className="chips">
-      {notes && <span className="chip">
+    <Chips>
+      {notes && <Chip color="#8a8a8a">
         <FooterGlyph button={2} type={0} size={0} /> {t('Notes')}
-      </span>}
-    </div>
+      </Chip>}
+    </Chips>
   </div>
 );
 

@@ -67,7 +67,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarP
 
   const handleSliderChange: SliderFieldProps['onChange'] = (size) => {
     setSliderValue(size);
-    set(`assetSize_${assetType}`, size);
+    set(`zoomlevel_${assetType}`, size);
   };
 
   const assetSizeStyleAttr = useMemo(() => {
@@ -96,7 +96,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarP
   // Set initial slider value from config or default
   useEffect(() => {
     (async () => {
-      const defSize = await get(`assetSize_${assetType}`, defaultSliderSizes[assetType]);
+      const defSize = await get(`zoomlevel_${assetType}`, defaultSliderSizes[assetType]);
       setSliderValue(defSize);
     })();
   }, [assetType, get]);

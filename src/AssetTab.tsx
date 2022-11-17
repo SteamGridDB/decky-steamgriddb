@@ -73,7 +73,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     </div>
     <Focusable
       ref={mainContentRef}
-      className="image-container"
+      id="images-container"
       style={sizingStyles}
     >
       {assets.map((asset) => <Asset
