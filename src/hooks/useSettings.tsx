@@ -1,4 +1,4 @@
-import { useState, createContext, FC, useEffect, useContext, useCallback, useMemo } from 'react';
+import { useState, createContext, FC, useEffect, useContext, useMemo } from 'react';
 import { ServerAPI } from 'decky-frontend-lib';
 import debounce from 'just-debounce';
 

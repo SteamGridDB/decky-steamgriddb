@@ -16,8 +16,8 @@ const sliderProps = {
     step: 5,
   },
   grid_l: {
-    min: 100,
-    max: 200,
+    min: 160,
+    max: 280,
     step: 5,
   },
   hero: {
@@ -42,8 +42,8 @@ const sliderProps = {
 };
 
 const defaultSliderSizes = {
-  grid_p: 120,
-  grid_l: 126,
+  grid_p: 150,
+  grid_l: 200,
   hero: 4,
   logo: 4,
   icon: 120,
