@@ -73,7 +73,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     justify-content: space-evenly;
     grid-auto-flow: dense;
     row-gap: 1em;
-    column-gap: .5em;
+    column-gap: .65em;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--asset-size), 100%), var(--asset-size)));
   }
 
@@ -141,7 +141,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     }
     .chips {
       position: absolute;
-      right: -5px;
+      right: -.5em;
       top: 0;
       font-size: .5em;
       font-weight: bold;
@@ -160,7 +160,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       }
       &.chips-left {
         right: auto;
-        left: -5px;
+        left: -.5em;
         .chip {
           padding-right: auto;
           padding-left: .8em;
@@ -170,14 +170,14 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     }
     .image-wrap.gpfocus {
       ~ .chips {
-        transform: translateX(calc(100% - 6px)); // 1px more than how much is already sticking out
+        transform: translateX(calc(100% - .5em - 1px)); // 1px more than how much is already sticking out
         z-index: 3 + $zIndexAboveRing;
         > .chip {
           background: linear-gradient(to right, #626262, var(--chip-color) 4px);
           box-shadow: 1px 2px 3px rgba(#000, .25);
         }
         &.chips-left {
-          transform: translateX(calc(-100% + 6px));
+          transform: translateX(calc(-100% + .5em + 1px));
           > .chip {
             background: linear-gradient(to left, #626262, var(--chip-color) 4px);
             box-shadow: -2px 2px 3px rgba(#000, .25);

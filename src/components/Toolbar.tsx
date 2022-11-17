@@ -74,7 +74,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarP
     if (['hero', 'logo'].includes(assetType)) {
       const percent = 100 / (sliderProps[assetType].max - sliderValue + sliderProps[assetType].min);
       return {
-        gridTemplateColumns: `repeat(auto-fill, minmax(calc(${percent}% - .5em), 1fr))`
+        gridTemplateColumns: `repeat(auto-fill, minmax(calc(${percent}% - .65em), 1fr))`
       };
     }
     return {

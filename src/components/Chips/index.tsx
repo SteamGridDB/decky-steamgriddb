@@ -9,8 +9,9 @@ const Chips: FC = ({ children }) => {
   const isCutOff = useCallback(() => {
     const el = chipsRef.current;
     if (!el) return false;
-    if (el.parentElement) {
-      return el.parentElement.getBoundingClientRect().right + el.clientWidth + 10 > findSP().innerWidth;
+    const sizeEl = el.parentElement?.querySelector('.image-wrap'); // element we cah check size aginst
+    if (sizeEl) {
+      return sizeEl.getBoundingClientRect().right + el.clientWidth + 10 > findSP().innerWidth;
     }
     return false;
   }, []);
