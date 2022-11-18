@@ -9,8 +9,9 @@ export const LazyImage: FC<{
   unloadWhenOutside?: boolean,
   marginOffset?: IntersectionObserverInit['rootMargin'];
   scrollContainer?: IntersectionObserverInit['root'];
-  src: string
-}> = ({isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, ...props}) => {
+  src: string,
+  wrapperProps?: any,
+}> = ({isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, wrapperProps, ...props}) => {
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -76,6 +77,7 @@ export const LazyImage: FC<{
       alignItems: 'center',
       justifyContent: 'center',
     }}
+    {...wrapperProps}
   >
     {error ?
       <ErrorIcon style={{ height: '2em' }} /> :

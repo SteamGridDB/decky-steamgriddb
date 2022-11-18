@@ -99,7 +99,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       &.type-logo {
         padding-bottom: 0 !important;
         height: 185px;
-        > div {
+        > .thumb {
           padding: .5em;
           // add bg here for logos so chips can go behind
           background: url('/images/defaultappimage.png') center center;
@@ -122,7 +122,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         }
       }
 
-      > div {
+      > .thumb {
         position: absolute;
         left: 0;
         right: 0;
