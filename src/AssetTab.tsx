@@ -84,6 +84,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         src={asset.thumb}
         width={asset.width}
         height={asset.height}
+        assetType={assetType}
         isAnimated={asset.thumb.includes('.webm')}
         onActivate={() => onAssetClick(asset.url)}
         onOptionsActionDescription={t('Change Filters')} // activate filter bar from anywhere

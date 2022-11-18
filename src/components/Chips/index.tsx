@@ -3,7 +3,7 @@ import { joinClassNames, findSP } from 'decky-frontend-lib';
 import debounce from 'just-debounce';
 
 const Chips: FC = ({ children }) => {
-  const chipsRef = useRef<HTMLDivElement>(null);
+  const chipsRef = useRef<HTMLUListElement>(null);
   const [leftAlign, setLeftAlign] = useState(false);
 
   const isCutOff = useCallback(() => {
@@ -39,7 +39,7 @@ const Chips: FC = ({ children }) => {
     };
   }, [isCutOff]);
 
-  return <div ref={chipsRef} className={joinClassNames('chips', leftAlign ? 'chips-left' : '')}>{children}</div>;
+  return <ul ref={chipsRef} className={joinClassNames('chips', leftAlign ? 'chips-left' : '')}>{children}</ul>;
 };
 
 export default Chips;
