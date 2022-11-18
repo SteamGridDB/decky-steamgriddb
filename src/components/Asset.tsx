@@ -5,6 +5,7 @@ import FooterGlyph from './FooterGlyph';
 import t from '../utils/i18n';
 import Chips from './Chips';
 import Chip from './Chips/Chip';
+import Spinner from '../../assets/spinner.svg';
 
 interface AssetProps extends FooterLegendProps {
   assetType: SGDBAssetType;
@@ -13,6 +14,7 @@ interface AssetProps extends FooterLegendProps {
   src: string;
   author: any;
   isAnimated: boolean;
+  isDownloading: boolean;
   onActivate?: FocusableProps['onActivate'];
   scrollContainer?: Element;
   notes?: string;
@@ -26,18 +28,20 @@ const Asset: VFC<AssetProps> = ({
   author,
   isAnimated,
   onActivate,
+  isDownloading = false,
   scrollContainer,
   notes = null,
   ...rest
 }) => <div className="image-box-wrap">
   <Focusable
     onActivate={onActivate}
-    onOKActionDescription="Set Image"
-    onSecondaryActionDescription="View Details"
+    onOKActionDescription={t('Set Image')}
+    onSecondaryActionDescription={t('View Details')}
     className={joinClassNames('image-wrap', `type-${assetType}`)}
     style={{ paddingBottom: `${(width === height) ? 100 : (height / width * 100)}%` }}
     {...rest}
   >
+    <div className={joinClassNames('dload-overlay', isDownloading ? 'downloading' : '')}><img src={Spinner} /></div>
     <Chips>
       {notes && <Chip color="#8a8a8a">
         <FooterGlyph button={2} type={0} size={0} /> {t('Notes')}
@@ -47,6 +51,9 @@ const Asset: VFC<AssetProps> = ({
       src={src}
       isVideo={isAnimated}
       scrollContainer={scrollContainer}
+      wrapperProps={{
+        className: 'thumb'
+      }}
       marginOffset="80px"
       unloadWhenOutside
     />

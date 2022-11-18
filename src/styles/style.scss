@@ -104,11 +104,11 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
           // add bg here for logos so chips can go behind
           background: url('/images/defaultappimage.png') center center;
           background-size: cover;
-        }
-        img,
-        video {
-          position: static;
-          width: auto;
+          img,
+          video {
+            position: static;
+            width: auto;
+          }
         }
       }
 
@@ -128,26 +128,50 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         right: 0;
         top: 0;
         bottom: 0;
+        img,
+        video {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          max-height: 100%;
+          max-width: 100%;
+          width: 100%;
+          height: auto;
+          margin: 0 auto;
+          z-index: 1;
+          opacity: 0;
+          transition: opacity $image-load-timing;
+          &[data-loaded="true"] {
+            opacity: 1;
+          }
+        }
       }
 
-      img,
-      video {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        max-height: 100%;
-        max-width: 100%;
+    }
+    .dload-overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: -3;
+      background: rgba(0, 0, 0, .85);
+      transition: opacity ease 100ms, z-index 0s 100ms;
+      &.downloading {
+        opacity: 1;
+        z-index: 2;
+        transition: opacity ease 100ms;
+      }
+      > img {
         width: 100%;
-        height: auto;
-        margin: 0 auto;
-        z-index: 1;
-        opacity: 0;
-        transition: opacity $image-load-timing;
-        &[data-loaded="true"] {
-          opacity: 1;
-        }
+        max-height: 50%;
+        max-width: 4em;
       }
     }
     .author {

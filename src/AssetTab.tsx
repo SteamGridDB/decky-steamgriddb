@@ -10,24 +10,36 @@ import Asset from './components/Asset';
 import t from './utils/i18n';
 import log from './utils/log';
 import Toolbar, { ToolbarRefType } from './components/Toolbar';
+import MenuIcon from './components/MenuIcon';
 
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
-  const { isSearchReady, appDetails, doSearch, changeAssetFromUrl } = useSGDB();
+  const { isSearchReady, appDetails, doSearch, changeAssetFromUrl, serverApi } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
-  const [downloading, setDownloading] = useState<boolean>(false);
+  const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
   
   const toolbarRef = useRef<ToolbarRefType>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
-  const onAssetClick = async (url: string) => {
+  const onAssetClick = async (assetId: number, url: string) => {
     log('cliccc');
-    if (!downloading) {
+    if (!downloadingId) {
       try {
-        setDownloading(true);
+        setDownloadingId(assetId);
         await changeAssetFromUrl(url, assetType);
+        serverApi.toaster.toast({
+          title: appDetails?.strDisplayName,
+          body: t('Asset has been successfully applied!'),
+          icon: <MenuIcon />,
+        });
+      } catch (err: any) {
+        serverApi.toaster.toast({
+          title: t('Error applying asset.'),
+          body: err.message,
+          icon: <MenuIcon fill="#f3171e" />
+        });
       } finally {
-        setDownloading(false);
+        setDownloadingId(null);
       }
     }
   };
@@ -86,7 +98,8 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         height={asset.height}
         assetType={assetType}
         isAnimated={asset.thumb.includes('.webm')}
-        onActivate={() => onAssetClick(asset.url)}
+        isDownloading={downloadingId === asset.id}
+        onActivate={() => onAssetClick(asset.id, asset.url)}
         onOptionsActionDescription={t('Change Filters')} // activate filter bar from anywhere
         onOptionsButton={openFilters}
       />)}
