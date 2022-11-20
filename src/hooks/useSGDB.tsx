@@ -40,7 +40,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
     } catch (error) {
-      log(i18n('#CustomArt_UnknownError'));
+      log(error);
     }
   };
 

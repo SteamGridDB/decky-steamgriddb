@@ -7,6 +7,7 @@
     "watch": "rollup -c -w --environment ROLLUP_ENV:development",
     "watch:vm-dev": "npm run watch -- --watch.onEnd=\"pnpm run copy-to-vm\"",
     "copy-to-vm": "pscp -P 50658 -pw 123 -r ./dist/ manjaro@127.0.0.1:/home/manjaro/homebrew/plugins/decky-steamgriddb/dist",
+    "dump-strings": "node ./dump-strings.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +22,7 @@
     "steamgriddb"
   ],
   "author": "Jozen Blue Martinez <me@jozen.blue>",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/SteamGridDB/decky-steamgriddb/issues"
   },
@@ -48,7 +49,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "decky-frontend-lib": "^3.8.0",
+    "decky-frontend-lib": "^3.11.0",
     "just-debounce": "^1.1.0",
     "react-icons": "^4.6.0"
   },

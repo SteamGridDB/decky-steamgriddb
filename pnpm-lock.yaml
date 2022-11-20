@@ -10,7 +10,7 @@ specifiers:
   '@types/webpack': ^5.28.0
   '@typescript-eslint/eslint-plugin': ^5.42.0
   '@typescript-eslint/parser': ^5.42.0
-  decky-frontend-lib: ^3.8.0
+  decky-frontend-lib: ^3.11.0
   eslint: ^8.26.0
   eslint-plugin-react: ^7.31.10
   eslint-plugin-react-hooks: ^4.6.0
@@ -25,7 +25,7 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
-  decky-frontend-lib: 3.8.0
+  decky-frontend-lib: 3.11.0
   just-debounce: 1.1.0
   react-icons: 4.6.0
 
@@ -231,13 +231,13 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.4.5
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: true
 
   /@types/eslint/8.4.5:
     resolution: {integrity: sha512-dhsC09y1gpJWnK+Ff4SGvCuSnk9DaU0BJZSzOwa6GVSg65XtTugLBITDAAzRU5duGBoXBHpdR/9jHGxJjNflJQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: true
 
@@ -762,8 +762,8 @@ packages:
       ms: 2.1.2
     dev: true
 
-  /decky-frontend-lib/3.8.0:
-    resolution: {integrity: sha512-PqcHrlrX6dlVdMxbYbJwah8Y2PEffFIb2s7RAozoZRt2Ywr97tyPtjOXaY9T+RhBHlXjIHXBakNJ81q4pRE4bw==}
+  /decky-frontend-lib/3.11.0:
+    resolution: {integrity: sha512-TyBE3jgwaOauh9BZ4I4GaPwNyFUr4ZTx+HIA3G6Z6txr9wE3JnNVauBHRlhCYo3eO/ewDIcQg44VV6YLgibq3A==}
     dev: false
 
   /deep-is/0.1.4:
