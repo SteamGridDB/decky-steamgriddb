@@ -1,10 +1,14 @@
 import { FC } from 'react';
 import { findModuleChild } from 'decky-frontend-lib';
 
+export enum FooterGlyphType { Knockout, Light, Dark }
+
+export enum FooterGlyphSize { Small, Medium, Large }
+
 const FooterGlyph: FC<{
   button: number,
-  type?: 0 | 1 | 2, // Knockout | Light | Dark
-  size?: 0 | 1 | 2, // Small | Medium | Large
+  type?: FooterGlyphType,
+  size?: FooterGlyphSize,
 }> = findModuleChild((m) => {
   if (typeof m !== 'object') return;
   for (const prop in m) {

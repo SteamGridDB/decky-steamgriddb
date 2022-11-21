@@ -11,6 +11,7 @@ import t from './utils/i18n';
 import log from './utils/log';
 import Toolbar, { ToolbarRefType } from './components/Toolbar';
 import MenuIcon from './components/MenuIcon';
+import { SGDB_ASSET_TYPE_READABLE } from './constants';
 
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   const { isSearchReady, appDetails, doSearch, changeAssetFromUrl, serverApi } = useSGDB();
@@ -29,7 +30,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         await changeAssetFromUrl(url, assetType);
         serverApi.toaster.toast({
           title: appDetails?.strDisplayName,
-          body: t('Asset has been successfully applied!'),
+          body: t('{assetType} has been successfully applied!').replace('{assetType}', t(SGDB_ASSET_TYPE_READABLE[assetType])),
           icon: <MenuIcon />,
         });
       } catch (err: any) {

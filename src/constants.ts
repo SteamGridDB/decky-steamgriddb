@@ -1,7 +1,15 @@
-export const ASSET_TYPE: Record<'GRID_PORTRAIT' | 'GRID_LANDSCAPE' | 'HERO' | 'LOGO' | 'ICON', eAssetType> = {
-  GRID_PORTRAIT: 0,
-  GRID_LANDSCAPE: 3,
-  HERO: 1,
-  LOGO: 2,
-  ICON: 4
+export const ASSET_TYPE: Record<SGDBAssetType, eAssetType> = {
+  grid_p: 0,
+  grid_l: 3,
+  hero: 1,
+  logo: 2,
+  icon: 4
+};
+
+export const SGDB_ASSET_TYPE_READABLE: Record<SGDBAssetType, string> = {
+  grid_p: 'Capsule',
+  grid_l: 'Wide Capsule',
+  hero: 'Hero',
+  logo: 'Logo',
+  icon: 'Icon',
 };

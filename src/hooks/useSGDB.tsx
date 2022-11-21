@@ -45,10 +45,6 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   };
 
   const getImageAsB64 = async (url: string) : Promise<string | null> => {
-    /*
-      Would use fetchNoCors() here but it doesn't return binary data due to parsing response as text
-      https://github.com/SteamDeckHomebrew/decky-loader/blob/b44896524f44fd862f9a385147cd755104a09cdc/backend/utilities.py#L87
-    */
     log('downloading', url);
     const download = await serverApi.callPluginMethod('download_as_base64', { url });
     if (!download.success) {
@@ -58,18 +54,11 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   };
 
   const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = async (url, assetType) => {
-    const assetTypeMapping = {
-      'grid_p': ASSET_TYPE.GRID_PORTRAIT,
-      'grid_l': ASSET_TYPE.GRID_LANDSCAPE,
-      'hero': ASSET_TYPE.HERO,
-      'logo': ASSET_TYPE.LOGO,
-      'icon': ASSET_TYPE.ICON,
-    };
     const data = await getImageAsB64(url);
     if (!data) {
       throw new Error('Failed to download asset');
     }
-    await changeAsset(data, assetTypeMapping[assetType]);
+    await changeAsset(data, ASSET_TYPE[assetType]);
   };
 
   const doSearch: SGDBContextType['doSearch'] = useCallback(async (assetType) => {

@@ -144,6 +144,15 @@ export const getCredits = (lang?: string) => {
  * @example
  * // if you need variables use .replace()  
  * t('Delete {gameName}').replace(/{gameName}/g, gameName)
+ * @example
+ * // translated variables, make sure var is translated elsewhere
+ * const assetTypes = {
+ *  grid: t('Grid'),
+ *  logo: t('Logo'),
+ *  icon: t('Icon')
+ * };
+ * t('{assetType} has been successfully applied!')
+ *   .replace('{assetType}', t(assetTypes[assetType]))
  */
 const trans_string = (text: string) => {
   const lang = getCurrentLanguage();
