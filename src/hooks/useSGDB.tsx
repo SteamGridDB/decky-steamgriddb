@@ -39,6 +39,18 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     try {
       await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
+      if (assetType === ASSET_TYPE.logo) {
+        // avoid huge logos on Steam games by providing decent defaults
+        const bottomLeftPos = {
+          nVersion: 1,
+          logoPosition: {
+            pinnedPosition: 'BottomLeft',
+            nWidthPct: 50,
+            nHeightPct: 65
+          }
+        };
+        await SteamClient.Apps.SetCustomLogoPositionForApp(appId, JSON.stringify(bottomLeftPos));
+      }
     } catch (error) {
       log(error);
     }
