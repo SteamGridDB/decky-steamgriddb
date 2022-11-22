@@ -3,7 +3,6 @@ import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 
 import getAppDetails from '../utils/getAppDetails';
 import log from '../utils/log';
-import i18n from '../utils/i18n';
 import { ASSET_TYPE } from '../constants';
 
 /* 
@@ -45,7 +44,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
           nVersion: 1,
           logoPosition: {
             pinnedPosition: 'BottomLeft',
-            nWidthPct: 50,
+            nWidthPct: 42,
             nHeightPct: 65
           }
         };
