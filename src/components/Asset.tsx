@@ -54,7 +54,7 @@ const Asset: VFC<AssetProps> = ({
       wrapperProps={{
         className: 'thumb'
       }}
-      marginOffset="80px"
+      marginOffset="100px"
       unloadWhenOutside
     />
   </Focusable>
