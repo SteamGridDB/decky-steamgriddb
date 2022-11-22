@@ -80,10 +80,10 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   if (!appDetails) return null;
 
   return (<div className="tabcontents-wrap">
-    <Toolbar ref={toolbarRef} assetType={assetType} onFilterClick={openFilters} onSizeChange={(size) => setSizingStyles(size)} />
     <div className={joinClassNames('spinnyboi', assets.length > 0 ? 'loaded' : '')}>
       <img alt="Steam Spinner" src="/images/steam_spinner.png" />
     </div>
+    {(assets.length > 0) && <Toolbar ref={toolbarRef} assetType={assetType} onFilterClick={openFilters} onSizeChange={(size) => setSizingStyles(size)} />}
     <Focusable
       ref={mainContentRef}
       id="images-container"

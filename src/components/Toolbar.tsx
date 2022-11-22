@@ -49,18 +49,18 @@ const defaultSliderSizes = {
   icon: 120,
 };
 
-export type ToolbarProps = {
+export interface Toolbar {
   assetType: SGDBAssetType;
   onSizeChange: (size: any) => void;
   onFilterClick: () => void;
-};
+}
 
 export type ToolbarRefType = {
   focus: () => void;
   assetSizeStyleAttr: any;
 };
 
-const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: ToolbarProps, ref: Ref<ToolbarRefType>) => {
+const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: Toolbar, ref: Ref<ToolbarRefType>) => {
   const { set, get } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
