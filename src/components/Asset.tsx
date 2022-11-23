@@ -7,14 +7,14 @@ import Chips from './Chips';
 import Chip from './Chips/Chip';
 import Spinner from '../../assets/spinner.svg';
 
-interface AssetProps extends FooterLegendProps {
+export interface AssetProps extends FooterLegendProps {
   assetType: SGDBAssetType;
   width: number;
   height: number;
   src: string;
-  author: any;
+  author?: any;
   isAnimated: boolean;
-  isDownloading: boolean;
+  isDownloading?: boolean;
   onActivate?: FocusableProps['onActivate'];
   scrollContainer?: Element;
   notes?: string;
@@ -32,11 +32,9 @@ const Asset: VFC<AssetProps> = ({
   scrollContainer,
   notes = null,
   ...rest
-}) => <div className="image-box-wrap">
+}) => <div className="asset-box-wrap">
   <Focusable
     onActivate={onActivate}
-    onOKActionDescription={t('Set Image')}
-    onSecondaryActionDescription={t('View Details')}
     className={joinClassNames('image-wrap', `type-${assetType}`)}
     style={{ paddingBottom: `${(width === height) ? 100 : (height / width * 100)}%` }}
     {...rest}
@@ -44,7 +42,7 @@ const Asset: VFC<AssetProps> = ({
     <div className={joinClassNames('dload-overlay', isDownloading ? 'downloading' : '')}><img src={Spinner} /></div>
     <Chips>
       {notes && <Chip color="#8a8a8a">
-        <FooterGlyph button={6} type={0} size={0} /> {t('Notes')}
+        <FooterGlyph button={2} type={0} size={0} /> {t('Notes')}
       </Chip>}
     </Chips>
     <LazyImage
@@ -58,10 +56,10 @@ const Asset: VFC<AssetProps> = ({
       unloadWhenOutside
     />
   </Focusable>
-  <div className="author">
-    <LazyImage src={author.avatar} />
+  {author && <div className="author">
+    <LazyImage src={author.avatar} alt="" />
     <span>{author.name}</span>
-  </div>
+  </div>}
 </div>;
 
 export default Asset;

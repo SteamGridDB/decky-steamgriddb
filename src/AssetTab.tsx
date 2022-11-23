@@ -11,6 +11,7 @@ import t from './utils/i18n';
 import log from './utils/log';
 import Toolbar, { ToolbarRefType } from './components/Toolbar';
 import MenuIcon from './components/MenuIcon';
+import DetailsModal from './Modals/DetailsModal';
 import { SGDB_ASSET_TYPE_READABLE } from './constants';
 
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
@@ -22,7 +23,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   const toolbarRef = useRef<ToolbarRefType>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
-  const onAssetClick = async (assetId: number, url: string) => {
+  const setAsset = async (assetId: number, url: string) => {
     log('cliccc');
     if (!downloadingId) {
       try {
@@ -48,6 +49,14 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   const focusSettings = () => {
     log('focusSettings');
     toolbarRef.current?.focus();
+  };
+
+  const openDetails = (asset: any) => {
+    showModal(<DetailsModal
+      asset={asset}
+      assetType={assetType}
+      onAssetChange={async () => await setAsset(asset.id, asset.url)}
+    />, window);
   };
 
   const openFilters = () => {
@@ -80,7 +89,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   if (!appDetails) return null;
 
   return (<div className="tabcontents-wrap">
-    <div className={joinClassNames('spinnyboi', assets.length > 0 ? 'loaded' : '')}>
+    <div className={joinClassNames('spinnyboi', (assets.length > 0 && sizingStyles) ? 'loaded' : '')}>
       <img alt="Steam Spinner" src="/images/steam_spinner.png" />
     </div>
     {(assets.length > 0) && <Toolbar ref={toolbarRef} assetType={assetType} onFilterClick={openFilters} onSizeChange={(size) => setSizingStyles(size)} />}
@@ -100,9 +109,12 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         assetType={assetType}
         isAnimated={asset.thumb.includes('.webm')}
         isDownloading={downloadingId === asset.id}
-        onActivate={() => onAssetClick(asset.id, asset.url)}
+        onActivate={() => setAsset(asset.id, asset.url)}
+        onOKActionDescription={t('Apply Asset')}
         onOptionsActionDescription={t('Change Filters')} // activate filter bar from anywhere
         onOptionsButton={openFilters}
+        onSecondaryActionDescription={t('Details')}
+        onSecondaryButton={() => openDetails(asset)}
       />)}
     </Focusable>
   </div>);

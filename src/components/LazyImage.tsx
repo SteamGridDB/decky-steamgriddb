@@ -1,17 +1,19 @@
-import { FC, useEffect, useState, useRef, SVGAttributes } from 'react';
+import { FC, useEffect, useState, useRef, SVGAttributes, ImgHTMLAttributes } from 'react';
 import { Spinner, IconsModule } from 'decky-frontend-lib';
 
 // @todo: find a better way to get this
-const ErrorIcon = Object.values(IconsModule).find((mod) => mod?.toString().includes('M27.7974 10L26.6274 2H33.3674L32.2374 10H27.7974Z')) as FC<SVGAttributes<SVGElement>>;
+const ErrorIcon = Object.values(IconsModule).find((mod: any) => mod?.toString().includes('M27.7974 10L26.6274 2H33.3674L32.2374 10H27.7974Z')) as FC<SVGAttributes<SVGElement>>;
 
-export const LazyImage: FC<{
+interface LazyImage extends ImgHTMLAttributes<HTMLImageElement | HTMLVideoElement> {
   isVideo?: boolean,
   unloadWhenOutside?: boolean,
   marginOffset?: IntersectionObserverInit['rootMargin'];
   scrollContainer?: IntersectionObserverInit['root'];
   src: string,
-  wrapperProps?: any,
-}> = ({isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, wrapperProps, ...props}) => {
+  wrapperProps?: any
+}
+
+export const LazyImage: FC<LazyImage> = ({isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, wrapperProps, ...props}) => {
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -106,3 +108,5 @@ export const LazyImage: FC<{
     />}
   </div>;
 };
+
+export default LazyImage;

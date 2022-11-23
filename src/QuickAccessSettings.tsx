@@ -4,11 +4,10 @@ import {
   Router,
   ServerAPI,
   Field,
-  DialogButton,
   ToggleField,
   Button,
 } from 'decky-frontend-lib';
-import { Fragment, useState, VFC } from 'react';
+import { useState, VFC } from 'react';
 import { SiPatreon, SiGithub, SiDiscord, SiTwitter } from 'react-icons/si';
 import BoopIcon from './components/BoopIcon';
 
@@ -16,7 +15,7 @@ import PanelIconButton from './components/PanelIconButton';
 import t, { getCredits } from './utils/i18n';
 
 const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
-  const [debugAppid, setDebugAppid] = useState('220');
+  const [debugAppid] = useState('220');
   // const [result, setResult] = useState<number | undefined>();
 
   // const onClick = async () => {

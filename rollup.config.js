@@ -6,6 +6,7 @@ import typescript from '@rollup/plugin-typescript';
 import { defineConfig } from 'rollup';
 import importAssets from 'rollup-plugin-import-assets';
 import scss from 'rollup-plugin-scss';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import { name } from './plugin.json';
 
@@ -13,6 +14,7 @@ export default defineConfig({
   input: './src/index.tsx',
   plugins: [
     commonjs(),
+    nodePolyfills(),
     nodeResolve(),
     typescript(),
     json(),

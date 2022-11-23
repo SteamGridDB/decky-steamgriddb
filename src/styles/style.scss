@@ -4,82 +4,9 @@ $zIndexAboveRing: 10002;
 $easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
 $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
-#sgdb-wrap {
-  --asset-size: 120px;
-  margin-top: 40px;
-  height: calc(100% - 40px);
-
-  .tabcontents-wrap {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .spinnyboi {
-    display: flex;
-    width: 100%;
-    position: fixed;
-    align-items: center;
-    height: 100%;
-    flex: 1;
-    justify-content: center;
-    left: 0;
-    right: 0;
-    z-index: $zIndexAboveRing + 6; // above settings
-    background: $color-toolbar-bg;
-    transition: opacity ease-out 250ms, z-index 0s 300ms;
-    will-change: opacity;
-    > img {
-      transform: scale(.75);
-      transition: transform ease-out 300ms;
-      will-change: transform;
-      margin-top: -50px; // vertical center-ish
-    }
-    &.loaded {
-      z-index: -1;
-      opacity: 0;
-      > img {
-        transform: scale(.6);
-      }
-    }
-  }
-
-  .settings-container {
-    z-index: $zIndexAboveRing; // above focusring
-    // offset to fill width, vw value is from .gamepadtabbedpage_TabContentsScroll
-    padding: .5em 2.8vw;
-    margin: 0 -2.8vw;
-    background-color: var(--gpSystemDarkestGrey, $color-toolbar-bg);
-    &.force-show {
-      position: sticky;
-      top: 0;
-    }
-    > .action-buttons {
-      display: flex;
-      width: 100%;
-      gap: var(--gpSpace-Gap, .6em);
-      .size-slider {
-        flex: 1;
-        padding: .5em 1em;
-        justify-content: center;
-      }
-    }
-  }
-
-  #images-container {
-    display: grid;
-    padding-top: 1em;
-    margin-bottom: 1em;
-    justify-content: space-evenly;
-    grid-auto-flow: dense;
-    row-gap: 1em;
-    column-gap: .65em;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--asset-size), 100%), var(--asset-size)));
-  }
-
+@mixin asset {
   // initial wrap so focusable element can variable focus ring sizes
-  .image-box-wrap {
+  .asset-box-wrap {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -90,6 +17,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       position: relative;
       width: 100%;
       margin-top: auto;
+      margin-bottom: auto;
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
 
       &.gpfocus {
@@ -189,7 +117,8 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         text-overflow: ellipsis;
       }
       img {
-        max-width: 1em;
+        width: 1em;
+        height: 1em;
       }
     }
     .chips {
@@ -241,6 +170,136 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
           }
         }
       }
+    }
+  }
+
+  @content;
+}
+
+#sgdb-wrap {
+  --asset-size: 120px;
+  margin-top: 40px;
+  height: calc(100% - 40px);
+
+  .tabcontents-wrap {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .spinnyboi {
+    display: flex;
+    width: 100%;
+    position: fixed;
+    align-items: center;
+    height: 100%;
+    flex: 1;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    z-index: $zIndexAboveRing + 6; // above settings
+    background: $color-toolbar-bg;
+    transition: opacity ease-out 250ms, z-index 0s 300ms;
+    will-change: opacity;
+    > img {
+      transform: scale(.75);
+      transition: transform ease-out 300ms;
+      will-change: transform;
+      margin-top: -50px; // vertical center-ish
+    }
+    &.loaded {
+      z-index: -1;
+      opacity: 0;
+      > img {
+        transform: scale(.6);
+      }
+    }
+  }
+
+  .settings-container {
+    z-index: $zIndexAboveRing; // above focusring
+    // offset to fill width, vw value is from .gamepadtabbedpage_TabContentsScroll
+    padding: .5em 2.8vw;
+    margin: 0 -2.8vw;
+    background-color: var(--gpSystemDarkestGrey, $color-toolbar-bg);
+    &.force-show {
+      position: sticky;
+      top: 0;
+    }
+    > .action-buttons {
+      display: flex;
+      width: 100%;
+      gap: var(--gpSpace-Gap, .6em);
+      .size-slider {
+        flex: 1;
+        padding: .5em 1em;
+        justify-content: center;
+      }
+    }
+  }
+
+  #images-container {
+    display: grid;
+    padding-top: 1em;
+    margin-bottom: 1em;
+    justify-content: space-evenly;
+    grid-auto-flow: dense;
+    row-gap: 1em;
+    column-gap: .65em;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--asset-size), 100%), var(--asset-size)));
+  }
+
+  @include asset;
+}
+
+.sgdb-modal {
+  &-details {
+    &-wrapper {
+      display: flex;
+      gap: 1em;
+      &.wide {
+        flex-direction: column;
+        > .asset-box-wrap {
+          max-width: 100%;
+          margin: 0 auto;
+        }
+        .notes {
+          max-width: 100%;
+        }
+      }
+    }
+    @include asset {
+      .asset-box-wrap {
+        width: 100%;
+        max-width: 46%;
+      }
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .meta {
+      text-transform: capitalize;
+      opacity: .5;
+      font-size: .8em;
+      text-align: right;
+    }
+    .author {
+      margin-top: 1em;
+      display: flex;
+      align-items: center;
+      gap: .5em;
+      font-weight: bold;
+      > img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    .notes {
+      max-width: 300px;
+      word-break: break-word;
     }
   }
 }

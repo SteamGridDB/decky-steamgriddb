@@ -42,6 +42,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "rollup": "^2.77.1",
     "rollup-plugin-import-assets": "^1.1.1",
+    "rollup-plugin-polyfill-node": "^0.11.0",
     "rollup-plugin-scss": "3",
     "sass": "^1.56.1",
     "shx": "^0.3.4",
@@ -51,7 +52,9 @@
   "dependencies": {
     "decky-frontend-lib": "^3.11.0",
     "just-debounce": "^1.1.0",
-    "react-icons": "^4.6.0"
+    "react-icons": "^4.6.0",
+    "react-markdown": "^8.0.3",
+    "remark-gfm": "^3.0.1"
   },
   "pnpm": {
     "peerDependencyRules": {
