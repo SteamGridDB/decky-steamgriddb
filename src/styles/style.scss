@@ -184,8 +184,8 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
 #sgdb-wrap {
   --asset-size: 120px;
-  margin-top: 40px;
-  height: calc(100% - 40px);
+  margin-top: var(--basicui-header-height, 40px);
+  height: calc(100% - var(--basicui-header-height, 40px));
 
   .tabcontents-wrap {
     display: flex;
