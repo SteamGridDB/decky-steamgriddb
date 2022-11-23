@@ -8,10 +8,10 @@ import {
   Button,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
-import { SiPatreon, SiGithub, SiDiscord, SiTwitter } from 'react-icons/si';
+import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icons/si';
 import BoopIcon from './components/BoopIcon';
 
-import PanelIconButton from './components/PanelIconButton';
+import PanelSocialButton from './components/PanelSocialButton';
 import t, { getCredits } from './utils/i18n';
 
 const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
@@ -79,51 +79,48 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
       </div>
     </PanelSection>}
     <PanelSection title={t('More SteamGridDB Stuff')}>
-      <PanelIconButton
+      <PanelSocialButton
         icon={<SiDiscord fill="#5865F2" />}
-        onClick={() => {
-          Router.CloseSideMenus();
-          Router.NavigateToExternalWeb('https://discord.steamgriddb.com');
-        }}
+        url="https://discord.gg/bnSVJrz"
+        qr
       >
-        {t('Join the Discord')}
-      </PanelIconButton>
-      <PanelIconButton
+        {t('Join our Discord')}
+      </PanelSocialButton>
+      <PanelSocialButton
         icon={<SiGithub />}
-        onClick={() => {
-          Router.CloseSideMenus();
-          Router.NavigateToExternalWeb('https://github.com/SteamGridDB/');
-        }}
+        url="https://github.com/SteamGridDB/"
+        qr
       >
         {t('Open Source Projects')}
-      </PanelIconButton>
-      <PanelIconButton
+      </PanelSocialButton>
+      <PanelSocialButton
         icon={<SiPatreon fill="#FF424D" />}
-        onClick={() => {
-          Router.CloseSideMenus();
-          Router.NavigateToExternalWeb('https://www.patreon.com/steamgriddb');
-        }}
+        url="https://www.patreon.com/steamgriddb"
+        qr
       >
         {t('Support us on Patreon')}
-      </PanelIconButton>
-      <PanelIconButton
+      </PanelSocialButton>
+      <PanelSocialButton
+        icon={<SiCrowdin fill="#fff" />} // actual branding is #2E3340 but it's too dark
+        url="https://crowdin.com/project/decky-steamgriddb"
+        qr
+      >
+        {t('Help Translate')}
+      </PanelSocialButton>
+      <PanelSocialButton
         icon={<BoopIcon fill="#4e9ac6" />}
-        onClick={() => {
-          Router.CloseSideMenus();
-          Router.NavigateToExternalWeb('https://www.steamgriddb.com/boop');
-        }}
+        url="https://www.steamgriddb.com/boop"
+        qr
       >
         {t('Check out SGDBoop')}
-      </PanelIconButton>
-      <PanelIconButton
+      </PanelSocialButton>
+      <PanelSocialButton
         icon={<SiTwitter fill="#1DA1F2" />}
-        onClick={() => {
-          Router.CloseSideMenus();
-          Router.NavigateToExternalWeb('https://twitter.com/SteamGridDB');
-        }}
+        url="https://twitter.com/SteamGridDB"
+        qr
       >
         lol twitter
-      </PanelIconButton>
+      </PanelSocialButton>
     </PanelSection>
   </>);
 };
