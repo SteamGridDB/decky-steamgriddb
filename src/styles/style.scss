@@ -30,7 +30,13 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         height: 185px;
         > .thumb {
           padding: .5em;
-          // add bg here for logos so chips can go behind
+        }
+      }
+
+      // add bg to parent on logos/icons so chips can go behind
+      &.type-logo,
+      &.type-icon {
+        > .thumb {
           background: url('/images/defaultappimage.png') center center;
           background-size: cover;
           img,

@@ -89,14 +89,14 @@ export const LazyImage: FC<LazyImage> = ({isVideo = false, unloadWhenOutside = f
       />
     }
 
-    {(inViewport && !isVideo) && <img
+    {(inViewport && !isVideo && error !== true) && <img
       ref={imgRef as React.RefObject<HTMLImageElement>}
       data-loaded={loading ? 'false' : 'true'}
       src={src}
       {...props}
     />}
 
-    {(inViewport && isVideo) && <video
+    {(inViewport && isVideo && error !== true) && <video
       ref={imgRef as React.RefObject<HTMLVideoElement>}
       data-loaded={loading ? 'false' : 'true'}
       src={src}
