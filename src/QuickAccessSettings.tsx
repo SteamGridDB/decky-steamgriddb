@@ -84,7 +84,7 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
         url="https://discord.gg/bnSVJrz"
         qr
       >
-        {t('Join our Discord')}
+        {t('Join the Discord')}
       </PanelSocialButton>
       <PanelSocialButton
         icon={<SiGithub />}
