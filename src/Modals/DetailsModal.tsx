@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import Asset, { AssetProps } from '../components/Asset';
 import Markdown from '../components/Markdown';
 import t from '../utils/i18n';
+import { SGDB_ASSET_TYPE_READABLE } from '../constants';
 
 const DetailsModal: FC<{
   closeModal?: () => void,
@@ -40,9 +41,9 @@ const DetailsModal: FC<{
         <div className="info">
           <DialogButtonPrimary
             onClick={handleDownload}
-            onOKActionDescription={t('Apply Asset')}
+            onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
           >
-            {t('Apply Asset')}
+            {t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
           </DialogButtonPrimary>
           <span className="meta">
             {[

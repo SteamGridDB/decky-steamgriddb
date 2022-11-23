@@ -117,7 +117,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         isAnimated={asset.thumb.includes('.webm')}
         isDownloading={downloadingId === asset.id}
         onActivate={() => setAsset(asset.id, asset.url)}
-        onOKActionDescription={t('Apply Asset')}
+        onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
         onOptionsActionDescription={t('Change Filters')} // activate filter bar from anywhere
         onOptionsButton={openFilters}
         onSecondaryActionDescription={t('Details')}
