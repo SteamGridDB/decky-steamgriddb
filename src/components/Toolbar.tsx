@@ -53,6 +53,7 @@ export interface Toolbar {
   assetType: SGDBAssetType;
   onSizeChange: (size: any) => void;
   onFilterClick: () => void;
+  disabled: boolean;
 }
 
 export type ToolbarRefType = {
@@ -60,7 +61,7 @@ export type ToolbarRefType = {
   assetSizeStyleAttr: any;
 };
 
-const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: Toolbar, ref: Ref<ToolbarRefType>) => {
+const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled = false }: Toolbar, ref: Ref<ToolbarRefType>) => {
   const { set, get } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
@@ -101,6 +102,8 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick }: Toolbar,
     })();
   }, [assetType, get]);
   
+  if (disabled) return null;
+
   return (
     <Focusable
       className="settings-container"

@@ -46,10 +46,9 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     }
   };
 
-  const focusSettings = () => {
-    log('focusSettings');
+  /* const focusSettings = () => {
     toolbarRef.current?.focus();
-  };
+  }; */
 
   const openDetails = (asset: any) => {
     showModal(<DetailsModal
@@ -92,8 +91,16 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     <div className={joinClassNames('spinnyboi', (assets.length > 0 && sizingStyles) ? 'loaded' : '')}>
       <img alt="Steam Spinner" src="/images/steam_spinner.png" />
     </div>
-    {(assets.length > 0) && <Toolbar ref={toolbarRef} assetType={assetType} onFilterClick={openFilters} onSizeChange={(size) => setSizingStyles(size)} />}
-    <Focusable
+
+    <Toolbar
+      ref={toolbarRef}
+      assetType={assetType}
+      onFilterClick={openFilters}
+      onSizeChange={(size) => setSizingStyles(size)}
+      disabled={assets.length === 0}
+    />
+
+    {sizingStyles && <Focusable
       ref={mainContentRef}
       id="images-container"
       style={sizingStyles}
@@ -116,7 +123,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         onSecondaryActionDescription={t('Details')}
         onSecondaryButton={() => openDetails(asset)}
       />)}
-    </Focusable>
+    </Focusable>}
   </div>);
 };
   
