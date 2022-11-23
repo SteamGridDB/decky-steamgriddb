@@ -20,12 +20,12 @@ const openQR = (url: string) => {
   showModal(
     <ModalRoot>
       <QRCodeSVG
-        style={{ margin: '0 auto' }}
+        style={{ margin: '0 auto 1.5em auto' }}
         value={url}
         includeMargin
         size={256}
       />
-      <p style={{ textAlign: 'center' }}>{url}</p>
+      <span style={{ textAlign: 'center' }}>{url}</span>
     </ModalRoot>,
     window
   );
