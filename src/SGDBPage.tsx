@@ -6,8 +6,8 @@ import style from './styles/style.scss';
 
 const SGDBPage: VFC = () => {
   const { setAppId, appDetails } = useSGDB();
-  const { appid } = useParams<{ appid: string }>();
-  const [currentTab, setCurrentTab] = useState<string>('grid_p');
+  const { appid, assetType = 'grid_p' } = useParams<{ appid: string, assetType: SGDBAssetType }>();
+  const [currentTab, setCurrentTab] = useState<string>(assetType);
 
   const onShowTab = useCallback((tabID: string) => {
     setCurrentTab(tabID);

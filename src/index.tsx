@@ -13,7 +13,7 @@ import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './SGDBPage';
 
 export default definePlugin((serverApi: ServerAPI) => {
-  serverApi.routerHook.addRoute('/steamgriddb/:appid', () => <SettingsProvider serverApi={serverApi}>
+  serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => <SettingsProvider serverApi={serverApi}>
     <SGDBProvider serverApi={serverApi}>
       <SGDBPage />
     </SGDBProvider>
@@ -32,7 +32,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     content: <QuickAccessSettings serverAPI={serverApi} />,
     icon: <MenuIcon />,
     onDismount() {
-      serverApi.routerHook.removeRoute('/steamgriddb/:appid');
+      serverApi.routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
       serverApi.routerHook.removePatch('/library/app/:appid', appPagePath);
     },
   };

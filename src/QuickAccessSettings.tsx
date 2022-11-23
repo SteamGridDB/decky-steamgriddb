@@ -43,7 +43,7 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
               220
             </Button>
             <Button onClick={() => {
-              Router.Navigate('/steamgriddb/1091500');
+              Router.Navigate('/steamgriddb/1091500/hero');
               Router.CloseSideMenus();
             }}>
               1091500
