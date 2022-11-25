@@ -3,6 +3,8 @@ import { Focusable, FocusableProps, Router } from 'decky-frontend-lib';
 import { FC } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import t from '../utils/i18n';
+import showQrModal from '../utils/showQrModal';
 
 const Markdown: FC<{
   onLinkClick?: () => void,
@@ -29,6 +31,8 @@ const Markdown: FC<{
                 onLinkClick?.();
               }
             }}
+            onSecondaryButton={() => showQrModal(linkProps.href ?? '')}
+            onSecondaryActionDescription={t('Link QR')}
             style={{ display: 'inline-block' }}
           >
             <a style={{ textDecoration: 'underline', color: '#1a9fff' }} {...linkProps}>

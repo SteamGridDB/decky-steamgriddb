@@ -82,42 +82,36 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
       <PanelSocialButton
         icon={<SiDiscord fill="#5865F2" />}
         url="https://discord.gg/bnSVJrz"
-        qr
       >
         {t('Join the Discord')}
       </PanelSocialButton>
       <PanelSocialButton
         icon={<SiGithub />}
         url="https://github.com/SteamGridDB/"
-        qr
       >
         {t('Open Source Projects')}
       </PanelSocialButton>
       <PanelSocialButton
         icon={<SiPatreon fill="#FF424D" />}
         url="https://www.patreon.com/steamgriddb"
-        qr
       >
         {t('Support us on Patreon')}
       </PanelSocialButton>
       <PanelSocialButton
         icon={<SiCrowdin fill="#fff" />} // actual branding is #2E3340 but it's too dark
         url="https://crowdin.com/project/decky-steamgriddb"
-        qr
       >
         {t('Help Translate')}
       </PanelSocialButton>
       <PanelSocialButton
         icon={<BoopIcon fill="#4e9ac6" />}
         url="https://www.steamgriddb.com/boop"
-        qr
       >
         {t('Check out SGDBoop')}
       </PanelSocialButton>
       <PanelSocialButton
         icon={<SiTwitter fill="#1DA1F2" />}
         url="https://twitter.com/SteamGridDB"
-        qr
       >
         lol twitter
       </PanelSocialButton>

@@ -3,32 +3,16 @@ import {
   DialogButton,
   Field,
   Focusable,
-  showModal,
-  ModalRoot,
   Router,
 } from 'decky-frontend-lib';
 import { FC, ReactNode } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
 import { HiQrCode } from 'react-icons/hi2';
+import showQrModal from '../utils/showQrModal';
+import t from '../utils/i18n';
 
 const navLink = (url: string) => {
   Router.CloseSideMenus();
   Router.NavigateToExternalWeb(url);
-};
-
-const openQR = (url: string) => {
-  showModal(
-    <ModalRoot>
-      <QRCodeSVG
-        style={{ margin: '0 auto 1.5em auto' }}
-        value={url}
-        includeMargin
-        size={256}
-      />
-      <span style={{ textAlign: 'center' }}>{url}</span>
-    </ModalRoot>,
-    window
-  );
 };
 
 /**
@@ -36,9 +20,8 @@ const openQR = (url: string) => {
  */
 const PanelSocialButton: FC<{
   icon: ReactNode;
-  qr?: boolean;
   url: string;
-}> = ({ icon, children, qr = false, url }) => (
+}> = ({ icon, children, url }) => (
   <PanelSectionRow>
     <Field
       bottomSeparator="none"
@@ -64,6 +47,8 @@ const PanelSocialButton: FC<{
         </div>
         <DialogButton
           onClick={() => navLink(url)}
+          onSecondaryButton={() => showQrModal(url)}
+          onSecondaryActionDescription={t('Link QR')}
           style={{
             padding: '10px',
             fontSize: '14px',
@@ -71,8 +56,8 @@ const PanelSocialButton: FC<{
         >
           {children}
         </DialogButton>
-        {qr && <DialogButton
-          onClick={() => openQR(url)}
+        <DialogButton
+          onClick={() => showQrModal(url)}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -84,7 +69,7 @@ const PanelSocialButton: FC<{
           }}
         >
           <HiQrCode />
-        </DialogButton>}
+        </DialogButton>
       </Focusable>
     </Field>
   </PanelSectionRow>
