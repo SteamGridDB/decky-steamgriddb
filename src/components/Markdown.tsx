@@ -29,7 +29,7 @@ const Markdown: FC<{
                 onLinkClick?.();
               }
             }}
-            style={{ display: 'inline' }}
+            style={{ display: 'inline-block' }}
           >
             <a style={{ textDecoration: 'underline', color: '#1a9fff' }} {...linkProps}>
               {children}
