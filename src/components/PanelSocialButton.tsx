@@ -48,7 +48,7 @@ const PanelSocialButton: FC<{
         <DialogButton
           onClick={() => navLink(url)}
           onSecondaryButton={() => showQrModal(url)}
-          onSecondaryActionDescription={t('Link QR')}
+          onSecondaryActionDescription={t('Show Link QR')}
           style={{
             padding: '10px',
             fontSize: '14px',
@@ -57,6 +57,7 @@ const PanelSocialButton: FC<{
           {children}
         </DialogButton>
         <DialogButton
+          onOKActionDescription={t('Show Link QR')}
           onClick={() => showQrModal(url)}
           style={{
             display: 'flex',
