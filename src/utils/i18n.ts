@@ -154,7 +154,7 @@ export const getCredits = (lang?: string) => {
  * t('{assetType} has been successfully applied!')
  *   .replace('{assetType}', t(assetTypes[assetType]))
  */
-const trans_string = (text: string) => {
+const trans_string = (text: string): string => {
   const lang = getCurrentLanguage();
   if (lang === 'en') return text;
 
