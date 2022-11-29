@@ -93,20 +93,38 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     let adult = 'false';
     let humor = 'any';
     let epilepsy = 'any';
-    if (filters?.adult === true) {
-      adult = 'any';
-    } else if (filters?.adult === false) {
-      adult = 'false';
-    }
-    if (filters?.humor === true) {
-      humor = 'any';
-    } else if (filters?.humor === false) {
-      humor = 'false';
-    }
-    if (filters?.epilepsy === true) {
-      epilepsy = 'any';
-    } else if (filters?.epilepsy === false) {
-      epilepsy = 'false';
+    let oneoftag = '';
+
+    if (filters?.untagged === true) {
+      if (filters?.humor === false) {
+        humor = 'false';
+      }
+
+      if (filters?.adult === false) {
+        adult = 'false';
+      }
+
+      if (filters?.epilepsy === false) {
+        epilepsy = 'false';
+      }
+    } else {
+      const selectedTags = [];
+      if (filters?.humor === true) {
+        humor = 'any';
+        selectedTags.push('humor');
+      }
+
+      if (filters?.adult === true) {
+        adult = 'any';
+        selectedTags.push('nsfw');
+      }
+
+      if (filters?.epilepsy === true) {
+        epilepsy = 'any';
+        selectedTags.push('epilepsy');
+      }
+
+      oneoftag = selectedTags.join(',');
     }
 
     const qs = new URLSearchParams({
@@ -116,6 +134,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       nsfw: adult,
       humor,
       epilepsy,
+      oneoftag,
       types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
     }).toString();
 

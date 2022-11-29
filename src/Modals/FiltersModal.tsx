@@ -26,6 +26,7 @@ const FiltersModal: FC<{
   const [adult, setAdult] = useState<boolean>(defaultFilters?.adult ?? false);
   const [humor, setHumor] = useState<boolean>(defaultFilters?.humor ?? true);
   const [epilepsy, setEpilepsy] = useState<boolean>(defaultFilters?.epilepsy ?? true);
+  const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? false);
 
   const handleStyleSelect = useCallback((items) => {
     setStyles(items);
@@ -48,7 +49,8 @@ const FiltersModal: FC<{
       _static,
       adult,
       humor,
-      epilepsy
+      epilepsy,
+      untagged
     });
     closeModal?.();
   };
@@ -116,6 +118,7 @@ const FiltersModal: FC<{
           <ToggleField label={t('Adult Content')} checked={adult} onChange={setAdult} />
           <ToggleField label={t('Humor')} checked={humor} onChange={setHumor} />
           <ToggleField label={t('Epilepsy')} checked={epilepsy} onChange={setEpilepsy} />
+          <ToggleField label={t('Untagged')} checked={untagged} onChange={setUntagged} />
         </DialogControlsSection>
       </DialogBody>
     </ModalRoot>
