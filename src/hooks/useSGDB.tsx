@@ -3,7 +3,7 @@ import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 
 import getAppDetails from '../utils/getAppDetails';
 import log from '../utils/log';
-import { ASSET_TYPE } from '../constants';
+import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
 
 /* 
   special key only for use with this decky plugin
@@ -18,7 +18,7 @@ export type SGDBContextType = {
   isSearchReady: boolean;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appDetails: AppDetails | null;
-  doSearch: (assetType: SGDBAssetType) => Promise<Array<any>>;
+  doSearch: (assetType: SGDBAssetType, filters?: any) => Promise<Array<any>>;
   restartSteam: () => void;
   serverApi: ServerAPI;
   changeAssetFromUrl: (url: string, assetType: SGDBAssetType) => Promise<void>;
@@ -72,47 +72,77 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     await changeAsset(data, ASSET_TYPE[assetType]);
   };
 
-  const doSearch: SGDBContextType['doSearch'] = useCallback(async (assetType) => {
-    log('do searchhh');
-    let type = 'grids';
-    let dimensions = '600x900,342x482,660x930';
+  const doSearch: SGDBContextType['doSearch'] = useCallback(async (assetType, filters = null) => {
+    let type = '';
     switch (assetType) {
+    case 'grid_p':
     case 'grid_l':
-      dimensions = '460x215,920x430';
+      type = 'grids';
       break;
     case 'hero':
       type = 'heroes';
-      dimensions = '1920x620,3840x1240,1600x650';
       break;
     case 'icon':
       type = 'icons';
-      dimensions = '';
       break;
     case 'logo':
       type = 'logos';
-      dimensions = '';
       break;
     }
+
+    let adult = 'false';
+    let humor = 'any';
+    let epilepsy = 'any';
+    if (filters?.adult === true) {
+      adult = 'any';
+    } else if (filters?.adult === false) {
+      adult = 'false';
+    }
+    if (filters?.humor === true) {
+      humor = 'any';
+    } else if (filters?.humor === false) {
+      humor = 'false';
+    }
+    if (filters?.epilepsy === true) {
+      epilepsy = 'any';
+    } else if (filters?.epilepsy === false) {
+      epilepsy = 'false';
+    }
+
     const qs = new URLSearchParams({
-      dimensions,
-      types: 'static,animated'
+      styles:  filters?.styles ?? STYLES[assetType].default.join(','),
+      dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
+      mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
+      nsfw: adult,
+      humor,
+      epilepsy,
+      types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
     }).toString();
+
+    log('do searchhh', qs);
+
     const res = await serverApi.fetchNoCors(`${API_BASE}/${type}/steam/${appId}?${qs}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${SGDB_API_KEY}`,
-        'User-Agent': 'Decky/1.0'
+        Authorization: `Bearer ${SGDB_API_KEY}`
       }
     });
     if (!res.success) {
       throw new Error('SGDB API request failed');
     }
 
-    // @ts-ignore: result.body is always a string if res.success is true
-    const assetRes = JSON.parse(res.result.body);
-    log('search resp', assetRes);
-    return assetRes.data as Array<any>;
+    try {
+      // @ts-ignore: result.body is always a string if res.success is true
+      const assetRes = JSON.parse(res.result.body);
+      log('search resp', assetRes);
+      if (!assetRes.success) {
+        throw new Error(assetRes.errors.join(', '));
+      }
+      return assetRes.data as Array<any>;
+    } catch (err: any) {
+      throw new Error(err.message);
+    }
   }, [appId, serverApi]);
 
   useEffect(() => {

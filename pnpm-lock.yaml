@@ -10,12 +10,13 @@ specifiers:
   '@types/webpack': ^5.28.0
   '@typescript-eslint/eslint-plugin': ^5.42.0
   '@typescript-eslint/parser': ^5.42.0
-  decky-frontend-lib: ^3.11.0
+  decky-frontend-lib: ^3.12.0
   eslint: ^8.26.0
   eslint-plugin-react: ^7.31.10
   eslint-plugin-react-hooks: ^4.6.0
   just-debounce: ^1.1.0
   qrcode.react: ^3.1.0
+  react-fast-compare: ^3.2.0
   react-icons: ^4.6.0
   react-markdown: ^8.0.3
   remark-gfm: ^3.0.1
@@ -29,9 +30,10 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
-  decky-frontend-lib: 3.11.0
+  decky-frontend-lib: 3.12.0
   just-debounce: 1.1.0
   qrcode.react: 3.1.0
+  react-fast-compare: 3.2.0
   react-icons: 4.6.0
   react-markdown: 8.0.3_@types+react@16.14.0
   remark-gfm: 3.0.1
@@ -838,8 +840,8 @@ packages:
     dependencies:
       ms: 2.1.2
 
-  /decky-frontend-lib/3.11.0:
-    resolution: {integrity: sha512-TyBE3jgwaOauh9BZ4I4GaPwNyFUr4ZTx+HIA3G6Z6txr9wE3JnNVauBHRlhCYo3eO/ewDIcQg44VV6YLgibq3A==}
+  /decky-frontend-lib/3.12.0:
+    resolution: {integrity: sha512-vZVeCYhWnMEXBDAUuVrEAEt4YQnV6uZQNjytGzQR17oklLGTXejwMePXdSpX80gje1/1GGabym99VXUIzTr5mg==}
     dev: false
 
   /decode-named-character-reference/1.0.2:
@@ -2255,6 +2257,10 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
     dev: true
+
+  /react-fast-compare/3.2.0:
+    resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
+    dev: false
 
   /react-icons/4.6.0:
     resolution: {integrity: sha512-rR/L9m9340yO8yv1QT1QurxWQvWpbNHqVX0fzMln2HEb9TEIrQRGsqiNFQfiv9/JEUbyHmHPlNTB2LWm2Ttz0g==}

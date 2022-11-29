@@ -4,11 +4,20 @@ $zIndexAboveRing: 10002;
 $easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
 $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
+@mixin flex-center($y: true, $x: true) {
+  display: flex;
+  @if $y {
+    align-items: center;
+  }
+  @if $x {
+    justify-content: center;
+  }
+}
+
 @mixin asset {
   // initial wrap so focusable element can variable focus ring sizes
   .asset-box-wrap {
-    display: flex;
-    align-items: center;
+    @include flex-center($x: false);
     flex-wrap: wrap;
     position: relative;
     .image-wrap {
@@ -17,7 +26,6 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       position: relative;
       width: 100%;
       margin-top: auto;
-      margin-bottom: auto;
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
 
       &.gpfocus {
@@ -86,15 +94,13 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
     }
     .dload-overlay {
+      @include flex-center;
       position: absolute;
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
       opacity: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       z-index: -3;
       background: rgba(0, 0, 0, .85);
       transition: opacity ease 100ms, z-index 0s 100ms;
@@ -110,8 +116,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       }
     }
     .author {
-      display: flex;
-      align-items: center;
+      @include flex-center($x: false);
       gap: .5em;
       font-size: .65em;
       padding-top: .15em;
@@ -143,12 +148,11 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       transition: transform $easeOutCubic 300ms;
       will-change: transform;
       .chip {
+        @include flex-center($x: false);
         background: #8a8a8a;
         padding: .5em;
         padding-right: .8em;
-        display: flex;
         gap: .3em;
-        align-items: center;
         border-radius: 0 5px 5px 0;
       }
       &.chips-left {
@@ -182,6 +186,14 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
   @content;
 }
 
+@mixin modal($modalName) {
+  .sgdb-modal {
+    &-#{$modalName} {
+      @content;
+    }
+  }
+}
+
 #sgdb-wrap {
   --asset-size: 120px;
   margin-top: var(--basicui-header-height, 40px);
@@ -195,13 +207,11 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   .spinnyboi {
-    display: flex;
+    @include flex-center;
     width: 100%;
     position: fixed;
-    align-items: center;
     height: 100%;
     flex: 1;
-    justify-content: center;
     left: 0;
     right: 0;
     z-index: $zIndexAboveRing + 6; // above settings
@@ -259,53 +269,57 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
   @include asset;
 }
 
-.sgdb-modal {
-  &-details {
-    &-wrapper {
-      display: flex;
-      gap: 1em;
-      &.wide {
-        flex-direction: column;
-        > .asset-box-wrap {
-          max-width: 100%;
-          margin: 0 auto;
-        }
-        .notes {
-          max-width: 100%;
-        }
-      }
-    }
-    @include asset {
-      .asset-box-wrap {
-        width: 100%;
-        max-width: 46%;
-      }
-    }
-    .info {
-      display: flex;
+@include modal('details') {
+  &-wrapper {
+    display: flex;
+    gap: 1em;
+    &.wide {
       flex-direction: column;
-      flex: 1;
-    }
-    .meta {
-      text-transform: capitalize;
-      opacity: .5;
-      font-size: .8em;
-      text-align: right;
-    }
-    .author {
-      margin-top: 1em;
-      display: flex;
-      align-items: center;
-      gap: .5em;
-      font-weight: bold;
-      > img {
-        width: 32px;
-        height: 32px;
+      > .asset-box-wrap {
+        max-width: 100%;
+        margin: 0 auto;
+        .image-wrap {
+          margin-top: 0; // image to top
+        }
       }
-    }
-    .notes {
-      max-width: 300px;
-      word-break: break-word;
+      .notes {
+        max-width: 100%;
+      }
     }
   }
+  @include asset {
+    .asset-box-wrap {
+      width: 100%;
+      max-width: 46%;
+    }
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .meta {
+    text-transform: capitalize;
+    opacity: .5;
+    font-size: .8em;
+    text-align: right;
+  }
+  .author {
+    @include flex-center($x: false);
+    margin-top: 1em;
+    gap: .5em;
+    font-weight: bold;
+    > img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  .notes {
+    max-width: 300px;
+    word-break: break-word;
+  }
+}
+
+@include modal('filters') {
+
 }

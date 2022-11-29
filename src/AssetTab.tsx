@@ -2,9 +2,9 @@ import {
   Focusable,
   joinClassNames,
   showModal,
-  ModalRoot,
 } from 'decky-frontend-lib';
-import { useState, VFC, useRef, useEffect } from 'react';
+import { useState, VFC, useRef, useEffect, useCallback } from 'react';
+import isEqual from 'react-fast-compare';
 import { useSGDB } from './hooks/useSGDB';
 import Asset from './components/Asset';
 import t from './utils/i18n';
@@ -13,13 +13,17 @@ import Toolbar, { ToolbarRefType } from './components/Toolbar';
 import MenuIcon from './components/MenuIcon';
 import DetailsModal from './Modals/DetailsModal';
 import { SGDB_ASSET_TYPE_READABLE } from './constants';
+import FiltersModal from './Modals/FiltersModal';
+import useSettings from './hooks/useSettings';
 
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
+  const { set, get } = useSettings();
   const { isSearchReady, appDetails, doSearch, changeAssetFromUrl, serverApi } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
-  
+  const [loading, setLoading] = useState(true);
+
   const toolbarRef = useRef<ToolbarRefType>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +54,17 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     toolbarRef.current?.focus();
   }; */
 
+  const handleFiltersSave = useCallback(async (filters) => {
+    set(`filters_${assetType}`, filters);
+    const currentFilters = await get(`filters_${assetType}`, null);
+    if (!isEqual(filters, currentFilters)) {
+      setLoading(true);
+      setAssets([]);
+      setAssets(await doSearch(assetType, filters));
+      setLoading(false);
+    }
+  }, [assetType, doSearch, get, serverApi.toaster, set]);
+
   const openDetails = (asset: any) => {
     showModal(<DetailsModal
       asset={asset}
@@ -58,38 +73,32 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
     />, window);
   };
 
-  const openFilters = () => {
+  const openFilters = async () => {
     log('Open Filters');
-    showModal(
-      <ModalRoot bDisableBackgroundDismiss={false} bHideCloseIcon={false}>
-        chungus
-      </ModalRoot>,
-      window,
-      {
-        fnOnClose: () => {
-          log('close filters modal');
-        },
-        strTitle: 'Search Filters',
-      }
-    );
+    const defaultFilters = await get(`filters_${assetType}`, null);
+    showModal(<FiltersModal assetType={assetType} onSave={handleFiltersSave} defaultFilters={defaultFilters} />, window);
   };
 
   useEffect(() => {
     if (isSearchReady) {
       (async () => {
-        const results = await doSearch(assetType);
+        setLoading(true);
+        const filters = await get(`filters_${assetType}`, null);
+        const results = await doSearch(assetType, filters);
+        setLoading(false);
         setAssets(results);
       })().catch(() => {
         //
       });
     }
-  }, [assetType, doSearch, isSearchReady]);
+  }, [assetType, doSearch, get, isSearchReady]);
 
   if (!appDetails) return null;
 
   return (<div className="tabcontents-wrap">
-    <div className={joinClassNames('spinnyboi', (assets.length > 0 && sizingStyles) ? 'loaded' : '')}>
-      <img alt="Steam Spinner" src="/images/steam_spinner.png" />
+    <div className={joinClassNames('spinnyboi', (!loading && sizingStyles) ? 'loaded' : '')}>
+      {/* cant use <SteamSpinner /> cause it has some extra elements that break the layout */}
+      <img alt="Loading..." src="/images/steam_spinner.png" />
     </div>
 
     <Toolbar
@@ -97,7 +106,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
       assetType={assetType}
       onFilterClick={openFilters}
       onSizeChange={(size) => setSizingStyles(size)}
-      disabled={assets.length === 0}
+      disabled={loading}
     />
 
     {sizingStyles && <Focusable
@@ -118,7 +127,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         isDownloading={downloadingId === asset.id}
         onActivate={() => setAsset(asset.id, asset.url)}
         onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-        onOptionsActionDescription={t('Change Filters')} // activate filter bar from anywhere
+        onOptionsActionDescription={t('Filter')} // activate filter bar from anywhere
         onOptionsButton={openFilters}
         onSecondaryActionDescription={t('Details')}
         onSecondaryButton={() => openDetails(asset)}

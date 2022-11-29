@@ -12,7 +12,7 @@ import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icon
 import BoopIcon from './components/BoopIcon';
 
 import PanelSocialButton from './components/PanelSocialButton';
-import t, { getCredits } from './utils/i18n';
+import t, { getCredits, getLanguageName } from './utils/i18n';
 
 const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
   const [debugAppid] = useState('220');
@@ -52,24 +52,7 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
         </PanelSectionRow>
       </PanelSection>
     )}
-    <PanelSection title={t('Button Visibility')}>
-      {t('Select where you want the "Change artwork..." button to show up.')}
-      <PanelSectionRow>
-        <ToggleField
-          label={t('Game Options')}
-          checked={true}
-          disabled
-        />
-      </PanelSectionRow>
-      <PanelSectionRow>
-        <ToggleField
-          label={t('Manage Submenu')}
-          checked={false}
-          disabled
-        />
-      </PanelSectionRow>
-    </PanelSection>
-    {getCredits() && <PanelSection title={t('Translated By')}>
+    {getCredits() && <PanelSection title={t('{nativeLanguageName} Translation By').replace('{nativeLanguageName}', getLanguageName())}>
       <div style={{
         display: 'flex',
         flexDirection: 'column',
