@@ -22,9 +22,9 @@ const sliderProps = {
   },
   hero: {
     min: 1,
-    max: 6,
+    max: 4,
     step: 1,
-    notchCount: 6,
+    notchCount: 4,
     notchTicksVisible: true
   },
   logo: {
@@ -44,7 +44,7 @@ const sliderProps = {
 const defaultSliderSizes = {
   grid_p: 150,
   grid_l: 200,
-  hero: 4,
+  hero: 3,
   logo: 4,
   icon: 120,
 };
