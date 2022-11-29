@@ -42,7 +42,7 @@ const Asset: VFC<AssetProps> = ({
     <div className={joinClassNames('dload-overlay', isDownloading ? 'downloading' : '')}><img src={Spinner} /></div>
     <Chips>
       {notes && <Chip color="#8a8a8a">
-        <FooterGlyph button={2} type={0} size={0} /> {t('Notes')}
+        <FooterGlyph button={11} type={0} size={0} style={{ width: '1em' }} /> {t('Notes')}
       </Chip>}
     </Chips>
     <LazyImage

@@ -15,6 +15,7 @@ import DetailsModal from './Modals/DetailsModal';
 import { SGDB_ASSET_TYPE_READABLE } from './constants';
 import FiltersModal from './Modals/FiltersModal';
 import useSettings from './hooks/useSettings';
+import FooterGlyph from './components/FooterGlyph';
 
 const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
   const { set, get } = useSettings();
@@ -63,7 +64,7 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
       setAssets(await doSearch(assetType, filters));
       setLoading(false);
     }
-  }, [assetType, doSearch, get, serverApi.toaster, set]);
+  }, [assetType, doSearch, get, set]);
 
   const openDetails = (asset: any) => {
     showModal(<DetailsModal
@@ -108,7 +109,6 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
       onSizeChange={(size) => setSizingStyles(size)}
       disabled={loading}
     />
-
     {sizingStyles && <Focusable
       ref={mainContentRef}
       id="images-container"
@@ -127,10 +127,10 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         isDownloading={downloadingId === asset.id}
         onActivate={() => setAsset(asset.id, asset.url)}
         onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-        onOptionsActionDescription={t('Filter')} // activate filter bar from anywhere
-        onOptionsButton={openFilters}
-        onSecondaryActionDescription={t('Details')}
-        onSecondaryButton={() => openDetails(asset)}
+        onSecondaryActionDescription={t('Filter')} // activate filter bar from anywhere
+        onSecondaryButton={openFilters}
+        onMenuActionDescription={t('Details')}
+        onMenuButton={() => openDetails(asset)}
       />)}
     </Focusable>}
   </div>);
