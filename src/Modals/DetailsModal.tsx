@@ -1,4 +1,4 @@
-import { ModalRoot, DialogButtonPrimary, joinClassNames } from 'decky-frontend-lib';
+import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Router } from 'decky-frontend-lib';
 import { FC, useState } from 'react';
 import Asset, { AssetProps } from '../components/Asset';
 import Markdown from '../components/Markdown';
@@ -51,10 +51,13 @@ const DetailsModal: FC<{
               asset.width > 0 ? `${asset.width}×${asset.height}` : undefined
             ].filter(Boolean).join(' • ')}
           </span>
-          <div className="author">
+          <Focusable className="author" onActivate={() => {
+            Router.NavigateToExternalWeb(`https://steamcommunity.com/profiles/${asset.author.steam64}`);
+            closeModal?.();
+          }}>
             <img src={asset.author.avatar} alt="" />
             <span>{asset.author.name}</span>
-          </div>
+          </Focusable>
           {asset.notes && <Markdown
             onLinkClick={closeModal}
             focusableProps={{ className: 'notes' }}
