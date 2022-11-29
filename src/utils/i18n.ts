@@ -30,7 +30,7 @@ export const LANGS = {
 //    credit: []
 //  },
 //  'zh-tw': {
-//    name: '简体中文',
+//    name: '繁體中文',
 //    strings: zhTw,
 //    credit: []
 //  },
