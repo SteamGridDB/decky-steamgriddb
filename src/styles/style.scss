@@ -145,37 +145,38 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
       font-weight: bold;
       text-transform: uppercase;
       z-index: -1;
-      transition: transform $easeOutCubic 300ms;
-      will-change: transform;
       .chip {
-        @include flex-center($x: false);
-        background: #8a8a8a;
-        padding: .5em;
-        padding-right: .8em;
+        @include flex-center;
+        background: var(--chip-color);
+        padding: .3em .8em;
+        min-height: 2em;
         gap: .3em;
         border-radius: 0 5px 5px 0;
+        transition: transform $easeOutCubic 300ms;
+        will-change: transform;
+        @for $i from 1 through 5 {
+          &:nth-child(#{$i}n) {
+            transition-delay: #{$i * 100 * 1.2}ms;
+          }
+        }
       }
       &.chips-left {
         right: auto;
         left: -.5em;
         .chip {
-          padding-right: 1em;
-          padding-left: .8em;
           border-radius: 5px 0 0 5px;
         }
       }
     }
     .image-wrap.gpfocus {
       .chips {
-        transform: translateX(calc(100% - .5em - 1px)); // 1px more than how much is already sticking out
         > .chip {
-          background: linear-gradient(to right, #626262, var(--chip-color) 4px);
+          transform: translateX(calc(100% - .5em - 1px)); // 1px more than how much is already sticking out
           box-shadow: 1px 2px 3px rgba(#000, .25);
         }
         &.chips-left {
-          transform: translateX(calc(-100% + .5em + 1px));
           > .chip {
-            background: linear-gradient(to left, #626262, var(--chip-color) 4px);
+            transform: translateX(calc(-100% + .5em + 1px));
             box-shadow: -2px 2px 3px rgba(#000, .25);
           }
         }

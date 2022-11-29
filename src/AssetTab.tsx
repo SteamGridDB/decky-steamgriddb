@@ -122,6 +122,9 @@ const AssetTab: VFC<{assetType: SGDBAssetType}> = ({ assetType }) => {
         src={asset.thumb}
         width={asset.width}
         height={asset.height}
+        humor={asset.humor}
+        epilepsy={asset.epilepsy}
+        nsfw={asset.nsfw}
         assetType={assetType}
         isAnimated={asset.thumb.includes('.webm')}
         isDownloading={downloadingId === asset.id}
