@@ -4,7 +4,6 @@ import {
   Router,
   ServerAPI,
   Field,
-  ToggleField,
   Button,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';

@@ -7,7 +7,7 @@ import {
   ToggleField,
   DialogControlsSectionHeader
 } from 'decky-frontend-lib';
-import { FC, useCallback, useState, useEffect } from 'react';
+import { FC, useCallback, useState } from 'react';
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
 import { MIMES, STYLES, DIMENSIONS } from '../constants';
