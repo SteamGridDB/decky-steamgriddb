@@ -13,7 +13,7 @@ const FooterGlyph: FC<{
 }> = findModuleChild((m) => {
   if (typeof m !== 'object') return;
   for (const prop in m) {
-    if (m[prop]?.toString && m[prop].toString().includes('RearLeftLower')) {
+    if (m[prop]?.toString && m[prop].toString().includes('.Knockout') && m[prop].toString().includes('.additionalClassName')) {
       return m[prop];
     }
   }
