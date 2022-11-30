@@ -26,7 +26,7 @@ const FiltersModal: FC<{
   const [adult, setAdult] = useState<boolean>(defaultFilters?.adult ?? false);
   const [humor, setHumor] = useState<boolean>(defaultFilters?.humor ?? true);
   const [epilepsy, setEpilepsy] = useState<boolean>(defaultFilters?.epilepsy ?? true);
-  const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? false);
+  const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? true);
 
   const handleStyleSelect = useCallback((items) => {
     setStyles(items);
