@@ -1,4 +1,4 @@
-import { useState, createContext, FC, useContext, useCallback } from 'react';
+import { useState, createContext, FC, useContext, useCallback, useMemo } from 'react';
 import { showModal } from 'decky-frontend-lib';
 import isEqual from 'react-fast-compare';
 
@@ -33,11 +33,11 @@ export const AssetSearchContext: FC = ({ children }) => {
     }
   }, [doSearch, get, set]);
 
-  const openFilters = async (assetType: SGDBAssetType) => {
+  const openFilters = useCallback(async (assetType: SGDBAssetType) => {
     log('Open Filters');
     const defaultFilters = await get(`filters_${assetType}`, null);
     showModal(<FiltersModal assetType={assetType} onSave={handleFiltersSave} defaultFilters={defaultFilters} />, window);
-  };
+  }, [get, handleFiltersSave]);
 
   const doSearchAndSetAssets = useCallback(async (assetType: SGDBAssetType) => {
     setLoading(true);
@@ -46,15 +46,15 @@ export const AssetSearchContext: FC = ({ children }) => {
     setLoading(false);
     setAssets(results);
   }, [doSearch, get]);
+
+  const value = useMemo(() => ({
+    loading,
+    assets,
+    doSearchAndSetAssets,
+    openFilters
+  }), [assets, doSearchAndSetAssets, loading, openFilters]);
   
-  return <SearchContext.Provider
-    value={{
-      loading,
-      assets,
-      doSearchAndSetAssets,
-      openFilters
-    }}
-  >
+  return <SearchContext.Provider value={value}>
     {children}
   </SearchContext.Provider>;
 };

@@ -1,4 +1,4 @@
-import { useState, createContext, FC, useEffect, useContext, useCallback } from 'react';
+import { useState, createContext, FC, useEffect, useContext, useCallback, useMemo } from 'react';
 import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 
 import getAppDetails from '../utils/getAppDetails';
@@ -34,7 +34,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     SteamClient.User.StartRestart();
   };
 
-  const changeAsset = async (data: string, assetType: eAssetType) => {
+  const changeAsset = useCallback(async (data: string, assetType: eAssetType) => {
     try {
       await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
@@ -53,24 +53,24 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     } catch (error) {
       log(error);
     }
-  };
+  }, [appId]);
 
-  const getImageAsB64 = async (url: string) : Promise<string | null> => {
+  const getImageAsB64 = useCallback(async (url: string) : Promise<string | null> => {
     log('downloading', url);
     const download = await serverApi.callPluginMethod('download_as_base64', { url });
     if (!download.success) {
       return null;
     }
     return download.result as string;
-  };
+  }, [serverApi]);
 
-  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = async (url, assetType) => {
+  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType) => {
     const data = await getImageAsB64(url);
     if (!data) {
       throw new Error('Failed to download asset');
     }
     await changeAsset(data, ASSET_TYPE[assetType]);
-  };
+  }, [changeAsset, getImageAsB64]);
 
   const doSearch: SGDBContextType['doSearch'] = useCallback(async (assetType, filters = null) => {
     let type = '';
@@ -176,17 +176,17 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     }
   }, [appId]);
 
-  return <SGDBContext.Provider
-    value={{
-      isSearchReady: !!appId,
-      serverApi,
-      appDetails,
-      setAppId,
-      doSearch,
-      restartSteam,
-      changeAssetFromUrl
-    }}
-  >
+  const value = useMemo(() => ({
+    isSearchReady: !!appId,
+    serverApi,
+    appDetails,
+    setAppId,
+    doSearch,
+    restartSteam,
+    changeAssetFromUrl
+  }), [appDetails, appId, changeAssetFromUrl, doSearch, serverApi]);
+
+  return <SGDBContext.Provider value={value}>
     {children}
   </SGDBContext.Provider>;
 };
