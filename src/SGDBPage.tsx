@@ -1,6 +1,7 @@
 import { useParams } from 'decky-frontend-lib';
 import { useEffect, useState, VFC, useCallback } from 'react';
 import AssetTabs from './AssetTabs';
+import { AssetSearchContext } from './hooks/useAssetSearch';
 import { useSGDB } from './hooks/useSGDB';
 import style from './styles/style.scss';
 
@@ -22,7 +23,9 @@ const SGDBPage: VFC = () => {
   return (<>
     <style>{style}</style>
     <div id="sgdb-wrap">
-      <AssetTabs currentTab={currentTab} onShowTab={onShowTab} />
+      <AssetSearchContext>
+        <AssetTabs currentTab={currentTab} onShowTab={onShowTab} />
+      </AssetSearchContext>
     </div>
   </>);
 };

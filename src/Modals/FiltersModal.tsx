@@ -15,7 +15,7 @@ import { MIMES, STYLES, DIMENSIONS } from '../constants';
 const FiltersModal: FC<{
   closeModal?: () => void,
   assetType: SGDBAssetType,
-  onSave: (filters: any) => void,
+  onSave: (assetType: SGDBAssetType, filters: any) => void,
   defaultFilters: any,
 }> = ({ closeModal, assetType, onSave, defaultFilters }) => {
   const [styles, setStyles] = useState<string[]>(defaultFilters?.styles ?? STYLES[assetType].default);
@@ -41,7 +41,7 @@ const FiltersModal: FC<{
   }, []);
 
   const handleClose = () => {
-    onSave({
+    onSave(assetType, {
       styles,
       dimensions,
       mimes,

@@ -5,6 +5,7 @@ import {
   ServerAPI,
   Field,
   Button,
+  DialogButton,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
 import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icons/si';
@@ -34,19 +35,28 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
     {process.env.ROLLUP_ENV === 'development' && (
       <PanelSection title="Debug">
         <PanelSectionRow>
-          <Field>
-            <Button onClick={() => {
+          <Field
+            padding="none"
+            childrenContainerWidth="max"
+          >
+            <DialogButton onClick={() => {
+              Router.Navigate('/zoo');
+              Router.CloseSideMenus();
+            }}>
+              Zoo
+            </DialogButton>
+            <DialogButton onClick={() => {
               Router.Navigate(`/steamgriddb/${debugAppid}`);
               Router.CloseSideMenus();
             }}>
               220
-            </Button>
-            <Button onClick={() => {
+            </DialogButton>
+            <DialogButton onClick={() => {
               Router.Navigate('/steamgriddb/1091500/hero');
               Router.CloseSideMenus();
             }}>
               1091500
-            </Button>
+            </DialogButton>
           </Field>
         </PanelSectionRow>
       </PanelSection>
