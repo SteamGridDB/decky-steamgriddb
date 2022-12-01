@@ -174,6 +174,10 @@ export const getLanguageName = (lang?: string): string => {
 /**
  * Very basic translation cause theres like 20 strings and i don't need anything more complex.
  * 
+ * @param {string} text Original text
+ * @param {boolean} steamToken If true, use `text` param as a key to query Steams token store.
+ *    Good for actions like "Back" or "Cancel". Won't be dumped with the rest of the strings.
+ * 
  * @example
  * t('original string')
  * @example
@@ -189,9 +193,13 @@ export const getLanguageName = (lang?: string): string => {
  * t('{assetType} has been successfully applied!')
  *   .replace('{assetType}', t(assetTypes[assetType]))
  */
-const trans_string = (text: string): string => {
+const trans_string = (text: string, steamToken = false): string => {
   const lang = getCurrentLanguage();
   if (lang === 'en') return text;
+  if (steamToken) {
+    // @ts-ignore: LocalizationManager always exists
+    return window.LocalizationManager.m_mapTokens.get(text) ?? window.LocalizationManager.m_mapFallbackTokens.get(text) ?? text;
+  }
 
   return LANGS[lang]?.strings?.[text] ?? text;
 };

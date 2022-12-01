@@ -94,7 +94,7 @@ const DropdownMultiselect: FC<{
         showContextMenu(
           <Menu
             label={label}
-            cancelText={t('Back')}
+            cancelText={t('Button_Back', true)}
           >
             {items.map((x) => <DropdownMultiselectItem
               key={x.value}
