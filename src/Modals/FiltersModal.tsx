@@ -28,6 +28,9 @@ const FiltersModal: FC<{
   const [epilepsy, setEpilepsy] = useState<boolean>(defaultFilters?.epilepsy ?? true);
   const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? true);
 
+  /* Controls if the adult content desc shows, only want it to show when it gets toggled and not just when `adult` is true. */
+  const [adultActivated, setAdultActivated] = useState<boolean>(false);
+
   const handleStyleSelect = useCallback((items) => {
     setStyles(items);
   }, []);
@@ -56,14 +59,8 @@ const FiltersModal: FC<{
   };
 
   return (
-    <ModalRoot
-      className="sgdb-modal sgdb-filters-details"
-      closeModal={handleClose}
-      bDisableBackgroundDismiss={false}
-      bHideCloseIcon={false}
-      bOKDisabled
-    >
-      <DialogHeader>{t('Filter')}</DialogHeader>
+    <ModalRoot className="sgdb-modal sgdb-modal-filters" closeModal={handleClose}>
+      <DialogHeader>{t('Asset Filters')}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
           {(DIMENSIONS[assetType].options.length > 0) && <Field 
@@ -115,7 +112,15 @@ const FiltersModal: FC<{
         </DialogControlsSection>
         <DialogControlsSection>
           <DialogControlsSectionHeader>{t('Tags')}</DialogControlsSectionHeader>
-          <ToggleField label={t('Adult Content')} checked={adult} onChange={setAdult} />
+          <ToggleField
+            label={t('Adult Content')}
+            description={adultActivated ? t('Might wanna do a quick shoulder check before saving.') : undefined}
+            checked={adult}
+            onChange={(checked) => {
+              setAdult(checked);
+              setAdultActivated(checked);
+            }}
+          />
           <ToggleField label={t('Humor')} checked={humor} onChange={setHumor} />
           <ToggleField label={t('Epilepsy')} checked={epilepsy} onChange={setEpilepsy} />
           <ToggleField label={t('Untagged')} checked={untagged} onChange={setUntagged} />

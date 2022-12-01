@@ -195,11 +195,11 @@ export const getLanguageName = (lang?: string): string => {
  */
 const trans_string = (text: string, steamToken = false): string => {
   const lang = getCurrentLanguage();
-  if (lang === 'en') return text;
   if (steamToken) {
     // @ts-ignore: LocalizationManager always exists
     return window.LocalizationManager.m_mapTokens.get(text) ?? window.LocalizationManager.m_mapFallbackTokens.get(text) ?? text;
   }
+  if (lang === 'en') return text;
 
   return LANGS[lang]?.strings?.[text] ?? text;
 };
