@@ -21,17 +21,17 @@ const sliderProps = {
     step: 5,
   },
   hero: {
-    min: 1,
+    min: 2,
     max: 4,
     step: 1,
-    notchCount: 4,
+    notchCount: 3,
     notchTicksVisible: true
   },
   logo: {
-    min: 1,
+    min: 2,
     max: 6,
     step: 1,
-    notchCount: 6,
+    notchCount: 5,
     notchTicksVisible: true
   },
   icon: {
