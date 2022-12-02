@@ -6,6 +6,7 @@ import AssetTab from './AssetTab';
 import LocalTab from './LocalTab';
 import t from './utils/i18n';
 import useAssetSearch from './hooks/useAssetSearch';
+import { SGDB_ASSET_TYPE_READABLE } from './constants';
 
 const AssetTabs: VFC<{
   currentTab: string,
@@ -20,7 +21,7 @@ const AssetTabs: VFC<{
     onShowTab={onShowTab}
     tabs={[
       {
-        title: t('Capsule'),
+        title: SGDB_ASSET_TYPE_READABLE.grid_p,
         content: <AssetTab assetType="grid_p" />,
         id: 'grid_p',
         footer: {
@@ -29,7 +30,7 @@ const AssetTabs: VFC<{
         }
       },
       {
-        title: t('Wide Capsule'),
+        title: SGDB_ASSET_TYPE_READABLE.grid_l,
         content: <AssetTab assetType="grid_l" />,
         id: 'grid_l',
         footer: {
@@ -38,7 +39,7 @@ const AssetTabs: VFC<{
         }
       },
       {
-        title: t('Hero'),
+        title: SGDB_ASSET_TYPE_READABLE.hero,
         content: <AssetTab assetType="hero" />,
         id: 'hero',
         footer: {
@@ -47,7 +48,7 @@ const AssetTabs: VFC<{
         }
       },
       {
-        title: t('Logo'),
+        title: SGDB_ASSET_TYPE_READABLE.logo,
         content: <AssetTab assetType="logo" />,
         id: 'logo',
         footer: {
@@ -56,7 +57,7 @@ const AssetTabs: VFC<{
         }
       },
       {
-        title: t('Icon'),
+        title: SGDB_ASSET_TYPE_READABLE.icon,
         content: <AssetTab assetType="icon" />,
         id: 'icon',
         footer: {

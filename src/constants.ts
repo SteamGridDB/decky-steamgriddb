@@ -1,3 +1,5 @@
+import t from './utils/i18n';
+
 export const ASSET_TYPE: Record<SGDBAssetType, eAssetType> = {
   grid_p: 0,
   grid_l: 3,
@@ -7,11 +9,11 @@ export const ASSET_TYPE: Record<SGDBAssetType, eAssetType> = {
 };
 
 export const SGDB_ASSET_TYPE_READABLE: Record<SGDBAssetType, string> = {
-  grid_p: 'Capsule',
-  grid_l: 'Wide Capsule',
-  hero: 'Hero',
-  logo: 'Logo',
-  icon: 'Icon',
+  grid_p: t('Capsule'),
+  grid_l: t('Wide Capsule'),
+  hero: t('Hero'),
+  logo: t('Logo'),
+  icon: t('Icon'),
 };
 
 const gridStyles = {
