@@ -9,6 +9,7 @@ import { FC, useState, useEffect, useCallback } from 'react';
 import DialogCheckbox, { DialogCheckboxProps } from '../components/DialogCheckbox';
 import Chevron from '../components/Chevron';
 import t from '../utils/i18n';
+import Marquee from './Marquee';
 
 const dropDownControlButtonClass = findModuleChild((m) => {
   if (typeof m !== 'object') return undefined;
@@ -108,19 +109,13 @@ const DropdownMultiselect: FC<{
         );
       }}
     >
-      <span style={{
-        flex: '1 1 100%',
-        maxWidth: 'inherit',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-      }}>
+      <Marquee>
         {
           selected.length > 0 ?
             selected.map((x: any) => items[items.findIndex((v) => v.value === x)].label).join(', ') :
             '…'
         }
-      </span>
+      </Marquee>
       <div style={{ flexGrow: 1, minWidth: '1ch' }} />
       <Chevron style={{ height: '1em' }} direction="down" />
     </DialogButton>
