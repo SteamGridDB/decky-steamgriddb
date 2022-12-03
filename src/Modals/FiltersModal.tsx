@@ -63,10 +63,7 @@ const FiltersModal: FC<{
       <DialogHeader>{t('Asset Filters')}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
-          {(DIMENSIONS[assetType].options.length > 0) && <Field 
-            label={t('Dimensions')}
-            childrenContainerWidth={assetType === 'icon' ? 'fixed' : undefined}
-          >
+          {(DIMENSIONS[assetType].options.length > 0) && <Field label={t('Dimensions')}>
             <DropdownMultiselect
               label={t('Dimensions')}
               items={DIMENSIONS[assetType].options}

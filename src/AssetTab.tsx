@@ -1,9 +1,5 @@
-import {
-  Focusable,
-  joinClassNames,
-  showModal,
-} from 'decky-frontend-lib';
-import { useState, VFC, useRef, useEffect } from 'react';
+import { Focusable, joinClassNames, showModal } from 'decky-frontend-lib';
+import { useState, VFC, useRef, useEffect, useMemo } from 'react';
 import { useSGDB } from './hooks/useSGDB';
 import Asset from './components/Asset';
 import t from './utils/i18n';
@@ -13,15 +9,23 @@ import MenuIcon from './components/MenuIcon';
 import DetailsModal from './Modals/DetailsModal';
 import { SGDB_ASSET_TYPE_READABLE } from './constants';
 import useAssetSearch from './hooks/useAssetSearch';
+import FooterGlyph from './components/FooterGlyph';
+import AppGridFilterBar from './components/AppGridFilterBar';
+import useSettings from './hooks/useSettings';
 
 const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
-  const { loading, assets, doSearchAndSetAssets, openFilters } = useAssetSearch();
-  const { isSearchReady, appDetails, changeAssetFromUrl, serverApi } = useSGDB();
+  const { get } = useSettings();
+  const { loading: searchLoading, assets, doSearchAndSetAssets, openFilters, isFilterActive } = useAssetSearch();
+  const { appDetails, changeAssetFromUrl, serverApi } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
+  const [tabLoading, setTabLoading] = useState(true);
+  const loading = useMemo(() => !(!searchLoading && !tabLoading), [searchLoading, tabLoading]);
 
   const toolbarRef = useRef<ToolbarRefType>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+
+  const handleFilterClick = () => openFilters(assetType);
 
   const setAsset = async (assetId: number, url: string) => {
     log('cliccc');
@@ -59,12 +63,14 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   };
 
   useEffect(() => {
-    if (isSearchReady) {
-      (async () => {
-        await doSearchAndSetAssets(assetType);
-      })();
-    }
-  }, [assetType, isSearchReady, doSearchAndSetAssets]);
+    (async () => {
+      setTabLoading(true);
+      const filters = await get(`filters_${assetType}`, null);
+      await doSearchAndSetAssets(assetType, filters, () => {
+        setTabLoading(false);
+      });
+    })();
+  }, [doSearchAndSetAssets, assetType, get]);
 
   if (!appDetails) return null;
 
@@ -77,11 +83,18 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     <Toolbar
       ref={toolbarRef}
       assetType={assetType}
-      onFilterClick={() => openFilters(assetType)}
+      onFilterClick={handleFilterClick}
       onSizeChange={(size) => setSizingStyles(size)}
-      disabled={loading}
+      disabled={loading || searchLoading}
     />
-    {sizingStyles && <Focusable
+
+    {(isFilterActive && !loading) && (
+      <AppGridFilterBar style={{ marginTop: '1em' }} onClick={handleFilterClick}>
+        {t('Some assets may be hidden due to filter')} <FooterGlyph button={2} type={0} size={0} />
+      </AppGridFilterBar>
+    )}
+
+    {!loading && <Focusable
       ref={mainContentRef}
       id="images-container"
       style={sizingStyles}
@@ -103,7 +116,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         onActivate={() => setAsset(asset.id, asset.url)}
         onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
         onSecondaryActionDescription={t('Filter')} // activate filter bar from anywhere
-        onSecondaryButton={() => openFilters(assetType)}
+        onSecondaryButton={handleFilterClick}
         onMenuActionDescription={t('Details')}
         onMenuButton={() => openDetails(asset)}
       />)}

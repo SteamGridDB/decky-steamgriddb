@@ -217,7 +217,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     right: 0;
     z-index: $zIndexAboveRing + 6; // above settings
     background: $color-toolbar-bg;
-    transition: opacity ease-out 250ms, z-index 0s 300ms;
+    transition: opacity ease-out 250ms, z-index 0s;
     will-change: opacity;
     > img {
       transform: scale(.75);
@@ -228,6 +228,7 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     &.loaded {
       z-index: -1;
       opacity: 0;
+      transition-delay: 0ms, 300ms;
       > img {
         transform: scale(.6);
       }

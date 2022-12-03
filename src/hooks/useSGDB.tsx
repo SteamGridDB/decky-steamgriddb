@@ -15,10 +15,9 @@ const SGDB_API_KEY = '6465636b796c6f616465723432303639';
 const API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://sgdb.test/api/v2' : 'https://www.steamgriddb.com/api/v2';
 
 export type SGDBContextType = {
-  isSearchReady: boolean;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appDetails: AppDetails | null;
-  doSearch: (assetType: SGDBAssetType, filters?: any) => Promise<Array<any>>;
+  doSearch: (assetType: SGDBAssetType, filters?: any, signal?: AbortSignal) => Promise<Array<any>>;
   restartSteam: () => void;
   serverApi: ServerAPI;
   changeAssetFromUrl: (url: string, assetType: SGDBAssetType) => Promise<void>;
@@ -72,96 +71,109 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     await changeAsset(data, ASSET_TYPE[assetType]);
   }, [changeAsset, getImageAsB64]);
 
-  const doSearch: SGDBContextType['doSearch'] = useCallback(async (assetType, filters = null) => {
-    let type = '';
-    switch (assetType) {
-    case 'grid_p':
-    case 'grid_l':
-      type = 'grids';
-      break;
-    case 'hero':
-      type = 'heroes';
-      break;
-    case 'icon':
-      type = 'icons';
-      break;
-    case 'logo':
-      type = 'logos';
-      break;
-    }
+  const doSearch: SGDBContextType['doSearch'] = useCallback((assetType, filters = null, signal) => {
+    return new Promise((resolve, reject) => {
+      if (signal?.aborted) return reject(new DOMException('Aborted', 'AbortError'));
 
-    let adult = 'false';
-    let humor = 'any';
-    let epilepsy = 'any';
-    let oneoftag = '';
-
-    if (filters?.untagged === true) {
-      if (filters?.humor === false) {
-        humor = 'false';
+      let type = '';
+      switch (assetType) {
+      case 'grid_p':
+      case 'grid_l':
+        type = 'grids';
+        break;
+      case 'hero':
+        type = 'heroes';
+        break;
+      case 'icon':
+        type = 'icons';
+        break;
+      case 'logo':
+        type = 'logos';
+        break;
       }
-
-      if (filters?.adult === false) {
-        adult = 'false';
+  
+      let adult = 'false';
+      let humor = 'any';
+      let epilepsy = 'any';
+      let oneoftag = '';
+  
+      if (filters?.untagged === true) {
+        if (filters?.humor === false) {
+          humor = 'false';
+        }
+  
+        if (filters?.adult === false) {
+          adult = 'false';
+        }
+  
+        if (filters?.epilepsy === false) {
+          epilepsy = 'false';
+        }
+      } else {
+        const selectedTags = [];
+        if (filters?.humor === true) {
+          humor = 'any';
+          selectedTags.push('humor');
+        }
+  
+        if (filters?.adult === true) {
+          adult = 'any';
+          selectedTags.push('nsfw');
+        }
+  
+        if (filters?.epilepsy === true) {
+          epilepsy = 'any';
+          selectedTags.push('epilepsy');
+        }
+  
+        oneoftag = selectedTags.join(',');
       }
+  
+      const qs = new URLSearchParams({
+        styles:  filters?.styles ?? STYLES[assetType].default.join(','),
+        dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
+        mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
+        nsfw: adult,
+        humor,
+        epilepsy,
+        oneoftag,
+        types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
+      }).toString();
+  
+      log('do searchhh', qs);
 
-      if (filters?.epilepsy === false) {
-        epilepsy = 'false';
-      }
-    } else {
-      const selectedTags = [];
-      if (filters?.humor === true) {
-        humor = 'any';
-        selectedTags.push('humor');
-      }
 
-      if (filters?.adult === true) {
-        adult = 'any';
-        selectedTags.push('nsfw');
-      }
-
-      if (filters?.epilepsy === true) {
-        epilepsy = 'any';
-        selectedTags.push('epilepsy');
-      }
-
-      oneoftag = selectedTags.join(',');
-    }
-
-    const qs = new URLSearchParams({
-      styles:  filters?.styles ?? STYLES[assetType].default.join(','),
-      dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
-      mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
-      nsfw: adult,
-      humor,
-      epilepsy,
-      oneoftag,
-      types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
-    }).toString();
-
-    log('do searchhh', qs);
-
-    const res = await serverApi.fetchNoCors(`${API_BASE}/${type}/steam/${appId}?${qs}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${SGDB_API_KEY}`
-      }
+      const abortHandler = () => {
+        reject(new DOMException('Aborted', 'AbortError'));
+      };
+  
+      signal?.addEventListener('abort', abortHandler);
+  
+      serverApi.fetchNoCors(`${API_BASE}/${type}/steam/${appId}?${qs}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${SGDB_API_KEY}`
+        }
+      }).then((res) => {
+        if (!res.success) {
+          return reject(new Error('SGDB API request failed'));
+        }
+    
+        try {
+          // @ts-ignore: result.body is always a string if res.success is true
+          const assetRes = JSON.parse(res.result.body);
+          if (!assetRes.success) {
+            return reject(new Error(assetRes.errors.join(', ')));
+          }
+          return resolve(assetRes.data);
+        } catch (err: any) {
+          return reject(new Error(err.message));
+        }
+      }).finally(() => {
+        signal?.removeEventListener('abort', abortHandler);
+      });
     });
-    if (!res.success) {
-      throw new Error('SGDB API request failed');
-    }
-
-    try {
-      // @ts-ignore: result.body is always a string if res.success is true
-      const assetRes = JSON.parse(res.result.body);
-      log('search resp', assetRes);
-      if (!assetRes.success) {
-        throw new Error(assetRes.errors.join(', '));
-      }
-      return assetRes.data as Array<any>;
-    } catch (err: any) {
-      throw new Error(err.message);
-    }
   }, [appId, serverApi]);
 
   useEffect(() => {
@@ -177,14 +189,13 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   }, [appId]);
 
   const value = useMemo(() => ({
-    isSearchReady: !!appId,
     serverApi,
     appDetails,
     setAppId,
     doSearch,
     restartSteam,
     changeAssetFromUrl
-  }), [appDetails, appId, changeAssetFromUrl, doSearch, serverApi]);
+  }), [appDetails, changeAssetFromUrl, doSearch, serverApi]);
 
   return <SGDBContext.Provider value={value}>
     {children}
