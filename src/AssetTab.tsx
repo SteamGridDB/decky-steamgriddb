@@ -74,54 +74,56 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
 
   if (!appDetails) return null;
 
-  return (<div className="tabcontents-wrap">
-    <div className={joinClassNames('spinnyboi', (!loading && sizingStyles) ? 'loaded' : '')}>
-      {/* cant use <SteamSpinner /> cause it has some extra elements that break the layout */}
-      <img alt="Loading..." src="/images/steam_spinner.png" />
-    </div>
+  return (
+    <div className="tabcontents-wrap">
+      <div className={joinClassNames('spinnyboi', (!loading && sizingStyles) ? 'loaded' : '')}>
+        {/* cant use <SteamSpinner /> cause it has some extra elements that break the layout */}
+        <img alt="Loading..." src="/images/steam_spinner.png" />
+      </div>
 
-    <Toolbar
-      ref={toolbarRef}
-      assetType={assetType}
-      onFilterClick={handleFilterClick}
-      onSizeChange={(size) => setSizingStyles(size)}
-      disabled={loading || searchLoading}
-    />
-
-    {(isFilterActive && !loading) && (
-      <AppGridFilterBar style={{ marginTop: '1em' }} onClick={handleFilterClick}>
-        {t('Some assets may be hidden due to filter')} <FooterGlyph button={2} type={0} size={0} />
-      </AppGridFilterBar>
-    )}
-
-    {!loading && <Focusable
-      ref={mainContentRef}
-      id="images-container"
-      style={sizingStyles}
-    >
-      {assets.map((asset: any) => <Asset
-        key={asset.id}
-        scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
-        author={asset.author}
-        notes={asset.notes}
-        src={asset.thumb}
-        width={asset.width}
-        height={asset.height}
-        humor={asset.humor}
-        epilepsy={asset.epilepsy}
-        nsfw={asset.nsfw}
+      <Toolbar
+        ref={toolbarRef}
         assetType={assetType}
-        isAnimated={asset.thumb.includes('.webm')}
-        isDownloading={downloadingId === asset.id}
-        onActivate={() => setAsset(asset.id, asset.url)}
-        onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-        onSecondaryActionDescription={t('Filter')} // activate filter bar from anywhere
-        onSecondaryButton={handleFilterClick}
-        onMenuActionDescription={t('Details')}
-        onMenuButton={() => openDetails(asset)}
-      />)}
-    </Focusable>}
-  </div>);
+        onFilterClick={handleFilterClick}
+        onSizeChange={(size) => setSizingStyles(size)}
+        disabled={loading || searchLoading}
+      />
+
+      {(isFilterActive && !loading) && (
+        <AppGridFilterBar style={{ marginTop: '1em' }} onClick={handleFilterClick}>
+          {t('Some assets may be hidden due to filter')} <FooterGlyph button={2} type={0} size={0} />
+        </AppGridFilterBar>
+      )}
+
+      <Focusable
+        ref={mainContentRef}
+        id="images-container"
+        style={sizingStyles}
+      >
+        {assets.map((asset: any) => <Asset
+          key={asset.id}
+          scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
+          author={asset.author}
+          notes={asset.notes}
+          src={asset.thumb}
+          width={asset.width}
+          height={asset.height}
+          humor={asset.humor}
+          epilepsy={asset.epilepsy}
+          nsfw={asset.nsfw}
+          assetType={assetType}
+          isAnimated={asset.thumb.includes('.webm')}
+          isDownloading={downloadingId === asset.id}
+          onActivate={() => setAsset(asset.id, asset.url)}
+          onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+          onSecondaryActionDescription={t('Filter')} // activate filter bar from anywhere
+          onSecondaryButton={handleFilterClick}
+          onMenuActionDescription={t('Details')}
+          onMenuButton={() => openDetails(asset)}
+        />)}
+      </Focusable>
+    </div>
+  );
 };
   
 export default AssetTab;
