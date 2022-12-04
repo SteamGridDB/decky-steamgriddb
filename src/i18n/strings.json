@@ -1,6 +1,6 @@
 {
   "Show Link QR": "Show Link QR",
-  "{nativeLanguageName} Translation By": "{nativeLanguageName} Translation By",
+  "English Translation Credit": "English Translation Credit",
   "More SteamGridDB Stuff": "More SteamGridDB Stuff",
   "Join the Discord": "Join the Discord",
   "Open Source Projects": "Open Source Projects",
@@ -31,6 +31,7 @@
   "Tags": "Tags",
   "Might wanna do a quick shoulder check.": "Might wanna do a quick shoulder check.",
   "Untagged": "Untagged",
+  "Reset Filters": "Reset Filters",
   "Selected {gameName}": "Selected {gameName}",
   "Some assets may be hidden due to filter": "Some assets may be hidden due to filter",
   "Selected {gameName} with filter": "Selected {gameName} with filter",

@@ -7,14 +7,16 @@ import {
   ToggleField,
   DialogControlsSectionHeader,
   DialogButton,
-  showModal
+  showModal,
+  DialogFooter,
 } from 'decky-frontend-lib';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
 import { MIMES, STYLES, DIMENSIONS } from '../constants';
 import Marquee from '../components/Marquee';
 import GameSelectionModal from './GameSelectionModal';
+import compareFilterWithDefaults from '../utils/compareFilterWithDefaults';
 
 const FiltersModal: FC<{
   closeModal?: () => void,
@@ -42,6 +44,9 @@ const FiltersModal: FC<{
   const [humor, setHumor] = useState<boolean>(defaultFilters?.humor ?? true);
   const [epilepsy, setEpilepsy] = useState<boolean>(defaultFilters?.epilepsy ?? true);
   const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? true);
+  const filters = useMemo(() => ({
+    styles, dimensions, mimes, animated, _static, adult, humor, epilepsy, untagged
+  }), [styles, dimensions, mimes, animated, _static, adult, humor, epilepsy, untagged]);
 
   const [selectedGame, setSelectedGame] = useState(defaultSelectedGame);
 
@@ -61,18 +66,19 @@ const FiltersModal: FC<{
   }, []);
 
   const handleClose = () => {
-    onSave(assetType, {
-      styles,
-      dimensions,
-      mimes,
-      animated,
-      _static,
-      adult,
-      humor,
-      epilepsy,
-      untagged
-    }, selectedGame);
+    onSave(assetType, filters, selectedGame);
     closeModal?.();
+  };
+
+  const resetFilters = () => {
+    setStyles(STYLES[assetType].default);
+    setMimes(MIMES[assetType].default);
+    setDimensions(DIMENSIONS[assetType].default);
+    setAnimated(true);
+    setStatic(true);
+    setHumor(true);
+    setEpilepsy(true);
+    setUntagged(true);
   };
 
   return (
@@ -155,6 +161,9 @@ const FiltersModal: FC<{
           <ToggleField label={t('Untagged')} checked={untagged} onChange={setUntagged} />
         </DialogControlsSection>
       </DialogBody>
+      {compareFilterWithDefaults(assetType, filters) && <DialogFooter>
+        <DialogButton onClick={resetFilters}>{t('Reset Filters')}</DialogButton>
+      </DialogFooter>}
     </ModalRoot>
   );
 };

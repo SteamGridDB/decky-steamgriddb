@@ -11,7 +11,7 @@ import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icon
 import BoopIcon from './components/Icons/BoopIcon';
 
 import PanelSocialButton from './components/PanelSocialButton';
-import t, { getCredits, getLanguageName } from './utils/i18n';
+import t, { getCredits } from './utils/i18n';
 
 const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
   const [debugAppid] = useState('220');
@@ -66,7 +66,7 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
         </PanelSectionRow>
       </PanelSection>
     )}
-    {getCredits() && <PanelSection title={t('{nativeLanguageName} Translation By').replace('{nativeLanguageName}', getLanguageName())}>
+    {getCredits() && <PanelSection title={t('English Translation Credit')}>
       <div style={{
         display: 'flex',
         flexDirection: 'column',

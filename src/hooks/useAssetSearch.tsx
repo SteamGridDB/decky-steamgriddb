@@ -17,7 +17,7 @@ import FiltersModal from '../modals/FiltersModal';
 import GameSelectionModal from '../modals/GameSelectionModal';
 import MenuIcon from '../components/Icons/MenuIcon';
 import log from '../utils/log';
-import { MIMES, STYLES, DIMENSIONS } from '../constants';
+import compareFilterWithDefaults from '../utils/compareFilterWithDefaults';
 
 export type AssetSearchContextType = {
   loading: boolean;
@@ -41,21 +41,6 @@ export const AssetSearchContext: FC = ({ children }) => {
   const [isFilterActive, setIsFilterActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>();
-
-  const compareFilterWithDefaults = useCallback((assetType, filters) => {
-    if (!filters) return false;
-    // simply cannot be fucked to do this in a better way
-    return (
-      (filters?.styles ? !isEqual([...filters.styles].sort(), [...STYLES[assetType].default].sort()) : false) ||
-      (filters?.dimensions ? !isEqual([...filters.dimensions].sort(), [...DIMENSIONS[assetType].default].sort()) : false) ||
-      (filters?.mimes ? !isEqual([...filters.mimes].sort(), [...MIMES[assetType].default].sort()) : false) ||
-      filters?.animated !== true ||
-      filters?._static !== true ||
-      filters?.humor !== true ||
-      filters?.epilepsy !== true ||
-      filters?.untagged !== true
-    );
-  }, []);
 
   const searchAndSetAssets = useMemo(() => debounce(async (assetType, filters, onSuccess) => {
     if (isNonSteamShortcut && !selectedGame) return;
@@ -87,7 +72,7 @@ export const AssetSearchContext: FC = ({ children }) => {
         }
       }
     }
-  }, 500), [appId, compareFilterWithDefaults, isNonSteamShortcut, searchAssets, selectedGame, serverApi.toaster, set]) as AssetSearchContextType['searchAndSetAssets'];
+  }, 500), [appId, isNonSteamShortcut, searchAssets, selectedGame, serverApi.toaster, set]) as AssetSearchContextType['searchAndSetAssets'];
 
   const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
     if (!isEqual(filters, currentFilters)) {
@@ -104,7 +89,7 @@ export const AssetSearchContext: FC = ({ children }) => {
       set(`nonsteam_${appId}`, game);
     }
     setIsFilterActive(compareFilterWithDefaults(assetType, filters));
-  }, [currentFilters, compareFilterWithDefaults, searchAndSetAssets, selectedGame, set, appId]);
+  }, [currentFilters, searchAndSetAssets, selectedGame, set, appId]);
 
   const openFilters = useCallback(async (assetType: SGDBAssetType) => {
     log('Open Filters');
