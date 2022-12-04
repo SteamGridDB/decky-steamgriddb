@@ -40,7 +40,6 @@ const DropdownMultiselectItem: FC<{
     <MenuItem
       bInteractableItem
       onClick={() => setChecked((x) => !x)}
-      onOKActionDescription={t('Select')}
     >
       <DialogCheckbox
         style={{ marginBottom: 0, padding: 0 }}

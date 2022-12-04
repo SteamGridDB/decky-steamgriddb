@@ -4,12 +4,11 @@ import {
   Router,
   ServerAPI,
   Field,
-  Button,
   DialogButton,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
 import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icons/si';
-import BoopIcon from './components/BoopIcon';
+import BoopIcon from './components/Icons/BoopIcon';
 
 import PanelSocialButton from './components/PanelSocialButton';
 import t, { getCredits, getLanguageName } from './utils/i18n';
@@ -56,6 +55,12 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
               Router.CloseSideMenus();
             }}>
               1091500
+            </DialogButton>
+            <DialogButton onClick={() => {
+              Router.Navigate('/steamgriddb/2194520584');
+              Router.CloseSideMenus();
+            }}>
+              2194520584
             </DialogButton>
           </Field>
         </PanelSectionRow>

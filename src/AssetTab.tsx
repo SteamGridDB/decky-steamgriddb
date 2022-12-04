@@ -5,17 +5,16 @@ import Asset from './components/Asset';
 import t from './utils/i18n';
 import log from './utils/log';
 import Toolbar, { ToolbarRefType } from './components/Toolbar';
-import MenuIcon from './components/MenuIcon';
-import DetailsModal from './Modals/DetailsModal';
+import MenuIcon from './components/Icons/MenuIcon';
+import DetailsModal from './modals/DetailsModal';
 import { SGDB_ASSET_TYPE_READABLE } from './constants';
 import useAssetSearch from './hooks/useAssetSearch';
-import FooterGlyph from './components/FooterGlyph';
-import AppGridFilterBar from './components/AppGridFilterBar';
 import useSettings from './hooks/useSettings';
+import ResultsStateBar from './components/ResultsStateBar';
 
 const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const { get } = useSettings();
-  const { loading: searchLoading, assets, doSearchAndSetAssets, openFilters, isFilterActive } = useAssetSearch();
+  const { loading: searchLoading, assets, searchAndSetAssets, openFilters, isFilterActive, selectedGame } = useAssetSearch();
   const { appDetails, changeAssetFromUrl, serverApi } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
@@ -66,17 +65,17 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     (async () => {
       setTabLoading(true);
       const filters = await get(`filters_${assetType}`, null);
-      await doSearchAndSetAssets(assetType, filters, () => {
+      await searchAndSetAssets(assetType, filters, () => {
         setTabLoading(false);
       });
     })();
-  }, [doSearchAndSetAssets, assetType, get]);
+  }, [searchAndSetAssets, assetType, get]);
 
   if (!appDetails) return null;
 
   return (
     <div className="tabcontents-wrap">
-      <div className={joinClassNames('spinnyboi', (!loading && sizingStyles) ? 'loaded' : '')}>
+      <div className={joinClassNames('spinnyboi', !loading ? 'loaded' : '')}>
         {/* cant use <SteamSpinner /> cause it has some extra elements that break the layout */}
         <img alt="Loading..." src="/images/steam_spinner.png" />
       </div>
@@ -86,14 +85,16 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         assetType={assetType}
         onFilterClick={handleFilterClick}
         onSizeChange={(size) => setSizingStyles(size)}
-        disabled={loading || searchLoading}
+        disabled={tabLoading}
+        noFocusRing={searchLoading || tabLoading}
       />
 
-      {(isFilterActive && !loading) && (
-        <AppGridFilterBar style={{ marginTop: '1em' }} onClick={handleFilterClick}>
-          {t('Some assets may be hidden due to filter')} <FooterGlyph button={2} type={0} size={0} />
-        </AppGridFilterBar>
-      )}
+      <ResultsStateBar
+        loading={loading}
+        selectedGame={selectedGame}
+        isFiltered={isFilterActive}
+        onClick={handleFilterClick}
+      />
 
       <Focusable
         ref={mainContentRef}

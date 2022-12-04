@@ -54,6 +54,7 @@ export interface Toolbar {
   onSizeChange: (size: any) => void;
   onFilterClick: () => void;
   disabled: boolean;
+  noFocusRing?: boolean;
 }
 
 export type ToolbarRefType = {
@@ -61,7 +62,7 @@ export type ToolbarRefType = {
   assetSizeStyleAttr: any;
 };
 
-const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled = false }: Toolbar, ref: Ref<ToolbarRefType>) => {
+const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled = false, noFocusRing }: Toolbar, ref: Ref<ToolbarRefType>) => {
   const { set, get } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
@@ -106,6 +107,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
 
   return (
     <Focusable
+      noFocusRing={noFocusRing}
       className="settings-container"
       focusClassName="force-show"
       focusWithinClassName="force-show"

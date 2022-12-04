@@ -15,9 +15,12 @@ const SGDB_API_KEY = '6465636b796c6f616465723432303639';
 const API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://sgdb.test/api/v2' : 'https://www.steamgriddb.com/api/v2';
 
 export type SGDBContextType = {
+  appId: number | null;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appDetails: AppDetails | null;
-  doSearch: (assetType: SGDBAssetType, filters?: any, signal?: AbortSignal) => Promise<Array<any>>;
+  isNonSteamShortcut: boolean;
+  searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
+  searchGames: (term: string) => Promise<Array<any>>;
   restartSteam: () => void;
   serverApi: ServerAPI;
   changeAssetFromUrl: (url: string, assetType: SGDBAssetType) => Promise<void>;
@@ -28,6 +31,7 @@ export const SGDBContext = createContext({});
 export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
   const [appId, setAppId] = useState<number | null>(null);
   const [appDetails, setAppDetails] = useState<AppDetails | null>(null);
+  const isNonSteamShortcut = useMemo(() => (appDetails?.strShortcutExe || appDetails?.strShortcutLaunchOptions || appDetails?.strShortcutStartDir), [appDetails]);
 
   const restartSteam = () => {
     SteamClient.User.StartRestart();
@@ -54,102 +58,16 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     }
   }, [appId]);
 
-  const getImageAsB64 = useCallback(async (url: string) : Promise<string | null> => {
-    log('downloading', url);
-    const download = await serverApi.callPluginMethod('download_as_base64', { url });
-    if (!download.success) {
-      return null;
-    }
-    return download.result as string;
-  }, [serverApi]);
-
-  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType) => {
-    const data = await getImageAsB64(url);
-    if (!data) {
-      throw new Error('Failed to download asset');
-    }
-    await changeAsset(data, ASSET_TYPE[assetType]);
-  }, [changeAsset, getImageAsB64]);
-
-  const doSearch: SGDBContextType['doSearch'] = useCallback((assetType, filters = null, signal) => {
+  const apiRequest = useCallback((url: string, signal?: AbortSignal): Promise<any[]> => {
     return new Promise((resolve, reject) => {
       if (signal?.aborted) return reject(new DOMException('Aborted', 'AbortError'));
-
-      let type = '';
-      switch (assetType) {
-      case 'grid_p':
-      case 'grid_l':
-        type = 'grids';
-        break;
-      case 'hero':
-        type = 'heroes';
-        break;
-      case 'icon':
-        type = 'icons';
-        break;
-      case 'logo':
-        type = 'logos';
-        break;
-      }
-  
-      let adult = 'false';
-      let humor = 'any';
-      let epilepsy = 'any';
-      let oneoftag = '';
-  
-      if (filters?.untagged === true) {
-        if (filters?.humor === false) {
-          humor = 'false';
-        }
-  
-        if (filters?.adult === false) {
-          adult = 'false';
-        }
-  
-        if (filters?.epilepsy === false) {
-          epilepsy = 'false';
-        }
-      } else {
-        const selectedTags = [];
-        if (filters?.humor === true) {
-          humor = 'any';
-          selectedTags.push('humor');
-        }
-  
-        if (filters?.adult === true) {
-          adult = 'any';
-          selectedTags.push('nsfw');
-        }
-  
-        if (filters?.epilepsy === true) {
-          epilepsy = 'any';
-          selectedTags.push('epilepsy');
-        }
-  
-        oneoftag = selectedTags.join(',');
-      }
-  
-      const qs = new URLSearchParams({
-        styles:  filters?.styles ?? STYLES[assetType].default.join(','),
-        dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
-        mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
-        nsfw: adult,
-        humor,
-        epilepsy,
-        oneoftag,
-        types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
-      }).toString();
-  
-      log('do searchhh', qs);
-
 
       const abortHandler = () => {
         reject(new DOMException('Aborted', 'AbortError'));
       };
-  
+
       signal?.addEventListener('abort', abortHandler);
-  
-      serverApi.fetchNoCors(`${API_BASE}/${type}/steam/${appId}?${qs}`, {
+      serverApi.fetchNoCors(`${API_BASE}${url}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -174,7 +92,104 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
         signal?.removeEventListener('abort', abortHandler);
       });
     });
-  }, [appId, serverApi]);
+  }, [serverApi]);
+
+  const getImageAsB64 = useCallback(async (url: string) : Promise<string | null> => {
+    log('downloading', url);
+    const download = await serverApi.callPluginMethod('download_as_base64', { url });
+    if (!download.success) {
+      return null;
+    }
+    return download.result as string;
+  }, [serverApi]);
+
+  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType) => {
+    const data = await getImageAsB64(url);
+    if (!data) {
+      throw new Error('Failed to download asset');
+    }
+    await changeAsset(data, ASSET_TYPE[assetType]);
+  }, [changeAsset, getImageAsB64]);
+
+  const searchGames = useCallback(async (term) => {
+    const res = await apiRequest(`/search/autocomplete/${encodeURIComponent(term)}`);
+    log(res);
+    return res;
+  }, [apiRequest]);
+
+  const searchAssets: SGDBContextType['searchAssets'] = useCallback(async (assetType, { gameId, filters = null, signal }) => {
+    let type = '';
+    switch (assetType) {
+    case 'grid_p':
+    case 'grid_l':
+      type = 'grids';
+      break;
+    case 'hero':
+      type = 'heroes';
+      break;
+    case 'icon':
+      type = 'icons';
+      break;
+    case 'logo':
+      type = 'logos';
+      break;
+    }
+
+    let adult = 'false';
+    let humor = 'any';
+    let epilepsy = 'any';
+    let oneoftag = '';
+
+    if (filters?.untagged === true) {
+      if (filters?.humor === false) {
+        humor = 'false';
+      }
+
+      if (filters?.adult === false) {
+        adult = 'false';
+      }
+
+      if (filters?.adult === true) {
+        adult = 'true';
+      }
+
+      if (filters?.epilepsy === false) {
+        epilepsy = 'false';
+      }
+    } else {
+      const selectedTags = [];
+      if (filters?.humor === true) {
+        humor = 'any';
+        selectedTags.push('humor');
+      }
+
+      if (filters?.adult === true) {
+        adult = 'any';
+        selectedTags.push('nsfw');
+      }
+
+      if (filters?.epilepsy === true) {
+        epilepsy = 'any';
+        selectedTags.push('epilepsy');
+      }
+
+      oneoftag = selectedTags.join(',');
+    }
+
+    const qs = new URLSearchParams({
+      styles:  filters?.styles ?? STYLES[assetType].default.join(','),
+      dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
+      mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
+      nsfw: adult,
+      humor,
+      epilepsy,
+      oneoftag,
+      types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
+    }).toString();
+
+    log('do searchhh', qs);
+    return await apiRequest(`/${type}/${gameId ? 'game' : 'steam'}/${gameId ?? appId}?${qs}`, signal);
+  }, [apiRequest, appId]);
 
   useEffect(() => {
     if (appId) {
@@ -182,20 +197,21 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
         const details = await getAppDetails(appId);
         log('details', details);
         setAppDetails(details);
-      })().catch(() => {
-        //
-      });
+      })();
     }
   }, [appId]);
 
   const value = useMemo(() => ({
+    appId,
     serverApi,
     appDetails,
+    isNonSteamShortcut,
     setAppId,
-    doSearch,
+    searchAssets,
+    searchGames,
     restartSteam,
     changeAssetFromUrl
-  }), [appDetails, changeAssetFromUrl, doSearch, serverApi]);
+  }), [appId, serverApi, appDetails, isNonSteamShortcut, searchAssets, searchGames, changeAssetFromUrl]);
 
   return <SGDBContext.Provider value={value}>
     {children}

@@ -4,7 +4,8 @@ import {
   FC,
   useContext,
   useCallback,
-  useMemo
+  useMemo,
+  useEffect
 } from 'react';
 import { showModal } from 'decky-frontend-lib';
 import isEqual from 'react-fast-compare';
@@ -12,15 +13,17 @@ import debounce from 'just-debounce';
 
 import useSettings from '../hooks/useSettings';
 import { useSGDB } from '../hooks/useSGDB';
-import FiltersModal from '../Modals/FiltersModal';
+import FiltersModal from '../modals/FiltersModal';
 import log from '../utils/log';
 import { MIMES, STYLES, DIMENSIONS } from '../constants';
 
 export type AssetSearchContextType = {
   loading: boolean;
   assets: any[];
-  doSearchAndSetAssets: (assetType: SGDBAssetType, filters: any, onSuccess?: () => void) => Promise<void>;
+  searchAndSetAssets: (assetType: SGDBAssetType, filters: any, onSuccess?: () => void) => Promise<void>;
   openFilters: (assetType: SGDBAssetType) => void;
+  games: any[];
+  selectedGame: any;
   isFilterActive: boolean;
 }
 
@@ -30,11 +33,12 @@ let abortCont: AbortController | null = null;
 
 export const AssetSearchContext: FC = ({ children }) => {
   const { set, get } = useSettings();
-  const { doSearch } = useSGDB();
+  const { appId, searchAssets, searchGames, isNonSteamShortcut, appDetails } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
   const [currentFilters, setCurrentFilters] = useState();
   const [isFilterActive, setIsFilterActive] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<any>();
 
   const isFilterChanged = useCallback((assetType, filters) => {
     if (!filters) return false;
@@ -51,14 +55,24 @@ export const AssetSearchContext: FC = ({ children }) => {
     );
   }, []);
 
-  const doSearchAndSetAssets = useMemo(() => debounce(async (assetType, filters, onSuccess) => {
+  const searchAndSetGame = useCallback(async (term) => {
+    const gameRes = await searchGames(term);
+    log(gameRes);
+    return gameRes;
+  }, [searchGames]);
+
+  const searchAndSetAssets = useMemo(() => debounce(async (assetType, filters, onSuccess) => {
     if (abortCont) abortCont?.abort();
     abortCont = new AbortController();
 
     try {
       setCurrentFilters(filters);
       setIsFilterActive(isFilterChanged(assetType, filters));
-      const resp = await doSearch(assetType, filters, abortCont.signal);
+      const resp = await searchAssets(assetType, {
+        gameId: isNonSteamShortcut ? selectedGame.id : null,
+        filters,
+        signal: abortCont.signal
+      });
       log('search resp', assetType, resp);
       setAssets(resp);
       onSuccess?.();
@@ -70,22 +84,24 @@ export const AssetSearchContext: FC = ({ children }) => {
     return () => {
       if (abortCont) abortCont?.abort();
     };
-  }, 500), [isFilterChanged, doSearch]) as AssetSearchContextType['doSearchAndSetAssets'];
+  }, 500), [isFilterChanged, isNonSteamShortcut, searchAssets, selectedGame]) as AssetSearchContextType['searchAndSetAssets'];
 
-  const handleFiltersSave = useCallback(async (
-    assetType: SGDBAssetType,
-    filters
-  ) => {
+  const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
     if (!isEqual(filters, currentFilters)) {
       setLoading(true);
-      doSearchAndSetAssets(assetType, filters, () => {
+      searchAndSetAssets(assetType, filters, () => {
         setLoading(false);
       });
       set(`filters_${assetType}`, filters, true);
       setCurrentFilters(filters);
     }
+    if (game && game.id !== selectedGame?.id) {
+      setSelectedGame(game);
+      // save selected game to reuse for this shortcut
+      set(`nonsteam_${appId}`, game.id);
+    }
     setIsFilterActive(isFilterChanged(assetType, filters));
-  }, [currentFilters, isFilterChanged, doSearchAndSetAssets, set]);
+  }, [currentFilters, isFilterChanged, searchAndSetAssets, selectedGame, appId, set]);
 
   const openFilters = useCallback(async (assetType: SGDBAssetType) => {
     log('Open Filters');
@@ -94,16 +110,34 @@ export const AssetSearchContext: FC = ({ children }) => {
       assetType={assetType}
       onSave={handleFiltersSave}
       defaultFilters={defaultFilters}
+      isNonSteamShortcut={isNonSteamShortcut}
+      defaultSelectedGame={selectedGame}
+      searchGames={searchGames}
     />, window);
-  }, [get, handleFiltersSave]);
+  }, [get, handleFiltersSave, isNonSteamShortcut, searchGames, selectedGame]);
+
+  useEffect(() => {
+    if (!appDetails || !isNonSteamShortcut) return;
+    (async () => {
+      setLoading(true);
+      const gameRes = await searchAndSetGame(appDetails.strDisplayName);
+      if (gameRes.length) {
+        setSelectedGame(gameRes[0]);
+      } else {
+        // open search and selection
+      }
+      setLoading(false);
+    })();
+  }, [appDetails, isNonSteamShortcut, searchAndSetGame]);
 
   const value = useMemo(() => ({
     loading,
     assets,
-    doSearchAndSetAssets,
+    searchAndSetAssets,
+    selectedGame,
     openFilters,
     isFilterActive
-  }), [loading, assets, doSearchAndSetAssets, openFilters, isFilterActive]);
+  }), [loading, assets, searchAndSetAssets, selectedGame, openFilters, isFilterActive]);
   
   return <SearchContext.Provider value={value}>
     {children}

@@ -322,6 +322,25 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
   }
 }
 
-@include modal('filters') {
-
+@include modal('gameselect') {
+  .gamelabel {
+    display: flex;
+    width: 100%;
+    gap: .2em;
+    font-weight: bold;
+    .release-date {
+      font-weight: normal;
+      opacity: .5;
+    }
+    .platform-types {
+      @include flex-center($x: false);
+      gap: .2em;
+      margin-left: auto;
+    }
+  }
+  .spinner {
+    width: 2em;
+    margin: 0 auto;
+    margin-top: 2em;
+  }
 }

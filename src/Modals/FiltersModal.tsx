@@ -5,19 +5,34 @@ import {
   DialogHeader,
   Field,
   ToggleField,
-  DialogControlsSectionHeader
+  DialogControlsSectionHeader,
+  DialogButton,
+  showModal
 } from 'decky-frontend-lib';
 import { FC, useCallback, useState } from 'react';
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
 import { MIMES, STYLES, DIMENSIONS } from '../constants';
+import Marquee from '../components/Marquee';
+import GameSelectionModal from './GameSelectionModal';
 
 const FiltersModal: FC<{
   closeModal?: () => void,
   assetType: SGDBAssetType,
-  onSave: (assetType: SGDBAssetType, filters: any) => void,
+  onSave: (assetType: SGDBAssetType, filters: any, selectedGame?: any) => void,
   defaultFilters: any,
-}> = ({ closeModal, assetType, onSave, defaultFilters }) => {
+  isNonSteamShortcut: boolean;
+  defaultSelectedGame: any;
+  searchGames: (term: string) => Promise<any[]>;
+}> = ({
+  closeModal,
+  assetType,
+  onSave,
+  defaultFilters,
+  isNonSteamShortcut,
+  defaultSelectedGame,
+  searchGames
+}) => {
   const [styles, setStyles] = useState<string[]>(defaultFilters?.styles ?? STYLES[assetType].default);
   const [mimes, setMimes] = useState<string[]>(defaultFilters?.mimes ?? MIMES[assetType].default);
   const [dimensions, setDimensions] = useState<(string|number)[]>(defaultFilters?.dimensions ?? DIMENSIONS[assetType].default);
@@ -27,6 +42,8 @@ const FiltersModal: FC<{
   const [humor, setHumor] = useState<boolean>(defaultFilters?.humor ?? true);
   const [epilepsy, setEpilepsy] = useState<boolean>(defaultFilters?.epilepsy ?? true);
   const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? true);
+
+  const [selectedGame, setSelectedGame] = useState(defaultSelectedGame);
 
   /* Controls if the adult content desc shows, only want it to show when it gets toggled and not just when `adult` is true. */
   const [adultActivated, setAdultActivated] = useState<boolean>(false);
@@ -54,7 +71,7 @@ const FiltersModal: FC<{
       humor,
       epilepsy,
       untagged
-    });
+    }, selectedGame);
     closeModal?.();
   };
 
@@ -63,6 +80,21 @@ const FiltersModal: FC<{
       <DialogHeader>{t('Asset Filters')}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
+          {isNonSteamShortcut && <Field label={t('Game')}>
+            <DialogButton onClick={() => {
+              showModal(<GameSelectionModal
+                defaultTerm={selectedGame.name}
+                searchGames={searchGames}
+                onSelect={(game: any) => {
+                  setSelectedGame(game);
+                }}
+              />);
+            }}>
+              <Marquee>
+                {selectedGame.name}
+              </Marquee>
+            </DialogButton>
+          </Field>}
           {(DIMENSIONS[assetType].options.length > 0) && <Field label={t('Dimensions')}>
             <DropdownMultiselect
               label={t('Dimensions')}
@@ -111,7 +143,7 @@ const FiltersModal: FC<{
           <DialogControlsSectionHeader>{t('Tags')}</DialogControlsSectionHeader>
           <ToggleField
             label={t('Adult Content')}
-            description={adultActivated ? t('Might wanna do a quick shoulder check before saving.') : undefined}
+            description={adultActivated ? t('Might wanna do a quick shoulder check.') : undefined}
             checked={adult}
             onChange={(checked) => {
               setAdult(checked);

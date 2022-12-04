@@ -6,7 +6,7 @@ import {
 } from 'decky-frontend-lib';
 
 import QuickAccessSettings from './QuickAccessSettings';
-import MenuIcon from './components/MenuIcon';
+import MenuIcon from './components/Icons/MenuIcon';
 import patchLibraryAppPage from './patchLibraryAppPage';
 import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
