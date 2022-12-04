@@ -1,6 +1,7 @@
 import { useState, createContext, FC, useEffect, useContext, useCallback, useMemo } from 'react';
 import { AppDetails, ServerAPI } from 'decky-frontend-lib';
 
+import MenuIcon from '../components/Icons/MenuIcon';
 import getAppDetails from '../utils/getAppDetails';
 import log from '../utils/log';
 import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
@@ -112,10 +113,19 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   }, [changeAsset, getImageAsB64]);
 
   const searchGames = useCallback(async (term) => {
-    const res = await apiRequest(`/search/autocomplete/${encodeURIComponent(term)}`);
-    log(res);
-    return res;
-  }, [apiRequest]);
+    try {
+      const res = await apiRequest(`/search/autocomplete/${encodeURIComponent(term)}`);
+      log(res);
+      return res;
+    } catch (err: any) {
+      serverApi.toaster.toast({
+        title: 'SteamGridDB API Error',
+        body: err.message,
+        icon: <MenuIcon fill="#f3171e" />
+      });
+      return [];
+    }
+  }, [apiRequest, serverApi.toaster]);
 
   const searchAssets: SGDBContextType['searchAssets'] = useCallback(async (assetType, { gameId, filters = null, signal }) => {
     let type = '';
@@ -150,7 +160,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       }
 
       if (filters?.adult === true) {
-        adult = 'true';
+        adult = 'any';
       }
 
       if (filters?.epilepsy === false) {
@@ -187,7 +197,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
     }).toString();
 
-    log('do searchhh', qs);
+    log('asset search', gameId, qs);
     return await apiRequest(`/${type}/${gameId ? 'game' : 'steam'}/${gameId ?? appId}?${qs}`, signal);
   }, [apiRequest, appId]);
 

@@ -14,6 +14,8 @@ import debounce from 'just-debounce';
 import useSettings from '../hooks/useSettings';
 import { useSGDB } from '../hooks/useSGDB';
 import FiltersModal from '../modals/FiltersModal';
+import GameSelectionModal from '../modals/GameSelectionModal';
+import MenuIcon from '../components/Icons/MenuIcon';
 import log from '../utils/log';
 import { MIMES, STYLES, DIMENSIONS } from '../constants';
 
@@ -33,14 +35,14 @@ let abortCont: AbortController | null = null;
 
 export const AssetSearchContext: FC = ({ children }) => {
   const { set, get } = useSettings();
-  const { appId, searchAssets, searchGames, isNonSteamShortcut, appDetails } = useSGDB();
+  const { appId, searchAssets, searchGames, isNonSteamShortcut, appDetails, serverApi } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
   const [currentFilters, setCurrentFilters] = useState();
   const [isFilterActive, setIsFilterActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>();
 
-  const isFilterChanged = useCallback((assetType, filters) => {
+  const compareFilterWithDefaults = useCallback((assetType, filters) => {
     if (!filters) return false;
     // simply cannot be fucked to do this in a better way
     return (
@@ -55,21 +57,16 @@ export const AssetSearchContext: FC = ({ children }) => {
     );
   }, []);
 
-  const searchAndSetGame = useCallback(async (term) => {
-    const gameRes = await searchGames(term);
-    log(gameRes);
-    return gameRes;
-  }, [searchGames]);
-
   const searchAndSetAssets = useMemo(() => debounce(async (assetType, filters, onSuccess) => {
+    if (isNonSteamShortcut && !selectedGame) return;
     if (abortCont) abortCont?.abort();
     abortCont = new AbortController();
 
     try {
       setCurrentFilters(filters);
-      setIsFilterActive(isFilterChanged(assetType, filters));
+      setIsFilterActive(compareFilterWithDefaults(assetType, filters));
       const resp = await searchAssets(assetType, {
-        gameId: isNonSteamShortcut ? selectedGame.id : null,
+        gameId: selectedGame?.id,
         filters,
         signal: abortCont.signal
       });
@@ -79,12 +76,18 @@ export const AssetSearchContext: FC = ({ children }) => {
     } catch (err: any) {
       if (err.name === 'AbortError') {
         log('Search Aborted');
+      } else {
+        serverApi.toaster.toast({
+          title: 'SteamGridDB API Error',
+          body: err.message,
+          icon: <MenuIcon fill="#f3171e" />
+        });
+        if (selectedGame) {
+          set(`nonsteam_${appId}`, false);
+        }
       }
     }
-    return () => {
-      if (abortCont) abortCont?.abort();
-    };
-  }, 500), [isFilterChanged, isNonSteamShortcut, searchAssets, selectedGame]) as AssetSearchContextType['searchAndSetAssets'];
+  }, 500), [appId, compareFilterWithDefaults, isNonSteamShortcut, searchAssets, selectedGame, serverApi.toaster, set]) as AssetSearchContextType['searchAndSetAssets'];
 
   const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
     if (!isEqual(filters, currentFilters)) {
@@ -98,10 +101,10 @@ export const AssetSearchContext: FC = ({ children }) => {
     if (game && game.id !== selectedGame?.id) {
       setSelectedGame(game);
       // save selected game to reuse for this shortcut
-      set(`nonsteam_${appId}`, game.id);
+      set(`nonsteam_${appId}`, game);
     }
-    setIsFilterActive(isFilterChanged(assetType, filters));
-  }, [currentFilters, isFilterChanged, searchAndSetAssets, selectedGame, appId, set]);
+    setIsFilterActive(compareFilterWithDefaults(assetType, filters));
+  }, [currentFilters, compareFilterWithDefaults, searchAndSetAssets, selectedGame, set, appId]);
 
   const openFilters = useCallback(async (assetType: SGDBAssetType) => {
     log('Open Filters');
@@ -120,15 +123,27 @@ export const AssetSearchContext: FC = ({ children }) => {
     if (!appDetails || !isNonSteamShortcut) return;
     (async () => {
       setLoading(true);
-      const gameRes = await searchAndSetGame(appDetails.strDisplayName);
-      if (gameRes.length) {
-        setSelectedGame(gameRes[0]);
+      const game = await get(`nonsteam_${appId}`, false);
+      if (game) {
+        setSelectedGame(game);
       } else {
-        // open search and selection
+        const gameRes = await searchGames(appDetails.strDisplayName);
+        if (gameRes.length) {
+          setSelectedGame(gameRes[0]);
+        } else {
+          // open search and selection
+          showModal(<GameSelectionModal
+            defaultTerm={appDetails.strDisplayName}
+            searchGames={searchGames}
+            onSelect={(game: any) => {
+              setSelectedGame(game);
+            }}
+          />);
+        }
       }
       setLoading(false);
     })();
-  }, [appDetails, isNonSteamShortcut, searchAndSetGame]);
+  }, [appDetails, appId, get, isNonSteamShortcut, searchGames]);
 
   const value = useMemo(() => ({
     loading,
