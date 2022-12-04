@@ -23,7 +23,7 @@ const AssetTabs: VFC<{
       tabs={[
         ...Object.keys(SGDB_ASSET_TYPE_READABLE).map((type) => ({
           id: type,
-          title: t(SGDB_ASSET_TYPE_READABLE[type]),
+          title: SGDB_ASSET_TYPE_READABLE[type],
           content: <AssetTab assetType={type as SGDBAssetType} />,
           footer: {
             onSecondaryActionDescription: t('Filter'),

@@ -34,7 +34,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         await changeAssetFromUrl(url, assetType);
         serverApi.toaster.toast({
           title: appDetails?.strDisplayName,
-          body: t('{assetType} has been successfully applied!').replace('{assetType}', t(SGDB_ASSET_TYPE_READABLE[assetType])),
+          body: t('{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
           icon: <MenuIcon />,
         });
       } catch (err: any) {
