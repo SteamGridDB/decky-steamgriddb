@@ -32,7 +32,12 @@ export const SGDBContext = createContext({});
 export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
   const [appId, setAppId] = useState<number | null>(null);
   const [appDetails, setAppDetails] = useState<AppDetails | null>(null);
-  const isNonSteamShortcut = useMemo(() => (appDetails?.strShortcutExe || appDetails?.strShortcutLaunchOptions || appDetails?.strShortcutStartDir), [appDetails]);
+  const isNonSteamShortcut = useMemo(() => (
+    appDetails?.strShortcutExe ||
+    appDetails?.strShortcutLaunchOptions ||
+    appDetails?.strShortcutStartDir ||
+    (appDetails?.unAppID && appDetails.unAppID >= 2147483647)
+  ), [appDetails]);
 
   const restartSteam = () => {
     SteamClient.User.StartRestart();

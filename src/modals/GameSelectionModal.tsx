@@ -114,7 +114,7 @@ const GameSelectionModal: FC<{
     const resp = await searchGames(term);
     setGames(resp);
     setLoading(false);
-  }, 1000), [searchGames]);
+  }, 600), [searchGames]);
 
   useEffect(() => {
     setLoading(true);
