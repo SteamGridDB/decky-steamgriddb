@@ -1,10 +1,11 @@
 import { useState, createContext, FC, useEffect, useContext, useCallback, useMemo } from 'react';
-import { AppDetails, ServerAPI } from 'decky-frontend-lib';
+import { SteamAppOverview, ServerAPI } from 'decky-frontend-lib';
 
 import MenuIcon from '../components/Icons/MenuIcon';
-import getAppDetails from '../utils/getAppDetails';
+import getAppOverview from '../utils/getAppOverview';
 import log from '../utils/log';
 import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
+import getAppDetails from '../utils/getAppDetails';
 
 /* 
   special key only for use with this decky plugin
@@ -18,8 +19,9 @@ const API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://sgdb.test/ap
 export type SGDBContextType = {
   appId: number | null;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
-  appDetails: AppDetails | null;
-  isNonSteamShortcut: boolean;
+  appOverview: SteamAppOverview & {
+    BIsModOrShortcut: () => boolean
+  } | null;
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   restartSteam: () => void;
@@ -31,13 +33,7 @@ export const SGDBContext = createContext({});
 
 export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
   const [appId, setAppId] = useState<number | null>(null);
-  const [appDetails, setAppDetails] = useState<AppDetails | null>(null);
-  const isNonSteamShortcut = useMemo(() => (
-    appDetails?.strShortcutExe ||
-    appDetails?.strShortcutLaunchOptions ||
-    appDetails?.strShortcutStartDir ||
-    (appDetails?.unAppID && appDetails.unAppID >= 2147483647)
-  ), [appDetails]);
+  const [appOverview, setAppOverview] = useState<SteamAppOverview | null>(null);
 
   const restartSteam = () => {
     SteamClient.User.StartRestart();
@@ -209,9 +205,11 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   useEffect(() => {
     if (appId) {
       (async () => {
-        const details = await getAppDetails(appId);
-        log('details', details);
-        setAppDetails(details);
+        // Get details before overview or some games will be null.
+        await getAppDetails(appId);
+        const overview = await getAppOverview(appId);
+        log('overview', overview);
+        setAppOverview(overview);
       })();
     }
   }, [appId]);
@@ -219,14 +217,13 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   const value = useMemo(() => ({
     appId,
     serverApi,
-    appDetails,
-    isNonSteamShortcut,
+    appOverview,
     setAppId,
     searchAssets,
     searchGames,
     restartSteam,
     changeAssetFromUrl
-  }), [appId, serverApi, appDetails, isNonSteamShortcut, searchAssets, searchGames, changeAssetFromUrl]);
+  }), [appId, serverApi, appOverview, searchAssets, searchGames, changeAssetFromUrl]);
 
   return <SGDBContext.Provider value={value}>
     {children}

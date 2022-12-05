@@ -15,7 +15,7 @@ import ResultsStateBar from './components/ResultsStateBar';
 const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const { get } = useSettings();
   const { loading: searchLoading, assets, searchAndSetAssets, openFilters, isFilterActive, selectedGame } = useAssetSearch();
-  const { appDetails, changeAssetFromUrl, serverApi } = useSGDB();
+  const { appOverview, changeAssetFromUrl, serverApi } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
   const [tabLoading, setTabLoading] = useState(true);
@@ -33,7 +33,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         setDownloadingId(assetId);
         await changeAssetFromUrl(url, assetType);
         serverApi.toaster.toast({
-          title: appDetails?.strDisplayName,
+          title: appOverview?.display_name,
           body: t('{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
           icon: <MenuIcon />,
         });
@@ -71,7 +71,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     })();
   }, [searchAndSetAssets, assetType, get]);
 
-  if (!appDetails) return null;
+  if (!appOverview) return null;
 
   return (
     <div className="tabcontents-wrap">

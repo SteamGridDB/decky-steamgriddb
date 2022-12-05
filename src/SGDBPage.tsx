@@ -6,7 +6,7 @@ import { useSGDB } from './hooks/useSGDB';
 import style from './styles/style.scss';
 
 const SGDBPage: VFC = () => {
-  const { setAppId, appDetails } = useSGDB();
+  const { setAppId, appOverview } = useSGDB();
   const { appid, assetType = 'grid_p' } = useParams<{ appid: string, assetType: SGDBAssetType }>();
   const [currentTab, setCurrentTab] = useState<string>(assetType);
 
@@ -18,7 +18,7 @@ const SGDBPage: VFC = () => {
     setAppId(parseInt(appid, 10));
   }, [appid, setAppId]);
 
-  if (!appDetails) return null;
+  if (!appOverview) return null;
 
   return (<>
     <style>{style}</style>
