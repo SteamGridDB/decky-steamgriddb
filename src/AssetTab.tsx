@@ -101,7 +101,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         id="images-container"
         style={sizingStyles}
       >
-        {assets.map((asset: any) => <Asset
+        {!tabLoading && assets.map((asset: any) => <Asset
           key={asset.id}
           scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
           author={asset.author}
