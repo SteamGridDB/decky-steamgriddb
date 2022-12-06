@@ -25,6 +25,10 @@ class Plugin:
         content = urlopen(req, context=get_ssl_context()).read()
         return b64encode(content).decode("utf-8")
 
+    async def read_file_as_base64(self, path=""):
+        with open(path, "rb") as image_file:
+            return b64encode(image_file.read()).decode("utf-8")
+
     async def get_local_start(self):
         return HOME_PATH
 

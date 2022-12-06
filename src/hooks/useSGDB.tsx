@@ -20,14 +20,19 @@ export type SGDBContextType = {
   appId: number | null;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appOverview: SteamAppOverview & {
+    appid: number,
     BIsModOrShortcut: () => boolean
   };
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   restartSteam: () => void;
   serverApi: ServerAPI;
-  changeAssetFromUrl: (url: string, assetType: SGDBAssetType) => Promise<void>;
+  changeAsset: (data: string, assetType: SGDBAssetType | eAssetType) => Promise<void>;
+  changeAssetFromUrl: (location: string, assetType: SGDBAssetType | eAssetType, path?: boolean) => Promise<void>;
+  clearAsset: (assetType: SGDBAssetType | eAssetType) => Promise<void>;
 }
+
+const getAmbiguousAssetType = (assetType: SGDBAssetType | eAssetType) => typeof assetType === 'number' ? assetType : ASSET_TYPE[assetType];
 
 export const SGDBContext = createContext({});
 
@@ -39,7 +44,8 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     SteamClient.User.StartRestart();
   };
 
-  const changeAsset = useCallback(async (data: string, assetType: eAssetType) => {
+  const changeAsset: SGDBContextType['changeAsset'] = useCallback(async (data, assetType) => {
+    assetType = getAmbiguousAssetType(assetType);
     try {
       await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
@@ -96,22 +102,31 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     });
   }, [serverApi]);
 
-  const getImageAsB64 = useCallback(async (url: string) : Promise<string | null> => {
-    log('downloading', url);
-    const download = await serverApi.callPluginMethod('download_as_base64', { url });
+  const getImageAsB64 = useCallback(async (location: string, path = false) : Promise<string | null> => {
+    log('downloading', location);
+    let download;
+    if (path) {
+      download = await serverApi.callPluginMethod('read_file_as_base64', { path: location });
+    } else {
+      download = await serverApi.callPluginMethod('download_as_base64', { url: location });
+    }
     if (!download.success) {
       return null;
     }
     return download.result as string;
   }, [serverApi]);
 
-  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType) => {
-    const data = await getImageAsB64(url);
+  const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType, path = false) => {
+    const data = await getImageAsB64(url, path);
     if (!data) {
-      throw new Error('Failed to download asset');
+      throw new Error('Failed to retrieve asset');
     }
-    await changeAsset(data, ASSET_TYPE[assetType]);
+    await changeAsset(data, assetType);
   }, [changeAsset, getImageAsB64]);
+
+  const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
+    await SteamClient.Apps.ClearCustomArtworkForApp(appId, getAmbiguousAssetType(assetType));
+  }, [appId]);
 
   const searchGames = useCallback(async (term) => {
     try {
@@ -222,8 +237,10 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     searchAssets,
     searchGames,
     restartSteam,
-    changeAssetFromUrl
-  }), [appId, serverApi, appOverview, searchAssets, searchGames, changeAssetFromUrl]);
+    changeAsset,
+    changeAssetFromUrl,
+    clearAsset
+  }), [appId, serverApi, appOverview, searchAssets, searchGames, changeAsset, changeAssetFromUrl, clearAsset]);
 
   return <SGDBContext.Provider value={value}>
     {children}
