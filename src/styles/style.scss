@@ -335,6 +335,10 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         .asset {
           padding-top: math.div(1240, 3840) * 100%;
         }
+        .asset-img {
+          object-fit: cover;
+          height: 100%;
+        }
       }
       &.asset-type-2 {
         flex: 1;
@@ -363,6 +367,15 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
           max-width: 32px;
           max-height: 32px;
           padding-top: 32px;
+        }
+        // make buttons same size as container
+        .action-overlay {
+          padding: 0 !important;
+          .action-button {
+            width: 32px !important;
+            height: 32px !important;
+            padding: .45em !important;
+          }
         }
       }
     }

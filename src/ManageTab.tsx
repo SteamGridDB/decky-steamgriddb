@@ -112,7 +112,6 @@ const AssetBlock: FC<{
         app={overview}
         eAssetType={eAssetType}
         allowCustomization={false}
-        neverShowTitle
         className="asset"
         imageClassName="asset-img"
       />}
