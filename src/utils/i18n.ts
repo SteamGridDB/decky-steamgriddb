@@ -23,7 +23,7 @@ export const LANGS = {
 //    credit: []
 //  },
 //  es: {
-//    name: 'Español-Mexicano',
+//    name: 'Español-España',
 //    strings: es,
 //    credit: []
 //  },
@@ -113,7 +113,7 @@ export const LANGS = {
   //    credit: []
   //  },
   //  bg: {
-  //    name: 'Български',
+  //    name: 'български език',
   //    strings: bg,
   //    credit: []
   //  },
@@ -177,19 +177,10 @@ export const getLanguageName = (lang?: string): string => {
  *    Good for actions like "Back" or "Cancel". Won't be dumped with the rest of the strings.
  * 
  * @example
- * t('TITLE_FILTER_MODAL', 'original string')
+ * t('TITLE_FILTER_MODAL', 'Asset Filters')
  * @example
  * // if you need variables use .replace()  
  * t('ACTION_REMOVE_GAME', 'Delete {gameName}').replaceAll('{gameName}', gameName)
- * @example
- * // translated variables, make sure var is translated elsewhere
- * const assetTypes = {
- *  grid: t('ASSET_TYPE_GRID', 'Grid'),
- *  logo: t('ASSET_TYPE_LOGO', 'Logo'),
- *  icon: t('ASSET_TYPE_ICON', 'Icon')
- * };
- * t('MESSAGE_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!')
- *   .replace('{assetType}', t(assetTypes[assetType]))
  * @example
  * // Original Steam string
  * t('Button_Back', 'Back', true);
