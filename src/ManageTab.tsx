@@ -6,6 +6,7 @@ import t from './utils/i18n';
 
 import LibraryImage from './components/LibraryImage';
 import getAppOverview from './utils/getAppOverview';
+import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from './constants';
 
 /*
   Don't match hidden files and only match directories and specific file extensions.
@@ -19,10 +20,9 @@ const AssetBlock: FC<{
   app: SteamAppOverview & {
     appid: number,
   },
-  label: string,
-  eAssetType: eAssetType,
+  assetType: SGDBAssetType,
   browseStartPath: string,
-}> = ({ app, label, browseStartPath, eAssetType }) => {
+}> = ({ app, browseStartPath, assetType }) => {
   const { clearAsset, changeAsset, serverApi, changeAssetFromUrl } = useSGDB();
   const [overview, setOverview] = useState<SteamAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
@@ -33,24 +33,24 @@ const AssetBlock: FC<{
 
   const handleBrowse = async () => {
     const path = await serverApi.openFilePicker(browseStartPath, true, imagesExpr);
-    await changeAssetFromUrl(path.path as string, eAssetType, true);
+    await changeAssetFromUrl(path.path as string, assetType, true);
     await refreshOverview();
   };
 
   const handleBlank = async () => {
-    await changeAsset('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=', eAssetType);
+    await changeAsset('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=', assetType);
     await refreshOverview();
   };
 
   const handleClear = async () => {
-    await clearAsset(eAssetType);
+    await clearAsset(assetType);
     setTimeout(async () => {
       await refreshOverview();
     }, 500);
   };
 
-  return <div className={joinClassNames('asset-wrap', `asset-type-${eAssetType}`)}>
-    <div className="asset-label">{label}</div>
+  return <div className={joinClassNames('asset-wrap', `asset-wrap-${assetType}`)}>
+    <div className="asset-label">{t('LABEL_ASSET_CURRENT', 'Current {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</div>
     <Focusable
       onActivate={() => innerFocusRef.current?.focus()}
       focusWithinClassName="is-focused"
@@ -85,7 +85,7 @@ const AssetBlock: FC<{
       </Focusable>
       {overview && <LibraryImage
         app={overview}
-        eAssetType={eAssetType}
+        eAssetType={ASSET_TYPE[assetType]}
         allowCustomization={false}
         className="asset"
         imageClassName="asset-img"
@@ -112,15 +112,35 @@ const LocalTab: FC = () => {
 
   return <Focusable id="local-images-container">
     <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-      <AssetBlock app={overview} eAssetType={0} browseStartPath={startPath} label={t('LABEL_CAPSULE_CURRENT', 'Current Capsule')} />
-      <AssetBlock app={overview} eAssetType={4} browseStartPath={startPath} label={t('LABEL_ICON_CURRENT', 'Current Icon')} />
+      <AssetBlock
+        app={overview}
+        assetType="grid_p"
+        browseStartPath={startPath}
+      />
+      <AssetBlock
+        app={overview}
+        assetType="icon"
+        browseStartPath={startPath}
+      />
     </Focusable>
     <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-      <AssetBlock app={overview} eAssetType={3} browseStartPath={startPath} label={t('LABEL_WIDECAPSULE_CURRENT', 'Current Wide Capsule')} />
-      <AssetBlock app={overview} eAssetType={2} browseStartPath={startPath} label={t('LABEL_LOGO_CURRENT', 'Current Logo')} />
+      <AssetBlock
+        app={overview}
+        assetType="grid_l"
+        browseStartPath={startPath}
+      />
+      <AssetBlock
+        app={overview}
+        assetType="logo"
+        browseStartPath={startPath}
+      />
     </Focusable>
     <div style={{ gridColumn: 'span 2' }}>
-      <AssetBlock app={overview} eAssetType={1} browseStartPath={startPath} label={t('LABEL_HERO_CURRENT', 'Current Hero')} />
+      <AssetBlock
+        app={overview}
+        assetType="hero"
+        browseStartPath={startPath}
+      />
     </div>
   </Focusable>;
 };

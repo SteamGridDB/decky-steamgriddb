@@ -326,12 +326,12 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
         }
       }
 
-      &.asset-type-0 {
+      &-grid_p {
         .asset {
           padding-top: math.div(900, 600) * 100%;
         }
       }
-      &.asset-type-1 {
+      &-hero {
         .asset {
           padding-top: math.div(1240, 3840) * 100%;
         }
@@ -340,29 +340,31 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
           height: 100%;
         }
       }
-      &.asset-type-2 {
+      &-logo {
         flex: 1;
         display: flex;
         flex-direction: column;
-        > .Panel.Focusable,
-        .asset {
+        > .Panel.Focusable {
           height: 100%;
         }
-        .asset-img {
-          padding: .25em;
-          margin: -.25em auto;
-          width: auto;
-          max-width: 100%;
-          top: 50%;
-          transform: translateY(-50%);
+        .asset {
+          height: 100%;
+          .asset-img {
+            padding: .25em;
+            margin: -.25em auto;
+            width: auto;
+            max-width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+          }
         }
       }
-      &.asset-type-3 {
+      &-grid_l {
         .asset {
           padding-top: math.div(215, 460) * 100%;
         }
       }
-      &.asset-type-4 {
+      &-icon {
         .asset {
           max-width: 32px;
           max-height: 32px;
