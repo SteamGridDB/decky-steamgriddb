@@ -77,7 +77,7 @@ const SearchTextField: FC<TextFieldProps> = (props) => {
   return <Field
     bottomSeparator="thick"
     icon={<SearchIcon />}
-    label={t('Game Search')}
+    label={t('LABEL_GAME_SEARCH_TITLE', 'Search for a Game...')}
     childrenLayout="below"
   >
     <Focusable ref={focusableRef} onActivate={focusTextField} noFocusRing>
@@ -85,6 +85,7 @@ const SearchTextField: FC<TextFieldProps> = (props) => {
         // @ts-ignore: ref hack to get underlying <input>
         ref={fieldRef}
         focusOnMount={false}
+        spellcheck="false"
         {...props}
       />
     </Focusable>
