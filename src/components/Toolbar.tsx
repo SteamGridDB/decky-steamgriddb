@@ -111,7 +111,9 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
       className="settings-container"
       focusClassName="force-show"
       focusWithinClassName="force-show"
+      onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
       onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
+      onSecondaryButton={onFilterClick}
       onActivate={() => toolbarFocusRef.current?.focus()}
       onClick={(evt) => evt.preventDefault()} // Don't focus if using UI with a pointer
     >
