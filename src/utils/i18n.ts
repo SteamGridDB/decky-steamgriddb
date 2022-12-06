@@ -107,11 +107,6 @@ export const LANGS = {
   //    strings: tr,
   //    credit: []
   //  },
-  //  ar: {
-  //    name: 'العربية',
-  //    strings: ar,
-  //    credit: []
-  //  },
   //  'pt-br': {
   //    name: 'Português-Brasil',
   //    strings: ptBr,
