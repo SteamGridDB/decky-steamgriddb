@@ -83,10 +83,10 @@ const FiltersModal: FC<{
 
   return (
     <ModalRoot className="sgdb-modal sgdb-modal-filters" closeModal={handleClose}>
-      <DialogHeader>{t('Asset Filters')}</DialogHeader>
+      <DialogHeader>{t('LABEL_FILTER_MODAL_TITLE', 'Asset Filters')}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
-          {isNonSteamShortcut && <Field label={t('Game')}>
+          {isNonSteamShortcut && <Field label={t('LABEL_FILTER_GAME', 'Game')}>
             <DialogButton onClick={() => {
               showModal(<GameSelectionModal
                 defaultTerm={selectedGame.name}
@@ -101,25 +101,25 @@ const FiltersModal: FC<{
               </Marquee>
             </DialogButton>
           </Field>}
-          {(DIMENSIONS[assetType].options.length > 0) && <Field label={t('Dimensions')}>
+          {(DIMENSIONS[assetType].options.length > 0) && <Field label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}>
             <DropdownMultiselect
-              label={t('Dimensions')}
+              label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}
               items={DIMENSIONS[assetType].options}
               selected={dimensions}
               onSelect={handleDimensionsSelect}
             />
           </Field>}
-          <Field label={t('Styles')}>
+          <Field label={t('LABEL_FILTER_STYLES', 'Styles')}>
             <DropdownMultiselect
-              label={t('Styles')}
+              label={t('LABEL_FILTER_STYLES', 'Styles')}
               items={STYLES[assetType].options}
               selected={styles}
               onSelect={handleStyleSelect}
             />
           </Field>
-          <Field label={t('File Types')}>
+          <Field label={t('LABEL_FILTER_FILE_TYPES', 'File Types')}>
             <DropdownMultiselect
-              label={t('File Types')}
+              label={t('LABEL_FILTER_FILE_TYPES', 'File Types')}
               items={MIMES[assetType].options}
               selected={mimes}
               onSelect={handleMimeSelect}
@@ -127,8 +127,8 @@ const FiltersModal: FC<{
           </Field>
         </DialogControlsSection>
         <DialogControlsSection>
-          <DialogControlsSectionHeader>{t('Types')}</DialogControlsSectionHeader>
-          <ToggleField label={t('Animated')} checked={animated} onChange={(checked) => {
+          <DialogControlsSectionHeader>{t('LABEL_FILTER_ANIMATION_TYPE_TITLE', 'Types')}</DialogControlsSectionHeader>
+          <ToggleField label={t('LABEL_FILTER_TYPE_ANIMATED', 'Animated')} checked={animated} onChange={(checked) => {
             if (!_static && !checked) {
               setStatic(true);
               setAnimated(false);
@@ -136,7 +136,7 @@ const FiltersModal: FC<{
               setAnimated(checked);
             }
           }} />
-          <ToggleField label={t('Static')} checked={_static} onChange={(checked) => {
+          <ToggleField label={t('LABEL_FILTER_TYPE_STATIC', 'Static')} checked={_static} onChange={(checked) => {
             if (!animated && !checked) {
               setAnimated(true);
               setStatic(false);
@@ -146,23 +146,23 @@ const FiltersModal: FC<{
           }} />
         </DialogControlsSection>
         <DialogControlsSection>
-          <DialogControlsSectionHeader>{t('Tags')}</DialogControlsSectionHeader>
+          <DialogControlsSectionHeader>{t('LABEL_FILTER_TAGS_TITLE', 'Tags')}</DialogControlsSectionHeader>
           <ToggleField
-            label={t('Adult Content')}
-            description={adultActivated ? t('Might wanna do a quick shoulder check.') : undefined}
+            label={t('LABEL_FILTER_TAG_NSFW', 'Adult Content')}
+            description={adultActivated ? t('MSG_FILTER_TAG_NSFW_ENABLED', 'Might wanna do a quick shoulder check.') : undefined}
             checked={adult}
             onChange={(checked) => {
               setAdult(checked);
               setAdultActivated(checked);
             }}
           />
-          <ToggleField label={t('Humor')} checked={humor} onChange={setHumor} />
-          <ToggleField label={t('Epilepsy')} checked={epilepsy} onChange={setEpilepsy} />
-          <ToggleField label={t('Untagged')} checked={untagged} onChange={setUntagged} />
+          <ToggleField label={t('LABEL_FILTER_TAG_HUMOR', 'Humor')} checked={humor} onChange={setHumor} />
+          <ToggleField label={t('LABEL_FILTER_TAG_EPILEPSY', 'Epilepsy')} checked={epilepsy} onChange={setEpilepsy} />
+          <ToggleField label={t('LABEL_FILTER_TAG_UNTAGGED', 'Untagged')} checked={untagged} onChange={setUntagged} />
         </DialogControlsSection>
       </DialogBody>
       {compareFilterWithDefaults(assetType, filters) && <DialogFooter>
-        <DialogButton onClick={resetFilters}>{t('Reset Filters')}</DialogButton>
+        <DialogButton onClick={resetFilters}>{t('ACTION_FILTER_RESET', 'Reset Filters')}</DialogButton>
       </DialogFooter>}
     </ModalRoot>
   );

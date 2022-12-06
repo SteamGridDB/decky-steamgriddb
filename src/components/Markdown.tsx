@@ -32,7 +32,7 @@ const Markdown: FC<{
               }
             }}
             onSecondaryButton={() => showQrModal(linkProps.href ?? '')}
-            onSecondaryActionDescription={t('Show Link QR')}
+            onSecondaryActionDescription={t('ACTION_SHOW_LINK_QR', 'Show Link QR')}
             style={{ display: 'inline-block' }}
           >
             <a style={{ textDecoration: 'underline', color: '#1a9fff' }} {...linkProps}>

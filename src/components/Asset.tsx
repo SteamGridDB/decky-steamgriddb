@@ -48,19 +48,19 @@ const Asset: VFC<AssetProps> = ({
     <div className={joinClassNames('dload-overlay', isDownloading ? 'downloading' : '')}><img src={Spinner} /></div>
     <Chips>
       {notes && <Chip color="#8a8a8a">
-        <FooterGlyph button={11} type={0} size={0} style={{ width: '1em' }} /> {t('Notes')}
+        <FooterGlyph button={11} type={0} size={0} style={{ width: '1em' }} /> {t('LABEL_NOTES', 'Notes')}
       </Chip>}
       {isAnimated && <Chip color="#e2a256">
-        {t('Animated')}
+        {t('LABEL_ANIMATED', 'Animated')}
       </Chip>}
       {nsfw && <Chip color="#e5344c">
-        {t('Adult Content')}
+        {t('LABEL_NSFW', 'Adult Content')}
       </Chip>}
       {humor && <Chip color="#eec314">
-        {t('Humor')}
+        {t('LABEL_HUMOR', 'Humor')}
       </Chip>}
       {epilepsy && <Chip color="#735f9f">
-        {t('Epilepsy')}
+        {t('LABEL_EPILEPSY', 'Epilepsy')}
       </Chip>}
     </Chips>
     <LazyImage

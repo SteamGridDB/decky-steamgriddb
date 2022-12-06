@@ -42,7 +42,7 @@ export default (serverApi: ServerAPI, findModalManager: any) => serverApi.router
             Router.Navigate(`/steamgriddb/${modalComponent.props.overview.appid}`);
           }}
         >
-          {t('Change artwork...')}
+          {t('ACTION_CHANGE_ARTWORK', 'Change artwork...')}
         </MenuItem>
       ));
       return pain2;

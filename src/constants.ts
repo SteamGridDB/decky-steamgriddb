@@ -9,11 +9,11 @@ export const ASSET_TYPE: Record<SGDBAssetType, eAssetType> = {
 };
 
 export const SGDB_ASSET_TYPE_READABLE: Record<SGDBAssetType, string> = {
-  grid_p: t('Capsule'),
-  grid_l: t('Wide Capsule'),
-  hero: t('Hero'),
-  logo: t('Logo'),
-  icon: t('Icon'),
+  grid_p: t('ASSET_TYPE_CAPSULE', 'Capsule'),
+  grid_l: t('ASSET_TYPE_WIDECAPSULE', 'Wide Capsule'),
+  hero: t('ASSET_TYPE_HERO', 'Hero'),
+  logo: t('ASSET_TYPE_LOGO', 'Logo'),
+  icon: t('ASSET_TYPE_ICON', 'Icon'),
 };
 
 const gridStyles = {

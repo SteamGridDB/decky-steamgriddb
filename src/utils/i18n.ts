@@ -173,33 +173,37 @@ export const getLanguageName = (lang?: string): string => {
 /**
  * Very basic translation cause theres like 20 strings and i don't need anything more complex.
  * 
- * @param {string} text Original text
- * @param {boolean} steamToken If true, use `text` param as a key to query Steams token store.
+ * @param {string} key Locale key
+ * @param {string} originalString Original text
+ * @param {boolean} steamToken If true, uses the key to query Steams token store.
  *    Good for actions like "Back" or "Cancel". Won't be dumped with the rest of the strings.
  * 
  * @example
- * t('original string')
+ * t('TITLE_FILTER_MODAL', 'original string')
  * @example
  * // if you need variables use .replace()  
- * t('Delete {gameName}').replace(/{gameName}/g, gameName)
+ * t('ACTION_REMOVE_GAME', 'Delete {gameName}').replaceAll('{gameName}', gameName)
  * @example
  * // translated variables, make sure var is translated elsewhere
  * const assetTypes = {
- *  grid: t('Grid'),
- *  logo: t('Logo'),
- *  icon: t('Icon')
+ *  grid: t('ASSET_TYPE_GRID', 'Grid'),
+ *  logo: t('ASSET_TYPE_LOGO', 'Logo'),
+ *  icon: t('ASSET_TYPE_ICON', 'Icon')
  * };
- * t('{assetType} has been successfully applied!')
+ * t('MESSAGE_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!')
  *   .replace('{assetType}', t(assetTypes[assetType]))
+ * @example
+ * // Original Steam string
+ * t('Button_Back', 'Back', true);
  */
-const trans_string = (text: string, steamToken = false): string => {
+const trans_string = (key: string, originalString: string, steamToken = false): string => {
   const lang = getCurrentLanguage();
   if (steamToken) {
-    return window.LocalizationManager.m_mapTokens.get(text) ?? window.LocalizationManager.m_mapFallbackTokens.get(text) ?? text;
+    return window.LocalizationManager.m_mapTokens.get(key) ?? window.LocalizationManager.m_mapFallbackTokens.get(key) ?? originalString;
   }
-  if (lang === 'en') return text;
+  if (lang === 'en') return originalString;
 
-  return LANGS[lang]?.strings?.[text] ?? text;
+  return LANGS[lang]?.strings?.[key] ?? originalString;
 };
 
 // using "trans_string" so it can be found by dump-strings

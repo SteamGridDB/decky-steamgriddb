@@ -41,9 +41,9 @@ const DetailsModal: FC<{
         <div className="info">
           <DialogButtonPrimary
             onClick={handleDownload}
-            onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+            onOKActionDescription={t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
           >
-            {t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+            {t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
           </DialogButtonPrimary>
           <span className="meta">
             {[

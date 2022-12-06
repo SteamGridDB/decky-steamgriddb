@@ -111,7 +111,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
       className="settings-container"
       focusClassName="force-show"
       focusWithinClassName="force-show"
-      onOKActionDescription={t('Filter')}
+      onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
       onActivate={() => toolbarFocusRef.current?.focus()}
       onClick={(evt) => evt.preventDefault()} // Don't focus if using UI with a pointer
     >
@@ -125,10 +125,10 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
           <DialogButton
             ref={toolbarFocusRef}
             noFocusRing
-            onOKActionDescription={t('Filter')}
+            onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
             onClick={onFilterClick}
           >
-            {t('Filter')}
+            {t('ACTION_OPEN_FILTER', 'Filter')}
           </DialogButton>
         </Focusable>
         <SliderField

@@ -5,9 +5,9 @@ import Marquee from './Marquee';
 import FooterGlyph from './FooterGlyph';
 import t from '../utils/i18n';
 
-const strGameSelected = t('Selected {gameName}');
-const strFilterActive = t('Some assets may be hidden due to filter');
-const strFilterAndGame = t('Selected {gameName} with filter');
+const strGameSelected = t('MSG_GAME_SELECTED', 'Selected {gameName}');
+const strFilterActive = t('MSG_ASSETS_FILTERED', 'Some assets may be hidden due to filter');
+const strFilterAndGame = t('MSG_GAME_SELECTED_AND_ASSETS_FILTERED', 'Selected {gameName} with filter');
 
 const ResultsStateBar: FC<{
   loading: boolean;

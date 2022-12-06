@@ -1,8 +1,7 @@
-import { FC, useState, useEffect, useRef, ImgHTMLAttributes } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import { Focusable, joinClassNames, SteamAppOverview } from 'decky-frontend-lib';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
 import useSGDB from './hooks/useSGDB';
-import log from './utils/log';
 import t from './utils/i18n';
 
 import LibraryImage from './components/LibraryImage';
@@ -15,32 +14,6 @@ import getAppOverview from './utils/getAppOverview';
   Tests: https://regex101.com/r/2EeIqZ/1
 */
 const imagesExpr = /(?<!.)(.*)\.(jpe?g|a?png|webp|gif)$|(?<!.)([^.]|.*\\)+(?!.)/gi;
-
-const ImgWithFallback: FC<{ srcs: string[] } & ImgHTMLAttributes<HTMLImageElement>> = ({ srcs, ...props }) => {
-  const [source, setSource] = useState<string | undefined>(srcs[0]);
-  const imgRef = useRef<HTMLImageElement>(null);
-  const srcIndex = useRef(0);
-
-  useEffect(() => {
-    if (!imgRef.current) return;
-    const img = imgRef.current;
-    const onError = () => {
-      srcIndex.current++;
-      if (srcIndex.current >= srcs.length) {
-        img.removeEventListener('error', onError);
-        return;
-      }
-      setSource(srcs[srcIndex.current]);
-    };
-
-    img.addEventListener('error', onError);
-    return () => {
-      img.removeEventListener('error', onError);
-    };
-  }, [srcs]);
-
-  return <img {...props} src={source} ref={imgRef} />;
-};
 
 const AssetBlock: FC<{
   app: SteamAppOverview & {
@@ -87,7 +60,7 @@ const AssetBlock: FC<{
           noFocusRing
           className="action-button"
           onActivate={handleClear}
-          onOKActionDescription={t('Clear Custom Asset')}
+          onOKActionDescription={t('ACTION_ASSET_CUSTOM_CLEAR', 'Clear Custom Asset')}
         >
           <HiTrash />
         </Focusable>
@@ -95,7 +68,7 @@ const AssetBlock: FC<{
           noFocusRing
           className="action-button"
           onActivate={handleBrowse}
-          onOKActionDescription={t('Browse for Local Files')}
+          onOKActionDescription={t('ACTION_ASSET_BROWSE_LOCAL', 'Browse for Local Files')}
         >
           <HiFolder />
         </Focusable>
@@ -103,7 +76,7 @@ const AssetBlock: FC<{
           noFocusRing
           className="action-button"
           onActivate={handleBlank}
-          onOKActionDescription={t('Use Invisible Asset')}
+          onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
         >
           <HiEyeSlash />
         </Focusable>
@@ -122,7 +95,7 @@ const AssetBlock: FC<{
 const LocalTab: FC = () => {
   const { appId, serverApi, appOverview } = useSGDB();
   const [startPath, setStartPath] = useState('/');
-  const [overview, setOverview] = useState<SteamAppOverview | null>();
+  const [overview, setOverview] = useState<any>();
 
   useEffect(() => {
     if (!appId) return;
@@ -137,15 +110,15 @@ const LocalTab: FC = () => {
 
   return <Focusable id="local-images-container">
     <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-      <AssetBlock app={overview} eAssetType={0} browseStartPath={startPath} label={t('Current Capsule')} />
-      <AssetBlock app={overview} eAssetType={4} browseStartPath={startPath} label={t('Current Icon')} />
+      <AssetBlock app={overview} eAssetType={0} browseStartPath={startPath} label={t('LABEL_CAPSULE_CURRENT', 'Current Capsule')} />
+      <AssetBlock app={overview} eAssetType={4} browseStartPath={startPath} label={t('LABEL_ICON_CURRENT', 'Current Icon')} />
     </Focusable>
     <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-      <AssetBlock app={overview} eAssetType={3} browseStartPath={startPath} label={t('Current Wide Capsule')} />
-      <AssetBlock app={overview} eAssetType={2} browseStartPath={startPath} label={t('Current Logo')} />
+      <AssetBlock app={overview} eAssetType={3} browseStartPath={startPath} label={t('LABEL_WIDECAPSULE_CURRENT', 'Current Wide Capsule')} />
+      <AssetBlock app={overview} eAssetType={2} browseStartPath={startPath} label={t('LABEL_LOGO_CURRENT', 'Current Logo')} />
     </Focusable>
     <div style={{ gridColumn: 'span 2' }}>
-      <AssetBlock app={overview} eAssetType={1} browseStartPath={startPath} label={t('Current Hero')} />
+      <AssetBlock app={overview} eAssetType={1} browseStartPath={startPath} label={t('LABEL_HERO_CURRENT', 'Current Hero')} />
     </div>
   </Focusable>;
 };

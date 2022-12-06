@@ -34,12 +34,12 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         await changeAssetFromUrl(url, assetType);
         serverApi.toaster.toast({
           title: appOverview?.display_name,
-          body: t('{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
+          body: t('MSG_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
           icon: <MenuIcon />,
         });
       } catch (err: any) {
         serverApi.toaster.toast({
-          title: t('Error applying asset.'),
+          title: t('MSG_ASSET_APPLY_ERROR', 'There was a problem applying this asset.'),
           body: err.message,
           icon: <MenuIcon fill="#f3171e" />
         });
@@ -116,10 +116,10 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
           isAnimated={asset.thumb.includes('.webm')}
           isDownloading={downloadingId === asset.id}
           onActivate={() => setAsset(asset.id, asset.url)}
-          onOKActionDescription={t('Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-          onSecondaryActionDescription={t('Filter')} // activate filter bar from anywhere
+          onOKActionDescription={t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+          onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')} // activate filter bar from anywhere
           onSecondaryButton={handleFilterClick}
-          onMenuActionDescription={t('Details')}
+          onMenuActionDescription={t('ACTION_OPEN_DETAILS', 'Details')}
           onMenuButton={() => openDetails(asset)}
         />)}
       </Focusable>
