@@ -3,7 +3,7 @@ import { memo, VFC } from 'react';
 import { Tabs, TabsProps } from 'decky-frontend-lib';
 
 import AssetTab from './AssetTab';
-import LocalTab from './LocalTab';
+import LocalTab from './ManageTab';
 import t from './utils/i18n';
 import useAssetSearch from './hooks/useAssetSearch';
 import { SGDB_ASSET_TYPE_READABLE } from './constants';
@@ -31,9 +31,9 @@ const AssetTabs: VFC<{
           }
         })),
         {
-          title: t('Local Files'),
+          title: t('Manage'),
           content: <LocalTab />,
-          id: 'local',
+          id: 'manage',
         }
       ]}
     />

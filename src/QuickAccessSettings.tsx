@@ -14,7 +14,7 @@ import PanelSocialButton from './components/PanelSocialButton';
 import t, { getCredits } from './utils/i18n';
 
 const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
-  const [debugAppid] = useState('220');
+  const [debugAppid] = useState('70');
   // const [result, setResult] = useState<number | undefined>();
 
   // const onClick = async () => {
@@ -48,10 +48,10 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
               Router.Navigate(`/steamgriddb/${debugAppid}`);
               Router.CloseSideMenus();
             }}>
-              220
+              {debugAppid}
             </DialogButton>
             <DialogButton onClick={() => {
-              Router.Navigate('/steamgriddb/1091500/hero');
+              Router.Navigate('/steamgriddb/1091500/manage');
               Router.CloseSideMenus();
             }}>
               1091500

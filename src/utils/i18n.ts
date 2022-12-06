@@ -155,7 +155,6 @@ let cachedLang: string | undefined;
 const getCurrentLanguage = (): string => {
   if (cachedLang) return cachedLang;
 
-  // @ts-ignore: LocalizationManager always exists
   const lang = window.LocalizationManager.m_rgLocalesToUse[0];
   cachedLang = lang;
   return lang;
@@ -196,7 +195,6 @@ export const getLanguageName = (lang?: string): string => {
 const trans_string = (text: string, steamToken = false): string => {
   const lang = getCurrentLanguage();
   if (steamToken) {
-    // @ts-ignore: LocalizationManager always exists
     return window.LocalizationManager.m_mapTokens.get(text) ?? window.LocalizationManager.m_mapFallbackTokens.get(text) ?? text;
   }
   if (lang === 'en') return text;

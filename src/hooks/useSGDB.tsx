@@ -21,7 +21,7 @@ export type SGDBContextType = {
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appOverview: SteamAppOverview & {
     BIsModOrShortcut: () => boolean
-  } | null;
+  };
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   restartSteam: () => void;
