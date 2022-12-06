@@ -44,7 +44,9 @@ const AssetBlock: FC<{
 
   const handleClear = async () => {
     await clearAsset(eAssetType);
-    await refreshOverview();
+    setTimeout(async () => {
+      await refreshOverview();
+    }, 500);
   };
 
   return <div className={joinClassNames('asset-wrap', `asset-type-${eAssetType}`)}>
