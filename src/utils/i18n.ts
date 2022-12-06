@@ -1,3 +1,6 @@
+import * as ro from '../i18n/ro.json';
+import * as el from '../i18n/el.json';
+
 export const LANGS = {
 //  de: {
 //    name: 'Deutsch',
@@ -94,36 +97,36 @@ export const LANGS = {
 //    strings: cs,
 //    credit: []
 //  },
-//  ro: {
-//    name: 'Română',
-//    strings: ro,
-//    credit: []
-//  },
-//  tr: {
-//    name: 'Türkçe',
-//    strings: tr,
-//    credit: []
-//  },
-//  ar: {
-//    name: 'العربية',
-//    strings: ar,
-//    credit: []
-//  },
-//  'pt-br': {
-//    name: 'Português-Brasil',
-//    strings: ptBr,
-//    credit: []
-//  },
-//  bg: {
-//    name: 'Български',
-//    strings: bg,
-//    credit: []
-//  },
-//  el: {
-//    name: 'Ελληνικά',
-//    strings: el,
-//    credit: []
-//  },
+  ro: {
+    name: 'Română',
+    strings: ro,
+    credit: ['Munt']
+  },
+  //  tr: {
+  //    name: 'Türkçe',
+  //    strings: tr,
+  //    credit: []
+  //  },
+  //  ar: {
+  //    name: 'العربية',
+  //    strings: ar,
+  //    credit: []
+  //  },
+  //  'pt-br': {
+  //    name: 'Português-Brasil',
+  //    strings: ptBr,
+  //    credit: []
+  //  },
+  //  bg: {
+  //    name: 'Български',
+  //    strings: bg,
+  //    credit: []
+  //  },
+  el: {
+    name: 'Ελληνικά',
+    strings: el,
+    credit: ['Emenesu']
+  },
 //  en: {
 //    name: 'English',
 //    strings: en,

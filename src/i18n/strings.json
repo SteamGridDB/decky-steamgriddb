@@ -21,7 +21,7 @@
   "ACTION_OPEN_FILTER": "Filter",
   "ACTION_ASSET_APPLY": "Apply {assetType}",
   "LABEL_GAME_SEARCH_TITLE": "Search for a Game...",
-  "LABEL_FILTER_MODAL_TITLE": "Asset Filters",
+  "LABEL_FILTER_MODAL_TITLE": "{assetType} Filter",
   "LABEL_FILTER_GAME": "Game",
   "LABEL_FILTER_DIMENSIONS": "Dimensions",
   "LABEL_FILTER_STYLES": "Styles",

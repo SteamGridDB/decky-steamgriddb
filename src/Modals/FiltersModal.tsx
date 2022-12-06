@@ -13,7 +13,7 @@ import {
 import { FC, useCallback, useMemo, useState } from 'react';
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
-import { MIMES, STYLES, DIMENSIONS } from '../constants';
+import { MIMES, STYLES, DIMENSIONS, SGDB_ASSET_TYPE_READABLE } from '../constants';
 import Marquee from '../components/Marquee';
 import GameSelectionModal from './GameSelectionModal';
 import compareFilterWithDefaults from '../utils/compareFilterWithDefaults';
@@ -83,7 +83,7 @@ const FiltersModal: FC<{
 
   return (
     <ModalRoot className="sgdb-modal sgdb-modal-filters" closeModal={handleClose}>
-      <DialogHeader>{t('LABEL_FILTER_MODAL_TITLE', 'Asset Filters')}</DialogHeader>
+      <DialogHeader>{t('LABEL_FILTER_MODAL_TITLE', '{assetType} Filter').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
           {isNonSteamShortcut && <Field label={t('LABEL_FILTER_GAME', 'Game')}>
