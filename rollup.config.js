@@ -17,7 +17,7 @@ export default defineConfig({
     nodePolyfills(),
     nodeResolve(),
     typescript(),
-    json({ compact: true, namedExports: false }),
+    json({ compact: true }),
     scss({
       output: false,
       sourceMap: false,
