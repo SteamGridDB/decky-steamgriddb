@@ -1,3 +1,6 @@
+pull_request_title: Crowdin translations sync
+commit_message: New translations (%language%)
+append_commit_message: false
 files:
   - source: /src/i18n/strings.json
     translation: /src/i18n/%two_letters_code%.json

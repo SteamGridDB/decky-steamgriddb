@@ -1,12 +1,47 @@
-import * as ro from '../i18n/ro.json';
+import * as de from '../i18n/de.json';
 import * as el from '../i18n/el.json';
+import * as ja from '../i18n/ja.json';
+import * as pt from '../i18n/pt.json';
+import * as ro from '../i18n/ro.json';
+import * as ru from '../i18n/ru.json';
+import * as sv from '../i18n/sv.json';
 
 export const LANGS = {
-//  de: {
-//    name: 'Deutsch',
-//    strings: de,
-//    credit: []
-//  },
+  de: {
+    name: 'Deutsch',
+    strings: de,
+    credit: ['Kurikuo']
+  },
+  el: {
+    name: 'Ελληνικά',
+    strings: el,
+    credit: ['Emenesu']
+  },
+  ja: {
+    name: '日本語',
+    strings: ja,
+    credit: ['Nes']
+  },
+  pt: {
+    name: 'Português',
+    strings: pt,
+    credit: ['Kokasgui']
+  },
+  ro: {
+    name: 'Română',
+    strings: ro,
+    credit: ['Munt']
+  },
+  ru: {
+    name: 'Русский',
+    strings: ru,
+    credit: []
+  },
+  sv: {
+    name: 'Svenska',
+    strings: sv,
+    credit: []
+  },
 //  fr: {
 //    name: 'Français',
 //    strings: fr,
@@ -37,24 +72,9 @@ export const LANGS = {
 //    strings: zhTw,
 //    credit: []
 //  },
-//  ru: {
-//    name: 'Русский',
-//    strings: ru,
-//    credit: []
-//  },
 //  th: {
 //    name: 'ไทย',
 //    strings: th,
-//    credit: []
-//  },
-//  ja: {
-//    name: '日本語',
-//    strings: ja,
-//    credit: []
-//  },
-//  pt: {
-//    name: 'Português',
-//    strings: pt,
 //    credit: []
 //  },
 //  pl: {
@@ -82,11 +102,6 @@ export const LANGS = {
 //    strings: no,
 //    credit: []
 //  },
-//  sv: {
-//    name: 'Svenska',
-//    strings: sv,
-//    credit: []
-//  },
 //  hu: {
 //    name: 'Magyar',
 //    strings: hu,
@@ -97,11 +112,6 @@ export const LANGS = {
 //    strings: cs,
 //    credit: []
 //  },
-  ro: {
-    name: 'Română',
-    strings: ro,
-    credit: ['Munt']
-  },
   //  tr: {
   //    name: 'Türkçe',
   //    strings: tr,
@@ -117,11 +127,6 @@ export const LANGS = {
   //    strings: bg,
   //    credit: []
   //  },
-  el: {
-    name: 'Ελληνικά',
-    strings: el,
-    credit: ['Emenesu']
-  },
 //  en: {
 //    name: 'English',
 //    strings: en,
