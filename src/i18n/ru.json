@@ -1,5 +1,5 @@
 {
-  "ACTION_SHOW_LINK_QR": "Показать ссылку",
+  "ACTION_SHOW_LINK_QR": "Показать QR ссылку",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Русский перевод",
   "LABEL_MORE_SGDB_TITLE": "Больше на SteamGridDB",
   "ACTION_SGDB_DISCORD": "Вступить в Discord",
@@ -11,7 +11,7 @@
   "ASSET_TYPE_CAPSULE": "Обложка",
   "ASSET_TYPE_WIDECAPSULE": "Широкая обложка",
   "ASSET_TYPE_HERO": "Баннер",
-  "ASSET_TYPE_LOGO": "Лого",
+  "ASSET_TYPE_LOGO": "Логотип",
   "ASSET_TYPE_ICON": "Иконка",
   "LABEL_NOTES": "Примечание",
   "LABEL_ANIMATED": "Анимация",
