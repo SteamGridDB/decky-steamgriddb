@@ -11,7 +11,12 @@ import {
   Spinner,
 } from 'decky-frontend-lib';
 import {
-  FC, SVGAttributes, useMemo, useState, useEffect, useRef,
+  FC,
+  SVGAttributes,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
 } from 'react';
 import debounce from 'just-debounce';
 import { SiSteam, SiEpicgames, SiOrigin, SiUbisoft, SiBattledotnet } from 'react-icons/si';
