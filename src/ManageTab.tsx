@@ -42,6 +42,7 @@ const AssetBlock: FC<{
 
   const handleClear = async () => {
     await clearAsset(assetType);
+    await refreshOverview();
   };
 
   return (
