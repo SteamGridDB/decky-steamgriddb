@@ -7,7 +7,7 @@ import log from '../utils/log';
 import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
 import getAppDetails from '../utils/getAppDetails';
 
-/* 
+/*
   special key only for use with this decky plugin
   attempting to use this in your own projects will
   cause you to be automatically banned and blacklisted
@@ -19,10 +19,7 @@ const API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://sgdb.test/ap
 export type SGDBContextType = {
   appId: number | null;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
-  appOverview: SteamAppOverview & {
-    appid: number,
-    BIsModOrShortcut: () => boolean
-  };
+  appOverview: SteamAppOverview;
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   restartSteam: () => void;
@@ -47,7 +44,6 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   const changeAsset: SGDBContextType['changeAsset'] = useCallback(async (data, assetType) => {
     assetType = getAmbiguousAssetType(assetType);
     try {
-      await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
       if (assetType === ASSET_TYPE.logo) {
         // avoid huge logos on Steam games by providing decent defaults
@@ -85,10 +81,9 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
         if (!res.success) {
           return reject(new Error('SGDB API request failed'));
         }
-    
+
         try {
-          // @ts-ignore: result.body is always a string if res.success is true
-          const assetRes = JSON.parse(res.result.body);
+          const assetRes = JSON.parse((res.result as { body: string }).body);
           if (!assetRes.success) {
             return reject(new Error(assetRes.errors.join(', ')));
           }
@@ -126,6 +121,8 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
 
   const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
     await SteamClient.Apps.ClearCustomArtworkForApp(appId, getAmbiguousAssetType(assetType));
+    // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }, [appId]);
 
   const searchGames = useCallback(async (term) => {
