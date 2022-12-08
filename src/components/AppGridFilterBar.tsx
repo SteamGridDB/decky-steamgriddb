@@ -10,7 +10,7 @@ const appGridFilterHeaderClass = findModuleChild((m) => {
   }
   return;
 });
-  
+
 const appGridFilterTextClass = findModuleChild((m) => {
   if (typeof m !== 'object') return;
   for (const prop in m) {
@@ -21,12 +21,14 @@ const appGridFilterTextClass = findModuleChild((m) => {
   return;
 });
 
-const AppGridFilterBar: FC<HTMLAttributes<HTMLDivElement>> = ({ children, ...rest }) => <div {...rest}>
-  <div className={appGridFilterHeaderClass}>
-    <span className={appGridFilterTextClass}>
-      {children}
-    </span>
+const AppGridFilterBar: FC<HTMLAttributes<HTMLDivElement>> = ({ children, ...rest }) => (
+  <div {...rest}>
+    <div className={appGridFilterHeaderClass}>
+      <span className={appGridFilterTextClass}>
+        {children}
+      </span>
+    </div>
   </div>
-</div>;
+);
 
 export default AppGridFilterBar;

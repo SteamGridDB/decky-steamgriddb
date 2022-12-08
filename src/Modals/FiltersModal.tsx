@@ -11,12 +11,14 @@ import {
   DialogFooter,
 } from 'decky-frontend-lib';
 import { FC, useCallback, useMemo, useState } from 'react';
+
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
 import { MIMES, STYLES, DIMENSIONS, SGDB_ASSET_TYPE_READABLE } from '../constants';
 import Marquee from '../components/Marquee';
-import GameSelectionModal from './GameSelectionModal';
 import compareFilterWithDefaults from '../utils/compareFilterWithDefaults';
+
+import GameSelectionModal from './GameSelectionModal';
 
 const FiltersModal: FC<{
   closeModal?: () => void,
@@ -33,7 +35,7 @@ const FiltersModal: FC<{
   defaultFilters,
   isNonSteamShortcut,
   defaultSelectedGame,
-  searchGames
+  searchGames,
 }) => {
   const [styles, setStyles] = useState<string[]>(defaultFilters?.styles ?? STYLES[assetType].default);
   const [mimes, setMimes] = useState<string[]>(defaultFilters?.mimes ?? MIMES[assetType].default);
@@ -45,7 +47,7 @@ const FiltersModal: FC<{
   const [epilepsy, setEpilepsy] = useState<boolean>(defaultFilters?.epilepsy ?? true);
   const [untagged, setUntagged] = useState<boolean>(defaultFilters?.untagged ?? true);
   const filters = useMemo(() => ({
-    styles, dimensions, mimes, animated, _static, adult, humor, epilepsy, untagged
+    styles, dimensions, mimes, animated, _static, adult, humor, epilepsy, untagged,
   }), [styles, dimensions, mimes, animated, _static, adult, humor, epilepsy, untagged]);
 
   const [selectedGame, setSelectedGame] = useState(defaultSelectedGame);
@@ -86,29 +88,36 @@ const FiltersModal: FC<{
       <DialogHeader>{t('LABEL_FILTER_MODAL_TITLE', '{assetType} Filter').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
-          {isNonSteamShortcut && <Field label={t('LABEL_FILTER_GAME', 'Game')}>
-            <DialogButton onClick={() => {
-              showModal(<GameSelectionModal
-                defaultTerm={selectedGame.name}
-                searchGames={searchGames}
-                onSelect={(game: any) => {
-                  setSelectedGame(game);
-                }}
-              />);
-            }}>
-              <Marquee>
-                {selectedGame.name}
-              </Marquee>
-            </DialogButton>
-          </Field>}
-          {(DIMENSIONS[assetType].options.length > 0) && <Field label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}>
-            <DropdownMultiselect
-              label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}
-              items={DIMENSIONS[assetType].options}
-              selected={dimensions}
-              onSelect={handleDimensionsSelect}
-            />
-          </Field>}
+          {isNonSteamShortcut && (
+            <Field label={t('LABEL_FILTER_GAME', 'Game')}>
+              <DialogButton onClick={() => {
+                showModal(
+                  <GameSelectionModal
+                    defaultTerm={selectedGame.name}
+                    searchGames={searchGames}
+                    onSelect={(game: any) => {
+                      setSelectedGame(game);
+                    }}
+                  />
+                );
+              }}
+              >
+                <Marquee>
+                  {selectedGame.name}
+                </Marquee>
+              </DialogButton>
+            </Field>
+          )}
+          {(DIMENSIONS[assetType].options.length > 0) && (
+            <Field label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}>
+              <DropdownMultiselect
+                label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}
+                items={DIMENSIONS[assetType].options}
+                selected={dimensions}
+                onSelect={handleDimensionsSelect}
+              />
+            </Field>
+          )}
           <Field label={t('LABEL_FILTER_STYLES', 'Styles')}>
             <DropdownMultiselect
               label={t('LABEL_FILTER_STYLES', 'Styles')}
@@ -135,7 +144,8 @@ const FiltersModal: FC<{
             } else {
               setAnimated(checked);
             }
-          }} />
+          }}
+          />
           <ToggleField label={t('LABEL_FILTER_TYPE_STATIC', 'Static')} checked={_static} onChange={(checked) => {
             if (!animated && !checked) {
               setAnimated(true);
@@ -143,7 +153,8 @@ const FiltersModal: FC<{
             } else {
               setStatic(checked);
             }
-          }} />
+          }}
+          />
         </DialogControlsSection>
         <DialogControlsSection>
           <DialogControlsSectionHeader>{t('LABEL_FILTER_TAGS_TITLE', 'Tags')}</DialogControlsSectionHeader>
@@ -161,9 +172,11 @@ const FiltersModal: FC<{
           <ToggleField label={t('LABEL_FILTER_TAG_UNTAGGED', 'Untagged')} checked={untagged} onChange={setUntagged} />
         </DialogControlsSection>
       </DialogBody>
-      {compareFilterWithDefaults(assetType, filters) && <DialogFooter>
-        <DialogButton onClick={resetFilters}>{t('ACTION_FILTER_RESET', 'Reset Filters')}</DialogButton>
-      </DialogFooter>}
+      {compareFilterWithDefaults(assetType, filters) && (
+        <DialogFooter>
+          <DialogButton onClick={resetFilters}>{t('ACTION_FILTER_RESET', 'Reset Filters')}</DialogButton>
+        </DialogFooter>
+      )}
     </ModalRoot>
   );
 };

@@ -1,4 +1,11 @@
-import { FC, useEffect, useState, useRef, SVGAttributes, ImgHTMLAttributes } from 'react';
+import {
+  FC,
+  useEffect,
+  useState,
+  useRef,
+  SVGAttributes,
+  ImgHTMLAttributes,
+} from 'react';
 import { Spinner, IconsModule } from 'decky-frontend-lib';
 
 // @todo: find a better way to get this
@@ -13,7 +20,7 @@ interface LazyImage extends ImgHTMLAttributes<HTMLImageElement | HTMLVideoElemen
   wrapperProps?: any
 }
 
-export const LazyImage: FC<LazyImage> = ({isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, wrapperProps, ...props}) => {
+export const LazyImage: FC<LazyImage> = ({ isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, wrapperProps, ...props }) => {
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -72,41 +79,47 @@ export const LazyImage: FC<LazyImage> = ({isVideo = false, unloadWhenOutside = f
     };
   }, [loading, marginOffset, unloadWhenOutside, scrollContainer]);
 
-  return <div
-    ref={intersectRef}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}
-    {...wrapperProps}
-  >
-    {error ?
-      <ErrorIcon style={{ height: '2em' }} /> :
-      <Spinner
-        className="preload-spinner"
-        data-loaded={loading ? 'false' : 'true'}
-      />
-    }
+  return (
+    <div
+      ref={intersectRef}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      {...wrapperProps}
+    >
+      {error ?
+        <ErrorIcon style={{ height: '2em' }} /> : (
+          <Spinner
+            className="preload-spinner"
+            data-loaded={loading ? 'false' : 'true'}
+          />
+        )}
 
-    {(inViewport && !isVideo && error !== true) && <img
-      ref={imgRef as React.RefObject<HTMLImageElement>}
-      data-loaded={loading ? 'false' : 'true'}
-      src={src}
-      {...props}
-    />}
+      {(inViewport && !isVideo && error !== true) && (
+        <img
+          ref={imgRef as React.RefObject<HTMLImageElement>}
+          data-loaded={loading ? 'false' : 'true'}
+          src={src}
+          {...props}
+        />
+      )}
 
-    {(inViewport && isVideo && error !== true) && <video
-      ref={imgRef as React.RefObject<HTMLVideoElement>}
-      data-loaded={loading ? 'false' : 'true'}
-      src={src}
-      autoPlay={false}
-      muted
-      loop
-      playsInline
-      {...props}
-    />}
-  </div>;
+      {(inViewport && isVideo && error !== true) && (
+        <video
+          ref={imgRef as React.RefObject<HTMLVideoElement>}
+          data-loaded={loading ? 'false' : 'true'}
+          src={src}
+          autoPlay={false}
+          muted
+          loop
+          playsInline
+          {...props}
+        />
+      )}
+    </div>
+  );
 };
 
 export default LazyImage;

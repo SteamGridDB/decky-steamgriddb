@@ -1,9 +1,9 @@
 import { FC, useState, useEffect, useRef } from 'react';
 import { Focusable, joinClassNames, SteamAppOverview } from 'decky-frontend-lib';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
+
 import useSGDB from './hooks/useSGDB';
 import t from './utils/i18n';
-
 import LibraryImage from './components/LibraryImage';
 import getAppOverview from './utils/getAppOverview';
 import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from './constants';
@@ -44,49 +44,53 @@ const AssetBlock: FC<{
     await clearAsset(assetType);
   };
 
-  return <div className={joinClassNames('asset-wrap', `asset-wrap-${assetType}`)}>
-    <div className="asset-label">{t('LABEL_ASSET_CURRENT', 'Current {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</div>
-    <Focusable
-      onActivate={() => innerFocusRef.current?.focus()}
-      focusWithinClassName="is-focused"
-      focusClassName="is-focused"
-    >
-      <Focusable flow-children="right" className="action-overlay">
-        <Focusable
-          ref={innerFocusRef}
-          noFocusRing
-          className="action-button"
-          onActivate={handleClear}
-          onOKActionDescription={t('ACTION_ASSET_CUSTOM_CLEAR', 'Clear Custom Asset')}
-        >
-          <HiTrash />
+  return (
+    <div className={joinClassNames('asset-wrap', `asset-wrap-${assetType}`)}>
+      <div className="asset-label">{t('LABEL_ASSET_CURRENT', 'Current {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</div>
+      <Focusable
+        onActivate={() => innerFocusRef.current?.focus()}
+        focusWithinClassName="is-focused"
+        focusClassName="is-focused"
+      >
+        <Focusable flow-children="right" className="action-overlay">
+          <Focusable
+            ref={innerFocusRef}
+            noFocusRing
+            className="action-button"
+            onActivate={handleClear}
+            onOKActionDescription={t('ACTION_ASSET_CUSTOM_CLEAR', 'Clear Custom Asset')}
+          >
+            <HiTrash />
+          </Focusable>
+          <Focusable
+            noFocusRing
+            className="action-button"
+            onActivate={handleBrowse}
+            onOKActionDescription={t('ACTION_ASSET_BROWSE_LOCAL', 'Browse for Local Files')}
+          >
+            <HiFolder />
+          </Focusable>
+          <Focusable
+            noFocusRing
+            className="action-button"
+            onActivate={handleBlank}
+            onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
+          >
+            <HiEyeSlash />
+          </Focusable>
         </Focusable>
-        <Focusable
-          noFocusRing
-          className="action-button"
-          onActivate={handleBrowse}
-          onOKActionDescription={t('ACTION_ASSET_BROWSE_LOCAL', 'Browse for Local Files')}
-        >
-          <HiFolder />
-        </Focusable>
-        <Focusable
-          noFocusRing
-          className="action-button"
-          onActivate={handleBlank}
-          onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
-        >
-          <HiEyeSlash />
-        </Focusable>
+        {overview && (
+          <LibraryImage
+            app={overview}
+            eAssetType={ASSET_TYPE[assetType]}
+            allowCustomization={false}
+            className="asset"
+            imageClassName="asset-img"
+          />
+        )}
       </Focusable>
-      {overview && <LibraryImage
-        app={overview}
-        eAssetType={ASSET_TYPE[assetType]}
-        allowCustomization={false}
-        className="asset"
-        imageClassName="asset-img"
-      />}
-    </Focusable>
-  </div>;
+    </div>
+  );
 };
 
 const LocalTab: FC = () => {
@@ -105,39 +109,41 @@ const LocalTab: FC = () => {
 
   if (!overview || !appId) return null;
 
-  return <Focusable id="local-images-container">
-    <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-      <AssetBlock
-        app={overview}
-        assetType="grid_p"
-        browseStartPath={startPath}
-      />
-      <AssetBlock
-        app={overview}
-        assetType="icon"
-        browseStartPath={startPath}
-      />
+  return (
+    <Focusable id="local-images-container">
+      <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+        <AssetBlock
+          app={overview}
+          assetType="grid_p"
+          browseStartPath={startPath}
+        />
+        <AssetBlock
+          app={overview}
+          assetType="icon"
+          browseStartPath={startPath}
+        />
+      </Focusable>
+      <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+        <AssetBlock
+          app={overview}
+          assetType="grid_l"
+          browseStartPath={startPath}
+        />
+        <AssetBlock
+          app={overview}
+          assetType="logo"
+          browseStartPath={startPath}
+        />
+      </Focusable>
+      <div style={{ gridColumn: 'span 2' }}>
+        <AssetBlock
+          app={overview}
+          assetType="hero"
+          browseStartPath={startPath}
+        />
+      </div>
     </Focusable>
-    <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
-      <AssetBlock
-        app={overview}
-        assetType="grid_l"
-        browseStartPath={startPath}
-      />
-      <AssetBlock
-        app={overview}
-        assetType="logo"
-        browseStartPath={startPath}
-      />
-    </Focusable>
-    <div style={{ gridColumn: 'span 2' }}>
-      <AssetBlock
-        app={overview}
-        assetType="hero"
-        browseStartPath={startPath}
-      />
-    </div>
-  </Focusable>;
+  );
 };
 
 export default LocalTab;

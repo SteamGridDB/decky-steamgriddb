@@ -1,4 +1,10 @@
-import {  FC, useLayoutEffect, useState, useRef, useCallback } from 'react';
+import {
+  FC,
+  useLayoutEffect,
+  useState,
+  useRef,
+  useCallback,
+} from 'react';
 import { joinClassNames, findSP } from 'decky-frontend-lib';
 import debounce from 'just-debounce';
 

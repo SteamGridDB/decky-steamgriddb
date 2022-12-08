@@ -3,12 +3,14 @@ import {
   DialogButton,
   Menu,
   MenuItem,
-  findModuleChild
+  findModuleChild,
 } from 'decky-frontend-lib';
 import { FC, useState, useEffect, useCallback } from 'react';
+
 import DialogCheckbox, { DialogCheckboxProps } from '../components/DialogCheckbox';
 import Chevron from '../components/Chevron';
 import t from '../utils/i18n';
+
 import Marquee from './Marquee';
 
 const dropDownControlButtonClass = findModuleChild((m) => {
@@ -66,7 +68,7 @@ const DropdownMultiselect: FC<{
   label,
   items,
   selected,
-  onSelect
+  onSelect,
 }) => {
   const [itemsSelected, setItemsSelected] = useState<any>(selected);
 
@@ -86,7 +88,7 @@ const DropdownMultiselect: FC<{
       style={{
         display: 'flex',
         alignItems: 'center',
-        maxWidth: '100%'
+        maxWidth: '100%',
       }}
       className={dropDownControlButtonClass}
       onClick={(evt) => {
@@ -96,13 +98,15 @@ const DropdownMultiselect: FC<{
             label={label}
             cancelText={t('Button_Back', 'Back', true)}
           >
-            {items.map((x) => <DropdownMultiselectItem
-              key={x.value}
-              label={x.label}
-              value={x.value}
-              checked={itemsSelected.includes(x.value)}
-              onSelect={handleItemSelect}
-            />)}
+            {items.map((x) => (
+              <DropdownMultiselectItem
+                key={x.value}
+                label={x.label}
+                value={x.value}
+                checked={itemsSelected.includes(x.value)}
+                onSelect={handleItemSelect}
+              />
+            ))}
           </Menu>,
           evt.currentTarget ?? window
         );

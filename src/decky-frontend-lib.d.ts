@@ -1,7 +1,7 @@
 import {
   FocusableProps as FocusablePropsO,
   SteamAppOverview as SteamAppOverviewO,
-  SliderFieldProps as SliderFieldPropsO
+  SliderFieldProps as SliderFieldPropsO,
 } from 'decky-frontend-lib';
 
 declare module 'decky-frontend-lib' {

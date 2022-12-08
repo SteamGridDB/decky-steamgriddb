@@ -5,7 +5,7 @@ import {
   afterPatch,
   findModuleChild,
   MenuItem,
-  Router
+  Router,
 } from 'decky-frontend-lib';
 
 import QuickAccessSettings from './QuickAccessSettings';
@@ -29,11 +29,13 @@ const AppContextMenu = findModuleChild((m) => {
 });
 
 export default definePlugin((serverApi: ServerAPI) => {
-  serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => <SettingsProvider serverApi={serverApi}>
-    <SGDBProvider serverApi={serverApi}>
-      <SGDBPage />
-    </SGDBProvider>
-  </SettingsProvider>, {
+  serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => (
+    <SettingsProvider serverApi={serverApi}>
+      <SGDBProvider serverApi={serverApi}>
+        <SGDBPage />
+      </SGDBProvider>
+    </SettingsProvider>
+  ), {
     exact: true,
   });
 

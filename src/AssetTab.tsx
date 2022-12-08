@@ -1,5 +1,6 @@
 import { Focusable, joinClassNames, showModal } from 'decky-frontend-lib';
 import { useState, VFC, useRef, useEffect, useMemo } from 'react';
+
 import { useSGDB } from './hooks/useSGDB';
 import Asset from './components/Asset';
 import t from './utils/i18n';
@@ -41,7 +42,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         serverApi.toaster.toast({
           title: t('MSG_ASSET_APPLY_ERROR', 'There was a problem applying this asset.'),
           body: err.message,
-          icon: <MenuIcon fill="#f3171e" />
+          icon: <MenuIcon fill="#f3171e" />,
         });
       } finally {
         setDownloadingId(null);
@@ -54,11 +55,13 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   }; */
 
   const openDetails = (asset: any) => {
-    showModal(<DetailsModal
-      asset={asset}
-      assetType={assetType}
-      onAssetChange={async () => await setAsset(asset.id, asset.url)}
-    />, window);
+    showModal((
+      <DetailsModal
+        asset={asset}
+        assetType={assetType}
+        onAssetChange={async () => await setAsset(asset.id, asset.url)}
+      />
+    ), window);
   };
 
   useEffect(() => {
@@ -101,30 +104,32 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         id="images-container"
         style={sizingStyles}
       >
-        {!tabLoading && assets.map((asset: any) => <Asset
-          key={asset.id}
-          scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
-          author={asset.author}
-          notes={asset.notes}
-          src={asset.thumb}
-          width={asset.width}
-          height={asset.height}
-          humor={asset.humor}
-          epilepsy={asset.epilepsy}
-          nsfw={asset.nsfw}
-          assetType={assetType}
-          isAnimated={asset.thumb.includes('.webm')}
-          isDownloading={downloadingId === asset.id}
-          onActivate={() => setAsset(asset.id, asset.url)}
-          onOKActionDescription={t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-          onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')} // activate filter bar from anywhere
-          onSecondaryButton={handleFilterClick}
-          onMenuActionDescription={t('ACTION_OPEN_DETAILS', 'Details')}
-          onMenuButton={() => openDetails(asset)}
-        />)}
+        {!tabLoading && assets.map((asset: any) => (
+          <Asset
+            key={asset.id}
+            scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
+            author={asset.author}
+            notes={asset.notes}
+            src={asset.thumb}
+            width={asset.width}
+            height={asset.height}
+            humor={asset.humor}
+            epilepsy={asset.epilepsy}
+            nsfw={asset.nsfw}
+            assetType={assetType}
+            isAnimated={asset.thumb.includes('.webm')}
+            isDownloading={downloadingId === asset.id}
+            onActivate={() => setAsset(asset.id, asset.url)}
+            onOKActionDescription={t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+            onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')} // activate filter bar from anywhere
+            onSecondaryButton={handleFilterClick}
+            onMenuActionDescription={t('ACTION_OPEN_DETAILS', 'Details')}
+            onMenuButton={() => openDetails(asset)}
+          />
+        ))}
       </Focusable>
     </div>
   );
 };
-  
+
 export default AssetTab;

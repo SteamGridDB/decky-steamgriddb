@@ -1,4 +1,5 @@
 import isEqual from 'react-fast-compare';
+
 import { MIMES, STYLES, DIMENSIONS } from '../constants';
 
 const compareFilterWithDefaults = (assetType: SGDBAssetType, filters: any) => {

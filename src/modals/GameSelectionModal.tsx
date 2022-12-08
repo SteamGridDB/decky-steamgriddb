@@ -8,12 +8,15 @@ import {
   TextFieldProps,
   Focusable,
   IconsModule,
-  Spinner
+  Spinner,
 } from 'decky-frontend-lib';
-import { FC, SVGAttributes, useMemo, useState, useEffect, useRef } from 'react';
+import {
+  FC, SVGAttributes, useMemo, useState, useEffect, useRef,
+} from 'react';
 import debounce from 'just-debounce';
-import t from '../utils/i18n';
 import { SiSteam, SiEpicgames, SiOrigin, SiUbisoft, SiBattledotnet } from 'react-icons/si';
+
+import t from '../utils/i18n';
 import FlashpointIcon from '../components/Icons/FlashpointIcon';
 import EshopIcon from '../components/Icons/EshopIcon';
 import GogIcon from '../components/Icons/GogIcon';
@@ -32,18 +35,20 @@ const platformTypeMap = {
   gog: GogIcon,
   bnet: SiBattledotnet,
   flashpoint: FlashpointIcon,
-  eshop: EshopIcon
+  eshop: EshopIcon,
 };
 const GameLabel: FC<{game: any}> = ({ game }) => (
   <span className="gamelabel">
     <Marquee>{game.name}</Marquee>
     {game.release_date && <span className="release-date">({utcYear(game.release_date)})</span>}
-    {(game.types.length > 0) && <span className="platform-types">
-      {game.types.map((x: string) => {
-        const PlatformLogo = platformTypeMap[x];
-        return <PlatformLogo key={x} />;
-      })}
-    </span>}
+    {(game.types.length > 0) && (
+      <span className="platform-types">
+        {game.types.map((x: string) => {
+          const PlatformLogo = platformTypeMap[x];
+          return <PlatformLogo key={x} />;
+        })}
+      </span>
+    )}
   </span>
 );
 
@@ -74,22 +79,24 @@ const SearchTextField: FC<TextFieldProps> = (props) => {
     };
   }, [fieldRef]);
 
-  return <Field
-    bottomSeparator="thick"
-    icon={<SearchIcon />}
-    label={t('LABEL_GAME_SEARCH_TITLE', 'Search for a Game...')}
-    childrenLayout="below"
-  >
-    <Focusable ref={focusableRef} onActivate={focusTextField} noFocusRing>
-      <TextField
+  return (
+    <Field
+      bottomSeparator="thick"
+      icon={<SearchIcon />}
+      label={t('LABEL_GAME_SEARCH_TITLE', 'Search for a Game...')}
+      childrenLayout="below"
+    >
+      <Focusable ref={focusableRef} onActivate={focusTextField} noFocusRing>
+        <TextField
         // @ts-ignore: ref hack to get underlying <input>
-        ref={fieldRef}
-        focusOnMount={false}
-        spellcheck="false"
-        {...props}
-      />
-    </Focusable>
-  </Field>;
+          ref={fieldRef}
+          focusOnMount={false}
+          spellcheck="false"
+          {...props}
+        />
+      </Focusable>
+    </Field>
+  );
 };
 
 const GameSelectionModal: FC<{
@@ -132,9 +139,11 @@ const GameSelectionModal: FC<{
               setValue(evt.target.value);
             }}
           />
-          {loading && <div className="spinner">
-            <Spinner />
-          </div>}
+          {loading && (
+            <div className="spinner">
+              <Spinner />
+            </div>
+          )}
           {!loading && games.map((game: any) => (
             <Field
               key={game.id}

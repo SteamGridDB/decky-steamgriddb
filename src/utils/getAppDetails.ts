@@ -2,7 +2,7 @@ import { AppDetails } from 'decky-frontend-lib';
 
 /**
  * Tries to retrieve the app details from Steam.
- * 
+ *
  * @param appId id to get details for.
  * @returns AppDetails if succeeded or null otherwise.
  */

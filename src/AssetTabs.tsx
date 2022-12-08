@@ -40,14 +40,14 @@ const AssetTabs: VFC<{
             content: <AssetTab assetType={type as SGDBAssetType} />,
             footer: {
               onSecondaryActionDescription: t('ACTION_OPEN_FILTER', 'Filter'),
-              onSecondaryButton: () => openFilters(type as SGDBAssetType)
-            }
+              onSecondaryButton: () => openFilters(type as SGDBAssetType),
+            },
           })),
         {
           title: t('LABEL_TAB_MANAGE', 'Manage'),
           content: <ManageTab />,
           id: 'manage',
-        }
+        },
       ]}
     />
   );

@@ -1,4 +1,11 @@
-import { useState, createContext, FC, useEffect, useContext, useMemo } from 'react';
+import {
+  useState,
+  createContext,
+  FC,
+  useEffect,
+  useContext,
+  useMemo,
+} from 'react';
 import { ServerAPI } from 'decky-frontend-lib';
 import debounce from 'just-debounce';
 
@@ -42,9 +49,11 @@ export const SettingsProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, chil
     }
   }, [save, setting]);
 
-  return <SettingsContext.Provider value={{ set, get }}>
-    {children}
-  </SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider value={{ set, get }}>
+      {children}
+    </SettingsContext.Provider>
+  );
 };
 
 export const useSettings = () => useContext(SettingsContext) as SettingsContextType;

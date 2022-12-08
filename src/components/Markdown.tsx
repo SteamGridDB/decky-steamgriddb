@@ -3,6 +3,7 @@ import { Focusable, FocusableProps, Router } from 'decky-frontend-lib';
 import { FC } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+
 import t from '../utils/i18n';
 import showQrModal from '../utils/showQrModal';
 
@@ -24,21 +25,23 @@ const Markdown: FC<{
         unwrapDisallowed
         components={{
           // Make links usable
-          a: ({node, children, ...linkProps}) => <Focusable
-            onActivate={() => {
-              if (linkProps.href) {
-                Router.NavigateToExternalWeb(linkProps.href);
-                onLinkClick?.();
-              }
-            }}
-            onSecondaryButton={() => showQrModal(linkProps.href ?? '')}
-            onSecondaryActionDescription={t('ACTION_SHOW_LINK_QR', 'Show Link QR')}
-            style={{ display: 'inline-block' }}
-          >
-            <a style={{ textDecoration: 'underline', color: '#1a9fff' }} {...linkProps}>
-              {children}
-            </a>
-          </Focusable>
+          a: ({ node, children, ...linkProps }) => (
+            <Focusable
+              onActivate={() => {
+                if (linkProps.href) {
+                  Router.NavigateToExternalWeb(linkProps.href);
+                  onLinkClick?.();
+                }
+              }}
+              onSecondaryButton={() => showQrModal(linkProps.href ?? '')}
+              onSecondaryActionDescription={t('ACTION_SHOW_LINK_QR', 'Show Link QR')}
+              style={{ display: 'inline-block' }}
+            >
+              <a style={{ textDecoration: 'underline', color: '#1a9fff' }} {...linkProps}>
+                {children}
+              </a>
+            </Focusable>
+          ),
         }}
         {...props}
       >

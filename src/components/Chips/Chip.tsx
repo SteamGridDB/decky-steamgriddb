@@ -4,7 +4,7 @@ const Chip: FC<{color: string}> = ({ color, children }) => (
   <li
     className="chip"
     style={{
-      ['--chip-color' as string]: color
+      ['--chip-color' as string]: color,
     }}
   >
     {children}

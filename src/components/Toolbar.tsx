@@ -1,10 +1,13 @@
+import { Focusable, SliderField, DialogButton, SliderFieldProps } from 'decky-frontend-lib';
 import {
-  Focusable,
-  SliderField,
-  DialogButton,
-  SliderFieldProps
-} from 'decky-frontend-lib';
-import { useState, useImperativeHandle, useRef, forwardRef, useEffect, useMemo, Ref } from 'react';
+  useState,
+  useImperativeHandle,
+  useRef,
+  forwardRef,
+  useEffect,
+  useMemo,
+  Ref,
+} from 'react';
 
 import t from '../utils/i18n';
 import useSettings from '../hooks/useSettings';
@@ -25,14 +28,14 @@ const sliderProps = {
     max: 4,
     step: 1,
     notchCount: 3,
-    notchTicksVisible: true
+    notchTicksVisible: true,
   },
   logo: {
     min: 2,
     max: 6,
     step: 1,
     notchCount: 5,
-    notchTicksVisible: true
+    notchTicksVisible: true,
   },
   icon: {
     min: 100,
@@ -76,11 +79,11 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
     if (['hero', 'logo'].includes(assetType)) {
       const percent = 100 / (sliderProps[assetType].max - sliderValue + sliderProps[assetType].min);
       return {
-        gridTemplateColumns: `repeat(auto-fill, minmax(calc(${percent}% - .65em), 1fr))`
+        gridTemplateColumns: `repeat(auto-fill, minmax(calc(${percent}% - .65em), 1fr))`,
       };
     }
     return {
-      ['--asset-size' as string]: `${sliderValue}px`
+      ['--asset-size' as string]: `${sliderValue}px`,
     };
   }, [assetType, sliderValue]);
 
@@ -102,7 +105,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
       setSliderValue(defSize);
     })();
   }, [assetType, get]);
-  
+
   if (disabled) return null;
 
   return (
@@ -121,7 +124,7 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
         <Focusable
           style={{
             alignItems: 'center',
-            display: 'flex'
+            display: 'flex',
           }}
         >
           <DialogButton

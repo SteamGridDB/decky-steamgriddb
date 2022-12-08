@@ -5,7 +5,7 @@ import {
   useContext,
   useCallback,
   useMemo,
-  useEffect
+  useEffect,
 } from 'react';
 import { showModal } from 'decky-frontend-lib';
 import isEqual from 'react-fast-compare';
@@ -53,7 +53,7 @@ export const AssetSearchContext: FC = ({ children }) => {
       const resp = await searchAssets(assetType, {
         gameId: selectedGame?.id,
         filters,
-        signal: abortCont.signal
+        signal: abortCont.signal,
       });
       log('search resp', assetType, resp);
       setAssets(resp);
@@ -65,7 +65,7 @@ export const AssetSearchContext: FC = ({ children }) => {
         serverApi.toaster.toast({
           title: 'SteamGridDB API Error',
           body: err.message,
-          icon: <MenuIcon fill="#f3171e" />
+          icon: <MenuIcon fill="#f3171e" />,
         });
         if (selectedGame) {
           set(`nonsteam_${appId}`, false);
@@ -94,14 +94,16 @@ export const AssetSearchContext: FC = ({ children }) => {
   const openFilters = useCallback(async (assetType: SGDBAssetType) => {
     log('Open Filters');
     const defaultFilters = await get(`filters_${assetType}`, null);
-    showModal(<FiltersModal
-      assetType={assetType}
-      onSave={handleFiltersSave}
-      defaultFilters={defaultFilters}
-      isNonSteamShortcut={appOverview.BIsModOrShortcut()}
-      defaultSelectedGame={selectedGame}
-      searchGames={searchGames}
-    />, window);
+    showModal((
+      <FiltersModal
+        assetType={assetType}
+        onSave={handleFiltersSave}
+        defaultFilters={defaultFilters}
+        isNonSteamShortcut={appOverview.BIsModOrShortcut()}
+        defaultSelectedGame={selectedGame}
+        searchGames={searchGames}
+      />
+    ), window);
   }, [appOverview, get, handleFiltersSave, searchGames, selectedGame]);
 
   useEffect(() => {
@@ -117,13 +119,15 @@ export const AssetSearchContext: FC = ({ children }) => {
           setSelectedGame(gameRes[0]);
         } else {
           // open search and selection
-          showModal(<GameSelectionModal
-            defaultTerm={appOverview.display_name}
-            searchGames={searchGames}
-            onSelect={(game: any) => {
-              setSelectedGame(game);
-            }}
-          />);
+          showModal(
+            <GameSelectionModal
+              defaultTerm={appOverview.display_name}
+              searchGames={searchGames}
+              onSelect={(game: any) => {
+                setSelectedGame(game);
+              }}
+            />
+          );
         }
       }
       setLoading(false);
@@ -136,12 +140,14 @@ export const AssetSearchContext: FC = ({ children }) => {
     searchAndSetAssets,
     selectedGame,
     openFilters,
-    isFilterActive
+    isFilterActive,
   }), [loading, assets, searchAndSetAssets, selectedGame, openFilters, isFilterActive]);
-  
-  return <SearchContext.Provider value={value}>
-    {children}
-  </SearchContext.Provider>;
+
+  return (
+    <SearchContext.Provider value={value}>
+      {children}
+    </SearchContext.Provider>
+  );
 };
 
 export const useAssetSearch = () => useContext(SearchContext) as AssetSearchContextType;

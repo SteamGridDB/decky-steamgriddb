@@ -1,4 +1,12 @@
-import { useState, createContext, FC, useEffect, useContext, useCallback, useMemo } from 'react';
+import {
+  useState,
+  createContext,
+  FC,
+  useEffect,
+  useContext,
+  useCallback,
+  useMemo,
+} from 'react';
 import { SteamAppOverview, ServerAPI } from 'decky-frontend-lib';
 
 import MenuIcon from '../components/Icons/MenuIcon';
@@ -52,8 +60,8 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
           logoPosition: {
             pinnedPosition: 'BottomLeft',
             nWidthPct: 42,
-            nHeightPct: 65
-          }
+            nHeightPct: 65,
+          },
         };
         await SteamClient.Apps.SetCustomLogoPositionForApp(appId, JSON.stringify(bottomLeftPos));
       }
@@ -75,8 +83,8 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          Authorization: `Bearer ${SGDB_API_KEY}`
-        }
+          Authorization: `Bearer ${SGDB_API_KEY}`,
+        },
       }).then((res) => {
         if (!res.success) {
           return reject(new Error('SGDB API request failed'));
@@ -134,7 +142,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       serverApi.toaster.toast({
         title: 'SteamGridDB API Error',
         body: err.message,
-        icon: <MenuIcon fill="#f3171e" />
+        icon: <MenuIcon fill="#f3171e" />,
       });
       return [];
     }
@@ -236,12 +244,14 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     restartSteam,
     changeAsset,
     changeAssetFromUrl,
-    clearAsset
+    clearAsset,
   }), [appId, serverApi, appOverview, searchAssets, searchGames, changeAsset, changeAssetFromUrl, clearAsset]);
 
-  return <SGDBContext.Provider value={value}>
-    {children}
-  </SGDBContext.Provider>;
+  return (
+    <SGDBContext.Provider value={value}>
+      {children}
+    </SGDBContext.Provider>
+  );
 };
 
 export const useSGDB = () => useContext(SGDBContext) as SGDBContextType;
