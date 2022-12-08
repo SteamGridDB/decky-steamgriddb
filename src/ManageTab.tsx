@@ -17,9 +17,7 @@ import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from './constants';
 const imagesExpr = /(?<!.)(.*)\.(jpe?g|a?png|webp|gif)$|(?<!.)([^.]|.*\\)+(?!.)/gi;
 
 const AssetBlock: FC<{
-  app: SteamAppOverview & {
-    appid: number,
-  },
+  app: SteamAppOverview,
   assetType: SGDBAssetType,
   browseStartPath: string,
 }> = ({ app, browseStartPath, assetType }) => {

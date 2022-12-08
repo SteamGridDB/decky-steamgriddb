@@ -134,7 +134,6 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
           </DialogButton>
         </Focusable>
         <SliderField
-          /* @ts-ignore: className is a valid prop */
           className="size-slider"
           onChange={handleSliderChange}
           value={sliderValue}

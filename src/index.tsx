@@ -3,10 +3,8 @@ import {
   ServerAPI,
   quickAccessMenuClasses,
   afterPatch,
-  fakeRenderComponent,
   findModuleChild,
   MenuItem,
-  replacePatch,
   Router
 } from 'decky-frontend-lib';
 
