@@ -52,7 +52,7 @@ export const LANGS = {
   sv: {
     name: 'Svenska',
     strings: sv,
-    credit: []
+    credit: ['Moneyman Dan']
   },
 //  fr: {
 //    name: 'Français',

@@ -2,10 +2,11 @@ import {
   definePlugin,
   ServerAPI,
   quickAccessMenuClasses,
-  findInReactTree,
   afterPatch,
+  fakeRenderComponent,
   findModuleChild,
   MenuItem,
+  replacePatch,
   Router
 } from 'decky-frontend-lib';
 
@@ -39,8 +40,6 @@ export default definePlugin((serverApi: ServerAPI) => {
   });
 
   const patchedMenu = afterPatch(AppContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
-    if (component.props.children.find((x: any) => x?.key && x.key === 'sgdb-change-artwork')) return component; // doesn't happen but just in case
-
     const appid = component._owner.pendingProps.overview.appid;
     // Add button second to last
     component.props.children.splice(-1, 0, (
