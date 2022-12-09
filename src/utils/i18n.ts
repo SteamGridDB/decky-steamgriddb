@@ -4,6 +4,7 @@ import * as es from '../i18n/es.json';
 import * as es419 from '../i18n/es-419.json';
 import * as ja from '../i18n/ja.json';
 import * as pt from '../i18n/pt.json';
+import * as ptBr from '../i18n/pt-br.json';
 import * as ro from '../i18n/ro.json';
 import * as ru from '../i18n/ru.json';
 import * as sv from '../i18n/sv.json';
@@ -12,47 +13,52 @@ export const LANGS = {
   de: {
     name: 'Deutsch',
     strings: de,
-    credit: ['Kurikuo']
+    credit: ['Kurikuo'],
   },
   el: {
     name: 'Ελληνικά',
     strings: el,
-    credit: ['Emenesu']
+    credit: ['Emenesu'],
   },
   es: {
     name: 'Español-España',
     strings: es,
-    credit: ['Andrea Laguillo', 'Kam']
+    credit: ['Andrea Laguillo', 'Kam'],
   },
   'es-419': {
     name: 'Español-Latinoamérica',
     strings: es419,
-    credit: ['Kam']
+    credit: ['Kam'],
   },
   ja: {
     name: '日本語',
     strings: ja,
-    credit: ['Nes']
+    credit: ['Nes'],
   },
   pt: {
     name: 'Português',
     strings: pt,
-    credit: ['Kokasgui']
+    credit: ['Kokasgui'],
+  },
+  'pt-br': {
+    name: 'Português-Brasil',
+    strings: ptBr,
+    credit: ['Oregano'],
   },
   ro: {
     name: 'Română',
     strings: ro,
-    credit: ['Munt']
+    credit: ['Munt'],
   },
   ru: {
     name: 'Русский',
     strings: ru,
-    credit: []
+    credit: ['fycher'],
   },
   sv: {
     name: 'Svenska',
     strings: sv,
-    credit: ['Moneyman Dan']
+    credit: ['Moneyman Dan'],
   },
 //  fr: {
 //    name: 'Français',
@@ -124,11 +130,6 @@ export const LANGS = {
   //    strings: tr,
   //    credit: []
   //  },
-  //  'pt-br': {
-  //    name: 'Português-Brasil',
-  //    strings: ptBr,
-  //    credit: []
-  //  },
   //  bg: {
   //    name: 'български език',
   //    strings: bg,
@@ -177,16 +178,16 @@ export const getLanguageName = (lang?: string): string => {
 
 /**
  * Very basic translation cause theres like 20 strings and i don't need anything more complex.
- * 
+ *
  * @param {string} key Locale key
  * @param {string} originalString Original text
  * @param {boolean} steamToken If true, uses the key to query Steams token store.
  *    Good for actions like "Back" or "Cancel". Won't be dumped with the rest of the strings.
- * 
+ *
  * @example
  * t('TITLE_FILTER_MODAL', 'Asset Filters')
  * @example
- * // if you need variables use .replace()  
+ * // if you need variables use .replace()
  * t('ACTION_REMOVE_GAME', 'Delete {gameName}').replaceAll('{gameName}', gameName)
  * @example
  * // Original Steam string
