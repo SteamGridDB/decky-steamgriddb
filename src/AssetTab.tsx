@@ -37,6 +37,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
           title: appOverview?.display_name,
           body: t('MSG_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
           icon: <MenuIcon />,
+          duration: 3,
         });
       } catch (err: any) {
         serverApi.toaster.toast({
