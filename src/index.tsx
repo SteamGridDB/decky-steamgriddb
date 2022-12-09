@@ -14,6 +14,7 @@ import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './SGDBPage';
 import t from './utils/i18n';
+import log from './utils/log';
 
 const AppContextMenu = findModuleChild((m) => {
   if (typeof m !== 'object') return;
@@ -40,7 +41,10 @@ export default definePlugin((serverApi: ServerAPI) => {
   });
 
   const patchedMenu = afterPatch(AppContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
+    log(component);
     const appid = component._owner.pendingProps.overview.appid;
+    component._owner.stateNode?.m_hAppDetails?.unregister();
+
     // Add button second to last
     component.props.children.splice(-1, 0, (
       <MenuItem
