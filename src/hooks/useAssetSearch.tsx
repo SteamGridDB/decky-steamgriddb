@@ -125,6 +125,7 @@ export const AssetSearchContext: FC = ({ children }) => {
               searchGames={searchGames}
               onSelect={(game: any) => {
                 setSelectedGame(game);
+                set(`nonsteam_${appId}`, game);
               }}
             />
           );
@@ -132,7 +133,7 @@ export const AssetSearchContext: FC = ({ children }) => {
       }
       setLoading(false);
     })();
-  }, [appOverview, appId, get, searchGames]);
+  }, [appOverview, appId, get, searchGames, set]);
 
   const value = useMemo(() => ({
     loading,
