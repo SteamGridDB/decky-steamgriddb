@@ -72,6 +72,9 @@ class Plugin:
                 iconname = "%s_icon%s" % (appid, ext)
                 saved_path = await self.download_file(self, url, output_dir, file_name=iconname)
                 if saved_path:
+                    if shortcut['icon'] == saved_path:
+                        return 'icon_is_same_path'
+
                     shortcut['icon'] = saved_path
                     binary_dump(d, open(shortcuts_vdf, 'wb'))
                     return True

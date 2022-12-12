@@ -186,18 +186,22 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       if (!res.success) {
         throw new Error(res.result);
       }
-
-      // Can't figure out how to make Steam re-read the shortcuts.vdf so just ask user to reboot
-      showModal(
-        <ConfirmModal
-          strTitle={t('LABEL_RESTART_STEAM_TITLE', 'Restart Steam?')}
-          strCancelButtonText={t('ACTION_RESTART_STEAM_LATER', 'Later')}
-          strOKButtonText={t('ACTION_RESTART_STEAM_NOW', 'Restart Now')}
-          strDescription={t('MSG_RESTART_STEAM_DESC', 'Steam needs to be restarted for the changes to take effect.')}
-          onOK={restartSteam}
-        />
-      );
-      // SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
+      log('set_shortcut_icon result', res.result);
+      if (res.result === 'icon_is_same_path') {
+        // If the path is already the same as the current icon, we can force an icon re-read by setting the name to itself
+        SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
+      } else if (res.result === true) {
+        // shortcuts.vdf was modified, can't figure out how to make Steam re-read it so just ask user to reboot
+        showModal(
+          <ConfirmModal
+            strTitle={t('LABEL_RESTART_STEAM_TITLE', 'Restart Steam?')}
+            strCancelButtonText={t('ACTION_RESTART_STEAM_LATER', 'Later')}
+            strOKButtonText={t('ACTION_RESTART_STEAM_NOW', 'Restart Now')}
+            strDescription={t('MSG_RESTART_STEAM_DESC', 'Steam needs to be restarted for the changes to take effect.')}
+            onOK={restartSteam}
+          />
+        );
+      }
     } else {
       const data = await getImageAsB64(url, path);
       if (!data) {
