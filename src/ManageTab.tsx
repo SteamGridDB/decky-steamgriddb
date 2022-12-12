@@ -25,13 +25,19 @@ const AssetBlock: FC<{
   const { clearAsset, changeAsset, serverApi, changeAssetFromUrl } = useSGDB();
   const [overview, setOverview] = useState<SteamAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
+  const refreshing = useRef(false);
 
+  // god is dead
   const refreshOverview = async () => {
+    if (refreshing.current) return;
+    refreshing.current = true;
+    setOverview(null);
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const appoverview = await getAppOverview(app.appid);
 
-    // Today i choose violence
     if (assetType === 'icon' && appoverview?.icon_hash) {
-      const hash = appoverview?.icon_hash;
+      // Today i choose violence
+      const hash = appoverview.icon_hash;
       // fuck up the hash to force render the icon file from the cache
       appoverview.icon_hash = String(new Date().getTime());
       setOverview(appoverview);
@@ -42,6 +48,7 @@ const AssetBlock: FC<{
     }
 
     setOverview(appoverview);
+    refreshing.current = false;
   };
 
   const handleBrowse = async () => {
@@ -109,13 +116,7 @@ const AssetBlock: FC<{
             imageClassName="asset-img"
           />
         ) : (
-          <div
-            style={{
-              width: '32px',
-              maxHeight: '32px',
-              paddingTop: '32px',
-            }}
-          />
+          <div className="asset" />
         )}
       </Focusable>
     </div>
