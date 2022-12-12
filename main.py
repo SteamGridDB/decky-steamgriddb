@@ -23,7 +23,9 @@ HOME_PATH = get_home_path(get_user())
 sys.path.insert(0, str(Path(get_homebrew_path(HOME_PATH)) / 'plugins' / 'decky-steamgriddb'))
 from pylib.vdf import binary_dump, binary_load
 
-USERDATA_PATH = Path(HOME_PATH) / '.local' / 'share' / 'Steam' / 'userdata'
+STEAM_PATH = Path(HOME_PATH) / '.local' / 'share' / 'Steam'
+USERDATA_PATH = STEAM_PATH / 'userdata'
+LIBCACHE = STEAM_PATH / "appcache" / "librarycache"
 
 def get_userdata_config(steam32):
     return USERDATA_PATH / steam32 / "config"
@@ -45,7 +47,7 @@ class Plugin:
         return HOME_PATH
 
     async def download_file(self, url="", output_dir="", file_name=""):
-        logger.info({url, output_dir, file_name})
+        logger.debug({url, output_dir, file_name})
         try:
             if access(dirname(output_dir), W_OK):
                 req = Request(url, headers={"User-Agent": "decky-steamgriddb backend"})
@@ -95,6 +97,12 @@ class Plugin:
                 binary_dump(d, open(shortcuts_vdf, 'wb'))
                 return True
         raise Exception("Could not find shortcut to edit")
+    
+    async def set_steam_icon_from_url(self, appid, url):
+        await self.download_file(self, url, LIBCACHE, file_name=("%s_icon.jpg" % appid))
+    
+    async def set_steam_icon_from_path(self, appid, path):
+        copyfile(path, LIBCACHE / str("%s_icon.jpg" % appid))
 
     async def set_setting(self, key, value):
         self.settings.setSetting(key, value)

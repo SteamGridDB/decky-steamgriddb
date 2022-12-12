@@ -172,21 +172,30 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
 
   const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType, path = false) => {
     assetType = getAmbiguousAssetType(assetType);
-    if (assetType === ASSET_TYPE.icon && appOverview?.BIsShortcut()) {
-      const res = await serverApi.callPluginMethod(path ? 'set_shortcut_icon_from_path' : 'set_shortcut_icon_from_url', {
-        owner_id: getCurrentSteamUserId(),
-        appid: appId,
-        ...(path ? { path: url } : { url }),
-      });
+    if (assetType === ASSET_TYPE.icon) {
+      if (appOverview?.BIsShortcut()) {
+        const res = await serverApi.callPluginMethod(path ? 'set_shortcut_icon_from_path' : 'set_shortcut_icon_from_url', {
+          owner_id: getCurrentSteamUserId(),
+          appid: appId,
+          ...(path ? { path: url } : { url }),
+        });
 
-      if (!res.success) throw new Error(res.result);
-      log('set_shortcut_icon result', res.result);
-      if (res.result === 'icon_is_same_path') {
-        // If the path is already the same as the current icon, we can force an icon re-read by setting the name to itself
-        SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
-      } else if (res.result === true) {
-        // shortcuts.vdf was modified, can't figure out how to make Steam re-read it so just ask user to reboot
-        showRestartConfirm();
+        if (!res.success) throw new Error(res.result);
+        log('set_shortcut_icon result', res.result);
+        if (res.result === 'icon_is_same_path') {
+          // If the path is already the same as the current icon, we can force an icon re-read by setting the name to itself
+          SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
+        } else if (res.result === true) {
+          // shortcuts.vdf was modified, can't figure out how to make Steam re-read it so just ask user to reboot
+          showRestartConfirm();
+        }
+      } else {
+        // Change default Steam icon by poisoning the cache like Boop does it
+        const res = await serverApi.callPluginMethod(path ? 'set_steam_icon_from_path' : 'set_steam_icon_from_url', {
+          appid: appId,
+          ...(path ? { path: url } : { url }),
+        });
+        log('set_steam_icon result', res.result);
       }
     } else {
       const data = await getImageAsB64(url, path);
@@ -199,15 +208,26 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
 
   const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
     assetType = getAmbiguousAssetType(assetType);
-    if (assetType === ASSET_TYPE.icon && appOverview?.BIsShortcut()) {
-      const res = await serverApi.callPluginMethod('set_shortcut_icon', {
-        path: null, // null removes the icon
-        owner_id: getCurrentSteamUserId(),
-        appid: appId,
-      });
+    if (assetType === ASSET_TYPE.icon) {
+      if (appOverview?.BIsShortcut()) {
+        const res = await serverApi.callPluginMethod('set_shortcut_icon', {
+          path: null, // null removes the icon
+          owner_id: getCurrentSteamUserId(),
+          appid: appId,
+        });
 
-      if (!res.success) throw new Error(res.result);
-      if (res.result !== 'icon_is_same_path') showRestartConfirm();
+        if (!res.success) throw new Error(res.result);
+        if (res.result !== 'icon_is_same_path') showRestartConfirm();
+      } else {
+        if (appOverview) {
+          // Redownload the icon from Steam
+          const res = await serverApi.callPluginMethod('set_steam_icon_from_url', {
+            appid: appId,
+            url: window.appStore.GetIconURLForApp(appOverview),
+          });
+          if (!res.success) throw new Error(res.result);
+        }
+      }
     } else {
       await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
       // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.

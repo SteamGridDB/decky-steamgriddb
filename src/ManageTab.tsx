@@ -26,7 +26,21 @@ const AssetBlock: FC<{
   const innerFocusRef = useRef<HTMLDivElement>(null);
 
   const refreshOverview = async () => {
-    setOverview(await getAppOverview(app.appid));
+    const appoverview = await getAppOverview(app.appid);
+
+    // Today i choose violence
+    if (assetType === 'icon' && appoverview?.icon_hash) {
+      const hash = appoverview?.icon_hash;
+      // fuck up the hash to force render the icon file from the cache
+      appoverview.icon_hash = String(new Date().getTime());
+      setOverview(appoverview);
+      // vibe for a bit
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      // now put that shit back
+      appoverview.icon_hash = hash;
+    }
+
+    setOverview(appoverview);
   };
 
   const handleBrowse = async () => {
@@ -82,13 +96,21 @@ const AssetBlock: FC<{
             </Focusable>
           )}
         </Focusable>
-        {overview && (
+        {overview ? (
           <LibraryImage
             app={overview}
             eAssetType={ASSET_TYPE[assetType]}
             allowCustomization={false}
             className="asset"
             imageClassName="asset-img"
+          />
+        ) : (
+          <div
+            style={{
+              width: '32px',
+              maxHeight: '32px',
+              paddingTop: '32px',
+            }}
           />
         )}
       </Focusable>
@@ -104,7 +126,21 @@ const LocalTab: FC = () => {
   useEffect(() => {
     if (!appId) return;
     (async () => {
-      setOverview(await getAppOverview(appId));
+      const appoverview = await getAppOverview(appId);
+
+      // Today i choose violence
+      if (appoverview?.icon_hash) {
+        const hash = appoverview?.icon_hash;
+        // fuck up the hash to force render the icon file from the cache
+        appoverview.icon_hash = String(new Date().getTime());
+        setOverview(appoverview);
+        // vibe for a bit
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        // now put that shit back
+        appoverview.icon_hash = hash;
+      }
+
+      setOverview(appoverview);
       const path = (await serverApi.callPluginMethod('get_local_start', {})).result as string;
       setStartPath(path);
     })();
