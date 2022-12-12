@@ -40,7 +40,7 @@
   "LABEL_FILTER_TAG_UNTAGGED": "タグなし",
   "ACTION_FILTER_RESET": "フィルターをリセット",
   "MSG_GAME_SELECTED": "{gameName}を選択中",
-  "MSG_ASSETS_FILTERED": "フィルターにより一部のアセットが非表示になる可能性があります",
+  "MSG_ASSETS_FILTERED": "フィルターにより一部の画像が非表示になる可能性があります",
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "フィルター付きで{gameName}を選択中",
   "MSG_ASSET_APPLY_SUCCESS": "{assetType}が正常に適用されました！",
   "MSG_ASSET_APPLY_ERROR": "この画像を適用する際に問題が発生しました",
