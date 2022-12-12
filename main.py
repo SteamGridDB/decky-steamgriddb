@@ -6,6 +6,7 @@ from urllib.request import Request, urlopen
 from urllib.parse import urlparse
 from base64 import b64encode
 from pathlib import Path
+from shutil import copyfile
 from settings import SettingsManager
 from helpers import get_ssl_context, get_user, set_user, get_home_path, get_homebrew_path
 
@@ -59,28 +60,40 @@ class Plugin:
 
         return False
 
+    async def set_shortcut_icon_from_path(self, appid, owner_id, path):
+        ext = Path(path).suffix
+        iconname = "%s_icon%s" % (appid, ext)
+        output_file = get_userdata_config(owner_id) / "grid" / iconname
+        saved_path = str(copyfile(path, output_file))
+        return await self.set_shortcut_icon(self, appid, owner_id, path=saved_path)
 
-    async def set_shortcut_icon(self, owner_id, url, appid):
+    async def set_shortcut_icon_from_url(self, appid, owner_id, url):
         output_dir = get_userdata_config(owner_id) / "grid"
+        ext = Path(urlparse(url).path).suffix
+        iconname = "%s_icon%s" % (appid, ext)
+        saved_path = await self.download_file(self, url, output_dir, file_name=iconname)
+        if saved_path:
+            return await self.set_shortcut_icon(self, appid, owner_id, path=saved_path)
+        else:
+            raise Exception("Failed to download icon from %s" % url)
+
+    async def set_shortcut_icon(self, appid, owner_id, path=None):
         shortcuts_vdf = get_userdata_config(owner_id) / "shortcuts.vdf"
 
         d = binary_load(open(shortcuts_vdf, "rb"))
         for shortcut in d['shortcuts'].values():
             shortcut_appid = (shortcut['appid'] & 0xffffffff) | 0x80000000
             if shortcut_appid == appid:
-                ext = Path(urlparse(url).path).suffix
-                iconname = "%s_icon%s" % (appid, ext)
-                saved_path = await self.download_file(self, url, output_dir, file_name=iconname)
-                if saved_path:
-                    if shortcut['icon'] == saved_path:
-                        return 'icon_is_same_path'
+                if shortcut['icon'] == path:
+                    return 'icon_is_same_path'
 
-                    shortcut['icon'] = saved_path
-                    binary_dump(d, open(shortcuts_vdf, 'wb'))
-                    return True
+                # Clear icon
+                if path is None:
+                    shortcut['icon'] = ''
                 else:
-                    raise Exception("Failed to download icon from %s" % url)
-                break
+                    shortcut['icon'] = path
+                binary_dump(d, open(shortcuts_vdf, 'wb'))
+                return True
         raise Exception("Could not find shortcut to edit")
 
     async def set_setting(self, key, value):

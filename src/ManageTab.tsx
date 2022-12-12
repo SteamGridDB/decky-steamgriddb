@@ -71,14 +71,16 @@ const AssetBlock: FC<{
           >
             <HiFolder />
           </Focusable>
-          <Focusable
-            noFocusRing
-            className="action-button"
-            onActivate={handleBlank}
-            onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
-          >
-            <HiEyeSlash />
-          </Focusable>
+          {assetType !== 'icon' && (
+            <Focusable
+              noFocusRing
+              className="action-button"
+              onActivate={handleBlank}
+              onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
+            >
+              <HiEyeSlash />
+            </Focusable>
+          )}
         </Focusable>
         {overview && (
           <LibraryImage

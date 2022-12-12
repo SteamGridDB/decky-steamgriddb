@@ -7,14 +7,15 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import { SteamAppOverview, ServerAPI, ConfirmModal, showModal } from 'decky-frontend-lib';
+import { SteamAppOverview, ServerAPI } from 'decky-frontend-lib';
 
 import MenuIcon from '../components/Icons/MenuIcon';
 import getAppOverview from '../utils/getAppOverview';
 import log from '../utils/log';
 import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
 import getAppDetails from '../utils/getAppDetails';
-import t from '../utils/i18n';
+import showRestartConfirm from '../utils/showRestartConfirm';
+import getCurrentSteamUserId from '../utils/getCurrentSteamUserId';
 
 /*
   special key only for use with this decky plugin
@@ -31,7 +32,6 @@ export type SGDBContextType = {
   appOverview: SteamAppOverview;
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
-  restartSteam: () => void;
   serverApi: ServerAPI;
   changeAsset: (data: string, assetType: SGDBAssetType | eAssetType) => Promise<void>;
   changeAssetFromUrl: (location: string, assetType: SGDBAssetType | eAssetType, path?: boolean) => Promise<void>;
@@ -99,10 +99,6 @@ export const SGDBContext = createContext({});
 export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
   const [appId, setAppId] = useState<number | null>(null);
   const [appOverview, setAppOverview] = useState<SteamAppOverview | null>(null);
-
-  const restartSteam = () => {
-    SteamClient.User.StartRestart();
-  };
 
   const changeAsset: SGDBContextType['changeAsset'] = useCallback(async (data, assetType) => {
     assetType = getAmbiguousAssetType(assetType);
@@ -177,30 +173,20 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType, path = false) => {
     assetType = getAmbiguousAssetType(assetType);
     if (assetType === ASSET_TYPE.icon && appOverview?.BIsShortcut()) {
-      const res = await serverApi.callPluginMethod('set_shortcut_icon', {
-        url,
-        owner_id: BigInt.asUintN(32, BigInt(window.App.m_CurrentUser.strSteamID)).toString(),
+      const res = await serverApi.callPluginMethod(path ? 'set_shortcut_icon_from_path' : 'set_shortcut_icon_from_url', {
+        owner_id: getCurrentSteamUserId(),
         appid: appId,
+        ...(path ? { path: url } : { url }),
       });
 
-      if (!res.success) {
-        throw new Error(res.result);
-      }
+      if (!res.success) throw new Error(res.result);
       log('set_shortcut_icon result', res.result);
       if (res.result === 'icon_is_same_path') {
         // If the path is already the same as the current icon, we can force an icon re-read by setting the name to itself
         SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
       } else if (res.result === true) {
         // shortcuts.vdf was modified, can't figure out how to make Steam re-read it so just ask user to reboot
-        showModal(
-          <ConfirmModal
-            strTitle={t('LABEL_RESTART_STEAM_TITLE', 'Restart Steam?')}
-            strCancelButtonText={t('ACTION_RESTART_STEAM_LATER', 'Later')}
-            strOKButtonText={t('ACTION_RESTART_STEAM_NOW', 'Restart Now')}
-            strDescription={t('MSG_RESTART_STEAM_DESC', 'Steam needs to be restarted for the changes to take effect.')}
-            onOK={restartSteam}
-          />
-        );
+        showRestartConfirm();
       }
     } else {
       const data = await getImageAsB64(url, path);
@@ -212,10 +198,22 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   }, [appId, appOverview, changeAsset, getImageAsB64, serverApi]);
 
   const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
-    await SteamClient.Apps.ClearCustomArtworkForApp(appId, getAmbiguousAssetType(assetType));
-    // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }, [appId]);
+    assetType = getAmbiguousAssetType(assetType);
+    if (assetType === ASSET_TYPE.icon && appOverview?.BIsShortcut()) {
+      const res = await serverApi.callPluginMethod('set_shortcut_icon', {
+        path: null, // null removes the icon
+        owner_id: getCurrentSteamUserId(),
+        appid: appId,
+      });
+
+      if (!res.success) throw new Error(res.result);
+      if (res.result !== 'icon_is_same_path') showRestartConfirm();
+    } else {
+      await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
+      // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  }, [appId, appOverview, serverApi]);
 
   const searchGames = useCallback(async (term) => {
     try {
@@ -274,7 +272,6 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     setAppId,
     searchAssets,
     searchGames,
-    restartSteam,
     changeAsset,
     changeAssetFromUrl,
     clearAsset,
