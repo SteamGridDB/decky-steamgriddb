@@ -20,7 +20,8 @@ const AssetBlock: FC<{
   app: SteamAppOverview,
   assetType: SGDBAssetType,
   browseStartPath: string,
-}> = ({ app, browseStartPath, assetType }) => {
+  editable?: boolean,
+}> = ({ app, browseStartPath, assetType, editable = true }) => {
   const { clearAsset, changeAsset, serverApi, changeAssetFromUrl } = useSGDB();
   const [overview, setOverview] = useState<SteamAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
@@ -63,39 +64,41 @@ const AssetBlock: FC<{
     <div className={joinClassNames('asset-wrap', `asset-wrap-${assetType}`)}>
       <div className="asset-label">{t('LABEL_ASSET_CURRENT', 'Current {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</div>
       <Focusable
-        onActivate={() => innerFocusRef.current?.focus()}
+        onActivate={editable ? () => innerFocusRef.current?.focus() : undefined}
         focusWithinClassName="is-focused"
         focusClassName="is-focused"
       >
-        <Focusable flow-children="right" className="action-overlay">
-          <Focusable
-            ref={innerFocusRef}
-            noFocusRing
-            className="action-button"
-            onActivate={handleClear}
-            onOKActionDescription={t('ACTION_ASSET_CUSTOM_CLEAR', 'Clear Custom Asset')}
-          >
-            <HiTrash />
-          </Focusable>
-          <Focusable
-            noFocusRing
-            className="action-button"
-            onActivate={handleBrowse}
-            onOKActionDescription={t('ACTION_ASSET_BROWSE_LOCAL', 'Browse for Local Files')}
-          >
-            <HiFolder />
-          </Focusable>
-          {assetType !== 'icon' && (
+        {editable && (
+          <Focusable flow-children="right" className="action-overlay">
+            <Focusable
+              ref={innerFocusRef}
+              noFocusRing
+              className="action-button"
+              onActivate={handleClear}
+              onOKActionDescription={t('ACTION_ASSET_CUSTOM_CLEAR', 'Clear Custom Asset')}
+            >
+              <HiTrash />
+            </Focusable>
             <Focusable
               noFocusRing
               className="action-button"
-              onActivate={handleBlank}
-              onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
+              onActivate={handleBrowse}
+              onOKActionDescription={t('ACTION_ASSET_BROWSE_LOCAL', 'Browse for Local Files')}
             >
-              <HiEyeSlash />
+              <HiFolder />
             </Focusable>
-          )}
-        </Focusable>
+            {assetType !== 'icon' && (
+              <Focusable
+                noFocusRing
+                className="action-button"
+                onActivate={handleBlank}
+                onOKActionDescription={t('ACTION_ASSET_APPLY_TRANSPARENT', 'Use Invisible Asset')}
+              >
+                <HiEyeSlash />
+              </Focusable>
+            )}
+          </Focusable>
+        )}
         {overview ? (
           <LibraryImage
             app={overview}
@@ -121,16 +124,17 @@ const AssetBlock: FC<{
 const LocalTab: FC = () => {
   const { appId, serverApi, appOverview } = useSGDB();
   const [startPath, setStartPath] = useState('/');
-  const [overview, setOverview] = useState<any>();
+  const [overview, setOverview] = useState<SteamAppOverview>();
 
   useEffect(() => {
     if (!appId) return;
     (async () => {
       const appoverview = await getAppOverview(appId);
+      if (!appoverview) return;
 
       // Today i choose violence
-      if (appoverview?.icon_hash) {
-        const hash = appoverview?.icon_hash;
+      if (appoverview.icon_hash) {
+        const hash = appoverview.icon_hash;
         // fuck up the hash to force render the icon file from the cache
         appoverview.icon_hash = String(new Date().getTime());
         setOverview(appoverview);
@@ -160,6 +164,7 @@ const LocalTab: FC = () => {
           app={overview}
           assetType="icon"
           browseStartPath={startPath}
+          editable={!(overview.third_party_mod)}
         />
       </Focusable>
       <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
