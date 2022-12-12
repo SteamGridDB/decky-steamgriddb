@@ -12,7 +12,8 @@ declare module 'decky-frontend-lib' {
     appid: number,
     display_name: string,
     third_party_mod?: boolean,
-    BIsModOrShortcut: () => boolean
+    BIsModOrShortcut: () => boolean,
+    BIsShortcut: () => boolean,
   }
   export interface SliderFieldProps extends SliderFieldPropsO {
     className?: string;

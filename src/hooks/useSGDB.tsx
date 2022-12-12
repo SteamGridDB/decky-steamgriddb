@@ -7,13 +7,14 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import { SteamAppOverview, ServerAPI } from 'decky-frontend-lib';
+import { SteamAppOverview, ServerAPI, ConfirmModal, showModal } from 'decky-frontend-lib';
 
 import MenuIcon from '../components/Icons/MenuIcon';
 import getAppOverview from '../utils/getAppOverview';
 import log from '../utils/log';
 import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
 import getAppDetails from '../utils/getAppDetails';
+import t from '../utils/i18n';
 
 /*
   special key only for use with this decky plugin
@@ -38,6 +39,60 @@ export type SGDBContextType = {
 }
 
 const getAmbiguousAssetType = (assetType: SGDBAssetType | eAssetType) => typeof assetType === 'number' ? assetType : ASSET_TYPE[assetType];
+
+const getApiParams = (assetType: SGDBAssetType, filters: any) => {
+  let adult = 'false';
+  let humor = 'any';
+  let epilepsy = 'any';
+  let oneoftag = '';
+
+  if (filters?.untagged === true) {
+    if (filters?.humor === false) {
+      humor = 'false';
+    }
+
+    if (filters?.adult === false) {
+      adult = 'false';
+    }
+
+    if (filters?.adult === true) {
+      adult = 'any';
+    }
+
+    if (filters?.epilepsy === false) {
+      epilepsy = 'false';
+    }
+  } else {
+    const selectedTags = [];
+    if (filters?.humor === true) {
+      humor = 'any';
+      selectedTags.push('humor');
+    }
+
+    if (filters?.adult === true) {
+      adult = 'any';
+      selectedTags.push('nsfw');
+    }
+
+    if (filters?.epilepsy === true) {
+      epilepsy = 'any';
+      selectedTags.push('epilepsy');
+    }
+
+    oneoftag = selectedTags.join(',');
+  }
+
+  return new URLSearchParams({
+    styles:  filters?.styles ?? STYLES[assetType].default.join(','),
+    dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
+    mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
+    nsfw: adult,
+    humor,
+    epilepsy,
+    oneoftag,
+    types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
+  }).toString();
+};
 
 export const SGDBContext = createContext({});
 
@@ -120,12 +175,37 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   }, [serverApi]);
 
   const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType, path = false) => {
-    const data = await getImageAsB64(url, path);
-    if (!data) {
-      throw new Error('Failed to retrieve asset');
+    assetType = getAmbiguousAssetType(assetType);
+    if (assetType === ASSET_TYPE.icon && appOverview?.BIsShortcut()) {
+      const res = await serverApi.callPluginMethod('set_shortcut_icon', {
+        url,
+        owner_id: BigInt.asUintN(32, BigInt(window.App.m_CurrentUser.strSteamID)).toString(),
+        appid: appId,
+      });
+
+      if (!res.success) {
+        throw new Error(res.result);
+      }
+
+      // Can't figure out how to make Steam re-read the shortcuts.vdf so just ask user to reboot
+      showModal(
+        <ConfirmModal
+          strTitle={t('LABEL_RESTART_STEAM_TITLE', 'Restart Steam?')}
+          strCancelButtonText={t('ACTION_RESTART_STEAM_LATER', 'Later')}
+          strOKButtonText={t('ACTION_RESTART_STEAM_NOW', 'Restart Now')}
+          strDescription={t('MSG_RESTART_STEAM_DESC', 'Steam needs to be restarted for the changes to take effect.')}
+          onOK={restartSteam}
+        />
+      );
+      // SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
+    } else {
+      const data = await getImageAsB64(url, path);
+      if (!data) {
+        throw new Error('Failed to retrieve asset');
+      }
+      await changeAsset(data, assetType);
     }
-    await changeAsset(data, assetType);
-  }, [changeAsset, getImageAsB64]);
+  }, [appId, appOverview, changeAsset, getImageAsB64, serverApi]);
 
   const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
     await SteamClient.Apps.ClearCustomArtworkForApp(appId, getAmbiguousAssetType(assetType));
@@ -166,58 +246,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       break;
     }
 
-    let adult = 'false';
-    let humor = 'any';
-    let epilepsy = 'any';
-    let oneoftag = '';
-
-    if (filters?.untagged === true) {
-      if (filters?.humor === false) {
-        humor = 'false';
-      }
-
-      if (filters?.adult === false) {
-        adult = 'false';
-      }
-
-      if (filters?.adult === true) {
-        adult = 'any';
-      }
-
-      if (filters?.epilepsy === false) {
-        epilepsy = 'false';
-      }
-    } else {
-      const selectedTags = [];
-      if (filters?.humor === true) {
-        humor = 'any';
-        selectedTags.push('humor');
-      }
-
-      if (filters?.adult === true) {
-        adult = 'any';
-        selectedTags.push('nsfw');
-      }
-
-      if (filters?.epilepsy === true) {
-        epilepsy = 'any';
-        selectedTags.push('epilepsy');
-      }
-
-      oneoftag = selectedTags.join(',');
-    }
-
-    const qs = new URLSearchParams({
-      styles:  filters?.styles ?? STYLES[assetType].default.join(','),
-      dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
-      mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
-      nsfw: adult,
-      humor,
-      epilepsy,
-      oneoftag,
-      types: [filters?._static && 'static', filters?.animated && 'animated'].filter(Boolean).join(','),
-    }).toString();
-
+    const qs = getApiParams(assetType, filters);
     log('asset search', gameId, qs);
     return await apiRequest(`/${type}/${gameId ? 'game' : 'steam'}/${gameId ?? appId}?${qs}`, signal);
   }, [apiRequest, appId]);
