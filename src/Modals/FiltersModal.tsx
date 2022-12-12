@@ -9,13 +9,13 @@ import {
   DialogButton,
   showModal,
   DialogFooter,
+  Marquee,
 } from 'decky-frontend-lib';
 import { FC, useCallback, useMemo, useState } from 'react';
 
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
 import { MIMES, STYLES, DIMENSIONS, SGDB_ASSET_TYPE_READABLE } from '../constants';
-import Marquee from '../components/Marquee';
 import compareFilterWithDefaults from '../utils/compareFilterWithDefaults';
 
 import GameSelectionModal from './GameSelectionModal';

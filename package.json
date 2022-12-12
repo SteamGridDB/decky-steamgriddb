@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "async-wait-until": "^2.0.12",
-    "decky-frontend-lib": "^3.13.0",
+    "decky-frontend-lib": "^3.18.2",
     "just-debounce": "^1.1.0",
     "qrcode.react": "^3.1.0",
     "react-fast-compare": "^3.2.0",

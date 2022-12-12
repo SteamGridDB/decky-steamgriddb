@@ -9,6 +9,7 @@ import {
   Focusable,
   IconsModule,
   Spinner,
+  Marquee,
 } from 'decky-frontend-lib';
 import {
   FC,
@@ -25,7 +26,6 @@ import t from '../utils/i18n';
 import FlashpointIcon from '../components/Icons/FlashpointIcon';
 import EshopIcon from '../components/Icons/EshopIcon';
 import GogIcon from '../components/Icons/GogIcon';
-import Marquee from '../components/Marquee';
 
 // @todo: find a better way to get this
 const SearchIcon = Object.values(IconsModule).find((mod: any) => mod?.toString().includes('M27.5 24C29.4972 21.1283 30.3471')) as FC<SVGAttributes<SVGElement>>;

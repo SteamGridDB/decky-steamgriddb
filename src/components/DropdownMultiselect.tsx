@@ -4,14 +4,14 @@ import {
   Menu,
   MenuItem,
   findModuleChild,
+  DialogCheckbox,
+  DialogCheckboxProps,
+  Marquee,
 } from 'decky-frontend-lib';
 import { FC, useState, useEffect, useCallback } from 'react';
 
-import DialogCheckbox, { DialogCheckboxProps } from '../components/DialogCheckbox';
 import Chevron from '../components/Chevron';
 import t from '../utils/i18n';
-
-import Marquee from './Marquee';
 
 const dropDownControlButtonClass = findModuleChild((m) => {
   if (typeof m !== 'object') return undefined;

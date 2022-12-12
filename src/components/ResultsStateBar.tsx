@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import reactStringReplace from 'react-string-replace';
+import { Marquee } from 'decky-frontend-lib';
 
 import t from '../utils/i18n';
 
 import AppGridFilterBar from './AppGridFilterBar';
-import Marquee from './Marquee';
 import FooterGlyph from './FooterGlyph';
 
 const strGameSelected = t('MSG_GAME_SELECTED', 'Selected {gameName}');
