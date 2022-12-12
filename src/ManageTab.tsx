@@ -65,6 +65,7 @@ const AssetBlock: FC<{
       <div className="asset-label">{t('LABEL_ASSET_CURRENT', 'Current {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</div>
       <Focusable
         onActivate={editable ? () => innerFocusRef.current?.focus() : undefined}
+        onClick={(evt) => evt.preventDefault()} // Click events only happen with cursor, don't need to focus if clicking.
         focusWithinClassName="is-focused"
         focusClassName="is-focused"
       >

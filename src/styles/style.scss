@@ -319,7 +319,8 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
             }
           }
         }
-        &.is-focused {
+        &.is-focused,
+        &:hover {
           .action-overlay {
             display: flex;
           }
