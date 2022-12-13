@@ -35,7 +35,7 @@ export const LANGS = {
   fr: {
     name: 'Français',
     strings: fr,
-    credit: ['atomike'],
+    credit: ['Michael Jean'],
   },
   ja: {
     name: '日本語',
