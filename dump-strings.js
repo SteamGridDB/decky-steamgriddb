@@ -13,8 +13,8 @@ const content = fs.readFileSync(INPUT_PATH, 'utf8');
 
 const matches = content.matchAll(/(?<![A-z\d])trans_string\('(.+?)', ?'(.+?)'(?:, ?(?:false|!!0|!1))?\)/g);
 const strings = {};
-for (const key of matches) {
-    strings[key[1]] = key[2];
+for (const [, key, str] of matches) {
+    strings[key] = str;
 }
 fs.writeFileSync(OUTPUT_PATH, JSON.stringify(strings, null, 2));
 console.info(`Saved ${Object.keys(strings).length} strings to ${OUTPUT_PATH}`);

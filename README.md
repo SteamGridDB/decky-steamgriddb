@@ -1,7 +1,7 @@
 <div align="center">
 <img src="thumb.png">
 
-[![Crowdin](https://badges.crowdin.net/decky-steamgriddb/localized.svg)](https://crowdin.com/project/decky-steamgriddb) [![Discord](https://img.shields.io/discord/488621078302949377?color=5865F2\&label=discord)](https://discord.gg/bnSVJrz) [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-007ec6)](LICENSE)
+[![Crowdin](https://badges.crowdin.net/decky-steamgriddb/localized.svg)](https://crowdin.com/project/decky-steamgriddb) [![Discord](https://img.shields.io/discord/488621078302949377?color=5865F2\&label=discord)](https://discord.gg/bnSVJrz) [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-informational)](LICENSE)
 </div>
 
 <h1 align="center">SteamGridDB plugin for Decky Loader</h1>
@@ -12,9 +12,10 @@ Easily browse and manage Steam artwork from SteamGridDB or your local files from
 
 ## Features
 - Browse assets from SteamGridDB for the selected game.
-- Support for non-Steam shortcuts.
+- Support for non-Steam shortcuts and Source/GoldSrc mods.
+- Ability to change icons for Steam or non-Steam shortcuts.
 - Manually select images from the local file system.
-- Utility to apply invisible assets (to hide logos).
+- Utility to apply invisible assets.
 - Reset custom images back to default.
 
 ## Installation
@@ -33,14 +34,31 @@ You can usually access the menu by focusing on a game and pressing <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/start-light.svg">
   <source media="(prefers-color-scheme: light)" srcset="docs/start-dark.svg">
   <img height="16px" alt="Start" src="docs/start-dark.svg">
-</picture> or if you're on a game page, by using the <picture>
+</picture>.  
+Or by using the <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/menucog-light.svg">
   <source media="(prefers-color-scheme: light)" srcset="docs/menucog-dark.svg">
-  <img height="16px" alt="Start" src="docs/menucog-dark.svg">
-</picture> button.  
+  <img height="16px" alt="Cog" src="docs/menucog-dark.svg">
+</picture> button on a game page.
 
 <img src="docs/gamecontextmenu.png" height="300px">  
 
 # Credits
-Early testing: Emenesu & Mr. Mendelli  
-Localisation credits can be found in [i18n.ts](src/utils/i18n.ts) and in the quick access menu while a language is in use.
+**Early Testing:** Emenesu, Mr. Mendelli  
+**Development Help:** [SDH Discord](https://discord.gg/ZU74G2NJzk)  
+**Localisation:**
+| | |
+| - | - |
+| **Deutsch** | Kurikuo |
+| **Español-España** | Andrea Laguillo, Kam |
+| **Español-Latinoamérica** | Kam |
+| **Français** | Michael Jean |
+| **Polski** | DRS |
+| **Português** | Kokasgui |
+| **Português-Brasil** | Oregano |
+| **Română** | Munt |
+| **Svenska** | Moneyman Dan |
+| **Ελληνικά** | Emenesu |
+| **Русский** | fycher |
+| **한국어** | yor42 |
+| **日本語** | Nes |
