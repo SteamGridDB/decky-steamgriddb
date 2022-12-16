@@ -43,7 +43,10 @@ export default definePlugin((serverApi: ServerAPI) => {
   const patchedMenu = afterPatch(AppContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
     const appid = component._owner.pendingProps.overview.appid;
-    component._owner.stateNode?.m_hAppDetails?.unregister();
+    if (component._owner.stateNode?.m_hAppDetails) {
+      component._owner.stateNode.m_hAppDetails.unregister();
+      component._owner.stateNode.m_hAppDetails = null;
+    }
 
     // Add button second to last
     component.props.children.splice(-1, 0, (
