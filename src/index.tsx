@@ -29,6 +29,20 @@ const AppContextMenu = findModuleChild((m) => {
   return;
 });
 
+// Add button second to last
+const spliceArtworkItem = (children: any[], appid: number) => {
+  children.splice(-1, 0, (
+    <MenuItem
+      key="sgdb-change-artwork"
+      onSelected={() => {
+        Router.Navigate(`/steamgriddb/${appid}`);
+      }}
+    >
+      {t('ACTION_CHANGE_ARTWORK', 'Change artwork...')}
+    </MenuItem>
+  ));
+};
+
 export default definePlugin((serverApi: ServerAPI) => {
   serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => (
     <SettingsProvider serverApi={serverApi}>
@@ -43,22 +57,14 @@ export default definePlugin((serverApi: ServerAPI) => {
   const patchedMenu = afterPatch(AppContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
     const appid = component._owner.pendingProps.overview.appid;
-    if (component._owner.stateNode?.m_hAppDetails) {
-      component._owner.stateNode.m_hAppDetails.unregister();
-      component._owner.stateNode.m_hAppDetails = null;
-    }
+    afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
+      if (shouldUpdate === true && !nextProps.children.find((x: any) => x?.key === 'sgdb-change-artwork')) {
+        spliceArtworkItem(nextProps.children, appid);
+      }
+      return shouldUpdate;
+    }, { singleShot: true });
 
-    // Add button second to last
-    component.props.children.splice(-1, 0, (
-      <MenuItem
-        key="sgdb-change-artwork"
-        onSelected={() => {
-          Router.Navigate(`/steamgriddb/${appid}`);
-        }}
-      >
-        {t('ACTION_CHANGE_ARTWORK', 'Change artwork...')}
-      </MenuItem>
-    ));
+    spliceArtworkItem(component.props.children, appid);
     return component;
   });
 
