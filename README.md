@@ -60,5 +60,6 @@ Or by using the <picture>
 | **Svenska** | Moneyman Dan |
 | **Ελληνικά** | Emenesu |
 | **Русский** | fycher |
+| **Українська** | Veydzher |
 | **한국어** | yor42 |
 | **日本語** | Nes |
