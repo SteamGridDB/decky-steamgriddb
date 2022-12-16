@@ -32,8 +32,15 @@ const AssetTabs: VFC<{
       onShowTab={onShowTab}
       tabs={[
         ...Object.keys(tabStrs)
-          // Icons won't work on mods unless you edit liblist.gam/gameinfo.txt and no way that's happening in this plugin
-          .filter((type) => !(appOverview.third_party_mod && type === 'icon'))
+          /*
+            Filter out icons if:
+              - App is a mod, editing edit liblist.gam/gameinfo.txt is destructive and out of scope for this plugin
+              - Shortcut is not locally installed, can't edit shortcuts.vdf remotely.
+          */
+          .filter((type) => !(type === 'icon' && (
+            appOverview.third_party_mod ||
+            (appOverview.BIsShortcut() && appOverview.selected_clientid != '0')
+          )))
           .map((type) => ({
             id: type,
             title: tabStrs[type],

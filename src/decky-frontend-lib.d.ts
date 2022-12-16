@@ -9,6 +9,7 @@ declare module 'decky-frontend-lib' {
     display_name: string,
     icon_hash: string,
     third_party_mod?: boolean,
+    selected_clientid?: string,
     BIsModOrShortcut: () => boolean,
     BIsShortcut: () => boolean,
   }

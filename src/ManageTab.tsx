@@ -166,7 +166,7 @@ const LocalTab: FC = () => {
           app={overview}
           assetType="icon"
           browseStartPath={startPath}
-          editable={!(overview.third_party_mod)}
+          editable={!(overview.third_party_mod || (overview.BIsShortcut() && overview.selected_clientid != '0'))}
         />
       </Focusable>
       <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
