@@ -11,6 +11,7 @@ import * as ptBr from '../i18n/pt-br.json';
 import * as ro from '../i18n/ro.json';
 import * as ru from '../i18n/ru.json';
 import * as sv from '../i18n/sv.json';
+import * as uk from '../i18n/uk.json';
 
 export const LANGS = {
   de: {
@@ -78,6 +79,11 @@ export const LANGS = {
     strings: sv,
     credit: ['Moneyman Dan'],
   },
+  uk: {
+    name: 'Українська',
+    strings: uk,
+    credit: ['Veydzher'],
+  },
 //  it: {
 //    name: 'Italiano',
 //    strings: it,
@@ -143,11 +149,6 @@ export const LANGS = {
 //    strings: en,
 //    credit: []
 //  }
-//  uk: {
-//    name: 'Українська',
-//    strings: uk,
-//    credit: []
-//  },
 //  vn: {
 //    name: 'Tiếng Việt',
 //    strings: vn,
