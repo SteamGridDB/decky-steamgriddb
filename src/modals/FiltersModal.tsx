@@ -102,7 +102,7 @@ const FiltersModal: FC<{
                 );
               }}
               >
-                <Marquee>
+                <Marquee center>
                   {selectedGame.name}
                 </Marquee>
               </DialogButton>
