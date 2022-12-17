@@ -42,6 +42,19 @@ export const AssetSearchContext: FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>();
 
+  const showGameSelection = useCallback(() => {
+    showModal(
+      <GameSelectionModal
+        defaultTerm={appOverview.display_name}
+        searchGames={searchGames}
+        onSelect={(game: any) => {
+          setSelectedGame(game);
+          set(`nonsteam_${appId}`, game);
+        }}
+      />
+    );
+  }, [appId, appOverview.display_name, searchGames, set]);
+
   const searchAndSetAssets = useMemo(() => debounce(async (assetType, filters, onSuccess) => {
     if (appOverview?.BIsModOrShortcut() && !selectedGame) return;
     if (abortCont) abortCont?.abort();
@@ -61,6 +74,8 @@ export const AssetSearchContext: FC = ({ children }) => {
     } catch (err: any) {
       if (err.name === 'AbortError') {
         log('Search Aborted');
+      } else if (err?.status === 404) {
+        showGameSelection();
       } else {
         serverApi.toaster.toast({
           title: 'SteamGridDB API Error',
@@ -72,7 +87,7 @@ export const AssetSearchContext: FC = ({ children }) => {
         }
       }
     }
-  }, 500), [appId, appOverview, searchAssets, selectedGame, serverApi.toaster, set]) as AssetSearchContextType['searchAndSetAssets'];
+  }, 500), [appId, appOverview, searchAssets, showGameSelection, selectedGame, serverApi.toaster, set]) as AssetSearchContextType['searchAndSetAssets'];
 
   const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
     if (!isEqual(filters, currentFilters)) {
@@ -99,7 +114,7 @@ export const AssetSearchContext: FC = ({ children }) => {
         assetType={assetType}
         onSave={handleFiltersSave}
         defaultFilters={defaultFilters}
-        isNonSteamShortcut={appOverview.BIsModOrShortcut()}
+        selectableGame={appOverview.BIsModOrShortcut() || selectedGame}
         defaultSelectedGame={selectedGame}
         searchGames={searchGames}
       />
@@ -107,33 +122,25 @@ export const AssetSearchContext: FC = ({ children }) => {
   }, [appOverview, get, handleFiltersSave, searchGames, selectedGame]);
 
   useEffect(() => {
-    if (!appOverview || !appOverview.BIsModOrShortcut()) return;
+    if (!appOverview) return;
     (async () => {
       setLoading(true);
       const game = await get(`nonsteam_${appId}`, false);
       if (game) {
         setSelectedGame(game);
       } else {
-        const gameRes = await searchGames(appOverview.display_name);
-        if (gameRes.length) {
-          setSelectedGame(gameRes[0]);
-        } else {
-          // open search and selection
-          showModal(
-            <GameSelectionModal
-              defaultTerm={appOverview.display_name}
-              searchGames={searchGames}
-              onSelect={(game: any) => {
-                setSelectedGame(game);
-                set(`nonsteam_${appId}`, game);
-              }}
-            />
-          );
+        if (appOverview.BIsModOrShortcut()) {
+          const gameRes = await searchGames(appOverview.display_name);
+          if (gameRes.length) {
+            setSelectedGame(gameRes[0]);
+          } else {
+            showGameSelection();
+          }
         }
       }
       setLoading(false);
     })();
-  }, [appOverview, appId, get, searchGames, set]);
+  }, [appOverview, appId, get, searchGames, set, showGameSelection]);
 
   const value = useMemo(() => ({
     loading,

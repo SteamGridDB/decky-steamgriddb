@@ -137,6 +137,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
           Authorization: `Bearer ${SGDB_API_KEY}`,
         },
       }).then((res) => {
+        log(res);
         if (!res.success) {
           return reject(new Error('SGDB API request failed'));
         }
@@ -144,7 +145,9 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
         try {
           const assetRes = JSON.parse((res.result as { body: string }).body);
           if (!assetRes.success) {
-            return reject(new Error(assetRes.errors.join(', ')));
+            const apiErr = new Error(assetRes.errors.join(', '));
+            (apiErr as any).status = (res.result as { status: number }).status;
+            return reject(apiErr);
           }
           return resolve(assetRes.data);
         } catch (err: any) {
@@ -238,7 +241,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   const searchGames = useCallback(async (term) => {
     try {
       const res = await apiRequest(`/search/autocomplete/${encodeURIComponent(term)}`);
-      log(res);
+      log('search games', res);
       return res;
     } catch (err: any) {
       serverApi.toaster.toast({

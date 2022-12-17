@@ -25,7 +25,7 @@ const FiltersModal: FC<{
   assetType: SGDBAssetType,
   onSave: (assetType: SGDBAssetType, filters: any, selectedGame?: any) => void,
   defaultFilters: any,
-  isNonSteamShortcut: boolean;
+  selectableGame: boolean;
   defaultSelectedGame: any;
   searchGames: (term: string) => Promise<any[]>;
 }> = ({
@@ -33,7 +33,7 @@ const FiltersModal: FC<{
   assetType,
   onSave,
   defaultFilters,
-  isNonSteamShortcut,
+  selectableGame,
   defaultSelectedGame,
   searchGames,
 }) => {
@@ -88,7 +88,7 @@ const FiltersModal: FC<{
       <DialogHeader>{t('LABEL_FILTER_MODAL_TITLE', '{assetType} Filter').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
-          {isNonSteamShortcut && (
+          {selectableGame && (
             <Field label={t('LABEL_FILTER_GAME', 'Game')}>
               <DialogButton onClick={() => {
                 showModal(
