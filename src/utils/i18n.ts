@@ -12,6 +12,13 @@ import * as ro from '../i18n/ro.json';
 import * as ru from '../i18n/ru.json';
 import * as sv from '../i18n/sv.json';
 import * as uk from '../i18n/uk.json';
+import * as zhCn from '../i18n/zh-cn.json';
+
+const simplifiedChinese = {
+  name: '简体中文',
+  strings: zhCn,
+  credit: ['zhzy0077']
+};
 
 export const LANGS = {
   de: {
@@ -84,14 +91,11 @@ export const LANGS = {
     strings: uk,
     credit: ['Veydzher'],
   },
+  'zh-cn': simplifiedChinese,
+  'sc-sc': simplifiedChinese, // sc-sc is "SteamChina" i think?, it's mapped to zh-cn in the client so doing the same here.
 //  it: {
 //    name: 'Italiano',
 //    strings: it,
-//    credit: []
-//  },
-//  'zh-cn': {
-//    name: '简体中文',
-//    strings: zhCn,
 //    credit: []
 //  },
 //  'zh-tw': {
@@ -152,11 +156,6 @@ export const LANGS = {
 //  vn: {
 //    name: 'Tiếng Việt',
 //    strings: vn,
-//    credit: []
-//  },
-//  'sc-sc': { // should be same as zh-cn
-//    name: '简体中文',
-//    strings: scSc,
 //    credit: []
 //  },
 };
