@@ -5,6 +5,7 @@ import * as es419 from '../i18n/es-419.json';
 import * as fr from '../i18n/fr.json';
 import * as ja from '../i18n/ja.json';
 import * as ko from '../i18n/ko.json';
+import * as nl from '../i18n/nl.json';
 import * as pl from '../i18n/pl.json';
 import * as pt from '../i18n/pt.json';
 import * as ptBr from '../i18n/pt-br.json';
@@ -55,6 +56,11 @@ export const LANGS = {
     name: '한국어',
     strings: ko,
     credit: ['yor42'],
+  },
+  nl: {
+    name: 'Nederlands',
+    strings: nl,
+    credit: ['Phanpy100 (Fanny)']
   },
   pl: {
     name: 'Polski',
@@ -111,11 +117,6 @@ export const LANGS = {
 //  da: {
 //    name: 'Dansk',
 //    strings: da,
-//    credit: []
-//  },
-//  nl: {
-//    name: 'Nederlands',
-//    strings: nl,
 //    credit: []
 //  },
 //  fi: {
