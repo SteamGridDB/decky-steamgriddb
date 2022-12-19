@@ -53,9 +53,10 @@ Or by using the <picture>
 | **Español-España** | Andrea Laguillo, Kam |
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |
+| **Nederlands** | Phanpy100 (Fanny) |
 | **Polski** | DRS |
-| **Português** | Kokasgui |
 | **Português-Brasil** | Oregano |
+| **Português** | Kokasgui |
 | **Română** | Munt |
 | **Svenska** | Moneyman Dan |
 | **Ελληνικά** | Emenesu |
