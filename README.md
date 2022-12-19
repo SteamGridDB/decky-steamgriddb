@@ -63,3 +63,4 @@ Or by using the <picture>
 | **Українська** | Veydzher |
 | **한국어** | yor42 |
 | **日本語** | Nes |
+| **简体中文** | zhzy0077 |
