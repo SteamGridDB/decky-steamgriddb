@@ -100,9 +100,39 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
   const [appId, setAppId] = useState<number | null>(null);
   const [appOverview, setAppOverview] = useState<SteamAppOverview | null>(null);
 
+  const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
+    assetType = getAmbiguousAssetType(assetType);
+    if (assetType === ASSET_TYPE.icon) {
+      if (appOverview?.BIsShortcut()) {
+        const res = await serverApi.callPluginMethod('set_shortcut_icon', {
+          path: null, // null removes the icon
+          owner_id: getCurrentSteamUserId(),
+          appid: appId,
+        });
+
+        if (!res.success) throw new Error(res.result);
+        if (res.result !== 'icon_is_same_path') showRestartConfirm();
+      } else {
+        if (appOverview) {
+          // Redownload the icon from Steam
+          const res = await serverApi.callPluginMethod('set_steam_icon_from_url', {
+            appid: appId,
+            url: window.appStore.GetIconURLForApp(appOverview),
+          });
+          if (!res.success) throw new Error(res.result);
+        }
+      }
+    } else {
+      await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
+      // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  }, [appId, appOverview, serverApi]);
+
   const changeAsset: SGDBContextType['changeAsset'] = useCallback(async (data, assetType) => {
     assetType = getAmbiguousAssetType(assetType);
     try {
+      await clearAsset(assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
       if (assetType === ASSET_TYPE.logo) {
         // avoid huge logos on Steam games by providing decent defaults
@@ -119,7 +149,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     } catch (error) {
       log(error);
     }
-  }, [appId]);
+  }, [appId, clearAsset]);
 
   const apiRequest = useCallback((url: string, signal?: AbortSignal): Promise<any[]> => {
     return new Promise((resolve, reject) => {
@@ -208,35 +238,6 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       await changeAsset(data, assetType);
     }
   }, [appId, appOverview, changeAsset, getImageAsB64, serverApi]);
-
-  const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
-    assetType = getAmbiguousAssetType(assetType);
-    if (assetType === ASSET_TYPE.icon) {
-      if (appOverview?.BIsShortcut()) {
-        const res = await serverApi.callPluginMethod('set_shortcut_icon', {
-          path: null, // null removes the icon
-          owner_id: getCurrentSteamUserId(),
-          appid: appId,
-        });
-
-        if (!res.success) throw new Error(res.result);
-        if (res.result !== 'icon_is_same_path') showRestartConfirm();
-      } else {
-        if (appOverview) {
-          // Redownload the icon from Steam
-          const res = await serverApi.callPluginMethod('set_steam_icon_from_url', {
-            appid: appId,
-            url: window.appStore.GetIconURLForApp(appOverview),
-          });
-          if (!res.success) throw new Error(res.result);
-        }
-      }
-    } else {
-      await SteamClient.Apps.ClearCustomArtworkForApp(appId, assetType);
-      // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    }
-  }, [appId, appOverview, serverApi]);
 
   const searchGames = useCallback(async (term) => {
     try {
