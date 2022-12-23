@@ -53,6 +53,7 @@ Or by using the <picture>
 | **Español-España** | Andrea Laguillo, Kam |
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |
+| **Italiano** | SpagottoB37 |
 | **Nederlands** | Phanpy100 (Fanny) |
 | **Polski** | DRS |
 | **Português-Brasil** | Oregano |
