@@ -31,8 +31,17 @@ export default defineConfig({
       'process.env.ROLLUP_ENV': JSON.stringify(process.env.ROLLUP_ENV),
     }),
     importAssets({
-      publicPath: `http://127.0.0.1:1337/plugins/${name}/`
-    })
+      include:[
+        /\.gif$/i,
+        /\.jpg$/i,
+        /\.png$/i,
+        /\.svg$/i,
+        /\.webm$/i,
+        /\.webp$/i,
+        /\.mp4$/i,
+      ],
+      publicPath: `http://127.0.0.1:1337/plugins/${name}/`,
+    }),
   ],
   context: 'window',
   external: ['react', 'react-dom'],
