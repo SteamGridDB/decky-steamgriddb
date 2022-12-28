@@ -3,8 +3,10 @@ import * as el from '../i18n/el.json';
 import * as es from '../i18n/es.json';
 import * as es419 from '../i18n/es-419.json';
 import * as fr from '../i18n/fr.json';
+import * as it from '../i18n/it.json';
 import * as ja from '../i18n/ja.json';
 import * as ko from '../i18n/ko.json';
+import * as nl from '../i18n/nl.json';
 import * as pl from '../i18n/pl.json';
 import * as pt from '../i18n/pt.json';
 import * as ptBr from '../i18n/pt-br.json';
@@ -12,6 +14,13 @@ import * as ro from '../i18n/ro.json';
 import * as ru from '../i18n/ru.json';
 import * as sv from '../i18n/sv.json';
 import * as uk from '../i18n/uk.json';
+import * as zhCn from '../i18n/zh-cn.json';
+
+const simplifiedChinese = {
+  name: '简体中文',
+  strings: zhCn,
+  credit: ['zhzy0077'],
+};
 
 export const LANGS = {
   de: {
@@ -39,6 +48,11 @@ export const LANGS = {
     strings: fr,
     credit: ['Michael Jean'],
   },
+  it: {
+    name: 'Italiano',
+    strings: it,
+    credit: ['SpagottoB37'],
+  },
   ja: {
     name: '日本語',
     strings: ja,
@@ -48,6 +62,11 @@ export const LANGS = {
     name: '한국어',
     strings: ko,
     credit: ['yor42'],
+  },
+  nl: {
+    name: 'Nederlands',
+    strings: nl,
+    credit: ['Phanpy100 (Fanny)'],
   },
   pl: {
     name: 'Polski',
@@ -84,16 +103,8 @@ export const LANGS = {
     strings: uk,
     credit: ['Veydzher'],
   },
-//  it: {
-//    name: 'Italiano',
-//    strings: it,
-//    credit: []
-//  },
-//  'zh-cn': {
-//    name: '简体中文',
-//    strings: zhCn,
-//    credit: []
-//  },
+  'zh-cn': simplifiedChinese,
+  'sc-sc': simplifiedChinese, // sc-sc is "SteamChina" i think?, it's mapped to zh-cn in the client so doing the same here.
 //  'zh-tw': {
 //    name: '繁體中文',
 //    strings: zhTw,
@@ -107,11 +118,6 @@ export const LANGS = {
 //  da: {
 //    name: 'Dansk',
 //    strings: da,
-//    credit: []
-//  },
-//  nl: {
-//    name: 'Nederlands',
-//    strings: nl,
 //    credit: []
 //  },
 //  fi: {
@@ -152,11 +158,6 @@ export const LANGS = {
 //  vn: {
 //    name: 'Tiếng Việt',
 //    strings: vn,
-//    credit: []
-//  },
-//  'sc-sc': { // should be same as zh-cn
-//    name: '简体中文',
-//    strings: scSc,
 //    credit: []
 //  },
 };

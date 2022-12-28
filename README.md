@@ -53,9 +53,11 @@ Or by using the <picture>
 | **Español-España** | Andrea Laguillo, Kam |
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |
+| **Italiano** | SpagottoB37 |
+| **Nederlands** | Phanpy100 (Fanny) |
 | **Polski** | DRS |
-| **Português** | Kokasgui |
 | **Português-Brasil** | Oregano |
+| **Português** | Kokasgui |
 | **Română** | Munt |
 | **Svenska** | Moneyman Dan |
 | **Ελληνικά** | Emenesu |
@@ -63,3 +65,4 @@ Or by using the <picture>
 | **Українська** | Veydzher |
 | **한국어** | yor42 |
 | **日本語** | Nes |
+| **简体中文** | zhzy0077 |
