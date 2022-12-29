@@ -1,5 +1,8 @@
 {
   "ACTION_SHOW_LINK_QR": "ΕΜΦΑΝΙΣΗ QR ΣΥΝΔΕΣΜΟΥ",
+  "MSG_USAGE_INSTRUCTIONS": "Επιλέξτε ένα παιχνίδι {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
+  "ACTION_CHANGE_ARTWORK": "Αλλαγή στοιχείων τέχνης...",
+  "LABEL_USAGE_TITLE": "ΟΔΗΓΟΣ ΧΡΗΣΗΣ",
   "LABEL_TRANSLATION_CREDIT_TITLE": "ΕΛΛΗΝΙΚΗ ΜΕΤΑΦΡΑΣΗ",
   "LABEL_MORE_SGDB_TITLE": "ΣΧΕΤΙΚΑ ΜΕ STEAMGRIDDB",
   "ACTION_SGDB_DISCORD": "Βρείτε μας στο Discord",
@@ -54,6 +57,5 @@
   "LABEL_TAB_HERO": "Hero",
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Icon",
-  "LABEL_TAB_MANAGE": "ΔΙΑΧΕΙΡΙΣΗ",
-  "ACTION_CHANGE_ARTWORK": "Αλλαγή στοιχείων τέχνης..."
+  "LABEL_TAB_MANAGE": "ΔΙΑΧΕΙΡΙΣΗ"
 }
