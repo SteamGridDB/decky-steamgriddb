@@ -1,5 +1,8 @@
 {
   "ACTION_SHOW_LINK_QR": "링크 QR코드 보이기",
+  "MSG_USAGE_INSTRUCTIONS": "게임 고르기 {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
+  "ACTION_CHANGE_ARTWORK": "이미지 변경...",
+  "LABEL_USAGE_TITLE": "사용법을 모르시겠나요? 여기를 읽어보세요.",
   "LABEL_TRANSLATION_CREDIT_TITLE": "한국어 번역가",
   "LABEL_MORE_SGDB_TITLE": "SteamGridDB 추가 링크",
   "ACTION_SGDB_DISCORD": "Discord 참여",
@@ -54,6 +57,5 @@
   "LABEL_TAB_HERO": "히어로",
   "LABEL_TAB_LOGO": "로고",
   "LABEL_TAB_ICON": "아이콘",
-  "LABEL_TAB_MANAGE": "관리",
-  "ACTION_CHANGE_ARTWORK": "이미지 변경..."
+  "LABEL_TAB_MANAGE": "관리"
 }
