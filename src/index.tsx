@@ -43,22 +43,24 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
-  const LibraryContextMenu = fakeRenderComponent(
-    findInReactTree(
-      fakeRenderComponent(
-        findInTree(
-          fakeRenderComponent(
-            // @ts-ignore: DFL global is not typed
-            window.DeckyPluginLoader.routerHook.routes.find((x) => x?.props?.path == '/zoo').props.children.type
-          ), (x) => x?.route === '/zoo/modals',
-          {
-            walkable: ['props', 'children', 'child', 'pages'],
-          }
-        ).content.type
-      ),
-      (x) => x?.title?.includes('AppActionsMenu')
-    ).children.type
-  ).type;
+  let LibraryContextMenu = findInReactTree(
+    fakeRenderComponent(
+      findInTree(
+        fakeRenderComponent(
+          // @ts-ignore: decky global is not typed
+          window.DeckyPluginLoader.routerHook.routes.find((x) => x?.props?.path == '/zoo').props.children.type
+        ), (x) => x?.route === '/zoo/modals',
+        {
+          walkable: ['props', 'children', 'child', 'pages'],
+        }
+      ).content.type
+    ),
+    (x) => x?.title?.includes('AppActionsMenu')
+  ).children.type;
+
+  if (!LibraryContextMenu?.prototype?.AddToHidden) {
+    LibraryContextMenu = fakeRenderComponent(LibraryContextMenu).type;
+  }
 
   const patchedMenu = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
