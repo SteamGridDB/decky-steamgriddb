@@ -45,6 +45,7 @@ const DropdownMultiselectItem: FC<{
     >
       <DialogCheckbox
         style={{ marginBottom: 0, padding: 0 }}
+        className="decky_DropdownMultiselectItem_DialogCheckbox"
         bottomSeparator="none"
         {...rest}
         onClick={() => setChecked((x) => !x)}
@@ -98,6 +99,14 @@ const DropdownMultiselect: FC<{
             label={label}
             cancelText={t('Button_Back', 'Back', true)}
           >
+            <style>
+              {`
+              /* Inherit color from ".basiccontextmenu" */
+              .decky_DropdownMultiselectItem_DialogCheckbox > .DialogToggle_Label {
+                color: inherit;
+              }
+              `}
+            </style>
             {items.map((x) => (
               <DropdownMultiselectItem
                 key={x.value}
