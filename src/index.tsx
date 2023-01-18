@@ -3,7 +3,9 @@ import {
   ServerAPI,
   quickAccessMenuClasses,
   afterPatch,
-  findModuleChild,
+  fakeRenderComponent,
+  findInReactTree,
+  findInTree,
   MenuItem,
   Router,
 } from 'decky-frontend-lib';
@@ -15,19 +17,6 @@ import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './SGDBPage';
 import t from './utils/i18n';
 import log from './utils/log';
-
-const AppContextMenu = findModuleChild((m) => {
-  if (typeof m !== 'object') return;
-  for (const prop in m) {
-    if (
-      m[prop]?.toString &&
-      m[prop].toString().includes('omitPrimaryAction') &&
-      m[prop]?.prototype?.AddToFavorites &&
-      m[prop]?.prototype?.AddToNewCollection
-    ) return m[prop];
-  }
-  return;
-});
 
 // Add button second to last
 const spliceArtworkItem = (children: any[], appid: number) => {
@@ -54,7 +43,26 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
-  const patchedMenu = afterPatch(AppContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
+  let LibraryContextMenu = findInReactTree(
+    fakeRenderComponent(
+      findInTree(
+        fakeRenderComponent(
+          // @ts-ignore: decky global is not typed
+          window.DeckyPluginLoader.routerHook.routes.find((x) => x?.props?.path == '/zoo').props.children.type
+        ), (x) => x?.route === '/zoo/modals',
+        {
+          walkable: ['props', 'children', 'child', 'pages'],
+        }
+      ).content.type
+    ),
+    (x) => x?.title?.includes('AppActionsMenu')
+  ).children.type;
+
+  if (!LibraryContextMenu?.prototype?.AddToHidden) {
+    LibraryContextMenu = fakeRenderComponent(LibraryContextMenu).type;
+  }
+
+  const patchedMenu = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
     const appid = component._owner.pendingProps.overview.appid;
     afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
