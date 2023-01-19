@@ -18,8 +18,9 @@ import BoopIcon from './components/Icons/BoopIcon';
 import PanelSocialButton from './components/PanelSocialButton';
 import t, { getCredits } from './utils/i18n';
 import GuideVideoField from './GuideVideoField';
+import openFilePicker from './utils/openFilePicker';
 
-const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
+const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const [debugAppid] = useState('70');
 
   return (
@@ -53,11 +54,10 @@ const QuickAccessSettings: VFC<{ serverAPI: ServerAPI }> = () => {
               1091500
               </DialogButton>
               <DialogButton onClick={() => {
-                Router.Navigate('/steamgriddb/2194520584');
-                Router.CloseSideMenus();
+                openFilePicker('/home/manjaro', true, undefined, {}, serverApi);
               }}
               >
-              2194520584
+              file picker
               </DialogButton>
             </Field>
           </PanelSectionRow>

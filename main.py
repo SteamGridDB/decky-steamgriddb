@@ -97,10 +97,10 @@ class Plugin:
                 binary_dump(d, open(shortcuts_vdf, 'wb'))
                 return True
         raise Exception('Could not find shortcut to edit')
-    
+
     async def set_steam_icon_from_url(self, appid, url):
         await self.download_file(self, url, LIBCACHE, file_name=("%s_icon.jpg" % appid))
-    
+
     async def set_steam_icon_from_path(self, appid, path):
         copyfile(path, LIBCACHE / str("%s_icon.jpg" % appid))
 
@@ -109,3 +109,29 @@ class Plugin:
 
     async def get_setting(self, key, default):
         return self.settings.getSetting(key, default)
+
+    async def filepicker_new(self, path, include_files=True):
+        path = Path(path).resolve()
+
+        files = []
+
+        for file in path.iterdir():
+            is_dir = file.is_dir()
+            # Windows and OSX have their own file attributes for hidden files and dirs.
+            # Only doing Linux for now cause that's all Decky supports.
+            is_hidden = file.name.startswith('.')
+            if file.exists() and (is_dir or include_files):
+                files.append({
+                    "isdir": is_dir,
+                    "ishidden": is_hidden,
+                    "name": file.name,
+                    "realpath": str(file.resolve()),
+                    "size": file.stat().st_size,
+                    "modified": file.stat().st_mtime,
+                    "created": file.stat().st_ctime,
+                })
+
+        return {
+            "realpath": str(path),
+            "files": files
+        }

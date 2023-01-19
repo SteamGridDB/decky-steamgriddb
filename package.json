@@ -52,11 +52,14 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@types/react-file-icon": "^1.0.1",
     "async-wait-until": "^2.0.12",
     "decky-frontend-lib": "^3.18.9",
+    "filesize": "^10.0.6",
     "just-debounce": "^1.1.0",
     "qrcode.react": "^3.1.0",
     "react-fast-compare": "^3.2.0",
+    "react-file-icon": "^1.3.0",
     "react-icons": "^4.7.1",
     "react-markdown": "^8.0.4",
     "react-string-replace": "^1.1.0",

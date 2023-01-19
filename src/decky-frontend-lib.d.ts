@@ -1,6 +1,7 @@
 import {
   SteamAppOverview as SteamAppOverviewO,
   SliderFieldProps as SliderFieldPropsO,
+  ToggleFieldProps as ToggleFieldPropsO,
 } from 'decky-frontend-lib';
 
 declare module 'decky-frontend-lib' {
@@ -15,5 +16,8 @@ declare module 'decky-frontend-lib' {
   }
   export interface SliderFieldProps extends SliderFieldPropsO {
     className?: string;
+  }
+  export interface ToggleFieldProps extends ToggleFieldPropsO {
+    highlightOnFocus?: boolean;
   }
 }

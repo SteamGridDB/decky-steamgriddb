@@ -3,7 +3,7 @@ import { FC, CSSProperties } from 'react';
 
 const Chevron: FC<{
   direction: 'up' | 'down' | 'left' | 'right',
-  style: CSSProperties,
+  style?: CSSProperties,
 }> = findModuleChild((m) => {
   if (typeof m !== 'object') return undefined;
   for (const prop in m) {

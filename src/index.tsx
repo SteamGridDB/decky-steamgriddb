@@ -78,7 +78,7 @@ export default definePlugin((serverApi: ServerAPI) => {
 
   return {
     title: <div className={quickAccessMenuClasses.Title}>SteamGridDB</div>,
-    content: <QuickAccessSettings serverAPI={serverApi} />,
+    content: <QuickAccessSettings serverApi={serverApi} />,
     icon: <MenuIcon />,
     onDismount() {
       serverApi.routerHook.removeRoute('/steamgriddb/:appid/:assetType?');

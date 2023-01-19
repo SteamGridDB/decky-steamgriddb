@@ -7,14 +7,7 @@ import t from './utils/i18n';
 import LibraryImage from './components/LibraryImage';
 import getAppOverview from './utils/getAppOverview';
 import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from './constants';
-
-/*
-  Don't match hidden files and only match directories and specific file extensions.
-  Credit goes to SirMangler for this beast.
-
-  Tests: https://regex101.com/r/2EeIqZ/1
-*/
-const imagesExpr = /(?<!.)(.*)\.(jpe?g|a?png|webp|gif)$|(?<!.)([^.]|.*\\)+(?!.)/gi;
+import openFilePicker from './utils/openFilePicker';
 
 const AssetBlock: FC<{
   app: SteamAppOverview,
@@ -52,7 +45,9 @@ const AssetBlock: FC<{
   };
 
   const handleBrowse = async () => {
-    const path = await serverApi.openFilePicker(browseStartPath, true, imagesExpr);
+    const path = await openFilePicker(browseStartPath, true, undefined, {
+      validFileExtensions: ['png','jpg','jpeg','gif','webp','apng','tiff','tga'],
+    }, serverApi);
     await changeAssetFromUrl(path.path as string, assetType, true);
     await refreshOverview();
   };
