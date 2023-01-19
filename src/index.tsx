@@ -32,16 +32,11 @@ const spliceArtworkItem = (children: any[], appid: number) => {
   ));
 };
 
-export default definePlugin((serverApi: ServerAPI) => {
-  serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => (
-    <SettingsProvider serverApi={serverApi}>
-      <SGDBProvider serverApi={serverApi}>
-        <SGDBPage />
-      </SGDBProvider>
-    </SettingsProvider>
-  ), {
-    exact: true,
-  });
+async function getMenu() {
+  // @ts-ignore: decky global is not typed
+  while (!window.DeckyPluginLoader?.routerHook?.routes) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
 
   let LibraryContextMenu = findInReactTree(
     fakeRenderComponent(
@@ -61,19 +56,36 @@ export default definePlugin((serverApi: ServerAPI) => {
   if (!LibraryContextMenu?.prototype?.AddToHidden) {
     LibraryContextMenu = fakeRenderComponent(LibraryContextMenu).type;
   }
+  return LibraryContextMenu;
+}
 
-  const patchedMenu = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
-    log(component);
-    const appid = component._owner.pendingProps.overview.appid;
-    afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
-      if (shouldUpdate === true && !nextProps.children.find((x: any) => x?.key === 'sgdb-change-artwork')) {
-        spliceArtworkItem(nextProps.children, appid);
-      }
-      return shouldUpdate;
-    }, { singleShot: true });
+export default definePlugin((serverApi: ServerAPI) => {
+  serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => (
+    <SettingsProvider serverApi={serverApi}>
+      <SGDBProvider serverApi={serverApi}>
+        <SGDBPage />
+      </SGDBProvider>
+    </SettingsProvider>
+  ), {
+    exact: true,
+  });
 
-    spliceArtworkItem(component.props.children, appid);
-    return component;
+  let patchedMenu: any;
+
+  getMenu().then((LibraryContextMenu) => {
+    patchedMenu = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
+      log(component);
+      const appid = component._owner.pendingProps.overview.appid;
+      afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
+        if (shouldUpdate === true && !nextProps.children.find((x: any) => x?.key === 'sgdb-change-artwork')) {
+          spliceArtworkItem(nextProps.children, appid);
+        }
+        return shouldUpdate;
+      }, { singleShot: true });
+
+      spliceArtworkItem(component.props.children, appid);
+      return component;
+    });
   });
 
   return {
