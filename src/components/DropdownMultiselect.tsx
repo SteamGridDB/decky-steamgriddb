@@ -129,7 +129,7 @@ const DropdownMultiselect: FC<{
         }
       </Marquee>
       <div style={{ flexGrow: 1, minWidth: '1ch' }} />
-      <Chevron style={{ height: '1em' }} direction="down" />
+      <Chevron style={{ height: '1em', flex: '0 0 1em' }} direction="down" />
     </DialogButton>
   );
 };
