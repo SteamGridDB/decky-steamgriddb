@@ -185,7 +185,7 @@ const FilePicker: FunctionComponent<FilePickerProps> = ({
       // Put directories before files
       .reduceRight((acc, file) => file.isdir ? [file, ...acc] : [...acc, file], [] as File[]);
     setFiles(files);
-  }, [listing.files, filter, showHidden, sort, selectedFiles]);
+  }, [listing.files, filter, showHidden, sort, selectedFiles, validFileExtensions]);
 
   return (
     <>
