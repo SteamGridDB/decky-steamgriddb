@@ -10,8 +10,10 @@ import {
   showModal,
   DialogFooter,
   Marquee,
+  Focusable,
 } from 'decky-frontend-lib';
 import { FC, useCallback, useMemo, useState } from 'react';
+import { HiXMark } from 'react-icons/hi2';
 
 import t from '../utils/i18n';
 import DropdownMultiselect from '../components/DropdownMultiselect';
@@ -23,18 +25,20 @@ import GameSelectionModal from './GameSelectionModal';
 const FiltersModal: FC<{
   closeModal?: () => void,
   assetType: SGDBAssetType,
+  isNonsteam: boolean,
   onSave: (assetType: SGDBAssetType, filters: any, selectedGame?: any) => void,
   defaultFilters: any,
-  selectableGame: boolean;
   defaultSelectedGame: any;
+  defaultSearchTerm: string;
   searchGames: (term: string) => Promise<any[]>;
 }> = ({
   closeModal,
   assetType,
+  isNonsteam,
   onSave,
   defaultFilters,
-  selectableGame,
   defaultSelectedGame,
+  defaultSearchTerm,
   searchGames,
 }) => {
   const [styles, setStyles] = useState<string[]>(defaultFilters?.styles ?? STYLES[assetType].default);
@@ -88,26 +92,50 @@ const FiltersModal: FC<{
       <DialogHeader>{t('LABEL_FILTER_MODAL_TITLE', '{assetType} Filter').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}</DialogHeader>
       <DialogBody>
         <DialogControlsSection>
-          {selectableGame && (
-            <Field label={t('LABEL_FILTER_GAME', 'Game')}>
-              <DialogButton onClick={() => {
-                showModal(
-                  <GameSelectionModal
-                    defaultTerm={selectedGame.name}
-                    searchGames={searchGames}
-                    onSelect={(game: any) => {
-                      setSelectedGame(game);
-                    }}
-                  />
-                );
+          <Field label={t('LABEL_FILTER_GAME', 'Game')}>
+            <Focusable
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '10px',
               }}
+            >
+              <DialogButton
+                style={{
+                  width: '280px',
+                  maxWidth: '100%',
+                }}
+                onClick={() => {
+                  showModal(
+                    <GameSelectionModal
+                      defaultTerm={selectedGame?.name || defaultSearchTerm}
+                      searchGames={searchGames}
+                      onSelect={(game: any) => {
+                        setSelectedGame(game);
+                      }}
+                    />
+                  );
+                }}
               >
-                <Marquee center>
-                  {selectedGame.name}
+                <Marquee>
+                  {selectedGame?.name || t('LABEL_GAME_SEARCH_TITLE', 'Search for a Game...')}
                 </Marquee>
               </DialogButton>
-            </Field>
-          )}
+              {(selectedGame && !isNonsteam) && (
+                <DialogButton
+                  onClick={() => setSelectedGame(undefined)}
+                  style={{
+                    padding: '10px',
+                    maxWidth: '40px',
+                    lineHeight: '10px',
+                    minWidth: 'auto',
+                  }}
+                >
+                  <HiXMark strokeWidth={1.5} />
+                </DialogButton>
+              )}
+            </Focusable>
+          </Field>
           {(DIMENSIONS[assetType].options.length > 0) && (
             <Field label={t('LABEL_FILTER_DIMENSIONS', 'Dimensions')}>
               <DropdownMultiselect

@@ -98,13 +98,13 @@ export const AssetSearchContext: FC = ({ children }) => {
       set(`filters_${assetType}`, filters, true);
       setCurrentFilters(filters);
     }
-    if (game && game.id !== selectedGame?.id) {
+    if (game?.id !== selectedGame?.id) {
       setSelectedGame(game);
       // save selected game to reuse for this shortcut
       set(`nonsteam_${appId}`, game);
     }
     setIsFilterActive(compareFilterWithDefaults(assetType, filters));
-  }, [currentFilters, searchAndSetAssets, selectedGame, set, appId]);
+  }, [currentFilters, selectedGame, searchAndSetAssets, set, appId]);
 
   const openFilters = useCallback(async (assetType: SGDBAssetType) => {
     log('Open Filters');
@@ -114,8 +114,9 @@ export const AssetSearchContext: FC = ({ children }) => {
         assetType={assetType}
         onSave={handleFiltersSave}
         defaultFilters={defaultFilters}
-        selectableGame={appOverview.BIsModOrShortcut() || selectedGame}
         defaultSelectedGame={selectedGame}
+        defaultSearchTerm={selectedGame?.name || appOverview.display_name}
+        isNonsteam={appOverview.BIsModOrShortcut()}
         searchGames={searchGames}
       />
     ), window);
