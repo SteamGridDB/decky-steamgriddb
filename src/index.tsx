@@ -8,6 +8,7 @@ import {
   findInTree,
   MenuItem,
   Router,
+  Patch,
 } from 'decky-frontend-lib';
 
 import QuickAccessSettings from './QuickAccessSettings';
@@ -70,7 +71,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
-  let patchedMenu: any;
+  let patchedMenu: Patch | undefined;
 
   getMenu().then((LibraryContextMenu) => {
     patchedMenu = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
