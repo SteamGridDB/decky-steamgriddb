@@ -49,6 +49,7 @@ Or by using the <picture>
 **Localisation:**
 | | |
 | - | - |
+| **Čeština** | zenobit |
 | **Deutsch** | Kurikuo |
 | **Español-España** | Andrea Laguillo, Kam |
 | **Español-Latinoamérica** | Kam |

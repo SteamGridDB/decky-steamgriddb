@@ -1,5 +1,8 @@
 {
   "ACTION_SHOW_LINK_QR": "Afficher le code QR",
+  "MSG_USAGE_INSTRUCTIONS": "Sélectionner un jeu {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
+  "ACTION_CHANGE_ARTWORK": "Modifier les images...",
+  "LABEL_USAGE_TITLE": "Perdu? Voici un guide rapide",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Traduction française",
   "LABEL_MORE_SGDB_TITLE": "Plus de contenu SteamGridDB",
   "ACTION_SGDB_DISCORD": "Rejoignez le Discord",
@@ -54,6 +57,5 @@
   "LABEL_TAB_HERO": "Bannière",
   "LABEL_TAB_LOGO": "Marque",
   "LABEL_TAB_ICON": "Icône",
-  "LABEL_TAB_MANAGE": "Gérer",
-  "ACTION_CHANGE_ARTWORK": "Modifier les images..."
+  "LABEL_TAB_MANAGE": "Gérer"
 }
