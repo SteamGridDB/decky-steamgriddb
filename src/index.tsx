@@ -76,10 +76,20 @@ export default definePlugin((serverApi: ServerAPI) => {
   getMenu().then((LibraryContextMenu) => {
     patchedMenu = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
       log(component);
-      const appid = component._owner.pendingProps.overview.appid;
+      const appid: number = component._owner.pendingProps.overview.appid;
       afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
         if (shouldUpdate === true && !nextProps.children.find((x: any) => x?.key === 'sgdb-change-artwork')) {
-          spliceArtworkItem(nextProps.children, appid);
+          let updatedAppid: number = appid;
+          // find the first menu component that has the correct appid assigned to _owner
+          const parentOverview = nextProps.children.find((x: any) =>
+            x?._owner?.pendingProps?.overview?.appid &&
+            x._owner.pendingProps.overview.appid !== appid
+          );
+          // if found then use that appid
+          if (parentOverview) {
+            updatedAppid = parentOverview._owner.pendingProps.overview.appid;
+          }
+          spliceArtworkItem(nextProps.children, updatedAppid);
         }
         return shouldUpdate;
       }, { singleShot: true });
