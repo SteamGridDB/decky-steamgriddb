@@ -1,3 +1,4 @@
+import * as cs from '../i18n/cs.json';
 import * as de from '../i18n/de.json';
 import * as el from '../i18n/el.json';
 import * as es from '../i18n/es.json';
@@ -23,6 +24,11 @@ const simplifiedChinese = {
 };
 
 export const LANGS = {
+  cs: {
+    name: 'Čeština',
+    strings: cs,
+    credit: ['zenobit'],
+  },
   de: {
     name: 'Deutsch',
     strings: de,
@@ -133,11 +139,6 @@ export const LANGS = {
 //  hu: {
 //    name: 'Magyar',
 //    strings: hu,
-//    credit: []
-//  },
-//  cs: {
-//    name: 'Čeština',
-//    strings: cs,
 //    credit: []
 //  },
   //  tr: {
