@@ -93,18 +93,9 @@ const FiltersModal: FC<{
       <DialogBody>
         <DialogControlsSection>
           <Field label={t('LABEL_FILTER_GAME', 'Game')}>
-            <Focusable
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: '10px',
-              }}
-            >
+            <Focusable className="game-filter-content">
               <DialogButton
-                style={{
-                  width: '280px',
-                  maxWidth: '100%',
-                }}
+                className="custom-game-value"
                 onClick={() => {
                   showModal(
                     <GameSelectionModal
@@ -123,13 +114,8 @@ const FiltersModal: FC<{
               </DialogButton>
               {(selectedGame && !isNonsteam) && (
                 <DialogButton
+                  className="clear-custom-game"
                   onClick={() => setSelectedGame(undefined)}
-                  style={{
-                    padding: '10px',
-                    maxWidth: '40px',
-                    lineHeight: '10px',
-                    minWidth: 'auto',
-                  }}
                 >
                   <HiXMark strokeWidth={1.5} />
                 </DialogButton>
