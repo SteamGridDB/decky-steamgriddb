@@ -1,5 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "Mostra codice QR",
+  "ACTION_CHANGE_ARTWORK": "Cambia grafica...",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Traduzione italiana",
   "LABEL_MORE_SGDB_TITLE": "Canali SteamGridDB",
   "ACTION_SGDB_DISCORD": "Unisciti al Discord",
@@ -54,6 +55,5 @@
   "LABEL_TAB_HERO": "Banner",
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Icona",
-  "LABEL_TAB_MANAGE": "Gestisci",
-  "ACTION_CHANGE_ARTWORK": "Cambia grafica..."
+  "LABEL_TAB_MANAGE": "Gestisci"
 }
