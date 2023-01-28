@@ -1,5 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "Laad QR-code zien",
+  "ACTION_CHANGE_ARTWORK": "Wijzig afbeelding...",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Nederlandse Vertaling",
   "LABEL_MORE_SGDB_TITLE": "Meer van SteamGridDB",
   "ACTION_SGDB_DISCORD": "Word lid van de Discord",
@@ -54,6 +55,5 @@
   "LABEL_TAB_HERO": "Heldenplaatje",
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Icoon",
-  "LABEL_TAB_MANAGE": "Beheren",
-  "ACTION_CHANGE_ARTWORK": "Wijzig afbeelding..."
+  "LABEL_TAB_MANAGE": "Beheren"
 }

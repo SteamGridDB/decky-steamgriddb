@@ -1,5 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "QRコード表示",
+  "ACTION_CHANGE_ARTWORK": "アートワークを変える…",
   "LABEL_TRANSLATION_CREDIT_TITLE": "日本語訳",
   "LABEL_MORE_SGDB_TITLE": "その他のSteamGridDBのもの",
   "ACTION_SGDB_DISCORD": "Discordに参加",
@@ -54,6 +55,5 @@
   "LABEL_TAB_HERO": "ヒーロー",
   "LABEL_TAB_LOGO": "ロゴ",
   "LABEL_TAB_ICON": "アイコン",
-  "LABEL_TAB_MANAGE": "管理",
-  "ACTION_CHANGE_ARTWORK": "アートワークを変える…"
+  "LABEL_TAB_MANAGE": "管理"
 }
