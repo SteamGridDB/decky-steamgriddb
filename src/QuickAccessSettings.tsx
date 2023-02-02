@@ -40,7 +40,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               Zoo
               </DialogButton>
               <DialogButton onClick={() => {
-                Router.Navigate(`/steamgriddb/${debugAppid}`);
+                Router.Navigate(`/steamgriddb/${debugAppid}/manage`);
                 Router.CloseSideMenus();
               }}
               >

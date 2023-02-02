@@ -1,5 +1,11 @@
 import { FC, useState, useEffect, useRef } from 'react';
-import { Focusable, joinClassNames, SteamAppOverview } from 'decky-frontend-lib';
+import {
+  DialogButton,
+  Focusable,
+  joinClassNames,
+  SteamAppOverview,
+  showModal,
+} from 'decky-frontend-lib';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
 
 import useSGDB from './hooks/useSGDB';
@@ -8,6 +14,7 @@ import LibraryImage from './components/LibraryImage';
 import getAppOverview from './utils/getAppOverview';
 import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from './constants';
 import openFilePicker from './utils/openFilePicker';
+import LogoPositionerModal from './modals/LogoPositionerModal';
 
 const AssetBlock: FC<{
   app: SteamAppOverview,
@@ -183,6 +190,15 @@ const LocalTab: FC = () => {
           browseStartPath={startPath}
         />
       </div>
+      <Focusable flow-children="right" style={{ gridColumn: 'span 2', display: 'flex', gap: '.5em' }}>
+        <DialogButton
+          onClick={() => {
+            showModal(<LogoPositionerModal overview={overview} />, window);
+          }}
+        >
+          {t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
+        </DialogButton>
+      </Focusable>
     </Focusable>
   );
 };

@@ -4,6 +4,7 @@ $color-toolbar-bg: #0E141B;
 $zIndexAboveRing: 10002;
 $easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
 $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
+$topBarHeight: var(--basicui-header-height, 40px);
 
 @mixin flex-center($y: true, $x: true) {
   display: flex;
@@ -198,8 +199,8 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
 
 #sgdb-wrap {
   --asset-size: 120px;
-  margin-top: var(--basicui-header-height, 40px);
-  height: calc(100% - var(--basicui-header-height, 40px));
+  margin-top: $topBarHeight;
+  height: calc(100% - $topBarHeight);
 
   .tabcontents-wrap {
     display: flex;
@@ -488,5 +489,85 @@ $easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
     width: 2em;
     margin: 0 auto;
     margin-top: 2em;
+  }
+}
+
+@include modal('logo-position') {
+  .logo-positioner {
+    display: flex;
+    position: relative;
+    margin-top: calc($topBarHeight + 1em);
+    width: 100%;
+    height: var(--header-height, calc( 80px + 20vw ));
+    overflow: hidden;
+    align-items: center;
+    .logo-wrap {
+      padding: 16px 26px; // match how steam shows it in the library
+      position: absolute;
+      height: 85%;
+      top: 0;
+      width: inherit;
+      box-sizing: border-box;
+    }
+    .logo-wrap-pos {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translate(var(--logo-left), var(--logo-top));
+      transition: transform ease 250ms;
+      z-index: 1;
+      &-top {
+        height: 2px;
+        width: 100%;
+        background: red;
+      }
+    }
+    &-logo {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+      width: var(--logo-width);
+      height: var(--logo-height);
+      transition: width ease 100ms, height ease 100ms;
+      &.logo-border {
+        outline: 3px #008ada solid;
+      }
+      &-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: object-position ease 250ms;
+        &.pos-UpperLeft {
+          object-position: top left;
+        }
+        &.pos-BottomLeft {
+          object-position: bottom left;
+        }
+        &.pos-UpperCenter {
+          object-position: top center;
+        }
+        &.pos-CenterCenter {
+          object-position: center;
+        }
+        &.pos-BottomCenter {
+          object-position: bottom center;
+        }
+      }
+    }
+  }
+  .logo-positioner-instructions {
+    @include flex-center($y: false);
+    flex-wrap: wrap;
+    list-style: none;
+    gap: 2em;
+    li {
+      @include flex-center($x: false);
+      gap: .75em;
+    }
+    svg {
+      width: 32px;
+      height: 32px;
+    }
   }
 }

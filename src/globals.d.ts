@@ -41,6 +41,9 @@ declare global {
       GetCachedVerticalImageURLForApp: (app: SteamAppOverview) => string;
       GetPregeneratedVerticalCapsuleForApp: (app: SteamAppOverview) => string;
       GetIconURLForApp: (app: SteamAppOverview) => string;
+    };
+    appDetailsStore: {
+      GetCustomLogoPosition: (app: SteamAppOverview) => any;
     }
   }
 }
