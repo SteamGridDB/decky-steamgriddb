@@ -133,7 +133,6 @@ const FilePicker: FunctionComponent<FilePickerProps> = ({
 
   useEffect(() => {
     (async () => {
-      if (error) setError(null);
       setLoading(true);
       const listing = await getList(serverApi, path, includeFiles);
       if (!listing.success) {
@@ -142,6 +141,7 @@ const FilePicker: FunctionComponent<FilePickerProps> = ({
         setError(listing.result as string);
         return;
       } else {
+        setError(null);
         setFiles((listing.result as FileListing).files);
       }
       setLoading(false);
