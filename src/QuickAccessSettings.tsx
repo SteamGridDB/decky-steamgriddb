@@ -7,9 +7,7 @@ import {
   showModal,
   ModalRoot,
   DialogButton,
-  DialogButtonPrimary,
   DialogBody,
-  DialogFooter,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
 import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icons/si';
@@ -71,12 +69,9 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
             onActivate={() => {
               showModal(
                 <ModalRoot>
-                  <DialogBody>
+                  <DialogBody style={{ padding: '0 2.5em' }}>
                     <GuideVideoField />
                   </DialogBody>
-                  <DialogFooter>
-                    <DialogButtonPrimary>{t('Button_Back', 'Back', true)}</DialogButtonPrimary>
-                  </DialogFooter>
                 </ModalRoot>
               );
             }}
