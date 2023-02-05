@@ -52,7 +52,7 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: any, border: boolean 
 
   return (
     <div
-      className="logo-positioner"
+      className={joinClassNames('logo-positioner', border ? 'logo-border' : '', `pos-${logoPos.pinnedPosition}`)}
       style={{
         ['--logo-width' as string]: `${logoPos.nWidthPct}%`,
         ['--logo-height' as string]: `${logoPos.nHeightPct}%`,
@@ -60,16 +60,19 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: any, border: boolean 
         ['--logo-top' as string]: positions ? `${positions.top}%` : undefined,
       }}
     >
-      <div className="logo-wrap">
-        <div className="logo-wrap-pos">
-          <LibraryImage
-            app={app}
-            eAssetType={ASSET_TYPE.logo}
-            allowCustomization={false}
-            className={joinClassNames('logo-positioner-logo', border ? 'logo-border' : '')}
-            imageClassName={joinClassNames('logo-positioner-logo-img', `pos-${logoPos.pinnedPosition}`)}
-            backgroundType="transparent"
-          />
+      <div className="logo-outer-region">
+        <div className="logo-wrap">
+          <span className="logo-anchor-guide-mid" />
+          <div className="logo-wrap-pos">
+            <LibraryImage
+              app={app}
+              eAssetType={ASSET_TYPE.logo}
+              allowCustomization={false}
+              className="logo-positioner-logo"
+              imageClassName="logo-positioner-logo-img"
+              backgroundType="transparent"
+            />
+          </div>
         </div>
       </div>
       <LibraryImage
@@ -180,14 +183,14 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, overview: SteamAppOverv
       onActivate={handleSave}
       onOKActionDescription={t('Button_Save', 'Save', true)}
       onSecondaryButton={handlePinPos}
-      onSecondaryActionDescription={t('ACTION_CHANGE_LOGO_ANCHOR_POINT', 'Change Anchor Point')}
+      onSecondaryActionDescription={t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}
       onOptionsButton={() => setShowBorder((x) => !x)}
-      onOptionsActionDescription={showBorder ? t('ACTION_HIDE_OUTLINE', 'Hide Outline') : t('ACTION_SHOW_OUTLINE', 'Show Outline')}
+      onOptionsActionDescription={showBorder ? t('ACTION_HIDE_POS_GUIDES', 'Hide Guides') : t('ACTION_SHOW_OUTLINE', 'Show Guides')}
     >
       <LogoPositioner app={overview} logoPos={logoPos} border={showBorder} />
       <ul className="logo-positioner-instructions">
-        <li><img src={Dpad} /> {t('ACTION_ADJUST_SIZE', 'Adjust Size')}</li>
-        <li><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
+        <li><img src={Dpad} /> {t('ACTION_ADJUST_POS_SIZE', 'Adjust Size')}</li>
+        <li><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
       </ul>
     </Focusable>
   );

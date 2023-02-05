@@ -492,6 +492,8 @@ $topBarHeight: var(--basicui-header-height, 40px);
   }
 }
 
+
+$color-guide: #008ada;
 @include modal('logo-position') {
   .logo-positioner {
     display: flex;
@@ -501,13 +503,129 @@ $topBarHeight: var(--basicui-header-height, 40px);
     height: var(--header-height, calc( 80px + 20vw ));
     overflow: hidden;
     align-items: center;
+    &.logo-border {
+      .logo-positioner-logo {
+        outline: 3px $color-guide solid;
+      }
+      .logo-wrap::before,
+      .logo-wrap::after,
+      .logo-wrap > .logo-anchor-guide-mid {
+        display: block;
+      }
+    }
+    &.pos-UpperLeft {
+      .logo-positioner-logo-img {
+        object-position: top left;
+      }
+      .logo-wrap::before {
+        border-color: transparent;
+      }
+    }
+    &.pos-BottomLeft {
+      .logo-positioner-logo-img {
+        object-position: bottom left;
+      }
+      .logo-wrap::after {
+        border-color: transparent;
+      }
+    }
+    &.pos-UpperCenter {
+      .logo-positioner-logo-img {
+        object-position: top center;
+      }
+      .logo-wrap > .logo-anchor-guide-mid {
+        border-top-color: transparent;
+        &::before {
+          border-color: $color-guide;
+        }
+      }
+    }
+    &.pos-CenterCenter {
+      .logo-positioner-logo-img {
+        object-position: center;
+      }
+      .logo-wrap > .logo-anchor-guide-mid::before {
+        border-color: transparent;
+      }
+    }
+    &.pos-BottomCenter {
+      .logo-positioner-logo-img {
+        object-position: bottom center;
+      }
+      .logo-wrap > .logo-anchor-guide-mid {
+        border-bottom-color: transparent;
+        &::before {
+          border-color: $color-guide;
+        }
+      }
+    }
+    .logo-outer-region {
+      position: absolute;
+      width: auto;
+      height: auto;
+      top: 16px;
+      bottom: 16px;
+      left: 26px;
+      right: 26px;
+    }
     .logo-wrap {
-      padding: 16px 26px; // match how steam shows it in the library
       position: absolute;
       height: 85%;
       top: 0;
-      width: inherit;
-      box-sizing: border-box;
+      width: 100%;
+      // anchor points
+      &::before,
+      &::after,
+      > .logo-anchor-guide-mid {
+        display: none;
+        position: absolute;
+        content: "";
+        border-color: $color-guide;
+        border-width: 3px;
+        width: 12px;
+        height: 12px;
+        z-index: 1;
+        border-radius: 3px;
+        box-sizing: border-box;
+        transition: border-color linear 200ms;
+        opacity: .65;
+      }
+      &::before {
+        border-left-style: solid;
+        border-top-style: solid;
+        top: 0;
+        left: 0;
+      }
+      &::after {
+        border-left-style: solid;
+        border-bottom-style: solid;
+        bottom: 0;
+        left: 0;
+      }
+      > .logo-anchor-guide-mid {
+        width: 15px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        border-top-style: solid;
+        border-bottom-style: solid;
+        &::before {
+          content: "";
+          position: inherit;
+          border-color: inherit;
+          z-index: inherit;
+          border-radius: inherit;
+          box-sizing: inherit;
+          border-width: 3px;
+          width: 15px;
+          height: 15px;
+          top: 50%;
+          border-style: solid;
+          transform: translateY(-50%);
+          transition: inherit;
+        }
+      }
     }
     .logo-wrap-pos {
       position: relative;
@@ -515,12 +633,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
       height: 100%;
       transform: translate(var(--logo-left), var(--logo-top));
       transition: transform ease 250ms;
-      z-index: 1;
-      &-top {
-        height: 2px;
-        width: 100%;
-        background: red;
-      }
+      z-index: 2;
     }
     &-logo {
       display: flex;
@@ -530,29 +643,11 @@ $topBarHeight: var(--basicui-header-height, 40px);
       width: var(--logo-width);
       height: var(--logo-height);
       transition: width ease 100ms, height ease 100ms;
-      &.logo-border {
-        outline: 3px #008ada solid;
-      }
       &-img {
         width: 100%;
         height: 100%;
         object-fit: contain;
         transition: object-position ease 250ms;
-        &.pos-UpperLeft {
-          object-position: top left;
-        }
-        &.pos-BottomLeft {
-          object-position: bottom left;
-        }
-        &.pos-UpperCenter {
-          object-position: top center;
-        }
-        &.pos-CenterCenter {
-          object-position: center;
-        }
-        &.pos-BottomCenter {
-          object-position: bottom center;
-        }
       }
     }
   }
