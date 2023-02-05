@@ -19,7 +19,7 @@ export default async function getAppDetails(appId: number): Promise<AppDetails |
       timeoutId = setTimeout(() => {
         unregister();
         resolve(null);
-      }, 1000);
+      }, 300);
     } catch (error) {
       clearTimeout(timeoutId);
       resolve(null);

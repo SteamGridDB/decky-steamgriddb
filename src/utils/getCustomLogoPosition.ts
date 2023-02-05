@@ -2,13 +2,13 @@ import waitUntil from 'async-wait-until';
 
 import getAppOverview from './getAppOverview';
 
-const getCustomLogoPosition = async (appId: number): Promise<any | null> => {
+const getCustomLogoPosition = async (appId: number): Promise<LogoPosition | null> => {
   try {
     const appoverview = await getAppOverview(appId);
     if (!appoverview) return null;
     return await waitUntil(() => {
       try {
-        return window.appDetailsStore.GetCustomLogoPosition(appoverview) ?? null as any;
+        return window.appDetailsStore.GetCustomLogoPosition(appoverview) as LogoPosition ?? null;
       } catch (error) {
         return null;
       }

@@ -650,6 +650,15 @@ $color-guide: #008ada;
         transition: object-position ease 250ms;
       }
     }
+    &-hero {
+      width: 100%;
+    }
+    > .loading-spinner {
+      margin: 0 auto;
+      width: 5em;
+      opacity: 0;
+      animation: 150ms linear 400ms 1 sgdb-fadeIn forwards;
+    }
   }
   .logo-positioner-instructions {
     @include flex-center($y: false);
@@ -664,5 +673,14 @@ $color-guide: #008ada;
       width: 32px;
       height: 32px;
     }
+  }
+}
+
+@keyframes sgdb-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

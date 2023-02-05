@@ -193,7 +193,7 @@ const LocalTab: FC = () => {
       <Focusable flow-children="right" style={{ gridColumn: 'span 2', display: 'flex', gap: '.5em' }}>
         <DialogButton
           onClick={() => {
-            showModal(<LogoPositionerModal overview={overview} />, window);
+            showModal(<LogoPositionerModal appId={appId} />, window);
           }}
         >
           {t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}

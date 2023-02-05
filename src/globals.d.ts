@@ -44,6 +44,7 @@ declare global {
     };
     appDetailsStore: {
       GetCustomLogoPosition: (app: SteamAppOverview) => any;
+      SaveCustomLogoPosition: (app: SteamAppOverview, logoPositions: LogoPosition) => any;
     }
   }
 }

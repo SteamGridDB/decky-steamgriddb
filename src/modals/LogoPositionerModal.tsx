@@ -1,5 +1,5 @@
-import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent } from 'decky-frontend-lib';
-import { FC, useCallback, useState, useEffect, useRef } from 'react';
+import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent, AppDetails } from 'decky-frontend-lib';
+import { FC, useState, useEffect, useRef } from 'react';
 
 import LibraryImage from '../components/LibraryImage';
 import getCustomLogoPosition from '../utils/getCustomLogoPosition';
@@ -8,6 +8,8 @@ import { ASSET_TYPE } from '../constants';
 import t from '../utils/i18n';
 import Dpad from '../../assets/dpad.svg';
 import FooterGlyph from '../components/FooterGlyph';
+import getAppOverview from '../utils/getAppOverview';
+import getAppDetails from '../utils/getAppDetails';
 
 const getStylePositions = (pos: string, widthPct: number, heightPct: number) => {
   const positions = {
@@ -48,7 +50,11 @@ const getStylePositions = (pos: string, widthPct: number, heightPct: number) => 
 const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: any, border: boolean }> = ({ app, logoPos, border }) => {
   const positions = logoPos ? getStylePositions(logoPos.pinnedPosition, logoPos.nWidthPct, logoPos.nHeightPct) : null;
 
-  if (!logoPos) return null;
+  if (!logoPos) return (
+    <div className="logo-positioner">
+      <img alt="Loading..." src="/images/steam_spinner.png" className="loading-spinner" />
+    </div>
+  );
 
   return (
     <div
@@ -79,31 +85,27 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: any, border: boolean 
         app={app}
         eAssetType={ASSET_TYPE.hero}
         allowCustomization={false}
+        neverShowTitle
+        backgroundType="transparent"
+        className="logo-positioner-hero"
       />
     </div>
   );
 };
 
-const LogoPositionerModal: FC<{ closeModal?: () => void, overview: SteamAppOverview }> = ({ closeModal, overview }) => {
-  const [logoPos, setLogoPos] = useState<any>(null);
+const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ closeModal, appId }) => {
+  const [overview, setOverview] = useState<SteamAppOverview | null>(null);
+  const [logoPos, setLogoPos] = useState<LogoPosition | null>(null);
   const [showBorder, setShowBorder] = useState<boolean>(true);
   const resizeAmount = useRef(.25);
-
-  const getLogoPos = useCallback(async () => {
-    const logoPos = await getCustomLogoPosition(overview.appid);
-    log(logoPos);
-    setLogoPos(logoPos);
-  }, [overview.appid]);
 
   const handleCancel = () => {
     closeModal?.();
   };
 
   const handleSave = async () => {
-    await SteamClient.Apps.SetCustomLogoPositionForApp(overview.appid, JSON.stringify({
-      nVersion: 1,
-      logoPosition: logoPos,
-    }));
+    if (!overview || !logoPos) return;
+    await window.appDetailsStore.SaveCustomLogoPosition(overview, logoPos);
     closeModal?.();
   };
 
@@ -150,27 +152,38 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, overview: SteamAppOverv
   };
 
   const handlePinPos = () => {
-    const anchorPos = [
-      'BottomLeft',
-      'UpperLeft',
-      'CenterCenter',
-      'UpperCenter',
-      'BottomCenter',
-    ];
-    setLogoPos((logoPos: any) => {
+    const anchorPos: LogoPinPositions[] = ['BottomLeft', 'UpperLeft', 'UpperCenter', 'CenterCenter', 'BottomCenter'];
+    setLogoPos((logoPos) => {
       const newLogoPos = { ...logoPos };
-      if (anchorPos.indexOf(logoPos.pinnedPosition) === anchorPos.length - 1) {
+      if (logoPos && anchorPos.indexOf(logoPos.pinnedPosition) === anchorPos.length - 1) {
         newLogoPos.pinnedPosition = anchorPos[0];
       } else {
-        newLogoPos.pinnedPosition = anchorPos[anchorPos.indexOf(logoPos.pinnedPosition) + 1];
+        newLogoPos.pinnedPosition = anchorPos[anchorPos.indexOf(logoPos ? logoPos.pinnedPosition : 'BottomLeft') + 1];
       }
-      return newLogoPos;
+      return newLogoPos as LogoPosition;
     });
   };
 
   useEffect(() => {
-    getLogoPos();
-  }, [getLogoPos]);
+    if (appId) {
+      (async () => {
+        setOverview(await getAppOverview(appId));
+      })();
+    }
+  }, [appId]);
+
+  useEffect(() => {
+    if (overview) {
+      (async () => {
+        const appdetails = await getAppDetails(overview.appid);
+        const logoPos = await getCustomLogoPosition(overview.appid) || appdetails?.libraryAssets?.logoPosition;
+        log(logoPos);
+        if (logoPos) {
+          setLogoPos(logoPos);
+        }
+      })();
+    }
+  }, [overview]);
 
   return (
     <Focusable
@@ -187,7 +200,7 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, overview: SteamAppOverv
       onOptionsButton={() => setShowBorder((x) => !x)}
       onOptionsActionDescription={showBorder ? t('ACTION_HIDE_POS_GUIDES', 'Hide Guides') : t('ACTION_SHOW_OUTLINE', 'Show Guides')}
     >
-      <LogoPositioner app={overview} logoPos={logoPos} border={showBorder} />
+      {overview && <LogoPositioner app={overview} logoPos={logoPos} border={showBorder} />}
       <ul className="logo-positioner-instructions">
         <li><img src={Dpad} /> {t('ACTION_ADJUST_POS_SIZE', 'Adjust Size')}</li>
         <li><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>

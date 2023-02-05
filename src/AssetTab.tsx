@@ -12,6 +12,7 @@ import { SGDB_ASSET_TYPE_READABLE } from './constants';
 import useAssetSearch from './hooks/useAssetSearch';
 import useSettings from './hooks/useSettings';
 import ResultsStateBar from './components/ResultsStateBar';
+import LogoPositionerModal from './modals/LogoPositionerModal';
 
 const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const { get } = useSettings();
@@ -26,6 +27,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const mainContentRef = useRef<HTMLDivElement>(null);
 
   const handleFilterClick = () => openFilters(assetType);
+  const handleLogoPosClick = () => showModal(<LogoPositionerModal appId={appOverview.appid} />, window);
 
   const setAsset = async (assetId: number, url: string) => {
     log('cliccc');
@@ -88,6 +90,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         ref={toolbarRef}
         assetType={assetType}
         onFilterClick={handleFilterClick}
+        onLogoPosClick={handleLogoPosClick}
         onSizeChange={(size) => setSizingStyles(size)}
         disabled={tabLoading}
         noFocusRing={searchLoading || tabLoading}

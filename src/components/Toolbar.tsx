@@ -56,6 +56,7 @@ export interface Toolbar {
   assetType: SGDBAssetType;
   onSizeChange: (size: any) => void;
   onFilterClick: () => void;
+  onLogoPosClick: () => void;
   disabled: boolean;
   noFocusRing?: boolean;
 }
@@ -65,7 +66,14 @@ export type ToolbarRefType = {
   assetSizeStyleAttr: any;
 };
 
-const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled = false, noFocusRing }: Toolbar, ref: Ref<ToolbarRefType>) => {
+const Toolbar = forwardRef(({
+  assetType,
+  onSizeChange,
+  onFilterClick,
+  onLogoPosClick,
+  disabled = false,
+  noFocusRing,
+}: Toolbar, ref: Ref<ToolbarRefType>) => {
   const { set, get } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
@@ -125,16 +133,34 @@ const Toolbar = forwardRef(({ assetType, onSizeChange, onFilterClick, disabled =
           style={{
             alignItems: 'center',
             display: 'flex',
+            gap: '0.5em',
           }}
         >
           <DialogButton
             ref={toolbarFocusRef}
+            style={{
+              minWidth: 'auto',
+              flex: 0,
+            }}
             noFocusRing
             onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
             onClick={onFilterClick}
           >
             {t('ACTION_OPEN_FILTER', 'Filter')}
           </DialogButton>
+          {assetType === 'logo' && (
+            <DialogButton
+              style={{
+                minWidth: 'auto',
+                flex: 1,
+              }}
+              noFocusRing
+              onOKActionDescription={t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
+              onClick={onLogoPosClick}
+            >
+              {t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
+            </DialogButton>
+          )}
         </Focusable>
         <SliderField
           className="size-slider"
