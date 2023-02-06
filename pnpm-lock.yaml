@@ -12,7 +12,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
   async-wait-until: ^2.0.12
-  decky-frontend-lib: ^3.18.9
+  decky-frontend-lib: ^3.18.10
   eslint: ^8.28.0
   eslint-import-resolver-typescript: ^3.5.2
   eslint-plugin-import: ^2.26.0
@@ -39,7 +39,7 @@ specifiers:
 dependencies:
   '@types/react-file-icon': 1.0.1
   async-wait-until: 2.0.12
-  decky-frontend-lib: 3.18.9
+  decky-frontend-lib: 3.18.10
   filesize: 10.0.6
   just-debounce: 1.1.0
   qrcode.react: 3.1.0
@@ -927,8 +927,8 @@ packages:
     dependencies:
       ms: 2.1.2
 
-  /decky-frontend-lib/3.18.9:
-    resolution: {integrity: sha512-QNMHDDAHfL+JpvVVte4Vj8iyOqvz/2iyFEknbJ1/Kz7aPTygFUsJp5mq1FDVvVNjfCYfF3fYAaZVqZu3d7pCEA==}
+  /decky-frontend-lib/3.18.10:
+    resolution: {integrity: sha512-2mgbA3sSkuwQR/FnmhXVrcW6LyTS95IuL6muJAmQCruhBvXapDtjk1TcgxqMZxFZwGD1IPnemPYxHZll6IgnZw==}
     dev: false
 
   /decode-named-character-reference/1.0.2:

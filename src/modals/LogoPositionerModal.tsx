@@ -1,4 +1,4 @@
-import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent, AppDetails } from 'decky-frontend-lib';
+import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent } from 'decky-frontend-lib';
 import { FC, useState, useEffect, useRef } from 'react';
 
 import LibraryImage from '../components/LibraryImage';
@@ -11,7 +11,7 @@ import FooterGlyph from '../components/FooterGlyph';
 import getAppOverview from '../utils/getAppOverview';
 import getAppDetails from '../utils/getAppDetails';
 
-const getStylePositions = (pos: string, widthPct: number, heightPct: number) => {
+const getStylePositions = (pos: LogoPinPositions, widthPct: number, heightPct: number) => {
   const positions = {
     BottomLeft: {
       bottom: 0,
@@ -47,7 +47,7 @@ const getStylePositions = (pos: string, widthPct: number, heightPct: number) => 
   return positions[pos];
 };
 
-const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: any, border: boolean }> = ({ app, logoPos, border }) => {
+const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: LogoPosition | null, border: boolean }> = ({ app, logoPos, border }) => {
   const positions = logoPos ? getStylePositions(logoPos.pinnedPosition, logoPos.nWidthPct, logoPos.nHeightPct) : null;
 
   if (!logoPos) return (
