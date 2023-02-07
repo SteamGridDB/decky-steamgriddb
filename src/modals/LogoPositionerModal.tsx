@@ -138,14 +138,14 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
       if (newLogoPos.nWidthPct > 100) {
         newLogoPos.nWidthPct = newLogoPos.nWidthPct = 100;
       }
-      if (newLogoPos.nWidthPct < 0) {
-        newLogoPos.nWidthPct = newLogoPos.nWidthPct = 0;
+      if (newLogoPos.nWidthPct <= 0) {
+        newLogoPos.nWidthPct = newLogoPos.nWidthPct = 0.01;
       }
       if (newLogoPos.nHeightPct > 100) {
         newLogoPos.nHeightPct = newLogoPos.nHeightPct = 100;
       }
-      if (newLogoPos.nHeightPct < 0) {
-        newLogoPos.nHeightPct = newLogoPos.nHeightPct = 0;
+      if (newLogoPos.nHeightPct <= 0) {
+        newLogoPos.nHeightPct = newLogoPos.nHeightPct = 0.01;
       }
       return newLogoPos;
     });
