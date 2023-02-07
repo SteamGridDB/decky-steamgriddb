@@ -134,22 +134,18 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     try {
       await clearAsset(assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
-      if (assetType === ASSET_TYPE.logo) {
+      if (assetType === ASSET_TYPE.logo && appOverview) {
         // avoid huge logos on Steam games by providing decent defaults
-        const bottomLeftPos = {
-          nVersion: 1,
-          logoPosition: {
-            pinnedPosition: 'BottomLeft',
-            nWidthPct: 42,
-            nHeightPct: 65,
-          },
-        };
-        await SteamClient.Apps.SetCustomLogoPositionForApp(appId, JSON.stringify(bottomLeftPos));
+        await window.appDetailsStore.SaveCustomLogoPosition(appOverview, {
+          pinnedPosition: 'BottomLeft',
+          nWidthPct: 42,
+          nHeightPct: 65,
+        });
       }
     } catch (error) {
       log(error);
     }
-  }, [appId, clearAsset]);
+  }, [appId, appOverview, clearAsset]);
 
   const apiRequest = useCallback((url: string, signal?: AbortSignal): Promise<any[]> => {
     return new Promise((resolve, reject) => {
