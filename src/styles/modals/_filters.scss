@@ -1,0 +1,17 @@
+@include modal('filters') {
+  .game-filter-content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    > .custom-game-value {
+      width: 280px;
+      max-width: 100%;
+    }
+    > .clear-custom-game {
+      padding: 10px;
+      max-width: 40px;
+      line-height: 10px !important;
+      min-width: auto;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+@include modal('details') {
+  &-wrapper {
+    display: flex;
+    gap: 1em;
+    &.wide {
+      flex-direction: column;
+      > .asset-box-wrap {
+        max-width: 100%;
+        margin: 0 auto;
+        .image-wrap {
+          margin-top: 0; // image to top
+        }
+      }
+      .notes {
+        max-width: 100%;
+      }
+    }
+  }
+  @include asset {
+    .asset-box-wrap {
+      width: 100%;
+      max-width: 46%;
+    }
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .meta {
+    text-transform: capitalize;
+    opacity: .5;
+    font-size: .8em;
+    text-align: right;
+  }
+  .author {
+    @include flex-center($x: false);
+    margin-top: 1em;
+    gap: .5em;
+    font-weight: bold;
+    > img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  .notes {
+    max-width: 300px;
+    word-break: break-word;
+  }
+}

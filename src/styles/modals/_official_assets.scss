@@ -1,0 +1,19 @@
+@include modal('official-assets') {
+  .official-steam-asset {
+    margin: 0 auto;
+    &.grid_l {
+      max-width: 60%;
+    }
+    @at-root .MediumWindow &.grid_p {
+      max-width: 39%;
+    }
+    @at-root .WideWindow &.grid_p {
+      max-width: 55%;
+    }
+    &.hero,
+    &.logo {
+      max-width: 100%;
+    }
+  }
+  @include asset;
+}

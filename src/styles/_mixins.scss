@@ -1,0 +1,190 @@
+@mixin flex-center($y: true, $x: true) {
+  display: flex;
+  @if $y {
+    align-items: center;
+  }
+  @if $x {
+    justify-content: center;
+  }
+}
+
+@mixin modal($modalName) {
+  .sgdb-modal {
+    &-#{$modalName} {
+      @content;
+    }
+  }
+}
+
+@mixin asset {
+  // initial wrap so focusable element can variable focus ring sizes
+  .asset-box-wrap {
+    @include flex-center($x: false);
+    flex-wrap: wrap;
+    position: relative;
+    .image-wrap {
+      background: url('/images/defaultappimage.png') center center;
+      background-size: cover;
+      position: relative;
+      width: 100%;
+      margin-top: auto;
+      /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
+
+      &.gpfocus {
+        z-index: 3 + $zIndexAboveRing;
+      }
+
+      // fixed height for logos
+      &.type-logo {
+        padding-bottom: 0 !important;
+        height: 185px;
+        > .thumb {
+          padding: .5em;
+        }
+      }
+
+      // add bg to parent on logos/icons so chips can go behind
+      &.type-logo,
+      &.type-icon {
+        > .thumb {
+          background: url('/images/defaultappimage.png') center center;
+          background-size: cover;
+          img,
+          video {
+            position: static;
+            width: auto;
+          }
+        }
+      }
+
+      .preload-spinner {
+        position: absolute;
+        height: 2em;
+        opacity: 1;
+        transition: opacity $image-load-timing;
+        &[data-loaded="true"] {
+          opacity: 0;
+        }
+      }
+
+      > .thumb {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        img,
+        video {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          max-height: 100%;
+          max-width: 100%;
+          width: 100%;
+          height: auto;
+          margin: 0 auto;
+          z-index: 1;
+          opacity: 0;
+          transition: opacity $image-load-timing;
+          &[data-loaded="true"] {
+            opacity: 1;
+          }
+        }
+      }
+
+    }
+    .dload-overlay {
+      @include flex-center;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0;
+      z-index: -3;
+      background: rgba(0, 0, 0, .85);
+      transition: opacity ease 100ms, z-index 0s 100ms;
+      &.downloading {
+        opacity: 1;
+        z-index: 2;
+        transition: opacity ease 100ms;
+      }
+      > img {
+        width: 100%;
+        max-height: 50%;
+        max-width: 4em;
+      }
+    }
+    .author {
+      @include flex-center($x: false);
+      gap: .5em;
+      font-size: .65em;
+      padding-top: .15em;
+      margin-top: auto;
+      overflow: hidden;
+      > span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      img {
+        width: 1em;
+        height: 1em;
+      }
+    }
+    .chips {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: -.5em;
+      top: 0;
+      font-size: .5em;
+      font-weight: bold;
+      text-transform: uppercase;
+      z-index: -1;
+      .chip {
+        @include flex-center;
+        background: var(--chip-color);
+        padding: .3em .8em;
+        min-height: 2em;
+        gap: .3em;
+        border-radius: 0 5px 5px 0;
+        transition: transform $easeOutCubic 300ms;
+        will-change: transform;
+        @for $i from 1 through 5 {
+          &:nth-child(#{$i}n) {
+            transition-delay: #{$i * 100 * 1.2}ms;
+          }
+        }
+      }
+      &.chips-left {
+        right: auto;
+        left: -.5em;
+        .chip {
+          border-radius: 5px 0 0 5px;
+        }
+      }
+    }
+    .image-wrap.gpfocus {
+      .chips {
+        > .chip {
+          transform: translateX(calc(100% - .5em - 1px)); // 1px more than how much is already sticking out
+          box-shadow: 1px 2px 3px rgba(#000, .25);
+        }
+        &.chips-left {
+          > .chip {
+            transform: translateX(calc(-100% + .5em + 1px));
+            box-shadow: -2px 2px 3px rgba(#000, .25);
+          }
+        }
+      }
+    }
+  }
+
+  @content;
+}

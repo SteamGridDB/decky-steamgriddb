@@ -69,7 +69,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
             onActivate={() => {
               showModal(
                 <ModalRoot>
-                  <DialogBody style={{ padding: '0 2.5em' }}>
+                  <DialogBody style={{ padding: '0 3.5em' }}>
                     <GuideVideoField />
                   </DialogBody>
                 </ModalRoot>
