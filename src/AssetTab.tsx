@@ -13,10 +13,19 @@ import useAssetSearch from './hooks/useAssetSearch';
 import useSettings from './hooks/useSettings';
 import ResultsStateBar from './components/ResultsStateBar';
 import LogoPositionerModal from './modals/LogoPositionerModal';
+import OfficialAssetsModal from './modals/OfficialAssetsModal';
 
 const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const { get } = useSettings();
-  const { loading: searchLoading, assets, searchAndSetAssets, openFilters, isFilterActive, selectedGame } = useAssetSearch();
+  const {
+    loading: searchLoading,
+    assets,
+    searchAndSetAssets,
+    openFilters,
+    isFilterActive,
+    selectedGame,
+    externalSgdbData,
+  } = useAssetSearch();
   const { appOverview, changeAssetFromUrl, serverApi } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
@@ -28,6 +37,31 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
 
   const handleFilterClick = () => openFilters(assetType);
   const handleLogoPosClick = () => showModal(<LogoPositionerModal appId={appOverview.appid} />, window);
+  const handleOfficialAssetsClick = () => {
+    showModal((
+      <OfficialAssetsModal
+        onAssetChange={async (url) => {
+          try {
+            await changeAssetFromUrl(url, assetType);
+            serverApi.toaster.toast({
+              title: appOverview?.display_name,
+              body: t('MSG_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
+              icon: <MenuIcon />,
+              duration: 1500,
+            });
+          } catch (err: any) {
+            serverApi.toaster.toast({
+              title: t('MSG_ASSET_APPLY_ERROR', 'There was a problem applying this asset.'),
+              body: err.message,
+              icon: <MenuIcon fill="#f3171e" />,
+            });
+          }
+        }}
+        assetType={assetType}
+        data={externalSgdbData}
+      />
+    ), window);
+  };
 
   const setAsset = async (assetId: number, url: string) => {
     log('cliccc');
@@ -91,6 +125,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         assetType={assetType}
         onFilterClick={handleFilterClick}
         onLogoPosClick={handleLogoPosClick}
+        onOfficialAssetsClick={handleOfficialAssetsClick}
         onSizeChange={(size) => setSizingStyles(size)}
         disabled={tabLoading}
         noFocusRing={searchLoading || tabLoading}

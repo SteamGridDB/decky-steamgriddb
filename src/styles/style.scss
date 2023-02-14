@@ -247,10 +247,20 @@ $topBarHeight: var(--basicui-header-height, 40px);
       position: sticky;
       top: 0;
     }
-    > .action-buttons {
+    > .sgdb-asset-toolbar {
       display: flex;
       width: 100%;
       gap: var(--gpSpace-Gap, .6em);
+      .filter-buttons {
+        align-items: center;
+        display: flex;
+        gap: .5em;
+        > button {
+          min-width: auto;
+          flex: 1;
+          white-space: nowrap;
+        }
+      }
       .size-slider {
         flex: 1;
         padding: .5em 1em;
@@ -674,6 +684,26 @@ $color-guide: #008ada;
       height: 32px;
     }
   }
+}
+
+@include modal('official-assets') {
+  .official-steam-asset {
+    margin: 0 auto;
+    &.grid_l {
+      max-width: 60%;
+    }
+    @at-root .MediumWindow &.grid_p {
+      max-width: 39%;
+    }
+    @at-root .WideWindow &.grid_p {
+      max-width: 55%;
+    }
+    &.hero,
+    &.logo {
+      max-width: 100%;
+    }
+  }
+  @include asset;
 }
 
 @keyframes sgdb-fadeIn {

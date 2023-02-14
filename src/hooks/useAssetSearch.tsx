@@ -23,6 +23,7 @@ export type AssetSearchContextType = {
   loading: boolean;
   assets: any[];
   searchAndSetAssets: (assetType: SGDBAssetType, filters: any, onSuccess?: () => void) => Promise<void>;
+  externalSgdbData: any;
   openFilters: (assetType: SGDBAssetType) => void;
   games: any[];
   selectedGame: any;
@@ -35,12 +36,13 @@ let abortCont: AbortController | null = null;
 
 export const AssetSearchContext: FC = ({ children }) => {
   const { set, get } = useSettings();
-  const { appId, searchAssets, searchGames, appOverview, serverApi } = useSGDB();
+  const { appId, searchAssets, searchGames, getSgdbGame, appOverview, serverApi } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
   const [currentFilters, setCurrentFilters] = useState();
   const [isFilterActive, setIsFilterActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>();
+  const [externalSgdbData, setExternalSgdbData] = useState<any>(null);
 
   const showGameSelection = useCallback(() => {
     showModal(
@@ -143,14 +145,23 @@ export const AssetSearchContext: FC = ({ children }) => {
     })();
   }, [appOverview, appId, get, searchGames, set, showGameSelection]);
 
+  useEffect(() => {
+    if (!selectedGame) return;
+    (async () => {
+      const sgdbGame = await getSgdbGame(selectedGame);
+      setExternalSgdbData(sgdbGame.external_platform_data);
+    })();
+  }, [getSgdbGame, selectedGame]);
+
   const value = useMemo(() => ({
     loading,
     assets,
     searchAndSetAssets,
     selectedGame,
+    externalSgdbData,
     openFilters,
     isFilterActive,
-  }), [loading, assets, searchAndSetAssets, selectedGame, openFilters, isFilterActive]);
+  }), [loading, assets, searchAndSetAssets, selectedGame, externalSgdbData, openFilters, isFilterActive]);
 
   return (
     <SearchContext.Provider value={value}>

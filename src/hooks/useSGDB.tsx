@@ -32,6 +32,7 @@ export type SGDBContextType = {
   appOverview: SteamAppOverview;
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
+  getSgdbGame: (sgdbGame: any) => Promise<any>;
   serverApi: ServerAPI;
   changeAsset: (data: string, assetType: SGDBAssetType | eAssetType) => Promise<void>;
   changeAssetFromUrl: (location: string, assetType: SGDBAssetType | eAssetType, path?: boolean) => Promise<void>;
@@ -273,6 +274,21 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     return await apiRequest(`/${type}/${gameId ? 'game' : 'steam'}/${gameId ?? appId}?${qs}`, signal);
   }, [apiRequest, appId]);
 
+  const getSgdbGame = useCallback(async (game) => {
+    try {
+      const gameRes = await apiRequest(`/games/id/${game.id}`);
+      log('sgdb game', gameRes);
+      return gameRes;
+    } catch (err: any) {
+      serverApi.toaster.toast({
+        title: 'SteamGridDB API Error',
+        body: err.message,
+        icon: <MenuIcon fill="#f3171e" />,
+      });
+      return [];
+    }
+  }, [apiRequest, serverApi.toaster]);
+
   useEffect(() => {
     if (appId) {
       (async () => {
@@ -292,10 +308,11 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     setAppId,
     searchAssets,
     searchGames,
+    getSgdbGame,
     changeAsset,
     changeAssetFromUrl,
     clearAsset,
-  }), [appId, serverApi, appOverview, searchAssets, searchGames, changeAsset, changeAssetFromUrl, clearAsset]);
+  }), [appId, serverApi, appOverview, searchAssets, searchGames, getSgdbGame, changeAsset, changeAssetFromUrl, clearAsset]);
 
   return (
     <SGDBContext.Provider value={value}>

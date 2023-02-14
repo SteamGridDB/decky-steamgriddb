@@ -11,6 +11,7 @@ import {
 
 import t from '../utils/i18n';
 import useSettings from '../hooks/useSettings';
+import useAssetSearch from '../hooks/useAssetSearch';
 
 const sliderProps = {
   grid_p: {
@@ -56,6 +57,7 @@ export interface Toolbar {
   assetType: SGDBAssetType;
   onSizeChange: (size: any) => void;
   onFilterClick: () => void;
+  onOfficialAssetsClick: () => void;
   onLogoPosClick: () => void;
   disabled: boolean;
   noFocusRing?: boolean;
@@ -66,14 +68,24 @@ export type ToolbarRefType = {
   assetSizeStyleAttr: any;
 };
 
+// map SGDBAssetType to steam response
+const defaultAssetMap = {
+  grid_p: 'library_capsule',
+  grid_l: 'header_image',
+  hero: 'library_hero',
+  logo: 'library_logo',
+};
+
 const Toolbar = forwardRef(({
   assetType,
   onSizeChange,
   onFilterClick,
+  onOfficialAssetsClick,
   onLogoPosClick,
   disabled = false,
   noFocusRing,
 }: Toolbar, ref: Ref<ToolbarRefType>) => {
+  const { externalSgdbData } = useAssetSearch();
   const { set, get } = useSettings();
   const [sliderValue, setSliderValue] = useState<number>(120);
   const toolbarFocusRef = useRef<HTMLDivElement>(null);
@@ -128,32 +140,32 @@ const Toolbar = forwardRef(({
       onActivate={() => toolbarFocusRef.current?.focus()}
       onClick={(evt) => evt.preventDefault()} // Don't focus if using UI with a pointer
     >
-      <Focusable className="action-buttons">
-        <Focusable
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            gap: '0.5em',
-          }}
-        >
+      <Focusable className="sgdb-asset-toolbar">
+        <Focusable className="filter-buttons">
           <DialogButton
             ref={toolbarFocusRef}
-            style={{
-              minWidth: 'auto',
-              flex: 0,
-            }}
+            style={{ flex: 0 }}
             noFocusRing
             onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
             onClick={onFilterClick}
           >
             {t('ACTION_OPEN_FILTER', 'Filter')}
           </DialogButton>
+          {(
+            externalSgdbData &&
+            externalSgdbData.length > 0 &&
+            externalSgdbData[0].metadata[defaultAssetMap[assetType]]
+          ) && (
+            <DialogButton
+              noFocusRing
+              onOKActionDescription={t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official Assets')}
+              onClick={onOfficialAssetsClick}
+            >
+              {t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official Assets')}
+            </DialogButton>
+          )}
           {assetType === 'logo' && (
             <DialogButton
-              style={{
-                minWidth: 'auto',
-                flex: 1,
-              }}
               noFocusRing
               onOKActionDescription={t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
               onClick={onLogoPosClick}
