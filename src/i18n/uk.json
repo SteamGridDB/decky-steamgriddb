@@ -41,7 +41,6 @@
   "LABEL_FILTER_TAG_UNTAGGED": "Без позначок",
   "ACTION_FILTER_RESET": "Скинути фільтри",
   "ACTION_OPEN_FILTER": "Фільтр",
-  "ACTION_OPEN_OFFICIAL_ASSETS": "Офіційні ресурси",
   "ACTION_ASSET_APPLY": "Застосувати {assetType}",
   "MSG_GAME_SELECTED": "Вибрано: {gameName}",
   "MSG_ASSETS_FILTERED": "Деякі файли можуть бути приховані через фільтр",
