@@ -23,6 +23,7 @@ export type AssetSearchContextType = {
   loading: boolean;
   assets: any[];
   searchAndSetAssets: (assetType: SGDBAssetType, filters: any, onSuccess?: () => void) => Promise<void>;
+  loadMore: (assetType: SGDBAssetType, onSuccess?: (res: any[]) => void) => Promise<void>;
   externalSgdbData: any;
   openFilters: (assetType: SGDBAssetType) => void;
   games: any[];
@@ -43,6 +44,7 @@ export const AssetSearchContext: FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>();
   const [externalSgdbData, setExternalSgdbData] = useState<any>(null);
+  const [page, setPage] = useState(0);
 
   const showGameSelection = useCallback(() => {
     showModal(
@@ -90,6 +92,37 @@ export const AssetSearchContext: FC = ({ children }) => {
       }
     }
   }, 500), [appId, appOverview, searchAssets, showGameSelection, selectedGame, serverApi.toaster, set]) as AssetSearchContextType['searchAndSetAssets'];
+
+  const loadMore = useMemo(() => debounce(async (assetType, onSuccess) => {
+    if (appOverview?.BIsModOrShortcut() && !selectedGame) return;
+    if (abortCont) abortCont?.abort();
+    abortCont = new AbortController();
+
+    if (assets.length === 0) return;
+
+    try {
+      const resp = await searchAssets(assetType, {
+        page: page + 1,
+        gameId: selectedGame?.id,
+        filters: currentFilters,
+        signal: abortCont.signal,
+      });
+      log('search load more resp', resp);
+      setAssets((assets) => [...assets, ...resp]);
+      onSuccess?.(resp);
+      setPage((x) => x + 1);
+    } catch (err: any) {
+      if (err.name === 'AbortError') {
+        log('Load more aborted');
+      } else {
+        serverApi.toaster.toast({
+          title: 'SteamGridDB API Error',
+          body: err.message,
+          icon: <MenuIcon fill="#f3171e" />,
+        });
+      }
+    }
+  }, 500), [appOverview, assets.length, currentFilters, page, searchAssets, selectedGame, serverApi.toaster]);
 
   const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
     if (!isEqual(filters, currentFilters)) {
@@ -157,11 +190,12 @@ export const AssetSearchContext: FC = ({ children }) => {
     loading,
     assets,
     searchAndSetAssets,
+    loadMore,
     selectedGame,
     externalSgdbData,
     openFilters,
     isFilterActive,
-  }), [loading, assets, searchAndSetAssets, selectedGame, externalSgdbData, openFilters, isFilterActive]);
+  }), [loading, assets, searchAndSetAssets, loadMore, selectedGame, externalSgdbData, openFilters, isFilterActive]);
 
   return (
     <SearchContext.Provider value={value}>

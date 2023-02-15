@@ -21,6 +21,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     loading: searchLoading,
     assets,
     searchAndSetAssets,
+    loadMore,
     openFilters,
     isFilterActive,
     selectedGame,
@@ -30,10 +31,12 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
   const [tabLoading, setTabLoading] = useState(true);
+  const [moreLoading, setMoreLoading] = useState(false);
   const loading = useMemo(() => !(!searchLoading && !tabLoading), [searchLoading, tabLoading]);
 
   const toolbarRef = useRef<ToolbarRefType>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const intersectRef = useRef<HTMLDivElement>(null);
 
   const handleFilterClick = () => openFilters(assetType);
   const handleLogoPosClick = () => showModal(<LogoPositionerModal appId={appOverview.appid} />, window);
@@ -111,6 +114,30 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     })();
   }, [searchAndSetAssets, assetType, get]);
 
+  useEffect(() => {
+    if (!intersectRef.current || loading) return;
+
+    const observer = new IntersectionObserver(([entry], observer) => {
+      if (!moreLoading && entry.isIntersecting) {
+        setMoreLoading(true);
+        log('IN');
+        loadMore(assetType, (res) => {
+          log('chchchch');
+          if (res.length === 0) {
+            observer.disconnect();
+          } else {
+            setMoreLoading(false);
+          }
+        });
+      }
+    }, { threshold: 0, root: mainContentRef.current?.parentElement?.parentElement });
+
+    observer.observe(intersectRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [assetType, loadMore, loading, moreLoading]);
+
   if (!appOverview) return null;
 
   return (
@@ -143,29 +170,35 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         id="images-container"
         style={sizingStyles}
       >
-        {!tabLoading && assets.map((asset: any) => (
-          <Asset
-            key={asset.id}
-            scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
-            author={asset.author}
-            notes={asset.notes}
-            src={asset.thumb}
-            width={asset.width}
-            height={asset.height}
-            humor={asset.humor}
-            epilepsy={asset.epilepsy}
-            nsfw={asset.nsfw}
-            assetType={assetType}
-            isAnimated={asset.thumb.includes('.webm')}
-            isDownloading={downloadingId === asset.id}
-            onActivate={() => setAsset(asset.id, asset.url)}
-            onOKActionDescription={t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-            onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')} // activate filter bar from anywhere
-            onSecondaryButton={handleFilterClick}
-            onMenuActionDescription={t('ACTION_OPEN_DETAILS', 'Details')}
-            onMenuButton={() => openDetails(asset)}
-          />
-        ))}
+        {!tabLoading && (
+          <>
+            {assets.map((asset: any) => (
+              <Asset
+                key={asset.id}
+                scrollContainer={mainContentRef.current?.parentElement?.parentElement as Element}
+                author={asset.author}
+                notes={asset.notes}
+                src={asset.thumb}
+                width={asset.width}
+                height={asset.height}
+                humor={asset.humor}
+                epilepsy={asset.epilepsy}
+                nsfw={asset.nsfw}
+                assetType={assetType}
+                isAnimated={asset.thumb.includes('.webm')}
+                isDownloading={downloadingId === asset.id}
+                onActivate={() => setAsset(asset.id, asset.url)}
+                onOKActionDescription={t('ACTION_ASSET_APPLY', 'Apply {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+                onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')} // activate filter bar from anywhere
+                onSecondaryButton={handleFilterClick}
+                onMenuActionDescription={t('ACTION_OPEN_DETAILS', 'Details')}
+                onMenuButton={() => openDetails(asset)}
+              />
+            ))}
+            {/* Load more if spinner in view */}
+            <div ref={intersectRef} style={{ gridColumn: '1 / -1', height: '5px' }} />
+          </>
+        )}
       </Focusable>
     </div>
   );

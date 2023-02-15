@@ -30,7 +30,7 @@ export type SGDBContextType = {
   appId: number | null;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
   appOverview: SteamAppOverview;
-  searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, signal?: AbortSignal}) => Promise<Array<any>>;
+  searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, page?: number, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   getSgdbGame: (sgdbGame: any) => Promise<any>;
   serverApi: ServerAPI;
@@ -41,7 +41,7 @@ export type SGDBContextType = {
 
 const getAmbiguousAssetType = (assetType: SGDBAssetType | eAssetType) => typeof assetType === 'number' ? assetType : ASSET_TYPE[assetType];
 
-const getApiParams = (assetType: SGDBAssetType, filters: any) => {
+const getApiParams = (assetType: SGDBAssetType, filters: any, page: number) => {
   let adult = 'false';
   let humor = 'any';
   let epilepsy = 'any';
@@ -84,6 +84,7 @@ const getApiParams = (assetType: SGDBAssetType, filters: any) => {
   }
 
   return new URLSearchParams({
+    page: page.toString(),
     styles:  filters?.styles ?? STYLES[assetType].default.join(','),
     dimensions: filters?.dimensions ?? DIMENSIONS[assetType].default.join(','),
     mimes: filters?.mimes ?? MIMES[assetType].default.join(','),
@@ -251,7 +252,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
     }
   }, [apiRequest, serverApi.toaster]);
 
-  const searchAssets: SGDBContextType['searchAssets'] = useCallback(async (assetType, { gameId, filters = null, signal }) => {
+  const searchAssets: SGDBContextType['searchAssets'] = useCallback(async (assetType, { gameId, filters = null, page = 0, signal }) => {
     let type = '';
     switch (assetType) {
     case 'grid_p':
@@ -269,7 +270,7 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
       break;
     }
 
-    const qs = getApiParams(assetType, filters);
+    const qs = getApiParams(assetType, filters, page);
     log('asset search', gameId, qs);
     return await apiRequest(`/${type}/${gameId ? 'game' : 'steam'}/${gameId ?? appId}?${qs}`, signal);
   }, [apiRequest, appId]);
