@@ -41,7 +41,7 @@
   "LABEL_FILTER_TAG_UNTAGGED": "Untagged",
   "ACTION_FILTER_RESET": "Reset Filters",
   "ACTION_OPEN_FILTER": "Filter",
-  "ACTION_OPEN_OFFICIAL_ASSETS": "Official Assets",
+  "ACTION_OPEN_OFFICIAL_ASSETS": "Official {assetType}",
   "ACTION_ASSET_APPLY": "Apply {assetType}",
   "MSG_GAME_SELECTED": "Selected {gameName}",
   "MSG_ASSETS_FILTERED": "Some assets may be hidden due to filter",

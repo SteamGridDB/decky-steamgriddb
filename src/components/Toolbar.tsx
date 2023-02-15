@@ -12,6 +12,7 @@ import {
 import t from '../utils/i18n';
 import useSettings from '../hooks/useSettings';
 import useAssetSearch from '../hooks/useAssetSearch';
+import { SGDB_ASSET_TYPE_READABLE } from '../constants';
 
 const sliderProps = {
   grid_p: {
@@ -158,10 +159,10 @@ const Toolbar = forwardRef(({
           ) && (
             <DialogButton
               noFocusRing
-              onOKActionDescription={t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official Assets')}
+              onOKActionDescription={t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
               onClick={onOfficialAssetsClick}
             >
-              {t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official Assets')}
+              {t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
             </DialogButton>
           )}
           {assetType === 'logo' && (
