@@ -1,4 +1,4 @@
-import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent } from 'decky-frontend-lib';
+import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent, appDetailsHeaderClasses } from 'decky-frontend-lib';
 import { FC, useState, useEffect, useRef } from 'react';
 
 import LibraryImage from '../components/LibraryImage';
@@ -58,7 +58,13 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: LogoPosition | null, 
 
   return (
     <div
-      className={joinClassNames('logo-positioner', border ? 'logo-border' : '', `pos-${logoPos.pinnedPosition}`)}
+      className={joinClassNames(
+        appDetailsHeaderClasses.TopCapsule,
+        app.BIsModOrShortcut() ? appDetailsHeaderClasses.FallbackArt : '',
+        'logo-positioner',
+        border ? 'logo-border' : '',
+        `pos-${logoPos.pinnedPosition}`
+      )}
       style={{
         ['--logo-width' as string]: `${logoPos.nWidthPct}%`,
         ['--logo-height' as string]: `${logoPos.nHeightPct}%`,

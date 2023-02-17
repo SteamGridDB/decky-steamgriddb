@@ -5,7 +5,6 @@ $color-guide: #008ada;
     position: relative;
     margin-top: calc($topBarHeight + 1em);
     width: 100%;
-    height: var(--header-height, calc( 80px + 20vw ));
     overflow: hidden;
     align-items: center;
     &.logo-border {
