@@ -124,8 +124,8 @@ class Plugin:
                 files.append({
                     "isdir": is_dir,
                     "ishidden": is_hidden,
-                    "name": file.name,
-                    "realpath": str(file.resolve()),
+                    "name": file.name.encode('utf-8', 'replace').decode('utf-8'),
+                    "realpath": str(file.resolve()).encode('utf-8', 'replace').decode('utf-8'),
                     "size": file.stat().st_size,
                     "modified": file.stat().st_mtime,
                     "created": file.stat().st_ctime,
