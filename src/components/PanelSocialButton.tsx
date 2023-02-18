@@ -3,7 +3,7 @@ import {
   DialogButton,
   Field,
   Focusable,
-  Router,
+  Navigation,
 } from 'decky-frontend-lib';
 import { FC, ReactNode } from 'react';
 import { HiQrCode } from 'react-icons/hi2';
@@ -12,8 +12,8 @@ import showQrModal from '../utils/showQrModal';
 import t from '../utils/i18n';
 
 const navLink = (url: string) => {
-  Router.CloseSideMenus();
-  Router.NavigateToExternalWeb(url);
+  Navigation.CloseSideMenus();
+  Navigation.NavigateToExternalWeb(url);
 };
 
 /**

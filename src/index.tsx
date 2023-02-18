@@ -7,7 +7,7 @@ import {
   findInReactTree,
   findInTree,
   MenuItem,
-  Router,
+  Navigation,
   Patch,
 } from 'decky-frontend-lib';
 
@@ -25,7 +25,7 @@ const spliceArtworkItem = (children: any[], appid: number) => {
     <MenuItem
       key="sgdb-change-artwork"
       onSelected={() => {
-        Router.Navigate(`/steamgriddb/${appid}`);
+        Navigation.Navigate(`/steamgriddb/${appid}`);
       }}
     >
       {t('ACTION_CHANGE_ARTWORK', 'Change artwork...')}

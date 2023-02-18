@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Focusable, FocusableProps, Router } from 'decky-frontend-lib';
+import { Focusable, FocusableProps, Navigation } from 'decky-frontend-lib';
 import { FC } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -29,7 +29,7 @@ const Markdown: FC<{
             <Focusable
               onActivate={() => {
                 if (linkProps.href) {
-                  Router.NavigateToExternalWeb(linkProps.href);
+                  Navigation.NavigateToExternalWeb(linkProps.href);
                   onLinkClick?.();
                 }
               }}

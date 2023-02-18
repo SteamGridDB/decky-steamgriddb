@@ -1,4 +1,4 @@
-import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Router } from 'decky-frontend-lib';
+import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Navigation } from 'decky-frontend-lib';
 import { FC, useState } from 'react';
 
 import Asset, { AssetProps } from '../components/Asset';
@@ -53,7 +53,7 @@ const DetailsModal: FC<{
             ].filter(Boolean).join(' • ')}
           </span>
           <Focusable className="author" onActivate={() => {
-            Router.NavigateToExternalWeb(`https://steamcommunity.com/profiles/${asset.author.steam64}`);
+            Navigation.NavigateToExternalWeb(`https://steamcommunity.com/profiles/${asset.author.steam64}`);
             closeModal?.();
           }}
           >

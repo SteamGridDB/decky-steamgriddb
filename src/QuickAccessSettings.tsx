@@ -1,7 +1,7 @@
 import {
   PanelSection,
   PanelSectionRow,
-  Router,
+  Navigation,
   ServerAPI,
   Field,
   showModal,
@@ -31,22 +31,22 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               childrenContainerWidth="max"
             >
               <DialogButton onClick={() => {
-                Router.Navigate('/zoo');
-                Router.CloseSideMenus();
+                Navigation.Navigate('/zoo');
+                Navigation.CloseSideMenus();
               }}
               >
               Zoo
               </DialogButton>
               <DialogButton onClick={() => {
-                Router.Navigate(`/steamgriddb/${debugAppid}/manage`);
-                Router.CloseSideMenus();
+                Navigation.Navigate(`/steamgriddb/${debugAppid}/manage`);
+                Navigation.CloseSideMenus();
               }}
               >
                 {debugAppid}
               </DialogButton>
               <DialogButton onClick={() => {
-                Router.Navigate('/steamgriddb/1091500/manage');
-                Router.CloseSideMenus();
+                Navigation.Navigate('/steamgriddb/1091500/manage');
+                Navigation.CloseSideMenus();
               }}
               >
               1091500
