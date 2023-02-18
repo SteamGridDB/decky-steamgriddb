@@ -1,3 +1,4 @@
+import { LogoPosition } from 'decky-frontend-lib';
 import waitUntil from 'async-wait-until';
 
 import getAppOverview from './getAppOverview';
@@ -6,7 +7,7 @@ const getCustomLogoPosition = async (appId: number): Promise<LogoPosition | null
   try {
     const appoverview = await getAppOverview(appId);
     if (!appoverview) return null;
-    return await waitUntil(() => {
+    return await waitUntil((): any => {
       try {
         return window.appDetailsStore.GetCustomLogoPosition(appoverview) as LogoPosition ?? null;
       } catch (error) {

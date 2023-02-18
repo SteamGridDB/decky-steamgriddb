@@ -26,11 +26,3 @@ declare module '*.webm' {
 type eAssetType = 0 | 1 | 2 | 3 | 4;
 
 type SGDBAssetType = 'grid_p' | 'grid_l' | 'hero' | 'logo' | 'icon';
-
-type LogoPinPositions = 'BottomLeft' | 'UpperLeft' | 'CenterCenter' | 'UpperCenter' | 'BottomCenter';
-
-type LogoPosition = {
-  pinnedPosition: LogoPinPositions,
-  nWidthPct: number,
-  nHeightPct: number,
-};

@@ -1,4 +1,12 @@
-import { SteamAppOverview, joinClassNames, Focusable, GamepadEvent, appDetailsHeaderClasses } from 'decky-frontend-lib';
+import {
+  SteamAppOverview,
+  joinClassNames,
+  Focusable,
+  GamepadEvent,
+  appDetailsHeaderClasses,
+  LogoPinPositions,
+  LogoPosition,
+} from 'decky-frontend-lib';
 import { FC, useState, useEffect, useRef } from 'react';
 
 import LibraryImage from '../components/LibraryImage';

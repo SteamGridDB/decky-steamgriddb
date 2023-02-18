@@ -54,7 +54,7 @@
   "dependencies": {
     "@types/react-file-icon": "^1.0.1",
     "async-wait-until": "^2.0.12",
-    "decky-frontend-lib": "^3.18.10",
+    "decky-frontend-lib": "^3.18.11",
     "filesize": "^10.0.6",
     "just-debounce": "^1.1.0",
     "qrcode.react": "^3.1.0",
