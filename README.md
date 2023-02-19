@@ -48,7 +48,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |
 | **Italiano** | SpagottoB37 |
-| **Nederlands** | Phanpy100 (Fanny) |
+| **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde |
 | **Polski** | DRS |
 | **Português-Brasil** | Oregano |
 | **Português** | Kokasgui |

@@ -72,7 +72,7 @@ export const LANGS = {
   nl: {
     name: 'Nederlands',
     strings: nl,
-    credit: ['Phanpy100 (Fanny)'],
+    credit: ['Phanpy100 (Fanny)', 'Jannes Verlinde'],
   },
   pl: {
     name: 'Polski',
