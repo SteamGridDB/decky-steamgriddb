@@ -46,6 +46,8 @@
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "フィルター付きで{gameName}を選択中",
   "ACTION_HIDE_POS_GUIDES": "補助線を非表示",
   "ACTION_SHOW_OUTLINE": "補助線を表示",
+  "ACTION_ADJUST_POS_SIZE": "サイズを調整",
+  "ACTION_CHANGE_POS_LOGO_ANCHOR_POINT": "相対位置点を変更",
   "MSG_ASSET_APPLY_SUCCESS": "{assetType}が正常に適用されました！",
   "MSG_ASSET_APPLY_ERROR": "この画像を適用する際に問題が発生しました",
   "ACTION_OPEN_DETAILS": "詳細",
