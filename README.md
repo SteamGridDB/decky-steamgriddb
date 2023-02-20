@@ -16,7 +16,8 @@ Easily browse and manage Steam artwork from SteamGridDB or your local files from
 - Ability to change icons for Steam or non-Steam shortcuts.
 - Manually select images from the local file system.
 - Utility to apply invisible assets.
-- Reset custom images back to default.
+- Ability to reset custom images back to default.
+- Logo positioner.
 
 ## Installation
 1. Install [Decky Loader](https://deckbrew.xyz/en/user-guide/install)
