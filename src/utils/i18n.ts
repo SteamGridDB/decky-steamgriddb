@@ -32,7 +32,7 @@ export const LANGS = {
   de: {
     name: 'Deutsch',
     strings: de,
-    credit: ['Kurikuo'],
+    credit: ['Kurikuo', 'benutzer_artur7', 'Anja'],
   },
   el: {
     name: 'Ελληνικά',
@@ -42,7 +42,7 @@ export const LANGS = {
   es: {
     name: 'Español-España',
     strings: es,
-    credit: ['Andrea Laguillo', 'Kam'],
+    credit: ['Andrea Laguillo', 'Kam', 'm0uch0'],
   },
   'es-419': {
     name: 'Español-Latinoamérica',
@@ -72,12 +72,12 @@ export const LANGS = {
   nl: {
     name: 'Nederlands',
     strings: nl,
-    credit: ['Phanpy100 (Fanny)'],
+    credit: ['Phanpy100 (Fanny)', 'Jannes Verlinde'],
   },
   pl: {
     name: 'Polski',
     strings: pl,
-    credit: ['DRS'],
+    credit: ['DRS', 'Michał Kwiatkowski'],
   },
   pt: {
     name: 'Português',
@@ -87,7 +87,7 @@ export const LANGS = {
   'pt-br': {
     name: 'Português-Brasil',
     strings: ptBr,
-    credit: ['Oregano'],
+    credit: ['Oregano', 'Thomas Eric'],
   },
   ro: {
     name: 'Română',
