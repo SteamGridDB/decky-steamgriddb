@@ -41,7 +41,7 @@
   "LABEL_FILTER_TAG_UNTAGGED": "タグなし",
   "ACTION_FILTER_RESET": "フィルターをリセット",
   "ACTION_OPEN_FILTER": "フィルター",
-  "ACTION_OPEN_OFFICIAL_ASSETS": "公式の{assetType}",
+  "ACTION_OPEN_OFFICIAL_ASSETS": "公式{assetType}",
   "ACTION_ASSET_APPLY": "{assetType}を適用",
   "MSG_GAME_SELECTED": "{gameName}を選択中",
   "MSG_ASSETS_FILTERED": "フィルターにより一部の画像が非表示になる可能性があります",
