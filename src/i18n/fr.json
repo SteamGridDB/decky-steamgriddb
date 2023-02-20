@@ -1,5 +1,5 @@
 {
-  "ACTION_SHOW_LINK_QR": "Afficher le code QR",
+  "ACTION_SHOW_LINK_QR": "Afficher le code QR du lien",
   "MSG_USAGE_INSTRUCTIONS": "Sélectionner un jeu {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
   "ACTION_CHANGE_ARTWORK": "Modifier les images...",
   "LABEL_USAGE_TITLE": "Perdu? Voici un guide rapide",
