@@ -1,7 +1,7 @@
 {
   "ACTION_SHOW_LINK_QR": "Mostrar QR do Link",
   "MSG_USAGE_INSTRUCTIONS": "Escolha um jogo {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
-  "ACTION_CHANGE_ARTWORK": "Alterar imagem...",
+  "ACTION_CHANGE_ARTWORK": "Alterar Arte do Jogo...",
   "LABEL_USAGE_TITLE": "Perdido? Aqui está um Guia Rápido",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Tradução PT-BR",
   "LABEL_MORE_SGDB_TITLE": "Mais do SteamGridDB",
@@ -44,7 +44,7 @@
   "ACTION_OPEN_OFFICIAL_ASSETS": "{assetType} Oficial",
   "ACTION_ASSET_APPLY": "Aplicar {assetType}",
   "MSG_GAME_SELECTED": "Selecionou {gameName}",
-  "MSG_ASSETS_FILTERED": "Alguns recursos podem estar escondidos pelos filtros",
+  "MSG_ASSETS_FILTERED": "Algumas artes podem estar ocultas devido aos filtros",
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "Selecionou {gameName} com filtros",
   "ACTION_HIDE_POS_GUIDES": "Ocultar Guias",
   "ACTION_SHOW_OUTLINE": "Exibir Guias",
