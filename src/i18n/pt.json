@@ -55,7 +55,7 @@
   "ACTION_OPEN_DETAILS": "Detalhes",
   "LABEL_ASSET_CURRENT": "{assetType} atual",
   "ACTION_ASSET_CUSTOM_CLEAR": "Limpar ativo personalizado",
-  "ACTION_ASSET_BROWSE_LOCAL": "Procurar em ficheiros locais",
+  "ACTION_ASSET_BROWSE_LOCAL": "Localizar ficheiros locais",
   "ACTION_ASSET_APPLY_TRANSPARENT": "Usar ativo invisível",
   "LABEL_TAB_CAPSULE": "Cápsula",
   "LABEL_TAB_WIDECAPSULE": "Faixa",
