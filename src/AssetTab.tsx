@@ -120,9 +120,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     const observer = new IntersectionObserver(([entry], observer) => {
       if (!moreLoading && entry.isIntersecting) {
         setMoreLoading(true);
-        log('IN');
         loadMore(assetType, (res) => {
-          log('chchchch');
           if (res.length === 0) {
             observer.disconnect();
           } else {
