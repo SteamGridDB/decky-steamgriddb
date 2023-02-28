@@ -230,7 +230,6 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
       <ul className="logo-positioner-instructions">
         <li><img src={Dpad} /> {t('ACTION_ADJUST_POS_SIZE', 'Adjust Size')}</li>
         <li><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
-        <li><FooterGlyph button={11} size={1} type={0} /> {t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}</li>
       </ul>
     </Focusable>
   );
