@@ -123,6 +123,13 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
     closeModal?.();
   };
 
+  const handleReset = async () => {
+    if (!overview || !logoPos) return;
+    await (window.appDetailsStore as unknown as {
+      ClearCustomLogoPosition: (app: SteamAppOverview) => any;
+    }).ClearCustomLogoPosition(overview);
+  };
+
   const handleDirection = (evt: GamepadEvent) => {
     // Increase speed when held down
     if (evt.detail.is_repeat) {
@@ -213,11 +220,14 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
       onSecondaryActionDescription={t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}
       onOptionsButton={() => setShowBorder((x) => !x)}
       onOptionsActionDescription={showBorder ? t('ACTION_HIDE_POS_GUIDES', 'Hide Guides') : t('ACTION_SHOW_OUTLINE', 'Show Guides')}
+      onMenuButton={handleReset}
+      onMenuActionDescription={t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}
     >
       {overview && <LogoPositioner app={overview} logoPos={logoPos} border={showBorder} />}
       <ul className="logo-positioner-instructions">
         <li><img src={Dpad} /> {t('ACTION_ADJUST_POS_SIZE', 'Adjust Size')}</li>
         <li><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
+        <li><FooterGlyph button={11} size={1} type={0} /> {t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}</li>
       </ul>
     </Focusable>
   );

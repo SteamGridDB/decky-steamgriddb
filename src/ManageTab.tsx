@@ -198,6 +198,15 @@ const LocalTab: FC = () => {
         >
           {t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
         </DialogButton>
+        <DialogButton
+          onClick={async () => {
+            await (window.appDetailsStore as unknown as {
+              ClearCustomLogoPosition: (app: SteamAppOverview) => any;
+            }).ClearCustomLogoPosition(overview);
+          }}
+        >
+          {t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}
+        </DialogButton>
       </Focusable>
     </Focusable>
   );
