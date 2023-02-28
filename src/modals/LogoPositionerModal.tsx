@@ -198,7 +198,9 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
     if (overview) {
       (async () => {
         const appdetails = await getAppDetails(overview.appid);
-        const logoPos = await getCustomLogoPosition(overview.appid) || appdetails?.libraryAssets?.logoPosition;
+        const logoPos = await getCustomLogoPosition(overview.appid) || // Loads from json
+          appdetails?.libraryAssets?.logoPosition || // Loads from default Steam app details
+          { pinnedPosition: 'BottomLeft', nWidthPct: 50, nHeightPct: 50 }; // Fallback when no data is available
         log(logoPos);
         if (logoPos) {
           setLogoPos(logoPos);
