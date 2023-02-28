@@ -128,6 +128,7 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
     await (window.appDetailsStore as unknown as {
       ClearCustomLogoPosition: (app: SteamAppOverview) => any;
     }).ClearCustomLogoPosition(overview);
+    closeModal?.();
   };
 
   const handleDirection = (evt: GamepadEvent) => {
