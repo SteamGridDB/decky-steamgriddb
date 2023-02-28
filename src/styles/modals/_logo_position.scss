@@ -7,6 +7,15 @@ $color-guide: #008ada;
     width: 100%;
     overflow: hidden;
     align-items: center;
+    &.spinnyboi {
+      height: var(--header-height, calc( 80px + 20vw )); // default-ish height to prevent jank when content is loaded in
+      > img {
+        margin: 0 auto;
+        width: 5em;
+        opacity: 0;
+        animation: 150ms linear 400ms 1 sgdb-fadeIn forwards;
+      }
+    }
     &.logo-border {
       .logo-positioner-logo {
         outline: 3px $color-guide solid;
@@ -156,12 +165,6 @@ $color-guide: #008ada;
     }
     &-hero {
       width: 100%;
-    }
-    > .loading-spinner {
-      margin: 0 auto;
-      width: 5em;
-      opacity: 0;
-      animation: 150ms linear 400ms 1 sgdb-fadeIn forwards;
     }
   }
   .logo-positioner-instructions {

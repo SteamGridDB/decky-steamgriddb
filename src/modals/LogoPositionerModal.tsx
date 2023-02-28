@@ -59,8 +59,8 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: LogoPosition | null, 
   const positions = logoPos ? getStylePositions(logoPos.pinnedPosition, logoPos.nWidthPct, logoPos.nHeightPct) : null;
 
   if (!logoPos) return (
-    <div className="logo-positioner">
-      <img alt="Loading..." src="/images/steam_spinner.png" className="loading-spinner" />
+    <div className="logo-positioner spinnyboi">
+      <img alt="Loading..." src="/images/steam_spinner.png" />
     </div>
   );
 
