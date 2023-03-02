@@ -4,7 +4,7 @@
   "flags": ["debug"],
   "publish": {
     "tags": ["artwork", "sgdb"],
-    "description": "Easily browse and manage Steam artwork from SteamGridDB or your local files from within gaming mode.",
+    "description": "Browse and manage custom library art for Steam apps and non-Steam shortcuts from SteamGriDB or your local files.",
     "image": "https://raw.githubusercontent.com/SteamGridDB/decky-steamgriddb/main/thumb.png"
   }
 }
