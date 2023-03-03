@@ -1,5 +1,3 @@
-import logging
-import sys
 from os.path import dirname
 from os import W_OK, access
 from urllib.request import Request, urlopen
@@ -7,23 +5,13 @@ from urllib.parse import urlparse
 from base64 import b64encode
 from pathlib import Path
 from shutil import copyfile
-from settings import SettingsManager
-from helpers import get_ssl_context, get_user, set_user, get_home_path, get_homebrew_path
+from settings import SettingsManager # type: ignore
+from helpers import get_ssl_context # type: ignore
+import decky_plugin
 
-logging.basicConfig(filename="/tmp/decky-steamgriddb.log",
-                    format='[SGDB] %(asctime)s %(levelname)s %(message)s',
-                    filemode='w+',
-                    force=True)
-logger=logging.getLogger()
-logger.setLevel(logging.INFO) # can be changed to logging.DEBUG for debugging issues
+from vdf import binary_dump, binary_load
 
-set_user()
-HOME_PATH = get_home_path(get_user())
-
-sys.path.insert(0, str(Path(get_homebrew_path(HOME_PATH)) / 'plugins' / 'decky-steamgriddb'))
-from pylib.vdf import binary_dump, binary_load
-
-STEAM_PATH = Path(HOME_PATH) / '.local' / 'share' / 'Steam'
+STEAM_PATH = Path(decky_plugin.DECKY_USER_HOME) / '.local' / 'share' / 'Steam'
 USERDATA_PATH = STEAM_PATH / 'userdata'
 LIBCACHE = STEAM_PATH / 'appcache' / 'librarycache'
 
@@ -32,7 +20,10 @@ def get_userdata_config(steam32):
 
 class Plugin:
     async def _main(self):
-        self.settings = SettingsManager('steamgriddb')
+        self.settings = SettingsManager(name="steamgriddb", settings_directory=decky_plugin.DECKY_PLUGIN_SETTINGS_DIR)
+
+    async def _unload(self):
+        pass
 
     async def download_as_base64(self, url=''):
         req = Request(url, headers={'User-Agent': 'decky-steamgriddb backend'})
@@ -44,10 +35,10 @@ class Plugin:
             return b64encode(image_file.read()).decode('utf-8')
 
     async def get_local_start(self):
-        return HOME_PATH
+        return decky_plugin.DECKY_USER_HOME
 
     async def download_file(self, url='', output_dir='', file_name=''):
-        logger.debug({url, output_dir, file_name})
+        decky_plugin.logger.debug({url, output_dir, file_name})
         try:
             if access(dirname(output_dir), W_OK):
                 req = Request(url, headers={'User-Agent': 'decky-steamgriddb backend'})
@@ -135,3 +126,6 @@ class Plugin:
             "realpath": str(path),
             "files": files
         }
+
+    async def _migration(self):
+        decky_plugin.migrate_settings(str(Path(decky_plugin.DECKY_HOME) / "settings" / "steamgriddb.json"))
