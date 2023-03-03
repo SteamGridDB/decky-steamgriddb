@@ -1,5 +1,5 @@
 {
-  "ACTION_SHOW_LINK_QR": "Laad QR-code zien",
+  "ACTION_SHOW_LINK_QR": "Laat QR-code zien",
   "MSG_USAGE_INSTRUCTIONS": "Selecteer een spel {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
   "ACTION_CHANGE_ARTWORK": "Wijzig afbeelding...",
   "ASSET_TYPE_CAPSULE": "Capsule",
@@ -13,7 +13,9 @@
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Icoon",
   "LABEL_TAB_MANAGE": "Beheren",
+  "MSG_ASSET_TAB_SETTINGS_DESC": "Rangschik of verberg ongebruikte tabs, en kies de standaard tab die opent bij gebruik",
   "LABEL_USAGE_TITLE": "Verloren? Hier is een snelle handleiding",
+  "LABEL_SETTINGS_ASSET_TABS": "Asset Tab Instellingen",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Nederlandse Vertaling",
   "LABEL_MORE_SGDB_TITLE": "Meer van SteamGridDB",
   "ACTION_SGDB_DISCORD": "Word lid van de Discord",
