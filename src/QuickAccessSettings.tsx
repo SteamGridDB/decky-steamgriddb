@@ -29,7 +29,7 @@ import openFilePicker from './utils/openFilePicker';
 import TabSorter from './components/TabSorter';
 import useSettings, { SettingsProvider } from './hooks/useSettings';
 
-const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"'.replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change artwork...')));
+const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"').replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change artwork...'));
 
 const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const { get } = useSettings();
