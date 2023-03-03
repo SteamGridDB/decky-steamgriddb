@@ -14,7 +14,7 @@ const AssetTabs: VFC<{
   currentTab: string,
   onShowTab: TabsProps['onShowTab']
 }> = ({ currentTab, onShowTab }) => {
-  const { get } = useSettings();
+  const { get, set } = useSettings();
   const { appOverview } = useSGDB();
   const { openFilters } = useAssetSearch();
   const [tabPositions, setTabPositions] = useState<string[] | null>(null);
@@ -24,8 +24,12 @@ const AssetTabs: VFC<{
     (async () => {
       setTabPositions(await get('tabs_order', DEFAULT_TABS));
       setHiddenTabs(await get('tabs_hidden', []));
+
+      // Amount of times tabs page opened, used to hide tutorial after a while
+      const useCount = await get('plugin_use_count', 0);
+      set('plugin_use_count', useCount + 1, true);
     })();
-  }, [get]);
+  }, [get, set]);
 
   if (!tabPositions || !hiddenTabs) return null;
 

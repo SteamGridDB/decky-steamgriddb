@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogBodyText,
 } from 'decky-frontend-lib';
-import { useState, VFC } from 'react';
+import { useState, useEffect, VFC } from 'react';
 import {
   SiPatreon,
   SiGithub,
@@ -27,12 +27,22 @@ import t, { getCredits } from './utils/i18n';
 import GuideVideoField from './GuideVideoField';
 import openFilePicker from './utils/openFilePicker';
 import TabSorter from './components/TabSorter';
-import { SettingsProvider } from './hooks/useSettings';
+import useSettings, { SettingsProvider } from './hooks/useSettings';
 
 const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"'.replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change artwork...')));
 
 const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
+  const { get } = useSettings();
+  const [useCount, setUseCount] = useState<number | null>(null);
   const [debugAppid] = useState('70');
+
+  useEffect(() => {
+    (async () => {
+      setUseCount(await get('plugin_use_count', 0));
+    })();
+  }, [get]);
+
+  if (useCount === null) return null;
 
   return (
     <>
@@ -74,24 +84,26 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
           </PanelSectionRow>
         </PanelSection>
       )}
-      <PanelSection title={t('LABEL_USAGE_TITLE', 'Lost? Here\'s a Quick Guide')}>
-        <PanelSectionRow>
-          <GuideVideoField
-            bottomSeparator="standard"
-            highlightOnFocus
-            focusable
-            onActivate={() => {
-              showModal(
-                <ModalRoot>
-                  <DialogBody style={{ padding: '0 3.5em' }}>
-                    <GuideVideoField />
-                  </DialogBody>
-                </ModalRoot>
-              );
-            }}
-          />
-        </PanelSectionRow>
-      </PanelSection>
+      {(useCount <= 5) && ( // Hide tutorial if plugin has been used more than 5 times
+        <PanelSection title={t('LABEL_USAGE_TITLE', 'Lost? Here\'s a Quick Guide')}>
+          <PanelSectionRow>
+            <GuideVideoField
+              bottomSeparator="standard"
+              highlightOnFocus
+              focusable
+              onActivate={() => {
+                showModal(
+                  <ModalRoot>
+                    <DialogBody style={{ padding: '0 3.5em' }}>
+                      <GuideVideoField />
+                    </DialogBody>
+                  </ModalRoot>
+                );
+              }}
+            />
+          </PanelSectionRow>
+        </PanelSection>
+      )}
       <PanelSection title={t('Settings', 'Settings', true)}>
         <PanelSectionRow>
           <Field childrenLayout="below" description={tabSettingsDesc}>
