@@ -109,3 +109,18 @@ export const DIMENSIONS = {
     default: validIconSizes,
   },
 };
+
+// Sometimes tabs needs different translation strings
+export const tabStrs: Record<SGDBAssetType | 'manage', string> = {
+  grid_p: t('LABEL_TAB_CAPSULE', 'Capsule'),
+  grid_l: t('LABEL_TAB_WIDECAPSULE', 'Wide Capsule'),
+  hero: t('LABEL_TAB_HERO', 'Hero'),
+  logo: t('LABEL_TAB_LOGO', 'Logo'),
+  icon: t('LABEL_TAB_ICON', 'Icon'),
+  manage: t('LABEL_TAB_MANAGE', 'Manage'),
+};
+
+// Default tab order
+export const DEFAULT_TABS: SGDBAssetType[] | string[] = [
+  ...Object.keys(tabStrs),
+];

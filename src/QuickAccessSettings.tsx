@@ -8,15 +8,28 @@ import {
   ModalRoot,
   DialogButton,
   DialogBody,
+  DialogHeader,
+  DialogBodyText,
 } from 'decky-frontend-lib';
 import { useState, VFC } from 'react';
-import { SiPatreon, SiGithub, SiDiscord, SiTwitter, SiCrowdin } from 'react-icons/si';
+import {
+  SiPatreon,
+  SiGithub,
+  SiDiscord,
+  SiTwitter,
+  SiCrowdin,
+  SiMastodon,
+} from 'react-icons/si';
 
 import BoopIcon from './components/Icons/BoopIcon';
 import PanelSocialButton from './components/PanelSocialButton';
 import t, { getCredits } from './utils/i18n';
 import GuideVideoField from './GuideVideoField';
 import openFilePicker from './utils/openFilePicker';
+import TabSorter from './components/TabSorter';
+import { SettingsProvider } from './hooks/useSettings';
+
+const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"'.replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change artwork...')));
 
 const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const [debugAppid] = useState('70');
@@ -64,6 +77,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
       <PanelSection title={t('LABEL_USAGE_TITLE', 'Lost? Here\'s a Quick Guide')}>
         <PanelSectionRow>
           <GuideVideoField
+            bottomSeparator="standard"
             highlightOnFocus
             focusable
             onActivate={() => {
@@ -76,6 +90,31 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               );
             }}
           />
+        </PanelSectionRow>
+      </PanelSection>
+      <PanelSection title={t('Settings', 'Settings', true)}>
+        <PanelSectionRow>
+          <Field childrenLayout="below" description={tabSettingsDesc}>
+            <DialogButton
+              onClick={() => {
+                showModal((
+                  <ModalRoot>
+                    <SettingsProvider serverApi={serverApi}>
+                      <DialogHeader>
+                        {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
+                      </DialogHeader>
+                      <DialogBodyText>{tabSettingsDesc}</DialogBodyText>
+                      <DialogBody>
+                        <TabSorter />
+                      </DialogBody>
+                    </SettingsProvider>
+                  </ModalRoot>
+                ));
+              }}
+            >
+              {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
+            </DialogButton>
+          </Field>
         </PanelSectionRow>
       </PanelSection>
       {getCredits() && (
@@ -125,7 +164,13 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
           icon={<SiTwitter fill="#1DA1F2" />}
           url="https://twitter.com/SteamGridDB"
         >
-        lol twitter
+          Twitter
+        </PanelSocialButton>
+        <PanelSocialButton
+          icon={<SiMastodon fill="#6364FF" />}
+          url="https://mastodon.gamedev.place/@SteamGridDB"
+        >
+          Mastodon
         </PanelSocialButton>
       </PanelSection>
     </>
