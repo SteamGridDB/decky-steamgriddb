@@ -10,8 +10,9 @@ import {
   DialogBody,
   DialogHeader,
   DialogBodyText,
+  ToggleField,
 } from 'decky-frontend-lib';
-import { useState, useEffect, VFC } from 'react';
+import { useState, useEffect, VFC, useCallback } from 'react';
 import {
   SiPatreon,
   SiGithub,
@@ -32,13 +33,20 @@ import useSettings, { SettingsProvider } from './hooks/useSettings';
 const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"').replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change artwork...'));
 
 const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
-  const { get } = useSettings();
+  const { get, set } = useSettings();
   const [useCount, setUseCount] = useState<number | null>(null);
+  const [squares, setSquares] = useState<boolean>(false);
   const [debugAppid] = useState('70');
+
+  const handleSquareToggle = useCallback((checked) => {
+    set('experiment_squares', checked);
+    setSquares(checked);
+  }, [set]);
 
   useEffect(() => {
     (async () => {
       setUseCount(await get('plugin_use_count', 0));
+      setSquares(await get('experiment_squares', false));
     })();
   }, [get]);
 
@@ -127,6 +135,17 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
             </DialogButton>
           </Field>
+        </PanelSectionRow>
+      </PanelSection>
+      <PanelSection title="Experiments">
+        <div style={{ fontSize: '12px', padding: '12px 0px' }}>Features with little testing that may be too unstable for regular usage and might be removed later. (Requires restart)</div>
+        <PanelSectionRow>
+          <ToggleField
+            label="Square Capsules"
+            description="Use square capsules instead of portrait ones. Remember to add square sizes (1024x1024 & 512x512) to the dimensions filter to find them."
+            checked={squares}
+            onChange={handleSquareToggle}
+          />
         </PanelSectionRow>
       </PanelSection>
       {getCredits() && (
