@@ -12,8 +12,9 @@ import MenuIcon from './components/Icons/MenuIcon';
 import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './SGDBPage';
-import squareCapsulesPatch from './squareCapsulesPatch';
+import squareLibraryPatch from './squareLibraryPatch';
 import contextMenuPatch, { getMenu } from './contextMenuPatch';
+import squareHomePatch from './squareHomePatch';
 
 export default definePlugin((serverApi: ServerAPI) => {
   const getSetting = async (key: string, fallback: any) => {
@@ -36,9 +37,11 @@ export default definePlugin((serverApi: ServerAPI) => {
   });
 
   let squarePatch: RoutePatch | undefined;
+  let squarePatchHome: RoutePatch | undefined;
   getSetting('experiment_squares', false).then((enabled) => {
     if (enabled) {
-      squarePatch = squareCapsulesPatch(serverApi);
+      squarePatch = squareLibraryPatch(serverApi);
+      squarePatchHome = squareHomePatch(serverApi);
     }
   });
 
@@ -52,7 +55,11 @@ export default definePlugin((serverApi: ServerAPI) => {
       if (squarePatch) {
         serverApi.routerHook.removePatch('/library', squarePatch);
       }
-      findSP().window.document.getElementById('sgdb-square-capsules')?.remove();
+      if (squarePatchHome) {
+        serverApi.routerHook.removePatch('/library/home', squarePatchHome);
+      }
+      findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
+      findSP().window.document.getElementById('sgdb-square-capsules-home')?.remove();
     },
   };
 });
