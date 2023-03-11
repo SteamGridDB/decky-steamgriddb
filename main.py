@@ -1,5 +1,8 @@
+import sys
+from platform import system
 from os.path import dirname
-from os import W_OK, access
+from os import W_OK, access, stat
+from stat import FILE_ATTRIBUTE_HIDDEN
 from urllib.request import Request, urlopen
 from urllib.parse import urlparse
 from base64 import b64encode
@@ -9,14 +12,31 @@ from settings import SettingsManager # type: ignore
 from helpers import get_ssl_context # type: ignore
 import decky_plugin
 
-from vdf import binary_dump, binary_load
+WINDOWS = system() == "Windows"
 
-STEAM_PATH = Path(decky_plugin.DECKY_USER_HOME) / '.local' / 'share' / 'Steam'
-USERDATA_PATH = STEAM_PATH / 'userdata'
-LIBCACHE = STEAM_PATH / 'appcache' / 'librarycache'
+if WINDOWS:
+    from winreg import QueryValueEx, OpenKey, HKEY_CURRENT_USER
+
+    # workaound for py_modules not being added to path on windoge
+    sys.path.append(decky_plugin.DECKY_PLUGIN_DIR)
+    from py_modules.vdf import binary_dump, binary_load
+else:
+    from vdf import binary_dump, binary_load
+
+def get_steam_path():
+    if WINDOWS:
+        return Path(QueryValueEx(OpenKey(HKEY_CURRENT_USER, r"Software\Valve\Steam"), "SteamPath")[0])
+    else:
+        return Path(decky_plugin.DECKY_USER_HOME) / '.local' / 'share' / 'Steam'
+
+def get_steam_userdata():
+    return get_steam_path() / 'userdata'
+
+def get_steam_libcache():
+    return get_steam_path() / 'appcache' / 'librarycache'
 
 def get_userdata_config(steam32):
-    return USERDATA_PATH / steam32 / 'config'
+    return get_steam_userdata() / steam32 / 'config'
 
 class Plugin:
     async def _main(self):
@@ -90,10 +110,10 @@ class Plugin:
         raise Exception('Could not find shortcut to edit')
 
     async def set_steam_icon_from_url(self, appid, url):
-        await self.download_file(self, url, LIBCACHE, file_name=("%s_icon.jpg" % appid))
+        await self.download_file(self, url, get_steam_libcache(), file_name=("%s_icon.jpg" % appid))
 
     async def set_steam_icon_from_path(self, appid, path):
-        copyfile(path, LIBCACHE / str("%s_icon.jpg" % appid))
+        copyfile(path, get_steam_libcache() / str("%s_icon.jpg" % appid))
 
     async def set_setting(self, key, value):
         self.settings.setSetting(key, value)
@@ -108,18 +128,21 @@ class Plugin:
 
         for file in path.iterdir():
             is_dir = file.is_dir()
-            # Windows and OSX have their own file attributes for hidden files and dirs.
-            # Only doing Linux for now cause that's all Decky supports.
-            is_hidden = file.name.startswith('.')
+
             if file.exists() and (is_dir or include_files):
+                filest = file.stat()
+                is_hidden = file.name.startswith('.')
+                if WINDOWS and not is_hidden:
+                    is_hidden = bool(stat(file).st_file_attributes & FILE_ATTRIBUTE_HIDDEN)
+
                 files.append({
                     "isdir": is_dir,
                     "ishidden": is_hidden,
                     "name": file.name.encode('utf-8', 'replace').decode('utf-8'),
                     "realpath": str(file.resolve()).encode('utf-8', 'replace').decode('utf-8'),
-                    "size": file.stat().st_size,
-                    "modified": file.stat().st_mtime,
-                    "created": file.stat().st_ctime,
+                    "size": filest.st_size,
+                    "modified": filest.st_mtime,
+                    "created": filest.st_ctime,
                 })
 
         return {
