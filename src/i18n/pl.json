@@ -13,6 +13,7 @@
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Ikona",
   "LABEL_TAB_MANAGE": "Zarządzaj",
+  "MSG_ASSET_TAB_SETTINGS_DESC": "Zmień kolejność, ukryj nieużywane karty lub ustaw domyślną kartę, która otwiera się po kliknięciu w \"{ACTION_CHANGE_ARTWORK}\"",
   "LABEL_USAGE_TITLE": "Krótki przewodnik",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Tłumaczenie Polskie",
   "LABEL_MORE_SGDB_TITLE": "Więcej z StreamGridDB",
