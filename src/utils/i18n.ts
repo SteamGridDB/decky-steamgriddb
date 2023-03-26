@@ -16,6 +16,7 @@ import * as ru from '../i18n/ru.json';
 import * as sv from '../i18n/sv.json';
 import * as uk from '../i18n/uk.json';
 import * as zhCn from '../i18n/zh-cn.json';
+import * as zhTw from '../i18n/zh-tw.json';
 
 const simplifiedChinese = {
   name: '简体中文',
@@ -111,11 +112,11 @@ export const LANGS = {
   },
   'zh-cn': simplifiedChinese,
   'sc-sc': simplifiedChinese, // sc-sc is "SteamChina" i think?, it's mapped to zh-cn in the client so doing the same here.
-//  'zh-tw': {
-//    name: '繁體中文',
-//    strings: zhTw,
-//    credit: []
-//  },
+  'zh-tw': {
+    name: '正體中文',
+    strings: zhTw,
+    credit: ['mingyc']
+  },
 //  th: {
 //    name: 'ไทย',
 //    strings: th,

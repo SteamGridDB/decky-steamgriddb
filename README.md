@@ -60,4 +60,5 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Українська** | Veydzher |
 | **한국어** | yor42 |
 | **日本語** | Nes |
+| **正體中文** | mingyc |
 | **简体中文** | zhzy0077 |
