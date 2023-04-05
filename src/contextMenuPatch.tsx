@@ -10,9 +10,13 @@ import {
 import t from './utils/i18n';
 import log from './utils/log';
 
-// Add button second to last
+// Always add before "Properties..."
 const spliceArtworkItem = (children: any[], appid: number) => {
-  children.splice(-1, 0, (
+  children.find((x: any) => x?.key === 'properties');
+  const propertiesMenuItemIdx = children.findIndex((item) =>
+    findInReactTree(item, (x) => x?.onSelected && x.onSelected.toString().includes('AppProperties'))
+  );
+  children.splice(propertiesMenuItemIdx, 0, (
     <MenuItem
       key="sgdb-change-artwork"
       onSelected={() => {
