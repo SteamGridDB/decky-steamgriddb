@@ -9,7 +9,7 @@ import FooterGlyph from './components/FooterGlyph';
 import t from './utils/i18n';
 
 const strInstructions = t('MSG_USAGE_INSTRUCTIONS', 'Select a game {arrow} {optionsButton} {arrow} "{ACTION_CHANGE_ARTWORK}"')
-  .replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change artwork...'));
+  .replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));
 const changeInstructions = reactStringReplace(reactStringReplace(strInstructions, '{arrow}', (_, i) => (
   <HiOutlineChevronRight key={i} strokeWidth="4" style={{ height: '0.65em' }} />
 )), '{optionsButton}', (_, i) => (

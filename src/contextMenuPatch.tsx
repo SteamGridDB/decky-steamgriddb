@@ -19,7 +19,7 @@ const spliceArtworkItem = (children: any[], appid: number) => {
         Navigation.Navigate(`/steamgriddb/${appid}`);
       }}
     >
-      {t('ACTION_CHANGE_ARTWORK', 'Change artwork...')}
+      {t('ACTION_CHANGE_ARTWORK', 'Change Artwork...')}
     </MenuItem>
   ));
 };

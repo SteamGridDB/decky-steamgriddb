@@ -30,7 +30,7 @@ Easily browse and manage Steam artwork from SteamGridDB or your local files from
 4. Find SteamGridDB and press "Install"
 
 ## Usage
-Select "Change artwork..." from a game context menu.  
+Select "Change Artwork..." from a game context menu.  
 
 You can access the menu by focusing on a game in your library and pressing <picture><source media="(prefers-color-scheme: dark)" srcset="docs/start-light.svg"><source media="(prefers-color-scheme: light)" srcset="docs/start-dark.svg"><img height="16px" alt="Start" src="docs/start-dark.svg"></picture>.  
 Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="docs/menucog-light.svg"><source media="(prefers-color-scheme: light)" srcset="docs/menucog-dark.svg"><img height="16px" alt="Cog" src="docs/menucog-dark.svg"></picture> button on a game page.

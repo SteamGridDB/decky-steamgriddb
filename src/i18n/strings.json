@@ -1,7 +1,7 @@
 {
   "ACTION_SHOW_LINK_QR": "Show Link QR",
   "MSG_USAGE_INSTRUCTIONS": "Select a game {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
-  "ACTION_CHANGE_ARTWORK": "Change artwork...",
+  "ACTION_CHANGE_ARTWORK": "Change Artwork...",
   "ASSET_TYPE_CAPSULE": "Capsule",
   "ASSET_TYPE_WIDECAPSULE": "Wide Capsule",
   "ASSET_TYPE_HERO": "Hero",
