@@ -1,6 +1,7 @@
 {
   "ACTION_SHOW_LINK_QR": "Mostrar código QR del enlace",
   "MSG_USAGE_INSTRUCTIONS": "Selecciona un juego {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
+  "ACTION_CHANGE_ARTWORK": "Cambiar arte...",
   "ASSET_TYPE_CAPSULE": "Cápsula",
   "ASSET_TYPE_WIDECAPSULE": "Cápsula ancha",
   "ASSET_TYPE_HERO": "Imagen principal",
@@ -12,7 +13,9 @@
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Icono",
   "LABEL_TAB_MANAGE": "Gestionar",
+  "MSG_ASSET_TAB_SETTINGS_DESC": "Reordenar u ocultar pestañas no usadas, y establecer la pestaña por defecto que se abre al usar \"{ACTION_CHANGE_ARTWORK}\"",
   "LABEL_USAGE_TITLE": "Tutorial",
+  "LABEL_SETTINGS_ASSET_TABS": "Ajustes de pestaña de arte",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Traducción al Castellano",
   "LABEL_MORE_SGDB_TITLE": "Más cosas de SteamGridDB",
   "ACTION_SGDB_DISCORD": "Únete al Discord",
