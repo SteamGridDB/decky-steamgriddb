@@ -1,6 +1,7 @@
 {
   "ACTION_SHOW_LINK_QR": "Afficher le code QR du lien",
   "MSG_USAGE_INSTRUCTIONS": "Sélectionner un jeu {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
+  "ACTION_CHANGE_ARTWORK": "Modifier les images...",
   "ASSET_TYPE_CAPSULE": "Couverture",
   "ASSET_TYPE_WIDECAPSULE": "Couverture large",
   "ASSET_TYPE_HERO": "Bannière",
@@ -12,7 +13,9 @@
   "LABEL_TAB_LOGO": "Marque",
   "LABEL_TAB_ICON": "Icône",
   "LABEL_TAB_MANAGE": "Gérer",
+  "MSG_ASSET_TAB_SETTINGS_DESC": "Réorganiser ou masquer les onglets inutilisés, et définir l'onglet par défaut qui s'ouvre en utilisant \"{ACTION_CHANGE_ARTWORK}\"",
   "LABEL_USAGE_TITLE": "Perdu? Voici un guide rapide",
+  "LABEL_SETTINGS_ASSET_TABS": "Options des onglets",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Traduction française",
   "LABEL_MORE_SGDB_TITLE": "Plus de contenu SteamGridDB",
   "ACTION_SGDB_DISCORD": "Rejoignez le Discord",
