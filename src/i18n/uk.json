@@ -1,6 +1,7 @@
 {
   "ACTION_SHOW_LINK_QR": "Показати посилання QR",
   "MSG_USAGE_INSTRUCTIONS": "Вибрати гру {arrow} {optionsButton} {arrow} «{ACTION_CHANGE_ARTWORK}»",
+  "ACTION_CHANGE_ARTWORK": "Змінити обкладинку...",
   "ASSET_TYPE_CAPSULE": "Капсула",
   "ASSET_TYPE_WIDECAPSULE": "Широка капсула",
   "ASSET_TYPE_HERO": "Банер",
@@ -12,7 +13,7 @@
   "LABEL_TAB_LOGO": "Логотип",
   "LABEL_TAB_ICON": "Піктограма",
   "LABEL_TAB_MANAGE": "Керувати",
-  "MSG_ASSET_TAB_SETTINGS_DESC": "Змінити порядок або приховати вкладки, які не використовуються, і встановити вкладку за замовчуванням, яка відкриватиметься під час використання «{ACTION_CHANGE_ARTWORK}»",
+  "MSG_ASSET_TAB_SETTINGS_DESC": "Змінити порядок або приховати вкладки, які не використовуються, і встановити стандартну вкладку, яка відкриватиметься під час використання «{ACTION_CHANGE_ARTWORK}»",
   "LABEL_USAGE_TITLE": "Нічого не розумієте? Ось короткий посібник",
   "LABEL_SETTINGS_ASSET_TABS": "Налаштування вкладок",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Український переклад",
