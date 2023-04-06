@@ -1,7 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "Pokaż Kod QR",
   "MSG_USAGE_INSTRUCTIONS": "Wybierz grę {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
-  "ACTION_CHANGE_ARTWORK": "Zmień grafikę...",
   "ASSET_TYPE_CAPSULE": "Miniatura",
   "ASSET_TYPE_WIDECAPSULE": "Szeroka Miniatura",
   "ASSET_TYPE_HERO": "Grafika Czołowa",
