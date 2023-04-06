@@ -1,7 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "显示二维码",
   "MSG_USAGE_INSTRUCTIONS": "选择一个游戏 {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
-  "ACTION_CHANGE_ARTWORK": "更改艺术作品...",
   "ASSET_TYPE_CAPSULE": "宣传图",
   "ASSET_TYPE_WIDECAPSULE": "大宣传图",
   "ASSET_TYPE_HERO": "库主页图片",
