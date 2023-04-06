@@ -1,6 +1,7 @@
 {
   "ACTION_SHOW_LINK_QR": "링크 QR코드 보이기",
   "MSG_USAGE_INSTRUCTIONS": "게임 고르기 {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
+  "ACTION_CHANGE_ARTWORK": "이미지 변경...",
   "ASSET_TYPE_CAPSULE": "캡슐",
   "ASSET_TYPE_WIDECAPSULE": "넓은 캡슐",
   "ASSET_TYPE_HERO": "히어로",
