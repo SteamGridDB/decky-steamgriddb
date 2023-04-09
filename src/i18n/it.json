@@ -1,5 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "Mostra codice QR",
+  "MSG_USAGE_INSTRUCTIONS": "Seleziona un gioco {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
   "ACTION_CHANGE_ARTWORK": "Cambia grafica...",
   "ASSET_TYPE_CAPSULE": "Fronte",
   "ASSET_TYPE_WIDECAPSULE": "Fronte Orizzontale",
@@ -12,6 +13,7 @@
   "LABEL_TAB_LOGO": "Logo",
   "LABEL_TAB_ICON": "Icona",
   "LABEL_TAB_MANAGE": "Gestisci",
+  "MSG_ASSET_TAB_SETTINGS_DESC": "Riordina o nascondi le schede inutilizzate e imposta la scheda di default all'apertura quando usi \"{ACTION_CHANGE_ARTWORK}\"",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Traduzione italiana",
   "LABEL_MORE_SGDB_TITLE": "Canali SteamGridDB",
   "ACTION_SGDB_DISCORD": "Unisciti al Discord",
