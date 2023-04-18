@@ -58,7 +58,7 @@ export const LANGS = {
   it: {
     name: 'Italiano',
     strings: it,
-    credit: ['SpagottoB37'],
+    credit: ['SpagottoB37', 'RodoMa92'],
   },
   ja: {
     name: '日本語',

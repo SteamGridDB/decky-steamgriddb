@@ -48,7 +48,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Español-España** | Andrea Laguillo, Kam, m0uch0 |
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |
-| **Italiano** | SpagottoB37 |
+| **Italiano** | SpagottoB37, RodoMa92 |
 | **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde |
 | **Polski** | DRS, Michał Kwiatkowski |
 | **Português-Brasil** | Oregano, Thomas Eric |
