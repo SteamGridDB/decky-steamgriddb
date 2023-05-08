@@ -14,6 +14,7 @@ import * as ptBr from '../i18n/pt-br.json';
 import * as ro from '../i18n/ro.json';
 import * as ru from '../i18n/ru.json';
 import * as sv from '../i18n/sv.json';
+import * as tr from '../i18n/tr.json';
 import * as uk from '../i18n/uk.json';
 import * as zhCn from '../i18n/zh-cn.json';
 import * as zhTw from '../i18n/zh-tw.json';
@@ -103,7 +104,12 @@ export const LANGS = {
   sv: {
     name: 'Svenska',
     strings: sv,
-    credit: ['Moneyman Dan'],
+    credit: ['Moneyman Dan', 'Super'],
+  },
+  tr: {
+    name: 'Türkçe',
+    strings: tr,
+    credit: ['Bilgehan Ceviz'],
   },
   uk: {
     name: 'Українська',
@@ -115,7 +121,7 @@ export const LANGS = {
   'zh-tw': {
     name: '正體中文',
     strings: zhTw,
-    credit: ['mingyc']
+    credit: ['mingyc'],
   },
 //  th: {
 //    name: 'ไทย',
@@ -142,11 +148,6 @@ export const LANGS = {
 //    strings: hu,
 //    credit: []
 //  },
-  //  tr: {
-  //    name: 'Türkçe',
-  //    strings: tr,
-  //    credit: []
-  //  },
   //  bg: {
   //    name: 'български език',
   //    strings: bg,
