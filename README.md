@@ -54,7 +54,8 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Português-Brasil** | Oregano, Thomas Eric |
 | **Português** | Kokasgui |
 | **Română** | Munt |
-| **Svenska** | Moneyman Dan |
+| **Svenska** | Moneyman Dan, Super |
+| **Türkçe** | Bilgehan Ceviz |
 | **Ελληνικά** | Emenesu |
 | **Русский** | fycher |
 | **Українська** | Veydzher |
