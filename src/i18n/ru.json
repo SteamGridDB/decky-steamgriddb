@@ -1,5 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "Показать QR ссылку",
+  "MSG_USAGE_INSTRUCTIONS": "Выберите игру {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
   "ACTION_CHANGE_ARTWORK": "Сменить картинку...",
   "ASSET_TYPE_CAPSULE": "Обложка",
   "ASSET_TYPE_WIDECAPSULE": "Широкая обложка",
@@ -45,6 +46,7 @@
   "MSG_GAME_SELECTED": "Выбрана {gameName}",
   "MSG_ASSETS_FILTERED": "Некоторые файлы могут быть скрыты из-за фильтра",
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "Выбрана {gameName} с фильтром",
+  "ACTION_ADJUST_POS_SIZE": "Изменить размер",
   "MSG_ASSET_APPLY_SUCCESS": "{assetType} успешно применен!",
   "MSG_ASSET_APPLY_ERROR": "Возникла проблема с добавлением этого файла.",
   "ACTION_OPEN_DETAILS": "Детали",
