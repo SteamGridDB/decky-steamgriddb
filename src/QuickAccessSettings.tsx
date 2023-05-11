@@ -39,7 +39,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const [debugAppid] = useState('70');
 
   const handleSquareToggle = useCallback((checked) => {
-    set('experiment_squares', checked);
+    set('experiment_squares', checked, true);
     setSquares(checked);
   }, [set]);
 
