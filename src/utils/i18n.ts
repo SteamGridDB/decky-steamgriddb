@@ -99,7 +99,7 @@ export const LANGS = {
   ru: {
     name: 'Русский',
     strings: ru,
-    credit: ['fycher'],
+    credit: ['fycher', 'LostHikking'],
   },
   sv: {
     name: 'Svenska',
