@@ -49,7 +49,7 @@
   "ACTION_OPEN_OFFICIAL_ASSETS": "Arte oficial",
   "ACTION_ASSET_APPLY": "Aplicar {assetType}",
   "MSG_GAME_SELECTED": "Selecionou {gameName}",
-  "MSG_ASSETS_FILTERED": "Alguns ativos podem estar escondidos pelos filtros",
+  "MSG_ASSETS_FILTERED": "Algumas imagens podem estar escondidas devido a filtros",
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "Selecionou {gameName} com filtros",
   "ACTION_HIDE_POS_GUIDES": "Esconder guias",
   "ACTION_SHOW_OUTLINE": "Mostrar guias",
@@ -60,5 +60,5 @@
   "LABEL_ASSET_CURRENT": "{assetType} atual",
   "ACTION_ASSET_CUSTOM_CLEAR": "Eliminar imagem personalizada",
   "ACTION_ASSET_BROWSE_LOCAL": "Procurar em ficheiros locais",
-  "ACTION_ASSET_APPLY_TRANSPARENT": "Usar ativo invisível"
+  "ACTION_ASSET_APPLY_TRANSPARENT": "Usar imagem invisível"
 }
