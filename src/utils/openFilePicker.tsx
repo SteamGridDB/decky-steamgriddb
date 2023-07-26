@@ -1,6 +1,4 @@
-import { ServerAPI, showModal, ModalRoot } from 'decky-frontend-lib';
-
-import FilePicker, { FilePickerProps } from '../components/filepicker';
+import { ServerAPI, FileSelectionType } from 'decky-frontend-lib';
 
 /*
   Modified file picker from decky-loader
@@ -17,10 +15,12 @@ import FilePicker, { FilePickerProps } from '../components/filepicker';
   - Fixed bug where files from previous dir would appear when navigating due to duplicate keys.
 */
 
+export type FilePickerFilter = RegExp | ((file: File) => boolean) | undefined;
+
 export default (
   startPath: string,
   includeFiles?: boolean,
-  filter?: FilePickerProps['filter'],
+  filter?: FilePickerFilter,
   filePickerSettings?: {
     validFileExtensions?: string[];
     defaultHidden?: boolean;
@@ -29,25 +29,7 @@ export default (
 ): Promise<{ path: string; realpath: string }> => {
   return new Promise((resolve, reject) => {
     if (!serverApi) return reject('No server API');
-    const Content = ({ closeModal }: { closeModal?: () => void }) => (
-      // Purposely outside of the FilePicker component as lazy-loaded ModalRoots don't focus correctly
-      <ModalRoot
-        onCancel={() => {
-          reject('User canceled');
-          closeModal?.();
-        }}
-      >
-        <FilePicker
-          serverApi={serverApi}
-          startPath={startPath}
-          includeFiles={includeFiles}
-          filter={filter}
-          onSubmit={resolve}
-          closeModal={closeModal}
-          {...filePickerSettings}
-        />
-      </ModalRoot>
-    );
-    showModal(<Content />);
+
+    serverApi.openFilePickerV2(FileSelectionType.FILE, startPath, includeFiles, true, filter, filePickerSettings?.validFileExtensions, filePickerSettings?.defaultHidden, false).then(resolve, () => reject('User Canceled'));
   });
 };
