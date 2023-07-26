@@ -1,0 +1,187 @@
+name: Pre Release
+
+on:
+  push:
+    branches:
+      - "pre-release"
+
+jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
+      tag: ${{ steps.create-release.outputs.tag }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          
+      - name: Get Package Version
+        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: Get Commit Hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create-release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `pre-${process.env.PACKAGE_VERSION}`,
+              name: `Decky SteamGridDB pre-${process.env.PACKAGE_VERSION}#${process.env.COMMIT_HASH}`,
+              body: `Download the release platform below`,
+              draft: true,
+              prerelease: true
+            });
+
+            core.setOutput("tag", `pre-${process.env.PACKAGE_VERSION}-${process.env.COMMIT_HASH}`);
+
+            return data.id
+
+  build-plugin:
+    needs: create-release
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: "pre-release"
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Setup Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+
+      - name: Install Frontend Dependencies
+        run: pnpm install
+
+      - name: Build Decky SteamGridDB
+        uses: actions/github-script@v6
+        env:
+          release_id: ${{ needs.create-release.outputs.release_id }}
+          release_tag: ${{ needs.create-release.outputs.tag }}
+        with:
+          script: |
+            const fs = require("fs");
+            const child_process = require("child_process");
+            const path = require("path");
+
+            const includeInBuild = [
+              "plugin.json",
+              "package.json",
+              "dist/index.js",
+              "main.py",
+              "README.md",
+              "LICENSE"
+            ];
+
+            async function uploadReleaseAsset(name, contents) {
+              await github.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: process.env.release_id,
+                name: name,
+                data: contents
+              });
+            }
+
+            function copyDirRecursive(parentPath, contents, dest) {
+              for (const file of contents) {
+                const fileName = file.name;
+                const srcPath = path.join(cwdPath, parentPath, fileName);
+                const destPath = path.join(cwdPath, dest, fileName);
+
+                if (fs.lstatSync(srcPath).isDirectory()) {
+                  const dirContents = fs.readdirSync(srcPath, { withFileTypes: true });
+                  const dirDestPath = path.join(dest, fileName);
+                  fs.mkdirSync(dirDestPath, { recursive: true });
+                  copyDirRecursive(path.join(parentPath, fileName), dirContents, dirDestPath);
+                } else {
+                  fs.copyFileSync(srcPath, destPath);
+                }
+              }
+            }
+
+            const cwdPath = path.resolve(process.cwd());
+
+            // * build the plugin with `pnpm build`
+            child_process.execSync("pnpm build");
+
+            // * once finished, make folder with all files in includeInBuild
+            const bundleWrapperPath = path.join(cwdPath, "bundle");
+            const bundlePath = path.join(bundleWrapperPath, "DeckySteamGridDB");
+            fs.mkdirSync(bundlePath, { recursive: true });
+            fs.mkdirSync(path.join(bundlePath, "dist"));
+
+            for (const fileToInclude of includeInBuild) {
+              const srcPath = path.join(cwdPath, fileToInclude);
+              const destPath = path.join(bundlePath, fileToInclude);
+
+              fs.copyFileSync(srcPath, destPath);
+            }
+
+            // * check contents of defaults
+            const defaultsPath = path.join(cwdPath, "defaults");
+            
+            if (fs.existsSync(defaultsPath)) {
+              const defaultContents = fs.readdirSync(defaultsPath, { withFileTypes: true });
+              copyDirRecursive("defaults", defaultContents, `bundle${path.sep}DeckySteamGridDB`);
+            }
+
+            // * zip
+            child_process.execSync("pnpm i zip-a-folder");
+            const { zip, COMPRESSION_LEVEL } = require('zip-a-folder');
+
+            const outputZipPath = path.join(cwdPath, "bundle.zip");
+            await zip(bundleWrapperPath, outputZipPath, {compression: COMPRESSION_LEVEL.high});
+
+            // * upload to release
+            await uploadReleaseAsset(`DeckySteamGridDB_${process.env.release_tag}.zip`, fs.readFileSync(outputZipPath));
+            
+  publish-release:
+    needs: [create-release, build-plugin]
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: "dev"
+
+      - name: Publish Release
+        id: publish-release
+        uses: actions/github-script@v6
+        env:
+          release_id: ${{ needs.create-release.outputs.release_id }}
+        with:
+          script: |
+            github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: process.env.release_id,
+              draft: false,
+              prerelease: true
+            })
+  
