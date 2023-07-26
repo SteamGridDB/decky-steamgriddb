@@ -32,6 +32,8 @@
   },
   "homepage": "https://github.com/SteamGridDB/decky-steamgriddb#readme",
   "devDependencies": {
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
@@ -46,6 +48,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
     "rollup": "^2.79.1",
     "rollup-plugin-import-assets": "^1.1.1",
     "rollup-plugin-polyfill-node": "^0.11.0",
