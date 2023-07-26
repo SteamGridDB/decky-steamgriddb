@@ -44,7 +44,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | | |
 | - | - |
 | **Čeština** | zenobit |
-| **Deutsch** | Kurikuo, benutzer_artur7, Anja |
+| **Deutsch** | Kurikuo, benutzer_artur7, Anja, FL0W |
 | **Español-España** | Andrea Laguillo, Kam, m0uch0 |
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |
@@ -52,8 +52,9 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde |
 | **Polski** | DRS, Michał Kwiatkowski |
 | **Português-Brasil** | Oregano, Thomas Eric |
-| **Português** | Kokasgui |
+| **Português** | Kokasgui, Ev1lbl0w |
 | **Română** | Munt |
+| **Suomi** | Jage |
 | **Svenska** | Moneyman Dan, Super |
 | **Türkçe** | Bilgehan Ceviz |
 | **Ελληνικά** | Emenesu |

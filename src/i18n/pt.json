@@ -1,7 +1,6 @@
 {
   "ACTION_SHOW_LINK_QR": "Mostrar QR do link",
   "MSG_USAGE_INSTRUCTIONS": "Escolhe um jogo {arrow} {optionsButton} {arrow} \"{ACTION_CHANGE_ARTWORK}\"",
-  "ACTION_CHANGE_ARTWORK": "Alterar imagens...",
   "ASSET_TYPE_CAPSULE": "cápsula",
   "ASSET_TYPE_WIDECAPSULE": "faixa",
   "ASSET_TYPE_HERO": "cabeçalho",
@@ -47,19 +46,19 @@
   "LABEL_FILTER_TAG_UNTAGGED": "Sem etiqueta",
   "ACTION_FILTER_RESET": "Limpar filtros",
   "ACTION_OPEN_FILTER": "Filtrar",
-  "ACTION_OPEN_OFFICIAL_ASSETS": "Ativo oficial",
+  "ACTION_OPEN_OFFICIAL_ASSETS": "Arte oficial",
   "ACTION_ASSET_APPLY": "Aplicar {assetType}",
   "MSG_GAME_SELECTED": "Selecionou {gameName}",
-  "MSG_ASSETS_FILTERED": "Alguns ativos podem estar escondidos pelos filtros",
+  "MSG_ASSETS_FILTERED": "Algumas imagens podem estar escondidas devido a filtros",
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "Selecionou {gameName} com filtros",
   "ACTION_HIDE_POS_GUIDES": "Esconder guias",
   "ACTION_SHOW_OUTLINE": "Mostrar guias",
   "ACTION_ADJUST_POS_SIZE": "Ajustar tamanho",
   "MSG_ASSET_APPLY_SUCCESS": "{assetType} foi aplicado/a com sucesso!",
-  "MSG_ASSET_APPLY_ERROR": "Houve um problema ao aplicar este ativo.",
+  "MSG_ASSET_APPLY_ERROR": "Houve um problema ao aplicar esta imagem.",
   "ACTION_OPEN_DETAILS": "Detalhes",
   "LABEL_ASSET_CURRENT": "{assetType} atual",
-  "ACTION_ASSET_CUSTOM_CLEAR": "Limpar ativo personalizado",
+  "ACTION_ASSET_CUSTOM_CLEAR": "Eliminar imagem personalizada",
   "ACTION_ASSET_BROWSE_LOCAL": "Procurar em ficheiros locais",
-  "ACTION_ASSET_APPLY_TRANSPARENT": "Usar ativo invisível"
+  "ACTION_ASSET_APPLY_TRANSPARENT": "Usar imagem invisível"
 }
