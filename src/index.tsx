@@ -12,9 +12,9 @@ import MenuIcon from './components/Icons/MenuIcon';
 import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './SGDBPage';
-import squareLibraryPatch from './squareLibraryPatch';
-import contextMenuPatch, { getMenu } from './contextMenuPatch';
-import squareHomePatch from './squareHomePatch';
+import squareLibraryPatch from './patches/squareLibraryPatch';
+import contextMenuPatch, { getMenu } from './patches/contextMenuPatch';
+import squareHomePatch from './patches/squareHomePatch';
 
 export default definePlugin((serverApi: ServerAPI) => {
   const getSetting = async (key: string, fallback: any) => {

@@ -7,7 +7,7 @@ import {
   callOriginal,
 } from 'decky-frontend-lib';
 
-import { libraryAssetImageClasses, appportraitClasses, homeCarouselClasses } from './static-classes';
+import { libraryAssetImageClasses, appportraitClasses, homeCarouselClasses } from '../static-classes';
 
 const squareHomePatch = (serverApi: ServerAPI) => {
   // inject css if it isn't there already

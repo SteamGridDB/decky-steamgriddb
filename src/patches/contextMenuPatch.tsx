@@ -7,8 +7,8 @@ import {
   Navigation,
 } from 'decky-frontend-lib';
 
-import t from './utils/i18n';
-import log from './utils/log';
+import t from '../utils/i18n';
+import log from '../utils/log';
 
 // Always add before "Properties..."
 const spliceArtworkItem = (children: any[], appid: number) => {

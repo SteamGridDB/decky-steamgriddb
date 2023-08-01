@@ -7,7 +7,7 @@ import {
   findSP,
 } from 'decky-frontend-lib';
 
-import { gamepadLibraryClasses, libraryAssetImageClasses } from './static-classes';
+import { gamepadLibraryClasses, libraryAssetImageClasses } from '../static-classes';
 
 const patchGridProps = (props: any) => {
   const gridProps = findInTree(props, (x) => x?.childWidth, { walkable: ['props', 'children', 'childSections'] });
