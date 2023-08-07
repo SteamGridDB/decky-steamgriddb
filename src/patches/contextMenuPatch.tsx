@@ -39,8 +39,8 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
   return afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
     const appid: number = component._owner.pendingProps.overview.appid;
-    
-    if (!Object.keys(renderedMap).includes(appid.toString())) {
+
+    if (!Object.keys(renderedMap).includes(appid.toString()) && !window.location.pathname.endsWith("/routes/library/home")) {
       renderedMap[appid.toString()] = true;
 
       afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
