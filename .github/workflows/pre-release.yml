@@ -88,7 +88,6 @@ jobs:
             const includeInBuild = [
               "plugin.json",
               "package.json",
-              "dist/index.js",
               "main.py",
               "README.md",
               "LICENSE"
@@ -141,10 +140,16 @@ jobs:
 
             // * check contents of defaults
             const defaultsPath = path.join(cwdPath, "defaults");
-            
             if (fs.existsSync(defaultsPath)) {
               const defaultContents = fs.readdirSync(defaultsPath, { withFileTypes: true });
               copyDirRecursive("defaults", defaultContents, `bundle${path.sep}DeckySteamGridDB`);
+            }
+
+            // * check contents of dist
+            const distPath = path.join(cwdPath, "dist");
+            if (fs.existsSync(distPath)) {
+              const distContents = fs.readdirSync(distPath, { withFileTypes: true });
+              copyDirRecursive("dist", distContents, `bundle${path.sep}DeckySteamGridDB${path.sep}`);
             }
 
             // * zip
