@@ -28,31 +28,53 @@ const spliceArtworkItem = (children: any[], appid: number) => {
   ));
 };
 
+const renderedMap = {};
+
+/**
+ * Patches the game context menu.
+ * @param LibraryContextMenu The game context menu.
+ * @returns A patch to remove when the plugin dismounts.
+ */
 const contextMenuPatch = (LibraryContextMenu: any) => {
   return afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
     const appid: number = component._owner.pendingProps.overview.appid;
-    afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
-      if (shouldUpdate === true && !nextProps.children.find((x: any) => x?.key === 'sgdb-change-artwork')) {
-        let updatedAppid: number = appid;
-        // find the first menu component that has the correct appid assigned to _owner
-        const parentOverview = nextProps.children.find((x: any) => x?._owner?.pendingProps?.overview?.appid &&
-          x._owner.pendingProps.overview.appid !== appid
-        );
-        // if found then use that appid
-        if (parentOverview) {
-          updatedAppid = parentOverview._owner.pendingProps.overview.appid;
-        }
-        spliceArtworkItem(nextProps.children, updatedAppid);
-      }
-      return shouldUpdate;
-    }, { singleShot: true });
+    
+    if (!Object.keys(renderedMap).includes(appid.toString())) {
+      renderedMap[appid.toString()] = true;
 
-    spliceArtworkItem(component.props.children, appid);
+      afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
+        const sgdbIdx = nextProps.children.findIndex((x: any) => x?.key === 'sgdb-change-artwork');
+        if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
+  
+        if (shouldUpdate === true) {
+          console.log(appid, "splicing on first render...");
+          
+          let updatedAppid: number = appid;
+          // find the first menu component that has the correct appid assigned to _owner
+          const parentOverview = nextProps.children.find((x: any) => x?._owner?.pendingProps?.overview?.appid &&
+            x._owner.pendingProps.overview.appid !== appid
+          );
+          // if found then use that appid
+          if (parentOverview) {
+            updatedAppid = parentOverview._owner.pendingProps.overview.appid;
+          }
+          spliceArtworkItem(nextProps.children, updatedAppid);
+        }
+  
+        return shouldUpdate;
+      }, { singleShot: true });
+    } else {
+      spliceArtworkItem(component.props.children, appid);
+    }
+
     return component;
   });
 };
 
+/**
+ * Gets the game context menu component.
+ */
 export const getMenu = async () => {
   // @ts-ignore: decky global is not typed
   while (!window.DeckyPluginLoader?.routerHook?.routes) {
