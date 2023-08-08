@@ -41,7 +41,15 @@ const SGDBPage: VFC = () => {
 
   return (
     <>
-      <style>{style.concat(`\n.sgdb-wrapper div[class=*"gamepadtabbedpage_TabHeaderRowWrapper"][class*="gamepadtabbedpage_Floating"] {\n\tbackground: #1B2838;\n}`)}</style>
+      <style>
+        {style}
+        {`
+        #sgdb-wrap div[class*="gamepadtabbedpage_TabHeaderRowWrapper"][class*="gamepadtabbedpage_Floating"],
+        #sgdb-wrap div[class*="gamepadtabbedpage_TabHeaderRowWrapper"] {
+          background: #1B2838;
+        }
+        `}
+      </style>
       <div id="sgdb-wrap">
         <AssetSearchContext>
           <AssetTabs currentTab={currentTab} onShowTab={onShowTab} />
