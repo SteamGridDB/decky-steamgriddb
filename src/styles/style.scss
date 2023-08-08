@@ -17,6 +17,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
   --asset-size: 120px;
   margin-top: $topBarHeight;
   height: calc(100% - $topBarHeight);
+  background: var(--gpSystemDarkestGrey, #0E141B);
 
   .tabcontents-wrap {
     display: flex;

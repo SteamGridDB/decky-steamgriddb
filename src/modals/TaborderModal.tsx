@@ -1,7 +1,7 @@
 import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Navigation } from 'decky-frontend-lib';
 import { FC, useState } from 'react';
 
-import Asset, { AssetProps } from '../components/Asset';
+import Asset, { AssetProps } from '../components/asset/Asset';
 import Markdown from '../components/Markdown';
 import t from '../utils/i18n';
 import { SGDB_ASSET_TYPE_READABLE } from '../constants';

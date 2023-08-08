@@ -13,7 +13,7 @@ import {
 import SteamLang from '../utils/steam-api-language-map';
 import { SGDB_ASSET_TYPE_READABLE } from '../constants';
 import t from '../utils/i18n';
-import Asset, { AssetProps } from '../components/Asset';
+import Asset, { AssetProps } from '../components/asset/Asset';
 
 const SteamModalImageSection: FC<{
   closeModal?: () => void,

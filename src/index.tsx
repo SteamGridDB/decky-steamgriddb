@@ -7,11 +7,11 @@ import {
   RoutePatch,
 } from 'decky-frontend-lib';
 
-import QuickAccessSettings from './QuickAccessSettings';
+import QuickAccessSettings from './components/qam-contents/QuickAccessSettings';
 import MenuIcon from './components/Icons/MenuIcon';
 import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
-import SGDBPage from './SGDBPage';
+import SGDBPage from './components/plugin-pages/SGDBPage';
 import squareLibraryPatch from './patches/squareLibraryPatch';
 import contextMenuPatch, { getMenu } from './patches/contextMenuPatch';
 import squareHomePatch from './patches/squareHomePatch';

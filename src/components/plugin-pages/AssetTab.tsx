@@ -1,19 +1,19 @@
 import { Focusable, joinClassNames, showModal } from 'decky-frontend-lib';
 import { useState, VFC, useRef, useEffect, useMemo } from 'react';
 
-import { useSGDB } from './hooks/useSGDB';
-import Asset from './components/Asset';
-import t from './utils/i18n';
-import log from './utils/log';
-import Toolbar, { ToolbarRefType } from './components/Toolbar';
-import MenuIcon from './components/Icons/MenuIcon';
-import DetailsModal from './modals/DetailsModal';
-import { SGDB_ASSET_TYPE_READABLE } from './constants';
-import useAssetSearch from './hooks/useAssetSearch';
-import useSettings from './hooks/useSettings';
-import ResultsStateBar from './components/ResultsStateBar';
-import LogoPositionerModal from './modals/LogoPositionerModal';
-import OfficialAssetsModal from './modals/OfficialAssetsModal';
+import { useSGDB } from '../../hooks/useSGDB';
+import Asset from '../asset/Asset';
+import t from '../../utils/i18n';
+import log from '../../utils/log';
+import Toolbar, { ToolbarRefType } from '../qam-contents/Toolbar';
+import MenuIcon from '../Icons/MenuIcon';
+import DetailsModal from '../../modals/DetailsModal';
+import { SGDB_ASSET_TYPE_READABLE } from '../../constants';
+import useAssetSearch from '../../hooks/useAssetSearch';
+import useSettings from '../../hooks/useSettings';
+import ResultsStateBar from '../ResultsStateBar';
+import LogoPositionerModal from '../../modals/LogoPositionerModal';
+import OfficialAssetsModal from '../../modals/OfficialAssetsModal';
 
 const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const { get } = useSettings();

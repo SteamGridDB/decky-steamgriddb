@@ -8,8 +8,8 @@ import {
 import { FC, ReactNode } from 'react';
 import { HiQrCode } from 'react-icons/hi2';
 
-import showQrModal from '../utils/showQrModal';
-import t from '../utils/i18n';
+import showQrModal from '../../utils/showQrModal';
+import t from '../../utils/i18n';
 
 const navLink = (url: string) => {
   Navigation.CloseSideMenus();

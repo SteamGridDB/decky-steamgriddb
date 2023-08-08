@@ -2,11 +2,11 @@ import { useParams } from 'decky-frontend-lib';
 import { useEffect, useState, VFC, useCallback } from 'react';
 
 import AssetTabs from './AssetTabs';
-import { AssetSearchContext } from './hooks/useAssetSearch';
-import { useSGDB } from './hooks/useSGDB';
-import useSettings from './hooks/useSettings';
-import { DEFAULT_TABS } from './constants';
-import style from './styles/style.scss';
+import { AssetSearchContext } from '../../hooks/useAssetSearch';
+import { useSGDB } from '../../hooks/useSGDB';
+import useSettings from '../../hooks/useSettings';
+import { DEFAULT_TABS } from '../../constants';
+import style from '../../styles/style.scss';
 
 const SGDBPage: VFC = () => {
   const { get } = useSettings();
@@ -41,7 +41,7 @@ const SGDBPage: VFC = () => {
 
   return (
     <>
-      <style>{style}</style>
+      <style>{style.concat(`\n.sgdb-wrapper div[class=*"gamepadtabbedpage_TabHeaderRowWrapper"][class*="gamepadtabbedpage_Floating"] {\n\tbackground: #1B2838;\n}`)}</style>
       <div id="sgdb-wrap">
         <AssetSearchContext>
           <AssetTabs currentTab={currentTab} onShowTab={onShowTab} />

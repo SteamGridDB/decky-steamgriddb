@@ -8,13 +8,13 @@ import {
 } from 'decky-frontend-lib';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
 
-import useSGDB from './hooks/useSGDB';
-import t from './utils/i18n';
-import LibraryImage from './components/LibraryImage';
-import getAppOverview from './utils/getAppOverview';
-import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from './constants';
-import openFilePicker from './utils/openFilePicker';
-import LogoPositionerModal from './modals/LogoPositionerModal';
+import useSGDB from '../../hooks/useSGDB';
+import t from '../../utils/i18n';
+import LibraryImage from '../asset/LibraryImage';
+import getAppOverview from '../../utils/getAppOverview';
+import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from '../../constants';
+import openFilePicker from '../../utils/openFilePicker';
+import LogoPositionerModal from '../../modals/LogoPositionerModal';
 
 const AssetBlock: FC<{
   app: SteamAppOverview,
