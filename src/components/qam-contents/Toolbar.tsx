@@ -9,10 +9,10 @@ import {
   Ref,
 } from 'react';
 
-import t from '../utils/i18n';
-import useSettings from '../hooks/useSettings';
-import useAssetSearch from '../hooks/useAssetSearch';
-import { SGDB_ASSET_TYPE_READABLE } from '../constants';
+import t from '../../utils/i18n';
+import useSettings from '../../hooks/useSettings';
+import useAssetSearch from '../../hooks/useAssetSearch';
+import { SGDB_ASSET_TYPE_READABLE } from '../../constants';
 
 const sliderProps = {
   grid_p: {

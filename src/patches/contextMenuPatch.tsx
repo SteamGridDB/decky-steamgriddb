@@ -48,8 +48,6 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
         if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
   
         if (shouldUpdate === true) {
-          console.log(appid, "splicing on first render...");
-          
           let updatedAppid: number = appid;
           // find the first menu component that has the correct appid assigned to _owner
           const parentOverview = nextProps.children.find((x: any) => x?._owner?.pendingProps?.overview?.appid &&

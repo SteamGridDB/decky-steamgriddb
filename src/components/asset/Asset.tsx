@@ -1,13 +1,13 @@
 import { VFC } from 'react';
 import { Focusable, FocusableProps, FooterLegendProps, joinClassNames } from 'decky-frontend-lib';
 
-import t from '../utils/i18n';
-import Spinner from '../../assets/spinner.svg';
+import t from '../../utils/i18n';
+import Spinner from '../../../assets/spinner.svg';
 
 import { LazyImage } from './LazyImage';
-import FooterGlyph from './FooterGlyph';
-import Chips from './Chips';
-import Chip from './Chips/Chip';
+import FooterGlyph from '../FooterGlyph';
+import Chips from '../Chips';
+import Chip from '../Chips/Chip';
 
 export interface AssetProps extends FooterLegendProps {
   assetType: SGDBAssetType;

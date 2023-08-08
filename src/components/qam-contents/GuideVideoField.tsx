@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi2';
 import reactStringReplace from 'react-string-replace';
 
-import HowToVideo from '../assets/howto.webm';
+import HowToVideo from '../../../assets/howto.webm';
 
-import FooterGlyph from './components/FooterGlyph';
-import t from './utils/i18n';
+import FooterGlyph from '../FooterGlyph';
+import t from '../../utils/i18n';
 
 const strInstructions = t('MSG_USAGE_INSTRUCTIONS', 'Select a game {arrow} {optionsButton} {arrow} "{ACTION_CHANGE_ARTWORK}"')
   .replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));

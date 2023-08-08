@@ -9,7 +9,7 @@ import {
 } from 'decky-frontend-lib';
 import { FC, useState, useEffect, useRef } from 'react';
 
-import LibraryImage from '../components/LibraryImage';
+import LibraryImage from '../components/asset/LibraryImage';
 import getCustomLogoPosition from '../utils/getCustomLogoPosition';
 import log from '../utils/log';
 import { ASSET_TYPE } from '../constants';

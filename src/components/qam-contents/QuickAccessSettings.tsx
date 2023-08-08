@@ -22,13 +22,13 @@ import {
   SiMastodon,
 } from 'react-icons/si';
 
-import BoopIcon from './components/Icons/BoopIcon';
-import PanelSocialButton from './components/PanelSocialButton';
-import t, { getCredits } from './utils/i18n';
+import BoopIcon from '../Icons/BoopIcon';
+import PanelSocialButton from './PanelSocialButton';
+import t, { getCredits } from '../../utils/i18n';
 import GuideVideoField from './GuideVideoField';
-import openFilePicker from './utils/openFilePicker';
-import TabSorter from './components/TabSorter';
-import useSettings, { SettingsProvider } from './hooks/useSettings';
+import openFilePicker from '../../utils/openFilePicker';
+import TabSorter from '../TabSorter';
+import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 
 const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"').replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));
 
