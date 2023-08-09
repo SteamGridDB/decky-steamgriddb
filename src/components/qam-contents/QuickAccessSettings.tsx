@@ -29,8 +29,20 @@ import GuideVideoField from './GuideVideoField';
 import openFilePicker from '../../utils/openFilePicker';
 import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
+import { addSquareHomePatch, removeSquareHomePatch } from "../../patches/squareHomePatch";
+import { addSquareLibraryPatch, removeSquareLibraryPatch } from "../../patches/squareLibraryPatch";
 
 const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"').replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));
+
+function toggleSquarePatches(enabled: boolean, serverApi: ServerAPI): void {
+  if (enabled) {
+    addSquareHomePatch(serverApi);
+    addSquareLibraryPatch(serverApi);
+  } else {
+    removeSquareHomePatch(serverApi);
+    removeSquareLibraryPatch(serverApi);
+  }
+}
 
 const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const { get, set } = useSettings();
@@ -41,6 +53,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const handleSquareToggle = useCallback((checked) => {
     set('experiment_squares', checked, true);
     setSquares(checked);
+    toggleSquarePatches(checked, serverApi);
   }, [set]);
 
   useEffect(() => {
@@ -136,9 +149,6 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
             </DialogButton>
           </Field>
         </PanelSectionRow>
-      </PanelSection>
-      <PanelSection title="Experiments">
-        <div style={{ fontSize: '12px', padding: '12px 0px' }}>Features with little testing that may be too unstable for regular usage and might be removed later. (Requires restart)</div>
         <PanelSectionRow>
           <ToggleField
             label="Square Capsules"
@@ -148,6 +158,11 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
           />
         </PanelSectionRow>
       </PanelSection>
+      {/* Uncomment this out should there be a need for experiments again. */}
+      {/* <PanelSection title="Experiments">
+        <div style={{ fontSize: '12px', padding: '12px 0px' }}>Features with little testing that may be too unstable for regular usage and might be removed later. (Requires restart)</div>
+        
+      </PanelSection> */}
       {getCredits() && (
         <PanelSection title={t('LABEL_TRANSLATION_CREDIT_TITLE', 'English Translation')}>
           <div style={{

@@ -20,6 +20,12 @@
     "steamgriddb"
   ],
   "author": "Jozen Blue Martinez <me@jozen.blue> (https://jozen.blue/)",
+  "contributors": [
+    {
+      "name": "Travis Lane (Tormak)",
+      "email": "Tormak9970@gmail.com"
+    }
+  ],
   "funding": [
     {
       "type": "patreon",
