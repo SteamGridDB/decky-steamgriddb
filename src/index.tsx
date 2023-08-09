@@ -4,7 +4,6 @@ import {
   quickAccessMenuClasses,
   Patch,
   findSP,
-  RoutePatch,
 } from 'decky-frontend-lib';
 
 import QuickAccessSettings from './components/qam-contents/QuickAccessSettings';
@@ -12,9 +11,9 @@ import MenuIcon from './components/Icons/MenuIcon';
 import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './components/plugin-pages/SGDBPage';
-import squareLibraryPatch from './patches/squareLibraryPatch';
 import contextMenuPatch, { getMenu } from './patches/contextMenuPatch';
-import squareHomePatch from './patches/squareHomePatch';
+import { removeSquareLibraryPatch, addSquareLibraryPatch } from "./patches/squareLibraryPatch";
+import { removeSquareHomePatch, addSquareHomePatch } from "./patches/squareHomePatch";
 
 export default definePlugin((serverApi: ServerAPI) => {
   const getSetting = async (key: string, fallback: any) => {
@@ -36,12 +35,11 @@ export default definePlugin((serverApi: ServerAPI) => {
     patchedMenu = contextMenuPatch(LibraryContextMenu);
   });
 
-  let squarePatch: RoutePatch | undefined;
-  let squarePatchHome: RoutePatch | undefined;
   getSetting('experiment_squares', false).then((enabled) => {
+    console.log("enabled on load:", enabled);
     if (enabled) {
-      squarePatch = squareLibraryPatch(serverApi);
-      squarePatchHome = squareHomePatch(serverApi);
+      addSquareLibraryPatch(serverApi, true);
+      addSquareHomePatch(serverApi, true);
     }
   });
 
@@ -52,12 +50,10 @@ export default definePlugin((serverApi: ServerAPI) => {
     onDismount() {
       serverApi.routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
       patchedMenu?.unpatch();
-      if (squarePatch) {
-        serverApi.routerHook.removePatch('/library', squarePatch);
-      }
-      if (squarePatchHome) {
-        serverApi.routerHook.removePatch('/library/home', squarePatchHome);
-      }
+      
+      removeSquareLibraryPatch(serverApi, true);
+      removeSquareHomePatch(serverApi, true);
+
       findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
       findSP().window.document.getElementById('sgdb-square-capsules-home')?.remove();
     },

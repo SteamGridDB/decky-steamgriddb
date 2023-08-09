@@ -5,9 +5,13 @@ import {
   findInReactTree,
   wrapReactType,
   findSP,
+  RoutePatch,
 } from 'decky-frontend-lib';
 
 import { gamepadLibraryClasses, libraryAssetImageClasses } from '../static-classes';
+import { rerenderAfterPatchUpdate } from "./patchUtils";
+
+let patch: RoutePatch | undefined;
 
 const patchGridProps = (props: any) => {
   const gridProps = findInTree(props, (x) => x?.childWidth, { walkable: ['props', 'children', 'childSections'] });
@@ -16,8 +20,8 @@ const patchGridProps = (props: any) => {
   }
 };
 
-const squareLibraryPatch = (serverApi: ServerAPI) => {
-  return serverApi.routerHook.addPatch('/library', (props) => {
+export const addSquareLibraryPatch = (serverApi: ServerAPI, mounting: boolean = false) => {
+  patch = serverApi.routerHook.addPatch('/library', (props) => {
     // inject css if it isn't there already
     if (!findSP().window.document.getElementById('sgdb-square-capsules-library')) {
       const styleEl = findSP().window.document.createElement('style');
@@ -104,6 +108,15 @@ const squareLibraryPatch = (serverApi: ServerAPI) => {
     });
     return props;
   });
+
+  if (!mounting) rerenderAfterPatchUpdate();
 };
 
-export default squareLibraryPatch;
+export function removeSquareLibraryPatch(serverApi: ServerAPI, unmounting: boolean = false): void {
+  if (patch) {
+    serverApi.routerHook.removePatch('/library', patch);
+    patch = undefined;
+
+    if (!unmounting) rerenderAfterPatchUpdate();
+  }
+}
