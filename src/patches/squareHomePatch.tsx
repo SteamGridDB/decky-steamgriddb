@@ -30,18 +30,23 @@ export const addSquareHomePatch = (serverApi: ServerAPI, mounting: boolean = fal
 
   patch = serverApi.routerHook.addPatch('/library/home', (props) => {
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {
-      // console.log('ret:', ret);
+      let cache2: any = null;
 
-      // wrapReactType(ret);
+      wrapReactType(ret);
       afterPatch(ret.type, 'type', (_: Record<string, unknown>[], ret2?: any) => {
-        // console.info('ret2', ret2);
+        if (cache2) {
+          ret2 = cache2;
+          return ret2;
+        }
 
         let cache3: any = null;
         const recents = findInReactTree(ret2, (x) => x?.props && ('autoFocus' in x.props) && ('showBackground' in x.props));
 
-        // wrapReactType(recents);
+        wrapReactType(recents);
         afterPatch(recents.type, 'type', (_: Record<string, unknown>[], ret3?: any) => {
-          // console.info('ret3', ret3);
+          cache2 = ret2;
+
+          wrapReactType(ret3);
 
           if (cache3) {
             ret3 = cache3;
@@ -50,14 +55,10 @@ export const addSquareHomePatch = (serverApi: ServerAPI, mounting: boolean = fal
 
           const p = findInReactTree(ret3, (x) => x?.props?.games && x?.props.onItemFocus);
           afterPatch(p, 'type', (_: Record<string, unknown>[], ret4?: any) => {
-            // console.log("ret4:", ret4);
-
             cache3 = ret3;
 
-            // wrapReactType(ret4);
+            wrapReactType(ret4);
             afterPatch(ret4.type, 'type', (_: Record<string, unknown>[], ret5?: any) => {
-              // console.info('ret5', ret5);
-
               const size = ret5.props.children.props.children.props.nItemHeight;
               ret5.props.children.props.children.props.nItemHeight = size;
 
