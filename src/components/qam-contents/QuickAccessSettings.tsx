@@ -152,8 +152,8 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
         </PanelSectionRow>
         <PanelSectionRow>
           <ToggleField
-            label="Square Capsules"
-            description="Use square capsules instead of portrait ones. Remember to add square sizes (1024x1024 & 512x512) to the dimensions filter to find them."
+            label={t('LABEL_SQUARE_CAPSULES', 'Square Capsules')}
+            description={t('LABEL_SQUARE_CAPSULES_DESC', 'Use square capsules instead of portrait ones. Remember to add square sizes (1024x1024 & 512x512) to the dimensions filter to find them.')}
             checked={squares}
             onChange={handleSquareToggle}
           />
