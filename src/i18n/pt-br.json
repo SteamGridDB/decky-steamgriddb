@@ -17,6 +17,7 @@
   "LABEL_USAGE_TITLE": "Perdido? Aqui está um Guia Rápido",
   "LABEL_SETTINGS_ASSET_TABS": "Configurações de Abas de Conteúdo",
   "LABEL_SQUARE_CAPSULES": "Cápsulas Quadradas",
+  "LABEL_SQUARE_CAPSULES_DESC": "Use cápsulas quadradas ao invés de cápsulas verticais (padrão). Os filtros quadrados serão selecionados automaticamente.",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Tradução PT-BR",
   "LABEL_MORE_SGDB_TITLE": "Mais do SteamGridDB",
   "ACTION_SGDB_DISCORD": "Entrar no Discord",
