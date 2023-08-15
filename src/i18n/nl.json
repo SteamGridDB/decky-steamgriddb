@@ -16,6 +16,8 @@
   "MSG_ASSET_TAB_SETTINGS_DESC": "Rangschik of verberg ongebruikte tabs, en kies de standaard tab die opent bij gebruik",
   "LABEL_USAGE_TITLE": "Verloren? Hier is een snelle handleiding",
   "LABEL_SETTINGS_ASSET_TABS": "Asset Tab Instellingen",
+  "LABEL_SQUARE_CAPSULES": "Vierkante Capsules",
+  "LABEL_SQUARE_CAPSULES_DESC": "Gebruik vierkante capsules in plaats van portrait. Vergeet niet om vierkante formaten (1024x1024 & 512x512) toe te voegen aan het afmetingenfilter om ze te vinden.",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Nederlandse Vertaling",
   "LABEL_MORE_SGDB_TITLE": "Meer van SteamGridDB",
   "ACTION_SGDB_DISCORD": "Word lid van de Discord",
