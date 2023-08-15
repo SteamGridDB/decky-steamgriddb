@@ -4,7 +4,6 @@ import { HiOutlineChevronRight } from 'react-icons/hi2';
 import reactStringReplace from 'react-string-replace';
 
 import HowToVideo from '../../../assets/howto.webm';
-
 import FooterGlyph from '../FooterGlyph';
 import t from '../../utils/i18n';
 

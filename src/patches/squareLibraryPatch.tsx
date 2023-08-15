@@ -9,7 +9,8 @@ import {
 } from 'decky-frontend-lib';
 
 import { gamepadLibraryClasses, libraryAssetImageClasses } from '../static-classes';
-import { rerenderAfterPatchUpdate } from "./patchUtils";
+
+import { rerenderAfterPatchUpdate } from './patchUtils';
 
 let patch: RoutePatch | undefined;
 
@@ -20,7 +21,7 @@ const patchGridProps = (props: any) => {
   }
 };
 
-export const addSquareLibraryPatch = (serverApi: ServerAPI, mounting: boolean = false) => {
+export const addSquareLibraryPatch = (serverApi: ServerAPI, mounting = false) => {
   patch = serverApi.routerHook.addPatch('/library', (props) => {
     // inject css if it isn't there already
     if (!findSP().window.document.getElementById('sgdb-square-capsules-library')) {
@@ -112,7 +113,7 @@ export const addSquareLibraryPatch = (serverApi: ServerAPI, mounting: boolean = 
   if (!mounting) rerenderAfterPatchUpdate();
 };
 
-export function removeSquareLibraryPatch(serverApi: ServerAPI, unmounting: boolean = false): void {
+export function removeSquareLibraryPatch(serverApi: ServerAPI, unmounting = false): void {
   if (patch) {
     serverApi.routerHook.removePatch('/library', patch);
     patch = undefined;

@@ -12,8 +12,8 @@ import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './components/plugin-pages/SGDBPage';
 import contextMenuPatch, { getMenu } from './patches/contextMenuPatch';
-import { removeSquareLibraryPatch, addSquareLibraryPatch } from "./patches/squareLibraryPatch";
-import { removeSquareHomePatch, addSquareHomePatch } from "./patches/squareHomePatch";
+import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
+import { removeSquareHomePatch, addSquareHomePatch } from './patches/squareHomePatch';
 
 export default definePlugin((serverApi: ServerAPI) => {
   const getSetting = async (key: string, fallback: any) => {
@@ -36,7 +36,7 @@ export default definePlugin((serverApi: ServerAPI) => {
   });
 
   getSetting('experiment_squares', false).then((enabled) => {
-    console.log("enabled on load:", enabled);
+    console.log('enabled on load:', enabled);
     if (enabled) {
       addSquareLibraryPatch(serverApi, true);
       addSquareHomePatch(serverApi, true);
@@ -50,7 +50,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     onDismount() {
       serverApi.routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
       patchedMenu?.unpatch();
-      
+
       removeSquareLibraryPatch(serverApi, true);
       removeSquareHomePatch(serverApi, true);
 

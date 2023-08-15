@@ -23,14 +23,15 @@ import {
 } from 'react-icons/si';
 
 import BoopIcon from '../Icons/BoopIcon';
-import PanelSocialButton from './PanelSocialButton';
 import t, { getCredits } from '../../utils/i18n';
-import GuideVideoField from './GuideVideoField';
 import openFilePicker from '../../utils/openFilePicker';
 import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
-import { addSquareHomePatch, removeSquareHomePatch } from "../../patches/squareHomePatch";
-import { addSquareLibraryPatch, removeSquareLibraryPatch } from "../../patches/squareLibraryPatch";
+import { addSquareHomePatch, removeSquareHomePatch } from '../../patches/squareHomePatch';
+import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
+
+import GuideVideoField from './GuideVideoField';
+import PanelSocialButton from './PanelSocialButton';
 
 const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"').replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));
 
@@ -54,7 +55,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
     set('experiment_squares', checked, true);
     setSquares(checked);
     toggleSquarePatches(checked, serverApi);
-  }, [set]);
+  }, [set, serverApi]);
 
   useEffect(() => {
     (async () => {
@@ -161,7 +162,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
       {/* Uncomment this out should there be a need for experiments again. */}
       {/* <PanelSection title="Experiments">
         <div style={{ fontSize: '12px', padding: '12px 0px' }}>Features with little testing that may be too unstable for regular usage and might be removed later. (Requires restart)</div>
-        
+
       </PanelSection> */}
       {getCredits() && (
         <PanelSection title={t('LABEL_TRANSLATION_CREDIT_TITLE', 'English Translation')}>

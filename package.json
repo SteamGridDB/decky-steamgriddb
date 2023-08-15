@@ -9,6 +9,8 @@
     "copy-to-vm": "pscp -P 50658 -pw 123 -r ./dist/ manjaro@127.0.0.1:/home/manjaro/homebrew/plugins/decky-steamgriddb/dist",
     "copy-to-win": "robocopy /E /NS /NC /NDL /NFL /NJS /NJH /NP dist \"%USERPROFILE%\\homebrew\\plugins\\decky-steamgriddb\\dist\"",
     "dump-strings": "node ./dump-strings.js",
+    "lint": "eslint --ext .ts,.tsx,.js src",
+    "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "github:SteamGridDB/decky-steamgriddb",
@@ -55,7 +57,8 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.0",
     "rollup": "^2.79.1",
     "rollup-plugin-import-assets": "^1.1.1",
     "rollup-plugin-polyfill-node": "^0.11.0",

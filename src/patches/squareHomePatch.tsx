@@ -10,11 +10,12 @@ import {
 } from 'decky-frontend-lib';
 
 import { libraryAssetImageClasses, appportraitClasses, homeCarouselClasses } from '../static-classes';
-import { rerenderAfterPatchUpdate } from "./patchUtils";
+
+import { rerenderAfterPatchUpdate } from './patchUtils';
 
 let patch: RoutePatch | undefined;
 
-export const addSquareHomePatch = (serverApi: ServerAPI, mounting: boolean = false) => {
+export const addSquareHomePatch = (serverApi: ServerAPI, mounting = false) => {
   // inject css if it isn't there already
   if (!findSP().window.document.getElementById('sgdb-square-capsules-home')) {
     const styleEl = findSP().window.document.createElement('style');
@@ -87,7 +88,7 @@ export const addSquareHomePatch = (serverApi: ServerAPI, mounting: boolean = fal
   if (!mounting) rerenderAfterPatchUpdate();
 };
 
-export function removeSquareHomePatch(serverApi: ServerAPI, unmounting: boolean = false): void {
+export function removeSquareHomePatch(serverApi: ServerAPI, unmounting = false): void {
   if (patch) {
     serverApi.routerHook.removePatch('/library/home', patch);
     patch = undefined;

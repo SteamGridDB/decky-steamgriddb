@@ -40,13 +40,13 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
     log(component);
     const appid: number = component._owner.pendingProps.overview.appid;
 
-    if (!Object.keys(renderedMap).includes(appid.toString()) && !window.location.pathname.endsWith("/routes/library/home")) {
+    if (!Object.keys(renderedMap).includes(appid.toString()) && !window.location.pathname.endsWith('/routes/library/home')) {
       renderedMap[appid.toString()] = true;
 
       afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
         const sgdbIdx = nextProps.children.findIndex((x: any) => x?.key === 'sgdb-change-artwork');
         if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
-  
+
         if (shouldUpdate === true) {
           let updatedAppid: number = appid;
           // find the first menu component that has the correct appid assigned to _owner
@@ -59,7 +59,7 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
           }
           spliceArtworkItem(nextProps.children, updatedAppid);
         }
-  
+
         return shouldUpdate;
       }, { singleShot: true });
     } else {

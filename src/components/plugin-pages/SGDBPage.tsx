@@ -1,12 +1,13 @@
 import { useParams } from 'decky-frontend-lib';
 import { useEffect, useState, VFC, useCallback } from 'react';
 
-import AssetTabs from './AssetTabs';
 import { AssetSearchContext } from '../../hooks/useAssetSearch';
 import { useSGDB } from '../../hooks/useSGDB';
 import useSettings from '../../hooks/useSettings';
 import { DEFAULT_TABS } from '../../constants';
 import style from '../../styles/style.scss';
+
+import AssetTabs from './AssetTabs';
 
 const SGDBPage: VFC = () => {
   const { get } = useSettings();

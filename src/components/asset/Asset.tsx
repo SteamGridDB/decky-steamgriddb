@@ -3,11 +3,11 @@ import { Focusable, FocusableProps, FooterLegendProps, joinClassNames } from 'de
 
 import t from '../../utils/i18n';
 import Spinner from '../../../assets/spinner.svg';
-
-import { LazyImage } from './LazyImage';
 import FooterGlyph from '../FooterGlyph';
 import Chips from '../Chips';
 import Chip from '../Chips/Chip';
+
+import { LazyImage } from './LazyImage';
 
 export interface AssetProps extends FooterLegendProps {
   assetType: SGDBAssetType;

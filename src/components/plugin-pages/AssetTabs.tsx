@@ -2,13 +2,14 @@
 import { memo, useEffect, useState, VFC } from 'react';
 import { Tabs, TabsProps } from 'decky-frontend-lib';
 
-import AssetTab from './AssetTab';
-import ManageTab from './ManageTab';
 import t from '../../utils/i18n';
 import useAssetSearch from '../../hooks/useAssetSearch';
 import useSGDB from '../../hooks/useSGDB';
 import { tabStrs, DEFAULT_TABS } from '../../constants';
 import useSettings from '../../hooks/useSettings';
+
+import ManageTab from './ManageTab';
+import AssetTab from './AssetTab';
 
 const AssetTabs: VFC<{
   currentTab: string,
