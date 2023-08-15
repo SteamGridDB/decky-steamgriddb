@@ -61,8 +61,8 @@ devDependencies:
     specifier: ^5.59.5
     version: 5.62.0(eslint@8.45.0)(typescript@4.9.5)
   decky-frontend-lib:
-    specifier: ^3.21.8
-    version: 3.21.8
+    specifier: ^3.22.0
+    version: 3.22.0
   eslint:
     specifier: ^8.40.0
     version: 8.45.0
@@ -1456,8 +1456,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /decky-frontend-lib@3.21.8:
-    resolution: {integrity: sha512-I45KWzoTSakUcsN7drHhiOc+rYKYygIsuYTHqc8DbpPDJvUx6xlU4t7D2TMrj9o/xS/V3WY9N/pX8eF6AcGT1g==}
+  /decky-frontend-lib@3.22.0:
+    resolution: {integrity: sha512-MJ0y0bhNMHJyMVxHht3O0L0GxdT9sckUmh35HG7/ERqyZQsfKpDqOeW6pC1R07SnuWwgbl4fY3tzjlrb7qUeoA==}
     dev: true
 
   /decode-named-character-reference@1.0.2:
