@@ -35,7 +35,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     patchedMenu = contextMenuPatch(LibraryContextMenu);
   });
 
-  getSetting('experiment_squares', false).then((enabled) => {
+  getSetting('squares', false).then((enabled) => {
     console.log('enabled on load:', enabled);
     if (enabled) {
       addSquareLibraryPatch(serverApi, true);

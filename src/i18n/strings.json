@@ -17,7 +17,7 @@
   "LABEL_USAGE_TITLE": "Lost? Here's a Quick Guide",
   "LABEL_SETTINGS_ASSET_TABS": "Asset Tab Settings",
   "LABEL_SQUARE_CAPSULES": "Square Capsules",
-  "LABEL_SQUARE_CAPSULES_DESC": "Use square capsules instead of portrait ones. Remember to add square sizes (1024x1024 & 512x512) to the dimensions filter to find them.",
+  "LABEL_SQUARE_CAPSULES_DESC": "Use square capsules instead of portrait ones. (Square dimension filters will be automatically selected)",
   "LABEL_TRANSLATION_CREDIT_TITLE": "English Translation",
   "LABEL_MORE_SGDB_TITLE": "More SteamGridDB Stuff",
   "ACTION_SGDB_DISCORD": "Join the Discord",

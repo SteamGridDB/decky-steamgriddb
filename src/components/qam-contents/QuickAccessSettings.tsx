@@ -29,11 +29,16 @@ import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 import { addSquareHomePatch, removeSquareHomePatch } from '../../patches/squareHomePatch';
 import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
+import { DIMENSIONS } from '../../constants';
 
 import GuideVideoField from './GuideVideoField';
 import PanelSocialButton from './PanelSocialButton';
 
 const tabSettingsDesc = t('MSG_ASSET_TAB_SETTINGS_DESC', 'Reorder or hide unused tabs, and set the default tab that opens when using "{ACTION_CHANGE_ARTWORK}"').replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));
+const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
+  const [w,h] = x.value.split('x');
+  return w === h;
+}).map((x) => x.value);
 
 function toggleSquarePatches(enabled: boolean, serverApi: ServerAPI): void {
   if (enabled) {
@@ -51,16 +56,25 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const [squares, setSquares] = useState<boolean>(false);
   const [debugAppid] = useState('70');
 
-  const handleSquareToggle = useCallback((checked) => {
-    set('experiment_squares', checked, true);
+  const handleSquareToggle = useCallback(async (checked) => {
+    set('squares', checked, true);
     setSquares(checked);
     toggleSquarePatches(checked, serverApi);
-  }, [set, serverApi]);
+    const currentFilters = await get('filters_grid_p', {});
+    if (checked) {
+      // only enable square
+      currentFilters['dimensions'] = squareGridSizes;
+    } else {
+      // set to default
+      currentFilters['dimensions'] = DIMENSIONS.grid_p.default;
+    }
+    set('filters_grid_p', currentFilters, true);
+  }, [get, set, serverApi]);
 
   useEffect(() => {
     (async () => {
       setUseCount(await get('plugin_use_count', 0));
-      setSquares(await get('experiment_squares', false));
+      setSquares(await get('squares', false));
     })();
   }, [get]);
 
@@ -153,7 +167,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
         <PanelSectionRow>
           <ToggleField
             label={t('LABEL_SQUARE_CAPSULES', 'Square Capsules')}
-            description={t('LABEL_SQUARE_CAPSULES_DESC', 'Use square capsules instead of portrait ones. Remember to add square sizes (1024x1024 & 512x512) to the dimensions filter to find them.')}
+            description={t('LABEL_SQUARE_CAPSULES_DESC', 'Use square capsules instead of portrait ones. Square filters will be automatically selected.')}
             checked={squares}
             onChange={handleSquareToggle}
           />
