@@ -44,12 +44,6 @@ const SGDBPage: VFC = () => {
     <>
       <style>
         {style}
-        {`
-        #sgdb-wrap div[class*="gamepadtabbedpage_TabHeaderRowWrapper"][class*="gamepadtabbedpage_Floating"],
-        #sgdb-wrap div[class*="gamepadtabbedpage_TabHeaderRowWrapper"] {
-          background: #1B2838;
-        }
-        `}
       </style>
       <div id="sgdb-wrap">
         <AssetSearchContext>

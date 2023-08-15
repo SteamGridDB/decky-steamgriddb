@@ -19,6 +19,12 @@ $topBarHeight: var(--basicui-header-height, 40px);
   height: calc(100% - $topBarHeight);
   background: var(--gpSystemDarkestGrey, #0E141B);
 
+  // Background for tab pages
+  div[class*="gamepadtabbedpage_TabHeaderRowWrapper"][class*="gamepadtabbedpage_Floating"],
+  div[class*="gamepadtabbedpage_TabHeaderRowWrapper"] {
+    background: #1B2838;
+  }
+
   .tabcontents-wrap {
     display: flex;
     height: 100%;
@@ -114,7 +120,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
       margin-bottom: .5em;
     }
     .asset-wrap {
-      .Panel.Focusable {
+      > .Panel {
         position: relative;
         .action-overlay {
           display: none;
