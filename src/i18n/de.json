@@ -17,6 +17,7 @@
   "LABEL_USAGE_TITLE": "Verlaufen? Hier ist eine Kurzanleitung",
   "LABEL_SETTINGS_ASSET_TABS": "Asset-Tab Einstellungen",
   "LABEL_SQUARE_CAPSULES": "Quadratische Kapseln",
+  "LABEL_SQUARE_CAPSULES_DESC": "Benutze quadratische Kapseln anstelle von Kapseln im Hochformat. Quadratische Filter werden automatisch ausgewählt.",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Deutsche Übersetzung",
   "LABEL_MORE_SGDB_TITLE": "Mehr Steamgriddb Plattformen",
   "ACTION_SGDB_DISCORD": "Tritt dem Discord bei",
