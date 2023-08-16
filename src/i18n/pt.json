@@ -17,6 +17,7 @@
   "LABEL_USAGE_TITLE": "Perdido? Aqui está um guia rápido",
   "LABEL_SETTINGS_ASSET_TABS": "Definições dos separadores de imagens",
   "LABEL_SQUARE_CAPSULES": "Cápsulas quadradas",
+  "LABEL_SQUARE_CAPSULES_DESC": "Usa cápsulas quadradas em vez de verticais. Filtros de imagens quadradas irão ser selecionados automaticamente.",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Tradução portuguesa",
   "LABEL_MORE_SGDB_TITLE": "Mais da SteamGridDB",
   "ACTION_SGDB_DISCORD": "Entra no Discord",
