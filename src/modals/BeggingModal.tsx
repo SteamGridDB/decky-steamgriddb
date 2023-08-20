@@ -28,6 +28,9 @@ const BeggingModal: FC<{ closeModal?: () => void }> = ({ closeModal }) => {
       </DialogBody>
       <DialogFooter>
         <ControlsList>
+          <DialogButton onClick={closeModal} style={{ height: '100%' }}>
+            {t('Button_Close', 'Close', true)}
+          </DialogButton>
           <DialogButton
             onClick={() => {
               Navigation.NavigateToExternalWeb('https://www.patreon.com/steamgriddb');
@@ -55,9 +58,6 @@ const BeggingModal: FC<{ closeModal?: () => void }> = ({ closeModal }) => {
             }}
           >
             <SiKofi size="1em" /> Ko-fi
-          </DialogButton>
-          <DialogButton onClick={closeModal} style={{ height: '100%' }}>
-            {t('Button_Close', 'Close', true)}
           </DialogButton>
         </ControlsList>
       </DialogFooter>
