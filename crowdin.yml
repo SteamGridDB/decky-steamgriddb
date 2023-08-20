@@ -1,5 +1,5 @@
-pull_request_title: Crowdin translations sync
-commit_message: New translations (%language%)
+pull_request_title: "feat(lang): update translations"
+commit_message: "feat(lang): new translations (%language%)"
 append_commit_message: false
 files:
   - source: /src/i18n/strings.json
