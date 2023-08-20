@@ -121,34 +121,5 @@ class Plugin:
     async def get_setting(self, key, default):
         return self.settings.getSetting(key, default)
 
-    async def filepicker_new(self, path, include_files=True):
-        path = Path(path).resolve()
-
-        files = []
-
-        for file in path.iterdir():
-            is_dir = file.is_dir()
-
-            if file.exists() and (is_dir or include_files):
-                filest = file.stat()
-                is_hidden = file.name.startswith('.')
-                if WINDOWS and not is_hidden:
-                    is_hidden = bool(stat(file).st_file_attributes & FILE_ATTRIBUTE_HIDDEN)
-
-                files.append({
-                    "isdir": is_dir,
-                    "ishidden": is_hidden,
-                    "name": file.name.encode('utf-8', 'replace').decode('utf-8'),
-                    "realpath": str(file.resolve()).encode('utf-8', 'replace').decode('utf-8'),
-                    "size": filest.st_size,
-                    "modified": filest.st_mtime,
-                    "created": filest.st_ctime,
-                })
-
-        return {
-            "realpath": str(path),
-            "files": files
-        }
-
     async def _migration(self):
         decky_plugin.migrate_settings(str(Path(decky_plugin.DECKY_HOME) / "settings" / "steamgriddb.json"))
