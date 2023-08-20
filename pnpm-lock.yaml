@@ -14,7 +14,7 @@ dependencies:
     specifier: ^3.2.1
     version: 3.2.2
   react-icons:
-    specifier: ^4.8.0
+    specifier: ^4.10.1
     version: 4.10.1
   react-markdown:
     specifier: ^8.0.7

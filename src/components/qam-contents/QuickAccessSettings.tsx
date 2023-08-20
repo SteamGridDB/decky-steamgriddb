@@ -20,6 +20,7 @@ import {
   SiTwitter,
   SiCrowdin,
   SiMastodon,
+  SiKofi,
 } from 'react-icons/si';
 
 import BoopIcon from '../Icons/BoopIcon';
@@ -210,6 +211,12 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
           {t('ACTION_SGDB_DONATE', 'Support us on Patreon')}
         </PanelSocialButton>
         <PanelSocialButton
+          icon={<SiKofi fill="#FF5E5B" />}
+          url="https://ko-fi.com/steamgriddb"
+        >
+          Ko-fi
+        </PanelSocialButton>
+        <PanelSocialButton
           icon={<SiCrowdin fill="#fff" />} // actual branding is #2E3340 but it's too dark
           url="https://crowdin.com/project/decky-steamgriddb"
         >
@@ -225,7 +232,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
           icon={<SiTwitter fill="#1DA1F2" />}
           url="https://twitter.com/SteamGridDB"
         >
-          Twitter
+          lol
         </PanelSocialButton>
         <PanelSocialButton
           icon={<SiMastodon fill="#6364FF" />}

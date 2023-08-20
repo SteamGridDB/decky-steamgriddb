@@ -21,7 +21,11 @@
     "deck",
     "steamgriddb"
   ],
-  "author": "Jozen Blue Martinez <me@jozen.blue> (https://jozen.blue/)",
+  "author": {
+    "name": "Jozen Blue Martinez",
+    "email": "me@jozen.blue",
+    "url": "https://jozen.blue/"
+  },
   "contributors": [
     {
       "name": "Travis Lane (Tormak)",
@@ -32,6 +36,10 @@
     {
       "type": "patreon",
       "url": "https://www.patreon.com/steamgriddb"
+    },
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/steamgriddb"
     }
   ],
   "license": "GPL-3.0-or-later",
@@ -73,7 +81,7 @@
     "just-debounce": "^1.1.0",
     "qrcode.react": "^3.1.0",
     "react-fast-compare": "^3.2.1",
-    "react-icons": "^4.8.0",
+    "react-icons": "^4.10.1",
     "react-markdown": "^8.0.7",
     "react-string-replace": "^1.1.0",
     "remark-gfm": "^3.0.1"
