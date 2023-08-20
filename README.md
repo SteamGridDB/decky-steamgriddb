@@ -44,7 +44,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | | |
 | - | - |
 | **Čeština** | zenobit |
-| **Deutsch** | Kurikuo, benutzer_artur7, Anja, FL0W |
+| **Deutsch** | Kurikuo, benutzer_artur7, Anja, FL0W, Remirax |
 | **Español-España** | Andrea Laguillo, Kam, m0uch0 |
 | **Español-Latinoamérica** | Kam |
 | **Français** | Michael Jean |

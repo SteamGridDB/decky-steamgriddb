@@ -35,7 +35,7 @@ export const LANGS = {
   de: {
     name: 'Deutsch',
     strings: de,
-    credit: ['Kurikuo', 'benutzer_artur7', 'Anja', 'FL0W'],
+    credit: ['Kurikuo', 'benutzer_artur7', 'Anja', 'FL0W', 'Remirax'],
   },
   fi: {
     name: 'Suomi',
