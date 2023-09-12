@@ -164,6 +164,11 @@ export const LANGS = {
 //    strings: vn,
 //    credit: []
 //  },
+//  id: {
+//    name: 'Bahasa Indonesia',
+//    strings: id,
+//    credit: []
+//  },
 };
 
 let cachedLang: string | undefined;
