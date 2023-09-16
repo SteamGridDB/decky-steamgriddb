@@ -2,7 +2,7 @@ import {
   afterPatch,
   fakeRenderComponent,
   findInReactTree,
-  findInTree,
+  findModuleChild,
   MenuItem,
   Navigation,
 } from 'decky-frontend-lib';
@@ -79,20 +79,23 @@ export const getMenu = async () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
-  let LibraryContextMenu = findInReactTree(
-    fakeRenderComponent(
-      findInTree(
-        fakeRenderComponent(
-          // @ts-ignore: decky global is not typed
-          window.DeckyPluginLoader.routerHook.routes.find((x) => x?.props?.path == '/zoo').props.children.type
-        ), (x) => x?.route === '/zoo/modals',
-        {
-          walkable: ['props', 'children', 'child', 'pages'],
+  let LibraryContextMenu = fakeRenderComponent(
+    findModuleChild((m) => {
+      if (typeof m !== 'object') return;
+      for (const prop in m) {
+        if (
+          m[prop]?.toString() &&
+          m[prop].toString().includes('().LibraryContextMenu')
+        ) {
+          return Object.values(m).find((sibling) => (
+            sibling?.toString().includes('createElement') &&
+            sibling?.toString().includes('navigator:')
+          ));
         }
-      ).content.type
-    ),
-    (x) => x?.title?.includes('AppActionsMenu')
-  ).children.type;
+      }
+      return;
+    })
+  ).type;
 
   if (!LibraryContextMenu?.prototype?.AddToHidden) {
     LibraryContextMenu = fakeRenderComponent(LibraryContextMenu).type;
