@@ -11,7 +11,7 @@ import MenuIcon from './components/Icons/MenuIcon';
 import { SGDBProvider } from './hooks/useSGDB';
 import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './components/plugin-pages/SGDBPage';
-import contextMenuPatch, { getMenu } from './patches/contextMenuPatch';
+import contextMenuPatch, { LibraryContextMenu } from './patches/contextMenuPatch';
 import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
 import { removeSquareHomePatch, addSquareHomePatch } from './patches/squareHomePatch';
 
@@ -30,10 +30,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
-  let patchedMenu: Patch | undefined;
-  getMenu().then((LibraryContextMenu) => {
-    patchedMenu = contextMenuPatch(LibraryContextMenu);
-  });
+  const patchedMenu: Patch = contextMenuPatch(LibraryContextMenu);
 
   getSetting('squares', false).then((enabled) => {
     console.log('enabled on load:', enabled);

@@ -71,36 +71,24 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
 };
 
 /**
- * Gets the game context menu component.
+ * Game context menu component.
  */
-export const getMenu = async () => {
-  // @ts-ignore: decky global is not typed
-  while (!window.DeckyPluginLoader?.routerHook?.routes) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }
-
-  let LibraryContextMenu = fakeRenderComponent(
-    findModuleChild((m) => {
-      if (typeof m !== 'object') return;
-      for (const prop in m) {
-        if (
-          m[prop]?.toString() &&
-          m[prop].toString().includes('().LibraryContextMenu')
-        ) {
-          return Object.values(m).find((sibling) => (
-            sibling?.toString().includes('createElement') &&
-            sibling?.toString().includes('navigator:')
-          ));
-        }
+export const LibraryContextMenu = fakeRenderComponent(
+  findModuleChild((m) => {
+    if (typeof m !== 'object') return;
+    for (const prop in m) {
+      if (
+        m[prop]?.toString() &&
+        m[prop].toString().includes('().LibraryContextMenu')
+      ) {
+        return Object.values(m).find((sibling) => (
+          sibling?.toString().includes('createElement') &&
+          sibling?.toString().includes('navigator:')
+        ));
       }
-      return;
-    })
-  ).type;
-
-  if (!LibraryContextMenu?.prototype?.AddToHidden) {
-    LibraryContextMenu = fakeRenderComponent(LibraryContextMenu).type;
-  }
-  return LibraryContextMenu;
-};
+    }
+    return;
+  })
+).type;
 
 export default contextMenuPatch;
