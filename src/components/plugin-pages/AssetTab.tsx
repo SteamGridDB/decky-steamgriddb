@@ -191,6 +191,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
             ))}
             {/* Load more if spinner in view */}
             <div ref={intersectRef} style={{ gridColumn: '1 / -1', height: '5px' }} />
+            {assets.length === 0 && <div style={{ gridColumn: '1 / -1', justifySelf: 'center' }}>{t('Search_NoResults', 'No Results Found.', true)}</div>}
           </>
         )}
       </Focusable>
