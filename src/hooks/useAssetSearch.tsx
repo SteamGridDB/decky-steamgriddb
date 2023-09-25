@@ -29,6 +29,7 @@ export type AssetSearchContextType = {
   games: any[];
   selectedGame: any;
   isFilterActive: boolean;
+  moreLoading: boolean;
 }
 
 export const SearchContext = createContext({});
@@ -45,6 +46,7 @@ export const AssetSearchContext: FC = ({ children }) => {
   const [selectedGame, setSelectedGame] = useState<any>();
   const [externalSgdbData, setExternalSgdbData] = useState<any>(null);
   const [page, setPage] = useState(0);
+  const [moreLoading, setMoreLoading] = useState(false);
 
   const showGameSelection = useCallback(() => {
     showModal(
@@ -101,6 +103,7 @@ export const AssetSearchContext: FC = ({ children }) => {
     if (assets.length === 0) return;
 
     try {
+      setMoreLoading(true);
       const resp = await searchAssets(assetType, {
         page: page + 1,
         gameId: selectedGame?.id,
@@ -111,6 +114,11 @@ export const AssetSearchContext: FC = ({ children }) => {
       setAssets((assets) => [...assets, ...resp]);
       onSuccess?.(resp);
       setPage((x) => x + 1);
+
+      // stop trying to load more if there are no more results
+      if (resp.length !== 0) {
+        setMoreLoading(false);
+      }
     } catch (err: any) {
       if (err.name === 'AbortError') {
         log('Load more aborted');
@@ -125,7 +133,9 @@ export const AssetSearchContext: FC = ({ children }) => {
   }, 500), [appOverview, assets.length, currentFilters, page, searchAssets, selectedGame, serverApi.toaster]);
 
   const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
-    if (!isEqual(filters, currentFilters)) {
+    const filtersChanged = !isEqual(filters, currentFilters);
+    const gameChanged = game?.id !== selectedGame?.id;
+    if (filtersChanged) {
       setLoading(true);
       searchAndSetAssets(assetType, filters, () => {
         setLoading(false);
@@ -133,10 +143,15 @@ export const AssetSearchContext: FC = ({ children }) => {
       set(`filters_${assetType}`, filters, true);
       setCurrentFilters(filters);
     }
-    if (game?.id !== selectedGame?.id) {
+    if (gameChanged) {
       setSelectedGame(game);
       // save selected game to reuse for this shortcut
       set(`nonsteam_${appId}`, game);
+    }
+    if (filtersChanged || gameChanged) {
+      log('filtersChanged');
+      setPage(0);
+      setMoreLoading(false);
     }
     setIsFilterActive(compareFilterWithDefaults(assetType, filters));
   }, [currentFilters, selectedGame, searchAndSetAssets, set, appId]);
@@ -195,7 +210,8 @@ export const AssetSearchContext: FC = ({ children }) => {
     externalSgdbData,
     openFilters,
     isFilterActive,
-  }), [loading, assets, searchAndSetAssets, loadMore, selectedGame, externalSgdbData, openFilters, isFilterActive]);
+    moreLoading,
+  }), [loading, assets, searchAndSetAssets, loadMore, selectedGame, externalSgdbData, openFilters, isFilterActive, moreLoading]);
 
   return (
     <SearchContext.Provider value={value}>

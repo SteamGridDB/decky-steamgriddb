@@ -26,12 +26,12 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     isFilterActive,
     selectedGame,
     externalSgdbData,
+    moreLoading,
   } = useAssetSearch();
   const { appOverview, changeAssetFromUrl, serverApi } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
   const [tabLoading, setTabLoading] = useState(true);
-  const [moreLoading, setMoreLoading] = useState(false);
   const loading = useMemo(() => !(!searchLoading && !tabLoading), [searchLoading, tabLoading]);
 
   const toolbarRef = useRef<ToolbarRefType>(null);
@@ -119,17 +119,13 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
 
     const observer = new IntersectionObserver(([entry], observer) => {
       if (!moreLoading && entry.isIntersecting) {
-        setMoreLoading(true);
         loadMore(assetType, (res) => {
           if (res.length === 0) {
             observer.disconnect();
-          } else {
-            setMoreLoading(false);
           }
         });
       }
     }, { threshold: 0, root: mainContentRef.current?.parentElement?.parentElement });
-
     observer.observe(intersectRef.current);
     return () => {
       observer.disconnect();
