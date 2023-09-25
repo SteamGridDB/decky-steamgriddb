@@ -144,9 +144,9 @@ export const AssetSearchContext: FC = ({ children }) => {
       setCurrentFilters(filters);
     }
     if (gameChanged) {
-      setSelectedGame(game);
+      setSelectedGame(game ?? false);
       // save selected game to reuse for this shortcut
-      set(`nonsteam_${appId}`, game);
+      set(`nonsteam_${appId}`, game ?? false);
     }
     if (filtersChanged || gameChanged) {
       log('filtersChanged');
