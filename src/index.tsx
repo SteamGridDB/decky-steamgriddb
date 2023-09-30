@@ -2,7 +2,6 @@ import {
   definePlugin,
   ServerAPI,
   quickAccessMenuClasses,
-  Patch,
   findSP,
 } from 'decky-frontend-lib';
 
@@ -30,7 +29,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     exact: true,
   });
 
-  const patchedMenu: Patch = contextMenuPatch(LibraryContextMenu);
+  const menuPatches = contextMenuPatch(LibraryContextMenu);
 
   getSetting('squares', false).then((enabled) => {
     console.log('enabled on load:', enabled);
@@ -46,7 +45,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     icon: <MenuIcon />,
     onDismount() {
       serverApi.routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
-      patchedMenu?.unpatch();
+      menuPatches?.unpatch();
 
       removeSquareLibraryPatch(serverApi, true);
       removeSquareHomePatch(serverApi, true);
