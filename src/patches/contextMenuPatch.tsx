@@ -5,6 +5,7 @@ import {
   findModuleChild,
   MenuItem,
   Navigation,
+  Patch,
 } from 'decky-frontend-lib';
 
 import t from '../utils/i18n';
@@ -28,22 +29,23 @@ const spliceArtworkItem = (children: any[], appid: number) => {
   ));
 };
 
-const renderedMap = {};
-
 /**
  * Patches the game context menu.
  * @param LibraryContextMenu The game context menu.
  * @returns A patch to remove when the plugin dismounts.
  */
 const contextMenuPatch = (LibraryContextMenu: any) => {
-  return afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
+  const patches: {
+    outer?: Patch,
+    inner?: Patch,
+    unpatch: () => void;
+  } = { unpatch: () => {return null;} };
+  patches.outer = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
     const appid: number = component._owner.pendingProps.overview.appid;
 
-    if (!Object.keys(renderedMap).includes(appid.toString()) && !window.location.pathname.endsWith('/routes/library/home')) {
-      renderedMap[appid.toString()] = true;
-
-      afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
+    if (!patches.inner && !window.location.pathname.endsWith('/routes/library/home')) {
+      patches.inner = afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
         const sgdbIdx = nextProps.children.findIndex((x: any) => x?.key === 'sgdb-change-artwork');
         if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
 
@@ -61,13 +63,18 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
         }
 
         return shouldUpdate;
-      }, { singleShot: true });
+      });
     } else {
       spliceArtworkItem(component.props.children, appid);
     }
 
     return component;
   });
+  patches.unpatch = () => {
+    patches.outer?.unpatch();
+    patches.inner?.unpatch();
+  };
+  return patches;
 };
 
 /**
