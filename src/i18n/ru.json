@@ -46,6 +46,7 @@
   "LABEL_FILTER_TAG_UNTAGGED": "Без метки",
   "ACTION_FILTER_RESET": "Сбросить фильтры",
   "LABEL_BEGGING_MODAL_TITLE": "Спасибо за использование SteamGridDB!",
+  "LABEL_BEGGING_MODAL_DESC": "Пожалуйста, подумайте о пожертвовании, чтобы помочь с обслуживанием и расходами на сервер!",
   "ACTION_HIDE_POS_GUIDES": "Скрыть подсказки",
   "ACTION_SHOW_OUTLINE": "Показать подсказки",
   "ACTION_ADJUST_POS_SIZE": "Изменить размер",
