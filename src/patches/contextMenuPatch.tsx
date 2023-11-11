@@ -44,7 +44,7 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
     log(component);
     const appid: number = component._owner.pendingProps.overview.appid;
 
-    if (!patches.inner && !window.location.pathname.endsWith('/routes/library/home')) {
+    if (!patches.inner) {
       patches.inner = afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
         const sgdbIdx = nextProps.children.findIndex((x: any) => x?.key === 'sgdb-change-artwork');
         if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
