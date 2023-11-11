@@ -231,7 +231,9 @@ export const SGDBProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children
 
   const searchGames = useCallback(async (term) => {
     try {
-      const res = await apiRequest(`/search/autocomplete/${encodeURIComponent(term)}`);
+      // encodeURIComponent twice to preserve some symbols
+      // api is equpped to handle various types of inputs so this is fine
+      const res = await apiRequest(`/search/autocomplete/${encodeURIComponent(encodeURIComponent(term))}`);
       log('search games', res);
       return res;
     } catch (err: any) {
