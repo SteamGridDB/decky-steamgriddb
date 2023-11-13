@@ -43,6 +43,18 @@
         }
       }
 
+      // don't glow so much on heroes, looks weird
+      &.type-hero {
+        > .thumb {
+          img,
+          video {
+            &.blur-bg {
+              transform: scale(1);
+            }
+          }
+        }
+      }
+
       // add bg to parent on logos/icons so chips can go behind
       &.type-logo,
       &.type-icon {
@@ -53,6 +65,10 @@
           video {
             position: static;
             width: auto;
+            // no blur bg on logos and icons
+            &.blur-bg {
+              display: none;
+            }
           }
         }
       }
@@ -91,6 +107,12 @@
           &[data-loaded="true"] {
             opacity: 1;
           }
+          &.blur-bg {
+            filter: blur(20px);
+            transform: scale(1.25);
+            opacity: 0;
+            z-index: -2; // behind chips
+          }
         }
       }
 
@@ -124,6 +146,8 @@
       padding-top: .15em;
       margin-top: auto;
       overflow: hidden;
+      z-index: 4 + $zIndexAboveRing; // above blur
+      text-shadow: 0px 1px 1px #000;
       > span {
         white-space: nowrap;
         overflow: hidden;
@@ -171,6 +195,16 @@
       }
     }
     .image-wrap.gpfocus {
+      &.type-hero {
+        > .thumb {
+          img,
+          video {
+            &.blur-bg {
+              opacity: .65;
+            }
+          }
+        }
+      }
       .chips {
         > .chip {
           transform: translateX(calc(100% - .5em - 1px)); // 1px more than how much is already sticking out
@@ -180,6 +214,14 @@
           > .chip {
             transform: translateX(calc(-100% + .5em + 1px));
             box-shadow: -2px 2px 3px rgba(#000, .25);
+          }
+        }
+      }
+      > .thumb {
+        img,
+        video {
+          &.blur-bg {
+            opacity: .4;
           }
         }
       }

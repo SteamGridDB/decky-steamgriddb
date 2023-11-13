@@ -85,6 +85,7 @@ const Asset: VFC<AssetProps> = ({
         }}
         marginOffset="100px"
         unloadWhenOutside
+        blurBackground
       />
     </Focusable>
     {author && (

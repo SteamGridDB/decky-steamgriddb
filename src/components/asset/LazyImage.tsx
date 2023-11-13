@@ -17,10 +17,20 @@ interface LazyImage extends ImgHTMLAttributes<HTMLImageElement | HTMLVideoElemen
   marginOffset?: IntersectionObserverInit['rootMargin'];
   scrollContainer?: IntersectionObserverInit['root'];
   src: string,
-  wrapperProps?: any
+  wrapperProps?: any,
+  blurBackground?: boolean,
 }
 
-export const LazyImage: FC<LazyImage> = ({ isVideo = false, unloadWhenOutside = false, marginOffset, scrollContainer, src, wrapperProps, ...props }) => {
+export const LazyImage: FC<LazyImage> = ({
+  isVideo = false,
+  unloadWhenOutside = false,
+  marginOffset,
+  scrollContainer,
+  src,
+  wrapperProps,
+  blurBackground = false,
+  ...props
+}) => {
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -98,12 +108,22 @@ export const LazyImage: FC<LazyImage> = ({ isVideo = false, unloadWhenOutside = 
         )}
 
       {(inViewport && !isVideo && error !== true) && (
-        <img
-          ref={imgRef as React.RefObject<HTMLImageElement>}
-          data-loaded={loading ? 'false' : 'true'}
-          src={src}
-          {...props}
-        />
+        <>
+          {blurBackground && (
+            <img
+              className="blur-bg"
+              data-loaded={loading ? 'false' : 'true'}
+              src={src}
+              {...props}
+            />
+          )}
+          <img
+            ref={imgRef as React.RefObject<HTMLImageElement>}
+            data-loaded={loading ? 'false' : 'true'}
+            src={src}
+            {...props}
+          />
+        </>
       )}
 
       {(inViewport && isVideo && error !== true) && (
