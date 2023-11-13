@@ -31,6 +31,7 @@ export const addSquareLibraryPatch = (serverApi: ServerAPI, mounting = false) =>
         /* only select covers within library page, otherwise it breaks covers on other pages */
         .${gamepadLibraryClasses.GamepadLibrary} .${libraryAssetImageClasses.Container}.${libraryAssetImageClasses.PortraitImage} {
           padding-top: 100% !important;
+          height: 0 !important;
         }
       `;
       findSP().window.document.head.append(styleEl);
