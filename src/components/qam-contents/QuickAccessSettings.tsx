@@ -33,6 +33,7 @@ import { addSquareHomePatch, removeSquareHomePatch } from '../../patches/squareH
 import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
 import { addCapsuleGlowPatch } from '../../patches/capsuleGlowPatch';
 import { DIMENSIONS } from '../../constants';
+import { appgridClasses } from '../../static-classes';
 
 import GuideVideoField from './GuideVideoField';
 import PanelSocialButton from './PanelSocialButton';
@@ -160,26 +161,28 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
             onChange={handleSquareToggle}
           />
         </PanelSectionRow>
-        <PanelSectionRow>
-          <SliderField
-            label={t('LABEL_CAPSULE_GLOW', 'Capsule Glow')}
-            description={t('LABEL_CAPSULE_GLOW_DESC', 'Adjust capsule glow intensity in the library.')}
-            notchCount={2}
-            notchLabels={[
-              {
-                notchIndex: 0,
-                label: t('LABEL_CAPSULE_GLOW_OFF', 'Off'),
-              },
-            ]}
-            notchTicksVisible={false}
-            onChange={handleCapsuleGlowChange}
-            value={capsuleGlowAmount}
-            min={0}
-            max={100}
-            step={1}
-            resetValue={100}
-          />
-        </PanelSectionRow>
+        {appgridClasses?.LibraryImageBackgroundGlow && (
+          <PanelSectionRow>
+            <SliderField
+              label={t('LABEL_CAPSULE_GLOW', 'Capsule Glow')}
+              description={t('LABEL_CAPSULE_GLOW_DESC', 'Adjust capsule glow intensity in the library.')}
+              notchCount={2}
+              notchLabels={[
+                {
+                  notchIndex: 0,
+                  label: t('LABEL_CAPSULE_GLOW_OFF', 'Off'),
+                },
+              ]}
+              notchTicksVisible={false}
+              onChange={handleCapsuleGlowChange}
+              value={capsuleGlowAmount}
+              min={0}
+              max={100}
+              step={1}
+              resetValue={100}
+            />
+          </PanelSectionRow>
+        )}
         <PanelSectionRow>
           <Field childrenLayout="below" description={tabSettingsDesc}>
             <DialogButton

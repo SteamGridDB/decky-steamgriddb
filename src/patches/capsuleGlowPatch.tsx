@@ -3,6 +3,7 @@ import { findSP } from 'decky-frontend-lib';
 import { appportraitClasses, appgridClasses } from '../static-classes';
 
 export const addCapsuleGlowPatch = (glowAmount: number) => {
+  if (!appgridClasses?.LibraryImageBackgroundGlow) return;
   let styleEl = findSP().window.document.getElementById('sgdb-capsule-glow');
   if (!styleEl) {
     styleEl = findSP().window.document.createElement('style');
