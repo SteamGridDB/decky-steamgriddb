@@ -13,9 +13,10 @@ import SGDBPage from './components/plugin-pages/SGDBPage';
 import contextMenuPatch, { LibraryContextMenu } from './patches/contextMenuPatch';
 import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
 import { removeSquareHomePatch, addSquareHomePatch } from './patches/squareHomePatch';
+import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
 
 export default definePlugin((serverApi: ServerAPI) => {
-  const getSetting = async (key: string, fallback: any) => {
+  const getSetting = async (key: string, fallback: any): Promise<any> => {
     return (await serverApi.callPluginMethod('get_setting', { key, default: fallback })).result;
   };
 
@@ -32,11 +33,14 @@ export default definePlugin((serverApi: ServerAPI) => {
   const menuPatches = contextMenuPatch(LibraryContextMenu);
 
   getSetting('squares', false).then((enabled) => {
-    console.log('enabled on load:', enabled);
     if (enabled) {
       addSquareLibraryPatch(serverApi, true);
       addSquareHomePatch(serverApi, true);
     }
+  });
+
+  getSetting('capsule_glow_amount', 1).then((amount) => {
+    addCapsuleGlowPatch(parseInt(amount, 10));
   });
 
   return {
@@ -52,6 +56,7 @@ export default definePlugin((serverApi: ServerAPI) => {
 
       findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
       findSP().window.document.getElementById('sgdb-square-capsules-home')?.remove();
+      findSP().window.document.getElementById('sgdb-capsule-glow')?.remove();
     },
   };
 });

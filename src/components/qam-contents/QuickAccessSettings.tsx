@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogBodyText,
   ToggleField,
+  SliderField,
 } from 'decky-frontend-lib';
 import { useState, useEffect, VFC, useCallback } from 'react';
 import {
@@ -30,6 +31,7 @@ import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 import { addSquareHomePatch, removeSquareHomePatch } from '../../patches/squareHomePatch';
 import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
+import { addCapsuleGlowPatch } from '../../patches/capsuleGlowPatch';
 import { DIMENSIONS } from '../../constants';
 
 import GuideVideoField from './GuideVideoField';
@@ -41,7 +43,7 @@ const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
   return w === h;
 }).map((x) => x.value);
 
-function toggleSquarePatches(enabled: boolean, serverApi: ServerAPI): void {
+const toggleSquarePatches = (enabled: boolean, serverApi: ServerAPI): void => {
   if (enabled) {
     addSquareHomePatch(serverApi);
     addSquareLibraryPatch(serverApi);
@@ -49,12 +51,13 @@ function toggleSquarePatches(enabled: boolean, serverApi: ServerAPI): void {
     removeSquareHomePatch(serverApi);
     removeSquareLibraryPatch(serverApi);
   }
-}
+};
 
 const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const { get, set } = useSettings();
   const [useCount, setUseCount] = useState<number | null>(null);
   const [squares, setSquares] = useState<boolean>(false);
+  const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
 
   const handleSquareToggle = useCallback(async (checked) => {
@@ -72,10 +75,17 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
     set('filters_grid_p', currentFilters, true);
   }, [get, set, serverApi]);
 
+  const handleCapsuleGlowChange = useCallback(async (val: number) => {
+    set('capsule_glow_amount', val, true);
+    addCapsuleGlowPatch(val);
+    setCapsuleGlowAmount(val);
+  }, [set]);
+
   useEffect(() => {
     (async () => {
       setUseCount(await get('plugin_use_count', 0));
       setSquares(await get('squares', false));
+      setCapsuleGlowAmount(await get('capsule_glow_amount', 1));
     })();
   }, [get]);
 
@@ -143,6 +153,34 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
       )}
       <PanelSection title={t('Settings', 'Settings', true)}>
         <PanelSectionRow>
+          <ToggleField
+            label={t('LABEL_SQUARE_CAPSULES', 'Square Capsules')}
+            description={t('LABEL_SQUARE_CAPSULES_DESC', 'Use square capsules instead of portrait ones. Square filters will be automatically selected.')}
+            checked={squares}
+            onChange={handleSquareToggle}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <SliderField
+            label={t('LABEL_CAPSULE_GLOW', 'Capsule Glow')}
+            description={t('LABEL_CAPSULE_GLOW_DESC', 'Adjust capsule glow intensity in the library.')}
+            notchCount={2}
+            notchLabels={[
+              {
+                notchIndex: 0,
+                label: t('LABEL_CAPSULE_GLOW_OFF', 'Off'),
+              },
+            ]}
+            notchTicksVisible={false}
+            onChange={handleCapsuleGlowChange}
+            value={capsuleGlowAmount}
+            min={0}
+            max={100}
+            step={1}
+            resetValue={100}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
           <Field childrenLayout="below" description={tabSettingsDesc}>
             <DialogButton
               onClick={() => {
@@ -164,14 +202,6 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
             </DialogButton>
           </Field>
-        </PanelSectionRow>
-        <PanelSectionRow>
-          <ToggleField
-            label={t('LABEL_SQUARE_CAPSULES', 'Square Capsules')}
-            description={t('LABEL_SQUARE_CAPSULES_DESC', 'Use square capsules instead of portrait ones. Square filters will be automatically selected.')}
-            checked={squares}
-            onChange={handleSquareToggle}
-          />
         </PanelSectionRow>
       </PanelSection>
       {/* Uncomment this out should there be a need for experiments again. */}

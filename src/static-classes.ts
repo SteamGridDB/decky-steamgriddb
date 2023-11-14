@@ -4,3 +4,4 @@ export const libraryAssetImageClasses = findModule((mod) => typeof mod === 'obje
 export const gamepadLibraryClasses = findModule((mod) => typeof mod === 'object' && mod?.GamepadLibrary?.includes('gamepadlibrary'));
 export const homeCarouselClasses = findModule((mod) => typeof mod === 'object' && mod?.Featured && mod?.LabelHeight);
 export const appportraitClasses = findModule((mod) => typeof mod === 'object' && mod?.InRecentGames?.includes('appportrait'));
+export const appgridClasses = findModule((mod) => typeof mod === 'object' && mod?.LibraryImageBackgroundGlow?.includes('appgrid'));
