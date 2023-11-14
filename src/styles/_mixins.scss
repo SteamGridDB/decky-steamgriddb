@@ -108,7 +108,7 @@
             opacity: 1;
           }
           &.blur-bg {
-            filter: blur(20px);
+            filter: saturate(2) blur(20px);
             transform: scale(1.25);
             opacity: 0;
             z-index: -2; // behind chips
