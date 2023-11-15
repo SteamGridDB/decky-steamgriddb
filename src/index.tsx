@@ -39,7 +39,7 @@ export default definePlugin((serverApi: ServerAPI) => {
     }
   });
 
-  getSetting('capsule_glow_amount', 1).then((amount) => {
+  getSetting('capsule_glow_amount', 100).then((amount) => {
     addCapsuleGlowPatch(parseInt(amount, 10));
   });
 

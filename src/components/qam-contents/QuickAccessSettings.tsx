@@ -86,7 +86,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
     (async () => {
       setUseCount(await get('plugin_use_count', 0));
       setSquares(await get('squares', false));
-      setCapsuleGlowAmount(await get('capsule_glow_amount', 1));
+      setCapsuleGlowAmount(await get('capsule_glow_amount', 100));
     })();
   }, [get]);
 
