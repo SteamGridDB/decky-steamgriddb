@@ -19,7 +19,6 @@
   "LABEL_SQUARE_CAPSULES_DESC": "세로 대신 정사각형 캡슐을 사용합니다. 정사각형 필터가 자동으로 선택됩니다.",
   "LABEL_CAPSULE_GLOW": "캡슐 강조 밝기",
   "LABEL_CAPSULE_GLOW_DESC": "라이브러리의 캡슐 강조표시의 밝기를 조절합니다",
-  "LABEL_CAPSULE_GLOW_OFF": "꺼짐",
   "LABEL_SETTINGS_ASSET_TABS": "애셋 탭 설정",
   "LABEL_TRANSLATION_CREDIT_TITLE": "한국어 번역가",
   "LABEL_MORE_SGDB_TITLE": "SteamGridDB 추가 링크",
