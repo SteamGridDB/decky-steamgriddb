@@ -170,7 +170,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               notchLabels={[
                 {
                   notchIndex: 0,
-                  label: t('LABEL_CAPSULE_GLOW_OFF', 'Off'),
+                  label: t('LABEL_CAPSULE_GLOW_OFF', 'None'),
                 },
               ]}
               notchTicksVisible={false}
