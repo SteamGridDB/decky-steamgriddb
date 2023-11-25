@@ -4,7 +4,7 @@
   "flags": ["debug"],
   "publish": {
     "tags": ["artwork", "sgdb"],
-    "description": "Custom library art for Steam apps and non-Steam shortcuts from SteamGridDB or your local files.",
+    "description": "Personalize your Steam library art with from our vast collection of user submitted images! You can also apply images from your local files, adjust logo size and positioning, turn all your capsules into squares, and more!",
     "image": "https://raw.githubusercontent.com/SteamGridDB/decky-steamgriddb/main/thumb.png"
   }
 }
