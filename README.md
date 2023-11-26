@@ -20,7 +20,7 @@ Easily browse and manage Steam artwork from SteamGridDB or your local files from
 - Logo positioner.
 
 ## Installation
-1. Install [Decky Loader](https://deckbrew.xyz/en/user-guide/install)
+1. Install [Decky Loader](https://wiki.deckbrew.xyz/en/user-guide/install)
 2. Open the Quick Access menu
 3. Open the Plugins Browser <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/store-light.svg">
