@@ -195,7 +195,7 @@ const LANGS = [
     'vn',
   ],
   [
-    'Chinese (Simplified)',
+    'Steam China (Simplified Chinese)',
     '简体中文',
     'sc_schinese',
     'zh-XC',
