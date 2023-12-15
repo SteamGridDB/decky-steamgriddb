@@ -99,7 +99,7 @@ const OfficialAssetsModal: FC<{
     gameId: number;
     id: string;
     metadata: {
-      clienticon?:string | null;
+      clienticon?: string | null;
       header_image: string | null;
       library_capsule: string | null;
       library_hero: string | null;
@@ -193,6 +193,21 @@ const OfficialAssetsModal: FC<{
             return `https://cdn.cloudflare.steamstatic.com/steam/apps/${data[0].id}/logo_${SteamLang(newLang, 'webapi', 'api')}.png?t=${info.store_asset_mtime}`;
           }}
           langType="webapi"
+        />
+      )}
+
+      {(assetType === 'icon' && info.clienticon) && (
+        <SteamModalImageSection
+          closeModal={closeModal}
+          onAssetChange={onAssetChange}
+          assetType={assetType}
+          languages={['English']}
+          urlHandler={() => `https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${data[0].id}/${info.clienticon}.ico`}
+          langType="english"
+          assetProps={{
+            width: 32,
+            height: 32,
+          }}
         />
       )}
     </ModalRoot>
