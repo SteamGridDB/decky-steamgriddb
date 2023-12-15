@@ -75,6 +75,7 @@ const defaultAssetMap = {
   grid_l: 'header_image',
   hero: 'library_hero',
   logo: 'library_logo',
+  icon: 'clienticon',
 };
 
 const Toolbar = forwardRef(({
