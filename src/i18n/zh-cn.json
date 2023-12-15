@@ -51,6 +51,7 @@
   "LABEL_HUMOR": "幽默",
   "LABEL_EPILEPSY": "癫痫",
   "ACTION_OPEN_FILTER": "筛选",
+  "ACTION_OPEN_OFFICIAL_ASSETS": "官方{assetType}",
   "ACTION_ASSET_APPLY": "应用 {assetType}",
   "MSG_GAME_SELECTED": "已选择的 {gameName}",
   "MSG_ASSETS_FILTERED": "某些内容可能由于筛选而被隐藏",
