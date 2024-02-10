@@ -56,11 +56,11 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Română** | Munt |
 | **Suomi** | Jage |
 | **Svenska** | Moneyman Dan, Super |
-| **Türkçe** | Bilgehan Ceviz |
+| **Türkçe** | Bilgehan Ceviz, Sib | Twig |
 | **Ελληνικά** | Emenesu |
 | **Русский** | fycher, LostHikking |
 | **Українська** | Veydzher |
 | **한국어** | yor42 |
 | **日本語** | Nes |
 | **正體中文** | mingyc |
-| **简体中文** | zhzy0077 |
+| **简体中文** | zhzy0077, XHXIAIEIN, simon3000 |

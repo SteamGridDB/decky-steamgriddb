@@ -23,7 +23,7 @@ import * as zhTw from '../i18n/zh-tw.json';
 const simplifiedChinese = {
   name: '简体中文',
   strings: zhCn,
-  credit: ['zhzy0077'],
+  credit: ['zhzy0077', 'XHXIAIEIN', 'simon3000'],
 };
 
 export const LANGS = {
@@ -115,7 +115,7 @@ export const LANGS = {
   tr: {
     name: 'Türkçe',
     strings: tr,
-    credit: ['Bilgehan Ceviz'],
+    credit: ['Bilgehan Ceviz', 'Sib | Twig'],
   },
   uk: {
     name: 'Українська',
