@@ -95,7 +95,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
   #images-container {
     display: grid;
     padding-top: 1em;
-    margin-bottom: 1em;
+    padding-bottom: var(--gamepadui-current-footer-height);
     justify-content: space-evenly;
     grid-auto-flow: dense;
     row-gap: 1em;
@@ -103,7 +103,6 @@ $topBarHeight: var(--basicui-header-height, 40px);
     grid-template-columns: repeat(auto-fill, minmax(min(var(--asset-size), 100%), var(--asset-size)));
     @include asset;
   }
-
 
   #local-images-container {
     display: grid;
