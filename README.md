@@ -1,7 +1,7 @@
 <div align="center">
 <img src="thumb.png">
 
-[![Crowdin](https://badges.crowdin.net/decky-steamgriddb/localized.svg)](https://crowdin.com/project/decky-steamgriddb) [![Discord](https://img.shields.io/discord/488621078302949377?color=5865F2\&label=discord)](https://discord.gg/bnSVJrz) [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-informational)](LICENSE)
+[![Crowdin](https://badges.crowdin.net/decky-steamgriddb/localized.svg)](https://crowdin.com/project/decky-steamgriddb) [![Discord](https://img.shields.io/discord/488621078302949377?color=5865F2\&label=discord)](https://discord.gg/bnSVJrz) [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-informational)](LICENSE) ![Decky Loader](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fplugins.deckbrew.xyz%2Fplugins&query=%24%5B%3F(%40.name%20%3D%3D%20'SteamGridDB')%5D.downloads&suffix=%20installs&label=decky&color=3ea6a3)
 </div>
 
 <h1 align="center">SteamGridDB plugin for Decky Loader</h1>
