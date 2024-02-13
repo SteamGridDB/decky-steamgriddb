@@ -42,6 +42,7 @@
   "LABEL_FILTER_TAG_EPILEPSY": "Epilepsi",
   "LABEL_FILTER_TAG_UNTAGGED": "Otaggade",
   "ACTION_FILTER_RESET": "Återställ filter",
+  "LABEL_BEGGING_MODAL_TITLE": "Tack för att du använder SteamGridDB!",
   "ACTION_HIDE_POS_GUIDES": "Dölj Guider",
   "ACTION_SHOW_OUTLINE": "Visa Guider",
   "ACTION_ADJUST_POS_SIZE": "Justera storleken",
