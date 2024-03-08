@@ -30,12 +30,12 @@ export const LANGS = {
   cs: {
     name: 'Čeština',
     strings: cs,
-    credit: ['zenobit'],
+    credit: ['zenobit', 'theczechczech'],
   },
   de: {
     name: 'Deutsch',
     strings: de,
-    credit: ['Kurikuo', 'benutzer_artur7', 'Anja', 'FL0W', 'Remirax'],
+    credit: ['Kurikuo', 'benutzer_artur7', 'Anja', 'FL0W', 'Remirax', 'LittleFreak'],
   },
   fi: {
     name: 'Suomi',
