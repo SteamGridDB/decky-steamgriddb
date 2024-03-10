@@ -43,6 +43,8 @@
   "LABEL_FILTER_TAG_EPILEPSY": "Epilepsja",
   "LABEL_FILTER_TAG_UNTAGGED": "Bez Tagów",
   "ACTION_FILTER_RESET": "Resetuj Filtry",
+  "LABEL_BEGGING_MODAL_TITLE": "Dziękujemy za korzystanie z SteamGridDB!",
+  "LABEL_BEGGING_MODAL_DESC": "Rozważ darowiznę, aby pomóc w obsłudze technicznej i kosztach serwera!",
   "ACTION_HIDE_POS_GUIDES": "Ukryj Prowadnice",
   "ACTION_SHOW_OUTLINE": "Pokaż Prowadnice",
   "ACTION_ADJUST_POS_SIZE": "Dostosuj Rozmiar",
