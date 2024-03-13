@@ -85,7 +85,7 @@ export const LANGS = {
   pl: {
     name: 'Polski',
     strings: pl,
-    credit: ['DRS', 'Michał Kwiatkowski'],
+    credit: ['DRS', 'Michał Kwiatkowski', 'MAX0R'],
   },
   pt: {
     name: 'Português',

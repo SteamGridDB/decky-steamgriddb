@@ -50,7 +50,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Français** | Michael Jean |
 | **Italiano** | SpagottoB37, RodoMa92 |
 | **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde |
-| **Polski** | DRS, Michał Kwiatkowski |
+| **Polski** | DRS, Michał Kwiatkowski, MAX0R |
 | **Português-Brasil** | Oregano, Thomas Eric |
 | **Português** | Kokasgui, Ev1lbl0w |
 | **Română** | Munt |
