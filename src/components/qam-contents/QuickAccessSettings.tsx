@@ -12,6 +12,7 @@ import {
   DialogBodyText,
   ToggleField,
   SliderField,
+  FileSelectionType,
 } from 'decky-frontend-lib';
 import { useState, useEffect, VFC, useCallback } from 'react';
 import {
@@ -26,7 +27,6 @@ import {
 
 import BoopIcon from '../Icons/BoopIcon';
 import t, { getCredits } from '../../utils/i18n';
-import openFilePicker from '../../utils/openFilePicker';
 import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 import { addSquareHomePatch, removeSquareHomePatch } from '../../patches/squareHomePatch';
@@ -123,10 +123,15 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               1091500
               </DialogButton>
               <DialogButton onClick={() => {
-                openFilePicker('/home/manjaro', true, undefined, {}, serverApi);
+                serverApi.openFilePickerV2(
+                  FileSelectionType.FOLDER,
+                  '/',
+                  false,
+                  true
+                );
               }}
               >
-              file picker
+              directory picker
               </DialogButton>
             </Field>
           </PanelSectionRow>

@@ -3,7 +3,6 @@ import {
   DialogButton,
   Menu,
   MenuItem,
-  findModuleChild,
   DialogCheckbox,
   DialogCheckboxProps,
   Marquee,
@@ -12,15 +11,6 @@ import { FC, useState, useEffect, useCallback } from 'react';
 
 import Chevron from '../components/Chevron';
 import t from '../utils/i18n';
-
-const dropDownControlButtonClass = findModuleChild((m) => {
-  if (typeof m !== 'object') return undefined;
-  for (const prop in m) {
-    if (m[prop]?.toString()?.includes('gamepaddropdown_DropDownControlButton')) {
-      return m[prop];
-    }
-  }
-});
 
 const DropdownMultiselectItem: FC<{
   value: any,
@@ -91,7 +81,6 @@ const DropdownMultiselect: FC<{
         alignItems: 'center',
         maxWidth: '100%',
       }}
-      className={dropDownControlButtonClass}
       onClick={(evt) => {
         evt.preventDefault();
         showContextMenu(

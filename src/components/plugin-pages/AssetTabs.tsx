@@ -64,7 +64,6 @@ const AssetTabs: VFC<{
 
   return (
     <Tabs
-      title="SteamGridDB"
       autoFocusContents
       activeTab={currentTab}
       onShowTab={onShowTab}
