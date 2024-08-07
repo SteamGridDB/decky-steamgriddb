@@ -1,5 +1,5 @@
 import { FC, CSSProperties } from 'react';
-import { findModuleChild } from 'decky-frontend-lib';
+import { findModuleChild } from '@decky/ui';
 
 export enum FooterGlyphType { Knockout, Light, Dark }
 

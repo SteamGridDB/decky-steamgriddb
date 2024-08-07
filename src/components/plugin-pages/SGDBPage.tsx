@@ -1,4 +1,4 @@
-import { useParams } from 'decky-frontend-lib';
+import { useParams } from '@decky/ui';
 import { useEffect, useState, VFC, useCallback } from 'react';
 
 import { AssetSearchContext } from '../../hooks/useAssetSearch';

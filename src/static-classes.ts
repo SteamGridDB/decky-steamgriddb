@@ -1,4 +1,4 @@
-import { findModule } from 'decky-frontend-lib';
+import { findModule } from '@decky/ui';
 
 export const libraryAssetImageClasses = findModule((mod) => typeof mod === 'object' && mod?.PortraitImage);
 export const gamepadLibraryClasses = findModule((mod) => typeof mod === 'object' && mod?.GamepadLibrary);

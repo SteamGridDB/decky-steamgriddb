@@ -205,7 +205,7 @@ const LANGS = [
 /**
  * English Name, Native Name, API language code, Web API language code
  */
-const TYPES = {
+const TYPES: { [key: string]: number } = {
   english: 0,
   native: 1,
   api: 2,

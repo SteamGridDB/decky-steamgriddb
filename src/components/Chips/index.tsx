@@ -5,7 +5,7 @@ import {
   useRef,
   useCallback,
 } from 'react';
-import { joinClassNames, findSP } from 'decky-frontend-lib';
+import { joinClassNames, findSP } from '@decky/ui';
 import debounce from 'just-debounce';
 
 const Chips: FC = ({ children }) => {

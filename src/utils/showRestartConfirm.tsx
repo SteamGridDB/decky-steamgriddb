@@ -1,4 +1,4 @@
-import { showModal, ConfirmModal } from 'decky-frontend-lib';
+import { showModal, ConfirmModal } from '@decky/ui';
 
 import t from './i18n';
 

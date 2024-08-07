@@ -6,7 +6,7 @@ import {
   appDetailsHeaderClasses,
   LogoPinPositions,
   LogoPosition,
-} from 'decky-frontend-lib';
+} from '@decky/ui';
 import { FC, useState, useEffect, useRef } from 'react';
 
 import LibraryImage from '../components/asset/LibraryImage';

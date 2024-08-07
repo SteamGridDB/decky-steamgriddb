@@ -1,13 +1,12 @@
 import {
-  ServerAPI,
   afterPatch,
   findInReactTree,
   findSP,
   replacePatch,
   callOriginal,
-  RoutePatch,
   wrapReactType,
-} from 'decky-frontend-lib';
+} from '@decky/ui';
+import { RoutePatch, routerHook } from '@decky/api';
 
 import { libraryAssetImageClasses, appportraitClasses, homeCarouselClasses } from '../static-classes';
 
@@ -15,7 +14,7 @@ import { rerenderAfterPatchUpdate } from './patchUtils';
 
 let patch: RoutePatch | undefined;
 
-export const addSquareHomePatch = (serverApi: ServerAPI, mounting = false) => {
+export const addSquareHomePatch = (mounting = false) => {
   // inject css if it isn't there already
   if (!findSP().window.document.getElementById('sgdb-square-capsules-home')) {
     const styleEl = findSP().window.document.createElement('style');
@@ -29,7 +28,7 @@ export const addSquareHomePatch = (serverApi: ServerAPI, mounting = false) => {
     findSP().window.document.head.append(styleEl);
   }
 
-  patch = serverApi.routerHook.addPatch('/library/home', (props) => {
+  patch = routerHook.addPatch('/library/home', (props) => {
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {
       let cache2: any = null;
 
@@ -88,9 +87,9 @@ export const addSquareHomePatch = (serverApi: ServerAPI, mounting = false) => {
   if (!mounting) rerenderAfterPatchUpdate();
 };
 
-export function removeSquareHomePatch(serverApi: ServerAPI, unmounting = false): void {
+export function removeSquareHomePatch(unmounting = false): void {
   if (patch) {
-    serverApi.routerHook.removePatch('/library/home', patch);
+    routerHook.removePatch('/library/home', patch);
     patch = undefined;
 
     if (!unmounting) rerenderAfterPatchUpdate();

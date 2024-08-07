@@ -1,4 +1,5 @@
 {
+  "api_version": 1,
   "name": "SteamGridDB",
   "author": "SteamGridDB",
   "flags": ["debug"],

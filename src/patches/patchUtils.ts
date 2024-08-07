@@ -1,4 +1,4 @@
-import { Navigation } from 'decky-frontend-lib';
+import { Navigation } from '@decky/ui';
 
 export function rerenderAfterPatchUpdate(): void {
   if (window.location.pathname.startsWith('/routes/library/home')) {

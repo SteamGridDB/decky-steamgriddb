@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import reactStringReplace from 'react-string-replace';
-import { Marquee } from 'decky-frontend-lib';
+import { Marquee } from '@decky/ui';
 
 import t from '../utils/i18n';
 

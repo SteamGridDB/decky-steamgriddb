@@ -2,7 +2,6 @@ import {
   PanelSection,
   PanelSectionRow,
   Navigation,
-  ServerAPI,
   Field,
   showModal,
   ModalRoot,
@@ -12,8 +11,8 @@ import {
   DialogBodyText,
   ToggleField,
   SliderField,
-  FileSelectionType,
-} from 'decky-frontend-lib';
+} from '@decky/ui';
+import { FileSelectionType, openFilePicker } from '@decky/api';
 import { useState, useEffect, VFC, useCallback } from 'react';
 import {
   SiPatreon,
@@ -44,17 +43,17 @@ const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
   return w === h;
 }).map((x) => x.value);
 
-const toggleSquarePatches = (enabled: boolean, serverApi: ServerAPI): void => {
+const toggleSquarePatches = (enabled: boolean): void => {
   if (enabled) {
-    addSquareHomePatch(serverApi);
-    addSquareLibraryPatch(serverApi);
+    addSquareHomePatch();
+    addSquareLibraryPatch();
   } else {
-    removeSquareHomePatch(serverApi);
-    removeSquareLibraryPatch(serverApi);
+    removeSquareHomePatch();
+    removeSquareLibraryPatch();
   }
 };
 
-const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
+const QuickAccessSettings: VFC = () => {
   const { get, set } = useSettings();
   const [useCount, setUseCount] = useState<number | null>(null);
   const [squares, setSquares] = useState<boolean>(false);
@@ -64,7 +63,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const handleSquareToggle = useCallback(async (checked) => {
     set('squares', checked, true);
     setSquares(checked);
-    toggleSquarePatches(checked, serverApi);
+    toggleSquarePatches(checked);
     const currentFilters = await get('filters_grid_p', {});
     if (checked) {
       // only enable square
@@ -74,7 +73,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
       currentFilters['dimensions'] = DIMENSIONS.grid_p.default;
     }
     set('filters_grid_p', currentFilters, true);
-  }, [get, set, serverApi]);
+  }, [get, set]);
 
   const handleCapsuleGlowChange = useCallback(async (val: number) => {
     set('capsule_glow_amount', val, true);
@@ -123,7 +122,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               1091500
               </DialogButton>
               <DialogButton onClick={() => {
-                serverApi.openFilePickerV2(
+                openFilePicker(
                   FileSelectionType.FOLDER,
                   '/',
                   false,
@@ -194,7 +193,7 @@ const QuickAccessSettings: VFC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
               onClick={() => {
                 showModal((
                   <ModalRoot>
-                    <SettingsProvider serverApi={serverApi}>
+                    <SettingsProvider>
                       <DialogHeader>
                         {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
                       </DialogHeader>

@@ -6,7 +6,7 @@ import {
   useContext,
   useMemo,
 } from 'react';
-import { ServerAPI } from 'decky-frontend-lib';
+import { call } from '@decky/api';
 import debounce from 'just-debounce';
 
 import log from '../utils/log';
@@ -19,13 +19,13 @@ type SettingsContextType = {
   settings: any;
 };
 
-export const SettingsProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, children }) => {
+export const SettingsProvider: FC = ({ children }) => {
   const [setting, setSetting] = useState<{key: any, value: any}>();
 
-  const save = useMemo(() => async (setting: any) => {
+  const save = useMemo(() => async (setting: {key: any, value: any}) => {
     log('writing setting', setting);
-    await serverApi.callPluginMethod('set_setting', setting);
-  }, [serverApi]);
+    await call('set_setting', setting.key, setting.value);
+  }, []);
 
   const saveDb = useMemo(() => debounce(async (key, value) => {
     log('set setting state', key, value);
@@ -40,8 +40,8 @@ export const SettingsProvider: FC<{ serverApi: ServerAPI }> = ({ serverApi, chil
   }, [saveDb]) as SettingsContextType['set'];
 
   const get: SettingsContextType['get'] = useMemo(() => async (key, fallback) => {
-    return (await serverApi.callPluginMethod('get_setting', { key, default: fallback })).result;
-  }, [serverApi]);
+    return await call('get_setting', key, fallback);
+  }, []);
 
   useEffect(() => {
     if (setting) {

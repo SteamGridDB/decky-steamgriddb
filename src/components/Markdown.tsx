@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Focusable, FocusableProps, Navigation } from 'decky-frontend-lib';
+import { Focusable, FocusableProps, Navigation } from '@decky/ui';
 import { FC } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { ReactMarkdownProps } from 'react-markdown/lib/complex-types';
 
 import t from '../utils/i18n';
 import showQrModal from '../utils/showQrModal';
@@ -25,7 +26,7 @@ const Markdown: FC<{
         unwrapDisallowed
         components={{
           // Make links usable
-          a: ({ node, children, ...linkProps }) => (
+          a: ({ node, children, ...linkProps }: JSX.IntrinsicElements['a'] & ReactMarkdownProps) => (
             <Focusable
               onActivate={() => {
                 if (linkProps.href) {

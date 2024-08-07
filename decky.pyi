@@ -12,9 +12,11 @@ Some basic migration helpers are available: `migrate_any`, `migrate_settings`, `
 A logging facility `logger` is available which writes to the recommended location.
 """
 
-__version__ = '0.1.0'
+__version__ = '1.0.0'
 
 import logging
+
+from typing import Any
 
 """
 Constants
@@ -171,3 +173,12 @@ Logging
 
 logger: logging.Logger
 """The main plugin logger writing to `DECKY_PLUGIN_LOG`."""
+
+"""
+Event handling
+"""
+# TODO better docstring im lazy
+async def emit(event: str, *args: Any) -> None:
+    """
+    Send an event to the frontend.
+    """

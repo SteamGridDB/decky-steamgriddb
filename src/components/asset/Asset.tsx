@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { Focusable, FocusableProps, FooterLegendProps, joinClassNames } from 'decky-frontend-lib';
+import { Focusable, FocusableProps, FooterLegendProps, joinClassNames } from '@decky/ui';
 
 import t from '../../utils/i18n';
 import Spinner from '../../../assets/spinner.svg';

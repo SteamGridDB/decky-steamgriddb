@@ -1,4 +1,4 @@
-import { findModuleChild } from 'decky-frontend-lib';
+import { findModuleChild } from '@decky/ui';
 import { FC, HTMLAttributes } from 'react';
 
 const appGridFilterHeaderClass = findModuleChild((m) => {

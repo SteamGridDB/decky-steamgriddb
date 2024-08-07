@@ -2,6 +2,7 @@
   "name": "decky-steamgriddb",
   "version": "1.4.0",
   "description": "Decky plugin to manage Steam artwork from within gaming mode.",
+  "type": "module",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c --environment ROLLUP_ENV:production",
     "watch": "rollup -c -w --environment ROLLUP_ENV:development",
@@ -51,38 +52,42 @@
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
-    "@rollup/plugin-commonjs": "^21.1.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-typescript": "^8.5.0",
+    "@decky/rollup": "^1.0.1",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.7",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "16.14.0",
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "decky-frontend-lib": "^3.25.0",
-    "eslint": "^8.53.0",
+    "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "rollup": "^2.79.1",
+    "rollup": "^4.20.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-external-globals": "^0.11.0",
     "rollup-plugin-import-assets": "^1.1.1",
-    "rollup-plugin-polyfill-node": "^0.11.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-scss": "^3.0.0",
-    "sass": "^1.69.5",
+    "sass": "^1.77.8",
     "shx": "^0.3.4",
     "tslib": "^2.6.2",
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@decky/api": "^1.1.2",
+    "@decky/ui": "^4.7.0",
     "async-wait-until": "^2.0.12",
     "just-debounce": "^1.1.0",
     "qrcode.react": "^3.1.0",
     "react-fast-compare": "^3.2.2",
-    "react-icons": "^4.11.0",
+    "react-icons": "^4.12.0",
     "react-markdown": "^8.0.7",
     "react-string-replace": "^1.1.1",
     "remark-gfm": "^3.0.1"
@@ -91,8 +96,7 @@
     "peerDependencyRules": {
       "ignoreMissing": [
         "react",
-        "react-dom",
-        "decky-frontend-lib"
+        "react-dom"
       ]
     }
   }

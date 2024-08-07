@@ -10,7 +10,7 @@ import {
   IconsModule,
   Spinner,
   Marquee,
-} from 'decky-frontend-lib';
+} from '@decky/ui';
 import {
   FC,
   SVGAttributes,
@@ -18,9 +18,11 @@ import {
   useState,
   useEffect,
   useRef,
+  VFC,
 } from 'react';
 import debounce from 'just-debounce';
 import { SiSteam, SiEpicgames, SiOrigin, SiUbisoft, SiBattledotnet } from 'react-icons/si';
+import { IconType } from 'react-icons';
 
 import t from '../utils/i18n';
 import FlashpointIcon from '../components/Icons/FlashpointIcon';
@@ -32,7 +34,7 @@ const SearchIcon = Object.values(IconsModule).find((mod: any) => mod?.toString()
 
 const utcYear = (date: number) => new Date(date * 1000).toLocaleString('en-US', { year: 'numeric', timeZone: 'UTC' });
 
-const platformTypeMap = {
+const platformTypeMap: { [key: string]: IconType | VFC } = {
   steam: SiSteam,
   egs: SiEpicgames,
   origin: SiOrigin,

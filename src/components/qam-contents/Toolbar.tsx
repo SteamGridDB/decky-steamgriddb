@@ -1,4 +1,4 @@
-import { Focusable, SliderField, DialogButton, SliderFieldProps } from 'decky-frontend-lib';
+import { Focusable, SliderField, DialogButton, SliderFieldProps } from '@decky/ui';
 import {
   useState,
   useImperativeHandle,

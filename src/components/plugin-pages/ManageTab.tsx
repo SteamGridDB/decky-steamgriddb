@@ -1,11 +1,12 @@
 import { FC, useState, useEffect, useRef } from 'react';
+import { call } from '@decky/api';
 import {
   DialogButton,
   Focusable,
   joinClassNames,
   SteamAppOverview,
   showModal,
-} from 'decky-frontend-lib';
+} from '@decky/ui';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
 
 import useSGDB from '../../hooks/useSGDB';
@@ -22,7 +23,7 @@ const AssetBlock: FC<{
   browseStartPath: string,
   editable?: boolean,
 }> = ({ app, browseStartPath, assetType, editable = true }) => {
-  const { clearAsset, changeAsset, serverApi, changeAssetFromUrl } = useSGDB();
+  const { clearAsset, changeAsset, changeAssetFromUrl } = useSGDB();
   const [overview, setOverview] = useState<SteamAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
   const refreshing = useRef(false);
@@ -54,7 +55,7 @@ const AssetBlock: FC<{
   const handleBrowse = async () => {
     const path = await openFilePicker(browseStartPath, true, undefined, {
       validFileExtensions: ['png','jpg','jpeg','gif','webp','apng','tiff','tga'],
-    }, serverApi);
+    });
     await changeAssetFromUrl(path.path as string, assetType, true);
     await refreshOverview();
   };
@@ -126,7 +127,7 @@ const AssetBlock: FC<{
 };
 
 const LocalTab: FC = () => {
-  const { appId, serverApi, appOverview } = useSGDB();
+  const { appId, appOverview } = useSGDB();
   const [startPath, setStartPath] = useState('/');
   const [overview, setOverview] = useState<SteamAppOverview>();
 
@@ -149,10 +150,10 @@ const LocalTab: FC = () => {
       }
 
       setOverview(appoverview);
-      const path = (await serverApi.callPluginMethod('get_local_start', {})).result as string;
+      const path = await call('get_local_start') as string;
       setStartPath(path);
     })();
-  }, [appId, appOverview, serverApi]);
+  }, [appId, appOverview]);
 
   if (!overview || !appId) return null;
 

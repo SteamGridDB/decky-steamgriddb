@@ -1,4 +1,4 @@
-import { ServerAPI, FileSelectionType } from 'decky-frontend-lib';
+import { FileSelectionType, openFilePicker } from '@decky/api';
 
 export type FilePickerFilter = RegExp | ((file: File) => boolean) | undefined;
 
@@ -9,13 +9,10 @@ export default (
   filePickerSettings?: {
     validFileExtensions?: string[];
     defaultHidden?: boolean;
-  },
-  serverApi?: ServerAPI
+  }
 ): Promise<{ path: string; realpath: string }> => {
   return new Promise((resolve, reject) => {
-    if (!serverApi) return reject('No server API');
-
-    serverApi.openFilePickerV2(
+    openFilePicker(
       FileSelectionType.FILE,
       startPath,
       includeFiles,

@@ -1,4 +1,4 @@
-import { findSP } from 'decky-frontend-lib';
+import { findSP } from '@decky/ui';
 
 import { appportraitClasses, appgridClasses } from '../static-classes';
 

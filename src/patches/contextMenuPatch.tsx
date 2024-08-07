@@ -6,7 +6,7 @@ import {
   MenuItem,
   Navigation,
   Patch,
-} from 'decky-frontend-lib';
+} from '@decky/ui';
 
 import t from '../utils/i18n';
 import log from '../utils/log';

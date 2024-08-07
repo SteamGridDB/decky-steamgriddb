@@ -1,6 +1,6 @@
 
 import { memo, useEffect, useState, VFC } from 'react';
-import { Tabs, TabsProps, showModal } from 'decky-frontend-lib';
+import { Tabs, TabsProps, showModal } from '@decky/ui';
 
 import t from '../../utils/i18n';
 import useAssetSearch from '../../hooks/useAssetSearch';
@@ -77,7 +77,7 @@ const AssetTabs: VFC<{
         }
         return {
           id: type,
-          title: tabStrs[type],
+          title: tabStrs[type as SGDBAssetType],
           content: <AssetTab assetType={type as SGDBAssetType} />,
           footer: {
             onSecondaryActionDescription: t('ACTION_OPEN_FILTER', 'Filter'),

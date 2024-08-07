@@ -1,4 +1,4 @@
-import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Navigation } from 'decky-frontend-lib';
+import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Navigation } from '@decky/ui';
 import { FC, useState } from 'react';
 
 import Asset, { AssetProps } from '../components/asset/Asset';

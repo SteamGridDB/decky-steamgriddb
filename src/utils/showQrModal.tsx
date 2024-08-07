@@ -1,4 +1,4 @@
-import { showModal, ModalRoot } from 'decky-frontend-lib';
+import { showModal, ModalRoot } from '@decky/ui';
 import { QRCodeSVG } from 'qrcode.react';
 
 const showQrModal = (url: string) => {

@@ -1,4 +1,4 @@
-import { AppDetails } from 'decky-frontend-lib';
+import { AppDetails } from '@decky/ui';
 
 /**
  * Tries to retrieve the app details from Steam.

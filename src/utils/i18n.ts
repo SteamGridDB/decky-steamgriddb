@@ -26,7 +26,15 @@ const simplifiedChinese = {
   credit: ['zhzy0077', 'XHXIAIEIN', 'simon3000'],
 };
 
-export const LANGS = {
+export const LANGS: {
+  [key: string]: {
+    name: string,
+    strings: {
+      [key: string]: string
+    },
+    credit: string[]
+  }
+} = {
   cs: {
     name: 'Čeština',
     strings: cs,
