@@ -5,7 +5,7 @@
   "flags": ["debug"],
   "publish": {
     "tags": ["artwork", "sgdb"],
-    "description": "Personalize your Steam library with art from our vast collection of user submitted images! You can also apply images from your local files, adjust logo size and positioning, turn all your capsules into squares, and more!",
+    "description": "Personalize your library using art from our vast collection of user submitted images! You can also use your local files, adjust logo size and positions, turn all your capsules into squares, and more!",
     "image": "https://raw.githubusercontent.com/SteamGridDB/decky-steamgriddb/main/thumb.png"
   }
 }
