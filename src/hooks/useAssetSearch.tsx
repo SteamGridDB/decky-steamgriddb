@@ -23,7 +23,7 @@ import compareFilterWithDefaults from '../utils/compareFilterWithDefaults';
 export type AssetSearchContextType = {
   loading: boolean;
   assets: any[];
-  searchAndSetAssets: (assetType: SGDBAssetType, filters: any, onSuccess?: () => void) => Promise<void>;
+  searchAndSetAssets: (assetType: SGDBAssetType, page: number, filters: any, onSuccess?: () => void) => Promise<void>;
   loadMore: (assetType: SGDBAssetType, onSuccess?: (res: any[]) => void) => Promise<void>;
   externalSgdbData: any;
   openFilters: (assetType: SGDBAssetType) => void;
@@ -31,6 +31,7 @@ export type AssetSearchContextType = {
   selectedGame: any;
   isFilterActive: boolean;
   moreLoading: boolean;
+  endReached: boolean;
 }
 
 export const SearchContext = createContext({});
@@ -46,8 +47,9 @@ export const AssetSearchContext: FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [selectedGame, setSelectedGame] = useState<any>();
   const [externalSgdbData, setExternalSgdbData] = useState<any>(null);
-  const [page, setPage] = useState(0);
   const [moreLoading, setMoreLoading] = useState(false);
+  const [endReached, setEndReached] = useState(false);
+  const [page, setPage] = useState(0);
 
   const showGameSelection = useCallback(() => {
     showModal(
@@ -62,7 +64,7 @@ export const AssetSearchContext: FC = ({ children }) => {
     );
   }, [appId, appOverview.display_name, searchGames, set]);
 
-  const searchAndSetAssets = useMemo(() => debounce(async (assetType, filters, onSuccess) => {
+  const searchAndSetAssets = useMemo(() => debounce(async (assetType, page, filters, onSuccess) => {
     if (appOverview?.BIsModOrShortcut() && !selectedGame) return;
     if (abortCont) abortCont?.abort();
     abortCont = new AbortController();
@@ -72,11 +74,14 @@ export const AssetSearchContext: FC = ({ children }) => {
       setIsFilterActive(compareFilterWithDefaults(assetType, filters));
       const resp = await searchAssets(assetType, {
         gameId: selectedGame?.id,
+        page,
         filters,
         signal: abortCont.signal,
       });
       log('search resp', assetType, resp);
       setAssets(resp);
+      setEndReached(false);
+      setPage(page + 1); // set to next page so correct page is requested when loadMore() is used
       onSuccess?.();
     } catch (err: any) {
       if (err.name === 'AbortError') {
@@ -106,20 +111,21 @@ export const AssetSearchContext: FC = ({ children }) => {
     try {
       setMoreLoading(true);
       const resp = await searchAssets(assetType, {
-        page: page + 1,
+        page,
         gameId: selectedGame?.id,
         filters: currentFilters,
         signal: abortCont.signal,
       });
       log('search load more resp', resp);
       setAssets((assets) => [...assets, ...resp]);
-      onSuccess?.(resp);
-      setPage((x) => x + 1);
-
-      // stop trying to load more if there are no more results
-      if (resp.length !== 0) {
-        setMoreLoading(false);
+      setMoreLoading(false);
+      if (resp.length > 0) {
+        setPage((x) => x + 1);
       }
+      if (resp.length === 0) {
+        setEndReached(true);
+      }
+      onSuccess?.(resp);
     } catch (err: any) {
       if (err.name === 'AbortError') {
         log('Load more aborted');
@@ -138,7 +144,7 @@ export const AssetSearchContext: FC = ({ children }) => {
     const gameChanged = game?.id !== selectedGame?.id;
     if (filtersChanged) {
       setLoading(true);
-      searchAndSetAssets(assetType, filters, () => {
+      searchAndSetAssets(assetType, 0, filters, () => {
         setLoading(false);
       });
       set(`filters_${assetType}`, filters, true);
@@ -151,7 +157,6 @@ export const AssetSearchContext: FC = ({ children }) => {
     }
     if (filtersChanged || gameChanged) {
       log('filtersChanged');
-      setPage(0);
       setMoreLoading(false);
     }
     setIsFilterActive(compareFilterWithDefaults(assetType, filters));
@@ -212,7 +217,8 @@ export const AssetSearchContext: FC = ({ children }) => {
     openFilters,
     isFilterActive,
     moreLoading,
-  }), [loading, assets, searchAndSetAssets, loadMore, selectedGame, externalSgdbData, openFilters, isFilterActive, moreLoading]);
+    endReached,
+  }), [loading, assets, searchAndSetAssets, loadMore, selectedGame, externalSgdbData, openFilters, isFilterActive, moreLoading, endReached]);
 
   return (
     <SearchContext.Provider value={value}>

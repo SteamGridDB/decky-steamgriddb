@@ -5,7 +5,6 @@ import { useState, VFC, useRef, useEffect, useMemo } from 'react';
 import { useSGDB } from '../../hooks/useSGDB';
 import Asset from '../asset/Asset';
 import t from '../../utils/i18n';
-import log from '../../utils/log';
 import Toolbar, { ToolbarRefType } from '../qam-contents/Toolbar';
 import MenuIcon from '../Icons/MenuIcon';
 import DetailsModal from '../../modals/DetailsModal';
@@ -27,7 +26,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     isFilterActive,
     selectedGame,
     externalSgdbData,
-    moreLoading,
+    endReached,
   } = useAssetSearch();
   const { appOverview, changeAssetFromUrl } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
@@ -69,7 +68,6 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   };
 
   const setAsset = async (assetId: number, url: string) => {
-    log('cliccc');
     if (!downloadingId) {
       try {
         setDownloadingId(assetId);
@@ -110,18 +108,19 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     (async () => {
       setTabLoading(true);
       const filters = await get(`filters_${assetType}`, null);
-      await searchAndSetAssets(assetType, filters, () => {
+      await searchAndSetAssets(assetType, 0, filters, () => {
         setTabLoading(false);
       });
     })();
   }, [searchAndSetAssets, assetType, get]);
 
   useEffect(() => {
-    if (!intersectRef.current || loading) return;
+    if (!intersectRef.current || loading || endReached) return;
 
     const observer = new IntersectionObserver(([entry], observer) => {
-      if (!moreLoading && entry.isIntersecting) {
+      if (entry.isIntersecting) {
         loadMore(assetType, (res) => {
+          // End reached
           if (res.length === 0) {
             observer.disconnect();
           }
@@ -138,7 +137,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     return () => {
       observer.disconnect();
     };
-  }, [assetType, loadMore, loading, moreLoading]);
+  }, [assetType, endReached, loadMore, loading]);
 
   if (!appOverview) return null;
 
