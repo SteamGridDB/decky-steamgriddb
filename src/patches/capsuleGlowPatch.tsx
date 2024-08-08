@@ -11,8 +11,8 @@ export const addCapsuleGlowPatch = (glowAmount: number) => {
     findSP().window.document.head.append(styleEl);
   }
   styleEl.textContent = `
-    .${appportraitClasses.HoversEnabled}:hover + .${appgridClasses.LibraryImageBackgroundGlow},
-    .${appportraitClasses.HoversEnabled}.gpfocuswithin + .${appgridClasses.LibraryImageBackgroundGlow} {
+    .${appportraitClasses.HoversEnabled}:hover > .${appgridClasses.LibraryImageBackgroundGlow},
+    .${appportraitClasses.HoversEnabled}.gpfocuswithin > .${appgridClasses.LibraryImageBackgroundGlow} {
       opacity: ${glowAmount/100} !important;
     }
   `;
