@@ -33,6 +33,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
   const [tabLoading, setTabLoading] = useState(true);
+  const [scrollContainerHeight, setScrollContainerHeight] = useState<string>();
   const loading = useMemo(() => !(!searchLoading && !tabLoading), [searchLoading, tabLoading]);
 
   const toolbarRef = useRef<ToolbarRefType>(null);
@@ -128,6 +129,12 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
       }
     }, { threshold: 0, root: mainContentRef.current?.parentElement?.parentElement });
     observer.observe(intersectRef.current);
+
+    // Hack to work around CSS themes that don't adjust padding of tabbed content when changing the size of the footer.
+    if (mainContentRef.current?.parentElement?.parentElement) {
+      const pb = window.getComputedStyle(mainContentRef.current.parentElement.parentElement).getPropertyValue('padding-bottom');
+      setScrollContainerHeight(pb);
+    }
     return () => {
       observer.disconnect();
     };
@@ -191,7 +198,7 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
               />
             ))}
             {/* Load more if spinner in view */}
-            <div ref={intersectRef} style={{ gridColumn: '1 / -1', height: '5px' }} />
+            <div ref={intersectRef} style={{ gridColumn: '1 / -1', height: '5px', marginBottom: scrollContainerHeight }} />
             {assets.length === 0 && <div style={{ gridColumn: '1 / -1', justifySelf: 'center' }}>{t('Search_NoResults', 'No Results Found.', true)}</div>}
           </>
         )}
