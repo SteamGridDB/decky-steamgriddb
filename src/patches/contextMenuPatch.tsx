@@ -46,8 +46,13 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
 
     if (!patches.inner) {
       patches.inner = afterPatch(component.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
-        const sgdbIdx = nextProps.children.findIndex((x: any) => x?.key === 'sgdb-change-artwork');
-        if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
+        try {
+          const sgdbIdx = nextProps.children.findIndex((x: any) => x?.key === 'sgdb-change-artwork');
+          if (sgdbIdx != -1) nextProps.children.splice(sgdbIdx, 1);
+        } catch (error) {
+          // wrong context menu (probably)
+          return component;
+        }
 
         if (shouldUpdate === true) {
           let updatedAppid: number = appid;
