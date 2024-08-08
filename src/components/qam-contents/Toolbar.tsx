@@ -166,7 +166,7 @@ const Toolbar = forwardRef(({
               {t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
             </DialogButton>
           )}
-          {assetType === 'logo' && (
+          {['logo', 'hero'].includes(assetType) && (
             <DialogButton
               noFocusRing
               onOKActionDescription={t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
