@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 const INPUT_PATH = path.resolve('dist/index.js');
 const OUTPUT_PATH = path.resolve('src/i18n/strings.json');
