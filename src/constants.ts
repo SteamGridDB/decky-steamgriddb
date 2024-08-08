@@ -56,6 +56,13 @@ export const STYLES = {
   },
 };
 
+export const SGDB_MIME_MAP: Record<string, string> = {
+  'image/png': 'PNG',
+  'image/jpeg': 'JPEG',
+  'image/webp': 'WebP',
+  'image/vnd.microsoft.icon': 'ICO',
+};
+
 const allMimes = {
   options: [
     { label: 'PNG', value: 'image/png' },

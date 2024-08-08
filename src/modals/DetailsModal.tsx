@@ -4,7 +4,7 @@ import { FC, useState } from 'react';
 import Asset, { AssetProps } from '../components/asset/Asset';
 import Markdown from '../components/Markdown';
 import t from '../utils/i18n';
-import { SGDB_ASSET_TYPE_READABLE } from '../constants';
+import { SGDB_ASSET_TYPE_READABLE, SGDB_MIME_MAP } from '../constants';
 
 const DetailsModal: FC<{
   closeModal?: () => void,
@@ -48,6 +48,7 @@ const DetailsModal: FC<{
           </DialogButtonPrimary>
           <span className="meta">
             {[
+              SGDB_MIME_MAP[asset.mime] || asset.mime,
               asset.style.replace(/_/g, ' '),
               asset.width > 0 ? `${asset.width}×${asset.height}` : undefined,
             ].filter(Boolean).join(' • ')}
