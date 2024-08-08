@@ -174,6 +174,7 @@
       .chip {
         @include flex-center;
         background: var(--chip-color);
+        color: var(--chip-text-color);
         padding: .3em .8em;
         min-height: 2em;
         gap: .3em;

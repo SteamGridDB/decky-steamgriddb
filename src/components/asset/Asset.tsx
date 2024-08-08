@@ -68,7 +68,7 @@ const Asset: VFC<AssetProps> = ({
           </Chip>
         )}
         {humor && (
-          <Chip color="#eec314">
+          <Chip color="#eec314" colorText="#434343">
             {t('LABEL_HUMOR', 'Humor')}
           </Chip>
         )}
