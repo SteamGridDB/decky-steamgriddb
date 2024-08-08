@@ -155,8 +155,8 @@ const Toolbar = forwardRef(({
           </DialogButton>
           {(
             externalSgdbData &&
-            externalSgdbData.length > 0 &&
-            externalSgdbData[0].metadata[defaultAssetMap[assetType]]
+            Object.keys(externalSgdbData).length !== 0 &&
+            externalSgdbData?.steam[0]?.metadata[defaultAssetMap[assetType]]
           ) && (
             <DialogButton
               noFocusRing

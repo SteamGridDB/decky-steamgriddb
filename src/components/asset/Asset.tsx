@@ -23,6 +23,7 @@ export interface AssetProps extends FooterLegendProps {
   nsfw?: boolean;
   humor?: boolean;
   epilepsy?: boolean;
+  onImgError?: React.ReactEventHandler<HTMLImageElement>;
 }
 
 const Asset: VFC<AssetProps> = ({
@@ -39,6 +40,7 @@ const Asset: VFC<AssetProps> = ({
   nsfw,
   humor,
   epilepsy,
+  onImgError,
   ...rest
 }) => (
   <div className="asset-box-wrap">
@@ -86,6 +88,7 @@ const Asset: VFC<AssetProps> = ({
         marginOffset="100px"
         unloadWhenOutside
         blurBackground
+        onError={onImgError}
       />
     </Focusable>
     {author && (

@@ -277,7 +277,7 @@ export const SGDBProvider: FC = ({ children }) => {
 
   const getSgdbGame = useCallback(async (game) => {
     try {
-      const gameRes = await apiRequest(`/games/id/${game.id}`);
+      const gameRes = await apiRequest(`/games/id/${game.id}?platformdata=steam`);
       log('sgdb game', gameRes);
       return gameRes;
     } catch (err: any) {
