@@ -46,6 +46,11 @@ const SteamModalImageSection: FC<{
     }
   };
 
+  // Reset fallback check when changing langs
+  useEffect(() => {
+    fallbackAttempted.current = false;
+  }, [selectedLang]);
+
   useEffect(() => {
     if (urlHandler2x) {
       setSelectedImg(urlHandler2x(selectedLang));
