@@ -37,6 +37,13 @@ export const LazyImage: FC<LazyImage> = ({
   const imgRef = useRef<HTMLElement>(null);
   const intersectRef = useRef<HTMLDivElement>(null);
 
+  // reset some state when src changes
+  useEffect(() => {
+    setInViewport(false);
+    setError(false);
+    setLoading(true);
+  }, [src]);
+
   useEffect(() => {
     if (!imgRef.current) return;
     const img = imgRef.current;
@@ -87,7 +94,7 @@ export const LazyImage: FC<LazyImage> = ({
     return () => {
       observer.disconnect();
     };
-  }, [loading, marginOffset, unloadWhenOutside, scrollContainer]);
+  }, [loading, marginOffset, unloadWhenOutside, scrollContainer, src]);
 
   return (
     <div
