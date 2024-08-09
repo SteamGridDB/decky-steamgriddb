@@ -12,7 +12,7 @@ import { SettingsProvider } from './hooks/useSettings';
 import SGDBPage from './components/plugin-pages/SGDBPage';
 import contextMenuPatch, { LibraryContextMenu } from './patches/contextMenuPatch';
 import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
-import { removeSquareHomePatch, addSquareHomePatch } from './patches/squareHomePatch';
+import { removeHomePatch, addHomePatch } from './patches/homePatch';
 import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
 
 export default definePlugin(() => {
@@ -32,10 +32,13 @@ export default definePlugin(() => {
 
   const menuPatches = contextMenuPatch(LibraryContextMenu);
 
-  getSetting('squares', false).then((enabled) => {
-    if (enabled) {
+  Promise.all([
+    getSetting('squares', false),
+    getSetting('uniform_featured', false),
+  ]).then(([squares, uniformFeatured]: [boolean, boolean]) => {
+    if (squares || uniformFeatured) {
       addSquareLibraryPatch(true);
-      addSquareHomePatch(true);
+      addHomePatch(true, squares, uniformFeatured);
     }
   });
 
@@ -52,7 +55,7 @@ export default definePlugin(() => {
       menuPatches?.unpatch();
 
       removeSquareLibraryPatch(true);
-      removeSquareHomePatch(true);
+      removeHomePatch(true);
 
       findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
       findSP().window.document.getElementById('sgdb-square-capsules-home')?.remove();

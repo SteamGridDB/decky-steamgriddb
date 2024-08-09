@@ -115,6 +115,7 @@ export const addSquareLibraryPatch = (mounting = false) => {
 
 export function removeSquareLibraryPatch(unmounting = false): void {
   if (patch) {
+    findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
     routerHook.removePatch('/library', patch);
     patch = undefined;
 

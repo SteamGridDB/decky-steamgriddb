@@ -28,7 +28,7 @@ import BoopIcon from '../Icons/BoopIcon';
 import t, { getCredits } from '../../utils/i18n';
 import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
-import { addSquareHomePatch, removeSquareHomePatch } from '../../patches/squareHomePatch';
+import { addHomePatch, removeHomePatch } from '../../patches/homePatch';
 import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
 import { addCapsuleGlowPatch } from '../../patches/capsuleGlowPatch';
 import { DIMENSIONS } from '../../constants';
@@ -43,12 +43,19 @@ const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
   return w === h;
 }).map((x) => x.value);
 
-const toggleSquarePatches = (enabled: boolean): void => {
-  if (enabled) {
-    addSquareHomePatch();
-    addSquareLibraryPatch();
-  } else {
-    removeSquareHomePatch();
+// Set square/uniform featured game using logic written at 3am
+const setPatches = (squares: boolean, uniformFeatured: boolean): void => {
+  if (!uniformFeatured && !squares) {
+    removeHomePatch();
+  } else if (squares || uniformFeatured) {
+    // Remove the home patch then patch it again
+    removeHomePatch();
+    addHomePatch(false, squares, uniformFeatured);
+    if (squares) {
+      addSquareLibraryPatch();
+    }
+  }
+  if (!squares) {
     removeSquareLibraryPatch();
   }
 };
@@ -57,13 +64,15 @@ const QuickAccessSettings: VFC = () => {
   const { get, set } = useSettings();
   const [useCount, setUseCount] = useState<number | null>(null);
   const [squares, setSquares] = useState<boolean>(false);
+  const [uniformFeatured, setUniformFeatured] = useState<boolean>(false);
   const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
 
   const handleSquareToggle = useCallback(async (checked) => {
     set('squares', checked, true);
     setSquares(checked);
-    toggleSquarePatches(checked);
+    setPatches(checked, uniformFeatured);
+
     const currentFilters = await get('filters_grid_p', {});
     if (checked) {
       // only enable square
@@ -73,7 +82,13 @@ const QuickAccessSettings: VFC = () => {
       currentFilters['dimensions'] = DIMENSIONS.grid_p.default;
     }
     set('filters_grid_p', currentFilters, true);
-  }, [get, set]);
+  }, [get, set, uniformFeatured]);
+
+  const handleUniformFeaturedToggle = useCallback(async (checked) => {
+    set('uniform_featured', checked, true);
+    setUniformFeatured(checked);
+    setPatches(squares, checked);
+  }, [set, squares]);
 
   const handleCapsuleGlowChange = useCallback(async (val: number) => {
     set('capsule_glow_amount', val, true);
@@ -85,6 +100,7 @@ const QuickAccessSettings: VFC = () => {
     (async () => {
       setUseCount(await get('plugin_use_count', 0));
       setSquares(await get('squares', false));
+      setUniformFeatured(await get('uniform_featured', false));
       setCapsuleGlowAmount(await get('capsule_glow_amount', 100));
     })();
   }, [get]);
@@ -163,6 +179,14 @@ const QuickAccessSettings: VFC = () => {
             description={t('LABEL_SQUARE_CAPSULES_DESC', 'Use square capsules instead of portrait ones. Square filters will be automatically selected.')}
             checked={squares}
             onChange={handleSquareToggle}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t('LABEL_UNIFORM_RECENT', 'Matching Recents Capsule')}
+            description={t('LABEL_UNIFORM_RECENT_DESC', 'Make the most recently played game on the home screen match the rest of the capsules.')}
+            checked={uniformFeatured}
+            onChange={handleUniformFeaturedToggle}
           />
         </PanelSectionRow>
         {appgridClasses?.LibraryImageBackgroundGlow && (
