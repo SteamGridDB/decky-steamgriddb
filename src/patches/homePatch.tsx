@@ -17,7 +17,8 @@ let patch: RoutePatch | undefined;
 /*
   Calculating the same way Steam does it
   175/262.5 is a hardcoded value in the library code
-  Might break if user is changing asset container sizes via CSS
+  Used as a fallback for first (?) render while afterPatch runs to get width
+  Might break if user is changing asset container sizes via CSS, but only once
  */
 const calculateDefaultCapsuleWidth = (newHeight: number) => {
   const originalWidth = 175;
@@ -74,7 +75,8 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
 
             wrapReactType(ret4);
             afterPatch(ret4.type, 'type', (_: Record<string, unknown>[], ret5?: any) => {
-              const size = ret5.props.children.props.children.props.nItemHeight;
+              const carouselProps = findInReactTree(ret5, (x) => x?.nItemHeight && x?.fnItemRenderer && x?.fnGetColumnWidth);
+              const itemHeight = carouselProps.nItemHeight;
 
               /*
                 Instead of hacking around with CSS to make the image square, make the featured
@@ -86,7 +88,7 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
                 position of the item (`nLeft`) in the carousel is leftmost (0) or out of the screen (negative float)
               */
               if (matchFeatured) {
-                afterPatch(ret5.props.children.props.children.props, 'fnItemRenderer', (_: Record<string, unknown>[], ret6?: any) => {
+                afterPatch(carouselProps, 'fnItemRenderer', (_: Record<string, unknown>[], ret6?: any) => {
                   if (ret6.props.nLeft <= 0 && ret6.props.bFeatured) {
                     ret6.props.bFeatured = false;
                   }
@@ -103,20 +105,23 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
                   return nItemWidth;
                 }
               */
-              replacePatch(ret5.props.children.props.children.props, 'fnGetColumnWidth', ([index]) => {
-                // Leave horizontal grid as wide
-                if (index === 0 && !matchFeatured) {
-                  return callOriginal;
+              let siblingWidth = 0;
+              afterPatch(carouselProps, 'fnGetColumnWidth', ([index], colWidth: number) => {
+                if (index === 1) {
+                  siblingWidth = colWidth;
                 }
+                return colWidth;
+              });
+              replacePatch(carouselProps, 'fnGetColumnWidth', ([index]) => {
+                // Leave horizontal grid as wide
+                if (index === 0 && !matchFeatured) return callOriginal;
 
                 /* this is how valve does it -.-
                   height: a - parseInt(or().LabelHeight)
                 */
-                const capsuleHeight = size - parseInt(homeCarouselClasses.LabelHeight);
-                if (square) {
-                  return capsuleHeight;
-                }
-                return calculateDefaultCapsuleWidth(capsuleHeight);
+                const capsuleHeight = itemHeight - parseInt(homeCarouselClasses.LabelHeight);
+                if (square) return capsuleHeight;
+                return siblingWidth ? siblingWidth : calculateDefaultCapsuleWidth(capsuleHeight);
               });
               return ret5;
             });
