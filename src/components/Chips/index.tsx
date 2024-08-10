@@ -4,11 +4,12 @@ import {
   useState,
   useRef,
   useCallback,
+  ReactNode,
 } from 'react';
 import { joinClassNames, findSP } from '@decky/ui';
 import debounce from 'just-debounce';
 
-const Chips: FC = ({ children }) => {
+const Chips: FC<{ children: ReactNode }> = ({ children }) => {
   const chipsRef = useRef<HTMLUListElement>(null);
   const [leftAlign, setLeftAlign] = useState(false);
 

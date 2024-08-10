@@ -1,6 +1,10 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
-const Chip: FC<{color: string, colorText?: string}> = ({ color, colorText, children }) => (
+const Chip: FC<{
+  color: string,
+  colorText?: string,
+  children: string | ReactNode
+}> = ({ color, colorText, children }) => (
   <li
     className="chip"
     style={{

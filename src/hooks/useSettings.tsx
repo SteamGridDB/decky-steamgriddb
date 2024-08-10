@@ -2,6 +2,7 @@ import {
   useState,
   createContext,
   FC,
+  ReactNode,
   useEffect,
   useContext,
   useMemo,
@@ -19,7 +20,7 @@ type SettingsContextType = {
   settings: any;
 };
 
-export const SettingsProvider: FC = ({ children }) => {
+export const SettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [setting, setSetting] = useState<{key: any, value: any}>();
 
   const save = useMemo(() => async (setting: {key: any, value: any}) => {

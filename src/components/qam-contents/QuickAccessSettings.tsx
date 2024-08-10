@@ -68,7 +68,7 @@ const QuickAccessSettings: VFC = () => {
   const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
 
-  const handleSquareToggle = useCallback(async (checked) => {
+  const handleSquareToggle = useCallback(async (checked: boolean) => {
     set('squares', checked, true);
     setSquares(checked);
     setPatches(checked, uniformFeatured);
@@ -84,7 +84,7 @@ const QuickAccessSettings: VFC = () => {
     set('filters_grid_p', currentFilters, true);
   }, [get, set, uniformFeatured]);
 
-  const handleUniformFeaturedToggle = useCallback(async (checked) => {
+  const handleUniformFeaturedToggle = useCallback(async (checked: boolean) => {
     set('uniform_featured', checked, true);
     setUniformFeatured(checked);
     setPatches(squares, checked);

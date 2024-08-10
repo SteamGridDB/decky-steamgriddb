@@ -6,6 +6,7 @@ import {
   useCallback,
   useMemo,
   useEffect,
+  ReactNode,
 } from 'react';
 import { showModal } from '@decky/ui';
 import { toaster } from '@decky/api';
@@ -38,7 +39,7 @@ export const SearchContext = createContext({});
 
 let abortCont: AbortController | null = null;
 
-export const AssetSearchContext: FC = ({ children }) => {
+export const AssetSearchContext: FC<{ children: ReactNode }> = ({ children }) => {
   const { set, get } = useSettings();
   const { appId, searchAssets, searchGames, getSgdbGame, appOverview } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
@@ -139,7 +140,7 @@ export const AssetSearchContext: FC = ({ children }) => {
     }
   }, 500), [appOverview, assets.length, currentFilters, page, searchAssets, selectedGame]);
 
-  const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters, game) => {
+  const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters: any, game: any) => {
     const filtersChanged = !isEqual(filters, currentFilters);
     const gameChanged = game?.id !== selectedGame?.id;
     if (filtersChanged) {

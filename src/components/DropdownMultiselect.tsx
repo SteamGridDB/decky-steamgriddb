@@ -7,7 +7,7 @@ import {
   DialogCheckboxProps,
   Marquee,
 } from '@decky/ui';
-import { FC, useState, useEffect, useCallback } from 'react';
+import { FC, useState, useEffect, useCallback, ReactNode } from 'react';
 
 import Chevron from '../components/Chevron';
 import t from '../utils/i18n';
@@ -63,7 +63,7 @@ const DropdownMultiselect: FC<{
 }) => {
   const [itemsSelected, setItemsSelected] = useState<any>(selected);
 
-  const handleItemSelect = useCallback((checked, value) => {
+  const handleItemSelect = useCallback((checked: boolean, value: string | ReactNode) => {
     setItemsSelected((x: any) => (checked ?
       [...x.filter((y: any) => y !== value), value] :
       x.filter((y: any) => y !== value)

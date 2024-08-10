@@ -58,7 +58,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/react": "16.14.0",
+    "@types/react": "18.2.0",
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",

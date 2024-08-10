@@ -6,6 +6,7 @@ import {
   useContext,
   useCallback,
   useMemo,
+  ReactNode,
 } from 'react';
 import { SteamAppOverview } from '@decky/ui';
 import { call, fetchNoCors, toaster } from '@decky/api';
@@ -98,7 +99,7 @@ const getApiParams = (assetType: SGDBAssetType, filters: any, page: number) => {
 
 export const SGDBContext = createContext({});
 
-export const SGDBProvider: FC = ({ children }) => {
+export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [appId, setAppId] = useState<number | null>(null);
   const [appOverview, setAppOverview] = useState<SteamAppOverview | null>(null);
 
@@ -235,7 +236,7 @@ export const SGDBProvider: FC = ({ children }) => {
     }
   }, [appId, appOverview, changeAsset, getImageAsB64]);
 
-  const searchGames = useCallback(async (term) => {
+  const searchGames = useCallback(async (term: string) => {
     try {
       // encodeURIComponent twice to preserve some symbols
       // api is equpped to handle various types of inputs so this is fine
@@ -275,7 +276,7 @@ export const SGDBProvider: FC = ({ children }) => {
     return await apiRequest(`/${type}/${gameId ? 'game' : 'steam'}/${gameId ?? appId}?${qs}`, signal);
   }, [apiRequest, appId]);
 
-  const getSgdbGame = useCallback(async (game) => {
+  const getSgdbGame = useCallback(async (game: any) => {
     try {
       const gameRes = await apiRequest(`/games/id/${game.id}?platformdata=steam`);
       log('sgdb game', gameRes);

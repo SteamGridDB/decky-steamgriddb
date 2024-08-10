@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { FC } from 'react';
 import { Focusable, FocusableProps, FooterLegendProps, joinClassNames } from '@decky/ui';
 
 import t from '../../utils/i18n';
@@ -26,7 +26,7 @@ export interface AssetProps extends FooterLegendProps {
   onImgError?: React.ReactEventHandler<HTMLImageElement>;
 }
 
-const Asset: VFC<AssetProps> = ({
+const Asset: FC<AssetProps> = ({
   assetType,
   width,
   height,
@@ -52,31 +52,31 @@ const Asset: VFC<AssetProps> = ({
     >
       <div className={joinClassNames('dload-overlay', isDownloading ? 'downloading' : '')}><img src={Spinner} /></div>
       <Chips>
-        {notes && (
+        {notes ? (
           <Chip color="#8a8a8a">
             <FooterGlyph button={11} type={0} size={0} style={{ width: '1em' }} /> {t('LABEL_NOTES', 'Notes')}
           </Chip>
-        )}
-        {isAnimated && (
+        ) : null}
+        {isAnimated ? (
           <Chip color="#e2a256">
             {t('LABEL_ANIMATED', 'Animated')}
           </Chip>
-        )}
-        {nsfw && (
+        ) : null}
+        {nsfw ? (
           <Chip color="#e5344c">
             {t('LABEL_NSFW', 'Adult Content')}
           </Chip>
-        )}
-        {humor && (
+        ) : null}
+        {humor ? (
           <Chip color="#eec314" colorText="#434343">
             {t('LABEL_HUMOR', 'Humor')}
           </Chip>
-        )}
-        {epilepsy && (
+        ) : null}
+        {epilepsy ? (
           <Chip color="#735f9f">
             {t('LABEL_EPILEPSY', 'Epilepsy')}
           </Chip>
-        )}
+        ) : null}
       </Chips>
       <LazyImage
         src={src}

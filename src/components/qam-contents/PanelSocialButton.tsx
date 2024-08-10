@@ -22,6 +22,7 @@ const navLink = (url: string) => {
 const PanelSocialButton: FC<{
   icon: ReactNode;
   url: string;
+  children: string,
 }> = ({ icon, children, url }) => (
   <PanelSectionRow>
     <Field

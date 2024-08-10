@@ -59,15 +59,15 @@ const FiltersModal: FC<{
   /* Controls if the adult content desc shows, only want it to show when it gets toggled and not just when `adult` is true. */
   const [adultActivated, setAdultActivated] = useState<boolean>(false);
 
-  const handleStyleSelect = useCallback((items) => {
+  const handleStyleSelect = useCallback((items: any) => {
     setStyles(items);
   }, []);
 
-  const handleMimeSelect = useCallback((items) => {
+  const handleMimeSelect = useCallback((items: any) => {
     setMimes(items);
   }, []);
 
-  const handleDimensionsSelect = useCallback((items) => {
+  const handleDimensionsSelect = useCallback((items: any) => {
     setDimensions(items);
   }, []);
 
