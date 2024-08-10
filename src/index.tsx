@@ -37,7 +37,9 @@ export default definePlugin(() => {
     getSetting('uniform_featured', false),
   ]).then(([squares, uniformFeatured]: [boolean, boolean]) => {
     if (squares || uniformFeatured) {
-      addSquareLibraryPatch(true);
+      if (squares) {
+        addSquareLibraryPatch(true);
+      }
       addHomePatch(true, squares, uniformFeatured);
     }
   });
