@@ -12,7 +12,11 @@ export const addCapsuleGlowPatch = (glowAmount: number) => {
   }
   styleEl.textContent = `
     .${appportraitClasses.HoversEnabled}:hover > .${appgridClasses.LibraryImageBackgroundGlow},
-    .${appportraitClasses.HoversEnabled}.gpfocuswithin > .${appgridClasses.LibraryImageBackgroundGlow} {
+    .${appportraitClasses.HoversEnabled}.gpfocuswithin > .${appgridClasses.LibraryImageBackgroundGlow},
+
+    /* old steam */
+    .${appportraitClasses.HoversEnabled}:hover + .${appgridClasses.LibraryImageBackgroundGlow},
+    .${appportraitClasses.HoversEnabled}.gpfocuswithin + .${appgridClasses.LibraryImageBackgroundGlow} {
       opacity: ${glowAmount/100} !important;
     }
   `;
