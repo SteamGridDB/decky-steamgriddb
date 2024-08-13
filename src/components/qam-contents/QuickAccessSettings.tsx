@@ -96,6 +96,11 @@ const QuickAccessSettings: VFC = () => {
     setCapsuleGlowAmount(val);
   }, [set]);
 
+  const handleSetUseCount = useCallback(async (val: number) => {
+    set('plugin_use_count', val, false);
+    setUseCount(val);
+  }, [set]);
+
   useEffect(() => {
     (async () => {
       setUseCount(await get('plugin_use_count', 0));
@@ -130,13 +135,19 @@ const QuickAccessSettings: VFC = () => {
               >
                 {debugAppid}
               </DialogButton>
-              <DialogButton onClick={() => {
-                Navigation.Navigate('/steamgriddb/1091500/manage');
-                Navigation.CloseSideMenus();
-              }}
-              >
-              1091500
-              </DialogButton>
+              <SliderField
+                label="plugin_use_count"
+                notchCount={2}
+                showValue
+                notchTicksVisible={false}
+                onChange={handleSetUseCount}
+                value={useCount}
+                editableValue
+                min={0}
+                max={1337}
+                step={1}
+                resetValue={0}
+              />
               <DialogButton onClick={() => {
                 openFilePicker(
                   FileSelectionType.FOLDER,
