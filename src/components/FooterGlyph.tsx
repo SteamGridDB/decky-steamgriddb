@@ -1,5 +1,5 @@
 import { FC, CSSProperties } from 'react';
-import { findModuleChild } from '@decky/ui';
+import { findModuleExport, Export } from '@decky/ui';
 
 export enum FooterGlyphType { Knockout, Light, Dark }
 
@@ -10,14 +10,6 @@ const FooterGlyph: FC<{
   type?: FooterGlyphType,
   size?: FooterGlyphSize,
   style?: CSSProperties,
-}> = findModuleChild((m) => {
-  if (typeof m !== 'object') return;
-  for (const prop in m) {
-    if (m[prop]?.toString && m[prop].toString().includes('.Knockout') && m[prop].toString().includes('.additionalClassName')) {
-      return m[prop];
-    }
-  }
-  return;
-});
+}> = findModuleExport((e: Export) => e?.toString && e.toString().includes('.Knockout') && e.toString().includes('.additionalClassName'));
 
 export default FooterGlyph;
