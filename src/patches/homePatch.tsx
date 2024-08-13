@@ -62,8 +62,6 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
         afterPatch(recents.type, 'type', (_: Record<string, unknown>[], ret3?: any) => {
           cache2 = ret2;
 
-          wrapReactType(ret3);
-
           if (cache3) {
             ret3 = cache3;
             return ret3;
@@ -87,14 +85,12 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
                 Can't get the index of the element from `fnItemRenderer`, so we just just check if the current
                 position of the item (`nLeft`) in the carousel is leftmost (0) or out of the screen (negative float)
               */
-              if (matchFeatured) {
-                afterPatch(carouselProps, 'fnItemRenderer', (_: Record<string, unknown>[], ret6?: any) => {
-                  if (ret6.props.nLeft <= 0 && ret6.props.bFeatured) {
-                    ret6.props.bFeatured = false;
-                  }
-                  return ret6;
-                });
-              }
+              afterPatch(carouselProps, 'fnItemRenderer', (_: Record<string, unknown>[], ret6?: any) => {
+                if (ret6.props.nLeft <= 0 && ('bFeatured' in ret6.props)) {
+                  ret6.props.bFeatured = !matchFeatured;
+                }
+                return ret6;
+              });
 
               /* Unminified version of `fnGetColumnWidth`:
                 if (index === 0 && showFeaturedItem) {
