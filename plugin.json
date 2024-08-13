@@ -5,7 +5,7 @@
   "flags": ["debug"],
   "publish": {
     "tags": ["artwork", "sgdb"],
-    "description": "Personalize your library using art from our vast collection of user submitted images! You can also use your local files, adjust logo size and positions, turn all your capsules into squares, and more!",
+    "description": "Customize your library art with user-submitted images or local files, and other tweaks like making the recently played game not wide, square capsules, and more!",
     "image": "https://raw.githubusercontent.com/SteamGridDB/decky-steamgriddb/main/thumb.png"
   }
 }
