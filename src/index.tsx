@@ -1,8 +1,4 @@
-import {
-  definePlugin,
-  quickAccessMenuClasses,
-  findSP,
-} from '@decky/ui';
+import { definePlugin, quickAccessMenuClasses } from '@decky/ui';
 import { call, routerHook } from '@decky/api';
 
 import QuickAccessSettings from './components/qam-contents/QuickAccessSettings';
@@ -14,6 +10,7 @@ import contextMenuPatch, { LibraryContextMenu } from './patches/contextMenuPatch
 import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
 import { removeHomePatch, addHomePatch } from './patches/homePatch';
 import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
+import { removeStyles } from './utils/styleInjector';
 
 export default definePlugin(() => {
   const getSetting = async (key: string, fallback: any): Promise<any> => {
@@ -59,9 +56,12 @@ export default definePlugin(() => {
       removeSquareLibraryPatch(true);
       removeHomePatch(true);
 
-      findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
-      findSP().window.document.getElementById('sgdb-square-capsules-home')?.remove();
-      findSP().window.document.getElementById('sgdb-capsule-glow')?.remove();
+      removeStyles(
+        'sgdb-square-capsules-library',
+        'sgdb-square-capsules-home',
+        'sgdb-capsule-glow',
+        'sgdb-carousel-logo'
+      );
     },
   };
 });

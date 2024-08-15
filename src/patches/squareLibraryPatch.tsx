@@ -8,6 +8,7 @@ import {
 import { RoutePatch, routerHook } from '@decky/api';
 
 import { gamepadLibraryClasses, libraryAssetImageClasses } from '../static-classes';
+import { addStyle } from '../utils/styleInjector';
 
 import { rerenderAfterPatchUpdate } from './patchUtils';
 
@@ -23,18 +24,13 @@ const patchGridProps = (props: any) => {
 export const addSquareLibraryPatch = (mounting = false) => {
   patch = routerHook.addPatch('/library', (props) => {
     // inject css if it isn't there already
-    if (!findSP().window.document.getElementById('sgdb-square-capsules-library')) {
-      const styleEl = findSP().window.document.createElement('style');
-      styleEl.id = 'sgdb-square-capsules-library';
-      styleEl.textContent = `
-        /* only select covers within library page, otherwise it breaks covers on other pages */
-        .${gamepadLibraryClasses.GamepadLibrary} .${libraryAssetImageClasses.Container}.${libraryAssetImageClasses.PortraitImage} {
-          padding-top: 100% !important;
-          height: 0 !important;
-        }
-      `;
-      findSP().window.document.head.append(styleEl);
-    }
+    addStyle('sgdb-square-capsules-library', `
+      /* only select covers within library page, otherwise it breaks covers on other pages */
+      .${gamepadLibraryClasses.GamepadLibrary} .${libraryAssetImageClasses.Container}.${libraryAssetImageClasses.PortraitImage} {
+        padding-top: 100% !important;
+        height: 0 !important;
+      }
+    `);
 
     // lmao fuck is this
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {

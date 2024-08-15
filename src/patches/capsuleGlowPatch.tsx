@@ -1,16 +1,9 @@
-import { findSP } from '@decky/ui';
-
 import { appportraitClasses, appgridClasses } from '../static-classes';
+import { addStyle } from '../utils/styleInjector';
 
 export const addCapsuleGlowPatch = (glowAmount: number) => {
   if (!appgridClasses?.LibraryImageBackgroundGlow) return;
-  let styleEl = findSP().window.document.getElementById('sgdb-capsule-glow');
-  if (!styleEl) {
-    styleEl = findSP().window.document.createElement('style');
-    styleEl.id = 'sgdb-capsule-glow';
-    findSP().window.document.head.append(styleEl);
-  }
-  styleEl.textContent = `
+  addStyle('sgdb-capsule-glow', `
     .${appportraitClasses.HoversEnabled}:hover > .${appgridClasses.LibraryImageBackgroundGlow},
     .${appportraitClasses.HoversEnabled}.gpfocuswithin > .${appgridClasses.LibraryImageBackgroundGlow},
 
@@ -19,5 +12,5 @@ export const addCapsuleGlowPatch = (glowAmount: number) => {
     .${appportraitClasses.HoversEnabled}.gpfocuswithin + .${appgridClasses.LibraryImageBackgroundGlow} {
       opacity: ${glowAmount/100} !important;
     }
-  `;
+  `);
 };
