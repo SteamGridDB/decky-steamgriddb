@@ -12,7 +12,7 @@ if (!fs.existsSync(INPUT_PATH)) {
 const content = fs.readFileSync(INPUT_PATH, 'utf8');
 
 const matches = content.matchAll(/(?<![A-z\d])trans_string\('(.+?)', ?'(.+?)'\)/g);
-const steamMatchesArr = Array.from(content.matchAll(/(?<![A-z\d])trans_string\('(.+?)', ?'(.+?)'(?:, ?(?:true|1))\)/g));
+const steamMatchesArr = Array.from(content.matchAll(/(?<![A-z\d])trans_string\('([^']+)', ?'([^']+)', ?(?:true|1)\)/g));
 const steamMatchesFlat = steamMatchesArr.map((x) => x[1]);
 
 const strings = {};
