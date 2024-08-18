@@ -65,8 +65,14 @@ const QuickAccessSettings: VFC = () => {
   const [useCount, setUseCount] = useState<number | null>(null);
   const [squares, setSquares] = useState<boolean>(false);
   const [uniformFeatured, setUniformFeatured] = useState<boolean>(false);
+  const [motdToggle, setMotdToggle] = useState<boolean>(false);
   const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
+
+  const handleMotdToggle = useCallback(async (val: boolean) => {
+    set('motd_hidden_global', val, true);
+    setMotdToggle(val);
+  }, [set]);
 
   const handleSquareToggle = useCallback(async (checked: boolean) => {
     set('squares', checked, true);
@@ -107,6 +113,7 @@ const QuickAccessSettings: VFC = () => {
       setSquares(await get('squares', false));
       setUniformFeatured(await get('uniform_featured', false));
       setCapsuleGlowAmount(await get('capsule_glow_amount', 100));
+      setMotdToggle(await get('motd_hidden_global', false));
     })();
   }, [get]);
 
@@ -134,6 +141,19 @@ const QuickAccessSettings: VFC = () => {
               }}
               >
                 {debugAppid}
+              </DialogButton>
+              <DialogButton onClick={() => {
+                // for debugging reasons do not panic
+                set('motd_last_fetched', 0, true);
+                setTimeout(() => {
+                  set('motd_cached', null, true);
+                  setTimeout(() => {
+                    set('motd_hidden', null, true);
+                  }, 300);
+                }, 300);
+              }}
+              >
+              Reset MOTD
               </DialogButton>
               <SliderField
                 label="plugin_use_count"
@@ -244,6 +264,14 @@ const QuickAccessSettings: VFC = () => {
               {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
             </DialogButton>
           </Field>
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t('LABEL_SETTINGS_DISABLE_MOTD', 'Disable Announcements')}
+            description={t('LABEL_SETTINGS_DISABLE_MOTD_DESC', 'Announcements are used sparingly to display important information or community events.')}
+            checked={motdToggle}
+            onChange={handleMotdToggle}
+          />
         </PanelSectionRow>
       </PanelSection>
       {/* Uncomment this out should there be a need for experiments again. */}

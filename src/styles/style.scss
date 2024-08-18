@@ -25,6 +25,61 @@ $topBarHeight: var(--basicui-header-height, 40px);
     background: #1B2838;
   }
 
+  $motdHeight: 40px;
+  .motd-wrap {
+    display: flex;
+    gap: .5em;
+    margin-top: 1em;
+    .motd {
+      flex: 1;
+      @include flex-center;
+      position: relative;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-color: #05070a;
+      height: $motdHeight;
+      overflow: hidden;
+    }
+    .motd-video-bg {
+      position: absolute;
+      width: 100%;
+      z-index: 0;
+    }
+    .motd-inner {
+      display: grid;
+      height: 100%;
+      grid-template-columns: 1fr 100%;
+      grid-template-rows: 100%;
+      column-gap: 1em;
+      align-items: center;
+      z-index: 1;
+      > img {
+        height: 100%;
+        grid-row: 1;
+      }
+      .motd-text {
+        display: flex;
+        flex-direction: column;
+        // don't like setting pixel values for fonts but have to be safe
+        .motd-title {
+          font-size: 15px;
+          line-height: 15px;
+          font-weight: 500;
+        }
+        .motd-subtitle {
+          font-size: 11px;
+          line-height: 11px;
+        }
+      }
+    }
+    .motd-hide {
+      @include flex-center;
+      padding: 0;
+      width: $motdHeight;
+      min-width: $motdHeight;
+    }
+  }
+
   .tabcontents-wrap {
     display: flex;
     height: 100%;
@@ -61,35 +116,25 @@ $topBarHeight: var(--basicui-header-height, 40px);
     }
   }
 
-  .settings-container {
-    z-index: $zIndexAboveRing; // above focusring
-    // offset to fill width, vw value is from .gamepadtabbedpage_TabContentsScroll
-    padding: .5em 2.8vw;
-    margin: 0 -2.8vw;
-    background-color: var(--gpSystemDarkestGrey, $color-toolbar-bg);
-    &.force-show {
-      position: sticky;
-      top: 0;
-    }
-    > .sgdb-asset-toolbar {
+  .sgdb-asset-toolbar {
+    display: flex;
+    width: 100%;
+    gap: var(--gpSpace-Gap, .6em);
+    // background-color: var(--gpSystemDarkestGrey, $color-toolbar-bg);
+    .filter-buttons {
+      align-items: center;
       display: flex;
-      width: 100%;
-      gap: var(--gpSpace-Gap, .6em);
-      .filter-buttons {
-        align-items: center;
-        display: flex;
-        gap: .5em;
-        > button {
-          min-width: auto;
-          flex: 1;
-          white-space: nowrap;
-        }
-      }
-      .size-slider {
+      gap: .5em;
+      > button {
+        min-width: auto;
         flex: 1;
-        padding: .5em 1em;
-        justify-content: center;
+        white-space: nowrap;
       }
+    }
+    .size-slider {
+      flex: 1;
+      padding: .5em 1em;
+      justify-content: center;
     }
   }
 

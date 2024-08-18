@@ -1,5 +1,5 @@
 
-import { memo, useEffect, useState, VFC } from 'react';
+import { memo, useEffect, useState, FC } from 'react';
 import { Tabs, TabsProps, showModal } from '@decky/ui';
 
 import t from '../../utils/i18n';
@@ -12,7 +12,7 @@ import BeggingModal from '../../modals/BeggingModal';
 import ManageTab from './ManageTab';
 import AssetTab from './AssetTab';
 
-const AssetTabs: VFC<{
+const AssetTabs: FC<{
   currentTab: string,
   onShowTab: TabsProps['onShowTab']
 }> = ({ currentTab, onShowTab }) => {

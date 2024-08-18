@@ -131,60 +131,48 @@ const Toolbar = forwardRef(({
   if (disabled) return null;
 
   return (
-    <Focusable
-      noFocusRing={noFocusRing}
-      className="settings-container"
-      focusClassName="force-show"
-      focusWithinClassName="force-show"
-      onSecondaryActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
-      onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
-      onSecondaryButton={onFilterClick}
-      onActivate={() => toolbarFocusRef.current?.focus()}
-      onClick={(evt) => evt.preventDefault()} // Don't focus if using UI with a pointer
-    >
-      <Focusable className="sgdb-asset-toolbar">
-        <Focusable className="filter-buttons">
+    <Focusable className="sgdb-asset-toolbar" noFocusRing={noFocusRing} flow-children="row">
+      <Focusable className="filter-buttons">
+        <DialogButton
+          ref={toolbarFocusRef}
+          style={{ flex: 0 }}
+          noFocusRing
+          onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
+          onClick={onFilterClick}
+        >
+          {t('ACTION_OPEN_FILTER', 'Filter')}
+        </DialogButton>
+        {(
+          externalSgdbData &&
+          Object.keys(externalSgdbData).length !== 0 &&
+          externalSgdbData?.steam[0]?.metadata[defaultAssetMap[assetType]]
+        ) && (
           <DialogButton
-            ref={toolbarFocusRef}
-            style={{ flex: 0 }}
             noFocusRing
-            onOKActionDescription={t('ACTION_OPEN_FILTER', 'Filter')}
-            onClick={onFilterClick}
+            onOKActionDescription={t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
+            onClick={onOfficialAssetsClick}
           >
-            {t('ACTION_OPEN_FILTER', 'Filter')}
+            {t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
           </DialogButton>
-          {(
-            externalSgdbData &&
-            Object.keys(externalSgdbData).length !== 0 &&
-            externalSgdbData?.steam[0]?.metadata[defaultAssetMap[assetType]]
-          ) && (
-            <DialogButton
-              noFocusRing
-              onOKActionDescription={t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-              onClick={onOfficialAssetsClick}
-            >
-              {t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}
-            </DialogButton>
-          )}
-          {['logo', 'hero'].includes(assetType) && (
-            <DialogButton
-              noFocusRing
-              onOKActionDescription={t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
-              onClick={onLogoPosClick}
-            >
-              {t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
-            </DialogButton>
-          )}
-        </Focusable>
-        <SliderField
-          className="size-slider"
-          onChange={handleSliderChange}
-          value={sliderValue}
-          layout="below"
-          bottomSeparator="none"
-          {...sliderProps[assetType]}
-        />
+        )}
+        {['logo', 'hero'].includes(assetType) && (
+          <DialogButton
+            noFocusRing
+            onOKActionDescription={t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
+            onClick={onLogoPosClick}
+          >
+            {t('CustomArt_EditLogoPosition', 'Adjust Logo Position', true)}
+          </DialogButton>
+        )}
       </Focusable>
+      <SliderField
+        className="size-slider"
+        onChange={handleSliderChange}
+        value={sliderValue}
+        layout="below"
+        bottomSeparator="none"
+        {...sliderProps[assetType]}
+      />
     </Focusable>
   );
 });

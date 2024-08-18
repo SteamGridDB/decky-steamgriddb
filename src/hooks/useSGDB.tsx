@@ -24,9 +24,9 @@ import getCurrentSteamUserId from '../utils/getCurrentSteamUserId';
   attempting to use this in your own projects will
   cause you to be automatically banned and blacklisted
 */
-const SGDB_API_KEY = '6465636b796c6f616465723432303639';
+export const SGDB_API_KEY = '6465636b796c6f616465723432303639';
 
-const API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://sgdb.test/api/v2' : 'https://www.steamgriddb.com/api/v2';
+export const SGDB_API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://sgdb.test/api/v2' : 'https://www.steamgriddb.com/api/v2';
 
 export type SGDBContextType = {
   appId: number | null;
@@ -155,7 +155,7 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
       };
 
       signal?.addEventListener('abort', abortHandler);
-      fetchNoCors(`${API_BASE}${url}`, {
+      fetchNoCors(`${SGDB_API_BASE}${url}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

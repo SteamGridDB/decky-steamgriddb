@@ -1,6 +1,6 @@
 import { Focusable, joinClassNames, showModal } from '@decky/ui';
 import { toaster } from '@decky/api';
-import { useState, VFC, useRef, useEffect, useMemo } from 'react';
+import { useState, FC, useRef, useEffect, useMemo } from 'react';
 
 import { useSGDB } from '../../hooks/useSGDB';
 import Asset from '../asset/Asset';
@@ -14,8 +14,9 @@ import useSettings from '../../hooks/useSettings';
 import ResultsStateBar from '../ResultsStateBar';
 import LogoPositionerModal from '../../modals/LogoPositionerModal';
 import OfficialAssetsModal from '../../modals/OfficialAssetsModal';
+import Motd from '../Motd';
 
-const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
+const AssetTab: FC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
   const { get } = useSettings();
   const {
     loading: searchLoading,
@@ -158,6 +159,8 @@ const AssetTab: VFC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         disabled={tabLoading}
         noFocusRing={searchLoading || tabLoading}
       />
+
+      <Motd disabled={tabLoading} noFocusRing={searchLoading || tabLoading} />
 
       <ResultsStateBar
         loading={loading}
