@@ -78,15 +78,15 @@ class Plugin:
         iconname = "%s_icon%s" % (appid, ext)
         output_file = get_userdata_config(owner_id) / 'grid' / iconname
         saved_path = str(copyfile(path, output_file))
-        return await self.set_shortcut_icon(self, appid, owner_id, path=saved_path)
+        return await self.set_shortcut_icon(appid, owner_id, path=saved_path)
 
     async def set_shortcut_icon_from_url(self, appid, owner_id, url):
         output_dir = get_userdata_config(owner_id) / 'grid'
         ext = Path(urlparse(url).path).suffix
         iconname = "%s_icon%s" % (appid, ext)
-        saved_path = await self.download_file(self, url, output_dir, file_name=iconname)
+        saved_path = await self.download_file(url, output_dir, file_name=iconname)
         if saved_path:
-            return await self.set_shortcut_icon(self, appid, owner_id, path=saved_path)
+            return await self.set_shortcut_icon(appid, owner_id, path=saved_path)
         else:
             raise Exception("Failed to download icon from %s" % url)
 
@@ -110,7 +110,7 @@ class Plugin:
         raise Exception('Could not find shortcut to edit')
 
     async def set_steam_icon_from_url(self, appid, url):
-        await self.download_file(self, url, get_steam_libcache(), file_name=("%s_icon.jpg" % appid))
+        await self.download_file(url, get_steam_libcache(), file_name=("%s_icon.jpg" % appid))
 
     async def set_steam_icon_from_path(self, appid, path):
         copyfile(path, get_steam_libcache() / str("%s_icon.jpg" % appid))
