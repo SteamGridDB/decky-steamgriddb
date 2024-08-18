@@ -75,21 +75,13 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
 
   patch = routerHook.addPatch('/library/home', (props) => {
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {
-      let cache2: any = null;
       wrapReactType(ret);
       afterPatch(ret.type, 'type', (_: Record<string, unknown>[], ret2?: any) => {
-        if (cache2) {
-          ret2 = cache2;
-          return ret2;
-        }
 
         let cache3: any = null;
         const recents = findInReactTree(ret2, (x) => x?.props && ('autoFocus' in x.props) && ('showBackground' in x.props));
 
-        wrapReactType(recents);
         afterPatch(recents.type, 'type', (_: Record<string, unknown>[], ret3?: any) => {
-          cache2 = ret2;
-
           if (cache3) {
             ret3 = cache3;
             return ret3;
