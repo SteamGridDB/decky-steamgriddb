@@ -128,7 +128,7 @@ export const LANGS: {
   uk: {
     name: 'Українська',
     strings: uk,
-    credit: ['Veydzher'],
+    credit: ['Veydzher', 'Kefir'],
   },
   'zh-cn': simplifiedChinese,
   'sc-sc': simplifiedChinese, // sc-sc is "SteamChina" i think?, it's mapped to zh-cn in the client so doing the same here.

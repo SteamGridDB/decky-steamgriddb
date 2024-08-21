@@ -60,7 +60,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | **Türkçe** | Bilgehan Ceviz, Sib | Twig |
 | **Ελληνικά** | Emenesu |
 | **Русский** | fycher, LostHikking |
-| **Українська** | Veydzher |
+| **Українська** | Veydzher, Kefir |
 | **한국어** | yor42 |
 | **日本語** | Nes |
 | **正體中文** | mingyc |
