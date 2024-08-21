@@ -28,10 +28,17 @@ $color-guide: #008ada;
         animation: 150ms linear 400ms 1 sgdb-fadeIn forwards;
       }
     }
+    // Guides are showing
     &.logo-border {
-      .logo-positioner-logo {
-        outline: 3px $color-guide solid;
-        pointer-events: all;
+      .logo-wrap {
+        .logo-anchor-guide,
+        .guide-middlecontainer {
+          display: block;
+        }
+        .logo-positioner-logo {
+          outline: 3px $color-guide solid;
+          pointer-events: all;
+        }
       }
     }
     &.pos-UpperLeft {
@@ -91,7 +98,7 @@ $color-guide: #008ada;
       // anchor points
       .logo-anchor-guide,
       .guide-middlecontainer {
-        display: block;
+        display: none; // hidden by default, shown with .logo-border
         position: absolute;
         z-index: 1;
         box-sizing: border-box;

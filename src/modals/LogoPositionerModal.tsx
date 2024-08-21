@@ -92,7 +92,7 @@ const LogoPositioner = ({ app, logoPos, border, onAnchorClick, setLogoPos }: {
     }
 
     if (['UpperLeft', 'UpperCenter'].includes(logoPos.pinnedPosition)) {
-      pctY = (deltaY + heroRect.height) / logoSizerHeight.current;
+      pctY = (deltaY + logoSizerHeight.current) / heroRect.height;
     } else if (logoPos.pinnedPosition === 'CenterCenter') {
       if (lastY.current > heroRect.height / 2 + heroRect.y) {
         pctY = (deltaY * 2 + logoSizerHeight.current) / heroRect.height;
