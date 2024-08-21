@@ -4,7 +4,7 @@ import {
   Marquee,
   ReorderableEntry,
   Focusable,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import {
   useEffect,
   useMemo,

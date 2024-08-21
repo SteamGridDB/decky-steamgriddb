@@ -2,7 +2,6 @@
   "name": "decky-steamgriddb",
   "version": "1.5.0",
   "description": "Decky plugin to manage Steam artwork from within gaming mode.",
-  "type": "module",
   "scripts": {
     "build": "shx rm -rf dist && rollup -c --environment ROLLUP_ENV:production",
     "watch": "rollup -c -w --environment ROLLUP_ENV:development",
@@ -52,7 +51,6 @@
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
-    "@decky/rollup": "^1.0.1",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -62,6 +60,7 @@
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "decky-frontend-lib": "^3.25.0",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.0",
@@ -81,8 +80,6 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@decky/api": "^1.1.2",
-    "@decky/ui": "^4.7.0",
     "async-wait-until": "^2.0.12",
     "just-debounce": "^1.1.0",
     "qrcode.react": "^3.1.0",

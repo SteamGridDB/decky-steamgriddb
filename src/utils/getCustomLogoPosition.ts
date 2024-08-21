@@ -1,4 +1,4 @@
-import { LogoPosition } from '@decky/ui';
+import { LogoPosition } from 'decky-frontend-lib';
 import waitUntil from 'async-wait-until';
 
 import getAppOverview from './getAppOverview';

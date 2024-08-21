@@ -1,4 +1,4 @@
-import { Field, ProgressBar } from '@decky/ui';
+import { Field, ProgressBar } from 'decky-frontend-lib';
 import { useState } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi2';
 import reactStringReplace from 'react-string-replace';

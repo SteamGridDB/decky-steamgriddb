@@ -4,7 +4,7 @@ import {
   Field,
   Focusable,
   Navigation,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import { FC, ReactNode } from 'react';
 import { HiQrCode } from 'react-icons/hi2';
 

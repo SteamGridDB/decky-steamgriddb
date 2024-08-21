@@ -5,8 +5,9 @@ import {
   replacePatch,
   callOriginal,
   wrapReactType,
-} from '@decky/ui';
-import { RoutePatch, routerHook } from '@decky/api';
+  RoutePatch,
+  ServerAPI,
+} from 'decky-frontend-lib';
 
 import { libraryAssetImageClasses, appportraitClasses, homeCarouselClasses, miscInfoClasses } from '../static-classes';
 // import LibraryImage from '../components/asset/LibraryImage';
@@ -30,7 +31,7 @@ const calculateDefaultCapsuleWidth = (newHeight: number) => {
   return newHeight * ratio;
 };
 
-export const addHomePatch = (mounting = false, square = false, matchFeatured = false, carouselLogo = false) => {
+export const addHomePatch = (serverApi: ServerAPI, mounting = false, square = false, matchFeatured = false, carouselLogo = false) => {
   if (square) {
     addStyle('sgdb-square-capsules-home', `
       /* only select home page */
@@ -73,7 +74,7 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
     removeStyle('sgdb-carousel-logo');
   }
 
-  patch = routerHook.addPatch('/library/home', (props) => {
+  patch = serverApi.routerHook.addPatch('/library/home', (props) => {
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {
       let cache2: any = null;
       wrapReactType(ret);
@@ -218,10 +219,10 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
   if (!mounting) rerenderAfterPatchUpdate();
 };
 
-export function removeHomePatch(unmounting = false): void {
+export function removeHomePatch(serverApi: ServerAPI, unmounting = false): void {
   if (patch) {
     findSP().window.document.getElementById('sgdb-square-capsules-home')?.remove();
-    routerHook.removePatch('/library/home', patch);
+    serverApi.routerHook.removePatch('/library/home', patch);
     patch = undefined;
 
     if (!unmounting) rerenderAfterPatchUpdate();

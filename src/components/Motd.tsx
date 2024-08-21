@@ -1,12 +1,11 @@
-import { ConfirmModal, DialogButton, Focusable, Navigation, showModal } from '@decky/ui';
+import { ConfirmModal, DialogButton, Focusable, Navigation, showModal } from 'decky-frontend-lib';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { HiXMark } from 'react-icons/hi2';
-import { fetchNoCors } from '@decky/api';
 
 import t from '../utils/i18n';
 import showQrModal from '../utils/showQrModal';
 import useSettings from '../hooks/useSettings';
-import { SGDB_API_BASE, SGDB_API_KEY } from '../hooks/useSGDB';
+import useSGDB, { SGDB_API_BASE, SGDB_API_KEY } from '../hooks/useSGDB';
 
 export interface MotdApiResponse {
   id: string;
@@ -41,6 +40,7 @@ const Motd: FC<Motd> = ({
   noFocusRing,
 }) => {
   const { set, get } = useSettings();
+  const { serverApi } = useSGDB();
   const [motdCurrent, setMotdCurrent] = useState<MotdApiResponse | null>(null);
 
   const hideMotd = useCallback(() => {
@@ -65,7 +65,7 @@ const Motd: FC<Motd> = ({
 
   const fetchMotd = useCallback(async () => {
     try {
-      const res = await fetchNoCors(`${SGDB_API_BASE}/deckymotd`, {
+      const res = await serverApi.fetchNoCors(`${SGDB_API_BASE}/deckymotd`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -73,7 +73,10 @@ const Motd: FC<Motd> = ({
           'X-Motd-Version': '1',
         },
       });
-      const jsonBody: MotdApiResponse = await res.json();
+      if (!res.success) {
+        throw new Error('SGDB API request failed');
+      }
+      const jsonBody: MotdApiResponse = JSON.parse((res.result as { body: string }).body);
       set('motd_cached', jsonBody, true);
       return jsonBody;
     } catch (error) {
@@ -82,7 +85,7 @@ const Motd: FC<Motd> = ({
       set('motd_last_fetched', Math.floor(new Date().getTime() / 1000), true);
     }
     return null;
-  }, [set]);
+  }, [serverApi, set]);
 
   useEffect(() => {
     (async () => {

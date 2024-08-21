@@ -6,7 +6,7 @@ import {
   SVGAttributes,
   ImgHTMLAttributes,
 } from 'react';
-import { IconsModule } from '@decky/ui';
+import { IconsModule } from 'decky-frontend-lib';
 
 // @todo: find a better way to get this
 const ErrorIcon = Object.values(IconsModule).find((mod: any) => mod?.toString().includes('M27.7974 10L26.6274 2H33.3674L32.2374 10H27.7974Z')) as FC<SVGAttributes<SVGElement>>;

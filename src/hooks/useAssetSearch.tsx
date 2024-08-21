@@ -8,8 +8,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
-import { showModal } from '@decky/ui';
-import { toaster } from '@decky/api';
+import { showModal } from 'decky-frontend-lib';
 import isEqual from 'react-fast-compare';
 import debounce from 'just-debounce';
 
@@ -41,7 +40,7 @@ let abortCont: AbortController | null = null;
 
 export const AssetSearchContext: FC<{ children: ReactNode }> = ({ children }) => {
   const { set, get } = useSettings();
-  const { appId, searchAssets, searchGames, getSgdbGame, appOverview } = useSGDB();
+  const { appId, searchAssets, searchGames, getSgdbGame, appOverview, serverApi } = useSGDB();
   const [assets, setAssets] = useState<Array<any>>([]);
   const [currentFilters, setCurrentFilters] = useState();
   const [isFilterActive, setIsFilterActive] = useState(false);
@@ -90,7 +89,7 @@ export const AssetSearchContext: FC<{ children: ReactNode }> = ({ children }) =>
       } else if (err?.status === 404) {
         showGameSelection();
       } else {
-        toaster.toast({
+        serverApi.toaster.toast({
           title: 'SteamGridDB API Error',
           body: err.message,
           icon: <MenuIcon fill="#f3171e" />,
@@ -100,7 +99,7 @@ export const AssetSearchContext: FC<{ children: ReactNode }> = ({ children }) =>
         }
       }
     }
-  }, 500), [appId, appOverview, searchAssets, showGameSelection, selectedGame, set]) as AssetSearchContextType['searchAndSetAssets'];
+  }, 500), [appId, appOverview, searchAssets, showGameSelection, selectedGame, set, serverApi]) as AssetSearchContextType['searchAndSetAssets'];
 
   const loadMore = useMemo(() => debounce(async (assetType, onSuccess) => {
     if (appOverview?.BIsModOrShortcut() && !selectedGame) return;
@@ -131,14 +130,14 @@ export const AssetSearchContext: FC<{ children: ReactNode }> = ({ children }) =>
       if (err.name === 'AbortError') {
         log('Load more aborted');
       } else {
-        toaster.toast({
+        serverApi.toaster.toast({
           title: 'SteamGridDB API Error',
           body: err.message,
           icon: <MenuIcon fill="#f3171e" />,
         });
       }
     }
-  }, 500), [appOverview, assets.length, currentFilters, page, searchAssets, selectedGame]);
+  }, 500), [appOverview, assets.length, currentFilters, page, searchAssets, selectedGame, serverApi.toaster]);
 
   const handleFiltersSave = useCallback(async (assetType: SGDBAssetType, filters: any, game: any) => {
     const filtersChanged = !isEqual(filters, currentFilters);

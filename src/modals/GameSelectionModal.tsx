@@ -10,7 +10,7 @@ import {
   IconsModule,
   Spinner,
   Marquee,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import {
   FC,
   SVGAttributes,

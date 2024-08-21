@@ -11,7 +11,7 @@ import {
   DialogFooter,
   Marquee,
   Focusable,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { HiXMark } from 'react-icons/hi2';
 

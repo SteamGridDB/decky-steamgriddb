@@ -15,7 +15,7 @@ import {
   Dropdown,
   DialogFooter,
   joinClassNames,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 
 import SteamLang from '../utils/steam-api-language-map';
 import { SGDB_ASSET_TYPE_READABLE } from '../constants';

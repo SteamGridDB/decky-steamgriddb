@@ -1,5 +1,5 @@
-import { useParams } from '@decky/ui';
-import { useEffect, useState, VFC, useCallback } from 'react';
+import { useParams } from 'decky-frontend-lib';
+import { useEffect, useState, FC, useCallback } from 'react';
 
 import { AssetSearchContext } from '../../hooks/useAssetSearch';
 import { useSGDB } from '../../hooks/useSGDB';
@@ -9,7 +9,7 @@ import style from '../../styles/style.scss';
 
 import AssetTabs from './AssetTabs';
 
-const SGDBPage: VFC = () => {
+const SGDBPage: FC = () => {
   const { get } = useSettings();
   const { setAppId, appOverview } = useSGDB();
   const { appid, assetType = 'grid_p' } = useParams<{ appid: string, assetType: SGDBAssetType | 'manage' }>();

@@ -6,7 +6,7 @@ import {
   DialogCheckbox,
   DialogCheckboxProps,
   Marquee,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import { FC, useState, useEffect, useCallback, ReactNode } from 'react';
 
 import Chevron from '../components/Chevron';

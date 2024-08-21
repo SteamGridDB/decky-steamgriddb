@@ -4,8 +4,9 @@ import {
   findInReactTree,
   wrapReactType,
   findSP,
-} from '@decky/ui';
-import { RoutePatch, routerHook } from '@decky/api';
+  ServerAPI,
+  RoutePatch,
+} from 'decky-frontend-lib';
 
 import { gamepadLibraryClasses, libraryAssetImageClasses } from '../static-classes';
 import { addStyle } from '../utils/styleInjector';
@@ -21,8 +22,8 @@ const patchGridProps = (props: any) => {
   }
 };
 
-export const addSquareLibraryPatch = (mounting = false) => {
-  patch = routerHook.addPatch('/library', (props) => {
+export const addSquareLibraryPatch = (serverApi: ServerAPI, mounting = false) => {
+  patch = serverApi.routerHook.addPatch('/library', (props) => {
     // inject css if it isn't there already
     addStyle('sgdb-square-capsules-library', `
       /* only select covers within library page, otherwise it breaks covers on other pages */
@@ -109,10 +110,10 @@ export const addSquareLibraryPatch = (mounting = false) => {
   if (!mounting) rerenderAfterPatchUpdate();
 };
 
-export function removeSquareLibraryPatch(unmounting = false): void {
+export function removeSquareLibraryPatch(serverApi: ServerAPI, unmounting = false): void {
   if (patch) {
     findSP().window.document.getElementById('sgdb-square-capsules-library')?.remove();
-    routerHook.removePatch('/library', patch);
+    serverApi.routerHook.removePatch('/library', patch);
     patch = undefined;
 
     if (!unmounting) rerenderAfterPatchUpdate();

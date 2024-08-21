@@ -10,7 +10,7 @@ from pathlib import Path
 from shutil import copyfile
 from settings import SettingsManager # type: ignore
 from helpers import get_ssl_context # type: ignore
-import decky # type: ignore
+import decky_plugin # type: ignore
 
 WINDOWS = system() == "Windows"
 
@@ -18,7 +18,7 @@ if WINDOWS:
     from winreg import QueryValueEx, OpenKey, HKEY_CURRENT_USER
 
     # workaound for py_modules not being added to path on windoge
-    sys.path.append(decky.DECKY_PLUGIN_DIR)
+    sys.path.append(decky_plugin.DECKY_PLUGIN_DIR)
     from py_modules.vdf import binary_dump, binary_load
 else:
     from vdf import binary_dump, binary_load
@@ -27,7 +27,7 @@ def get_steam_path():
     if WINDOWS:
         return Path(QueryValueEx(OpenKey(HKEY_CURRENT_USER, r"Software\Valve\Steam"), "SteamPath")[0])
     else:
-        return Path(decky.DECKY_USER_HOME) / '.local' / 'share' / 'Steam'
+        return Path(decky_plugin.DECKY_USER_HOME) / '.local' / 'share' / 'Steam'
 
 def get_steam_userdata():
     return get_steam_path() / 'userdata'
@@ -40,7 +40,7 @@ def get_userdata_config(steam32):
 
 class Plugin:
     async def _main(self):
-        self.settings = SettingsManager(name="steamgriddb", settings_directory=decky.DECKY_PLUGIN_SETTINGS_DIR)
+        self.settings = SettingsManager(name="steamgriddb", settings_directory=decky_plugin.DECKY_PLUGIN_SETTINGS_DIR)
 
     async def _unload(self):
         pass
@@ -55,10 +55,10 @@ class Plugin:
             return b64encode(image_file.read()).decode('utf-8')
 
     async def get_local_start(self):
-        return decky.DECKY_USER_HOME
+        return decky_plugin.DECKY_USER_HOME
 
     async def download_file(self, url='', output_dir='', file_name=''):
-        decky.logger.debug({url, output_dir, file_name})
+        decky_plugin.logger.debug({url, output_dir, file_name})
         try:
             if access(dirname(output_dir), W_OK):
                 req = Request(url, headers={'User-Agent': 'decky-steamgriddb backend'})
@@ -122,4 +122,4 @@ class Plugin:
         return self.settings.getSetting(key, fallback)
 
     async def _migration(self):
-        decky.migrate_settings(str(Path(decky.DECKY_HOME) / "settings" / "steamgriddb.json"))
+        decky_plugin.migrate_settings(str(Path(decky_plugin.DECKY_HOME) / "settings" / "steamgriddb.json"))

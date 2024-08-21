@@ -1,4 +1,4 @@
-import { findSP } from '@decky/ui';
+import { findSP } from 'decky-frontend-lib';
 
 export const addStyle = (id: string, css: string) => {
   // inject css if it isn't there already

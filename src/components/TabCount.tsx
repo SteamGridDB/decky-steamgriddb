@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { findModuleChild } from '@decky/ui';
+import { findModuleChild } from 'decky-frontend-lib';
 
 const className = findModuleChild((m) => m?.TabCount ? m.TabCount : undefined);
 

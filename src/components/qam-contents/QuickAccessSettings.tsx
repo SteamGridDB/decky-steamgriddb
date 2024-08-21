@@ -11,9 +11,10 @@ import {
   DialogBodyText,
   ToggleField,
   SliderField,
-} from '@decky/ui';
-import { FileSelectionType, openFilePicker } from '@decky/api';
-import { useState, useEffect, VFC, useCallback } from 'react';
+  ServerAPI,
+  FileSelectionType,
+} from 'decky-frontend-lib';
+import { useState, useEffect, FC, useCallback } from 'react';
 import {
   SiPatreon,
   SiGithub,
@@ -44,23 +45,23 @@ const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
 }).map((x) => x.value);
 
 // Set square/uniform featured game using logic written at 3am
-const setPatches = (squares: boolean, uniformFeatured: boolean): void => {
+const setPatches = (serverApi: ServerAPI, squares: boolean, uniformFeatured: boolean): void => {
   if (!uniformFeatured && !squares) {
-    removeHomePatch();
+    removeHomePatch(serverApi);
   } else if (squares || uniformFeatured) {
     // Remove the home patch then patch it again
-    removeHomePatch();
-    addHomePatch(false, squares, uniformFeatured);
+    removeHomePatch(serverApi);
+    addHomePatch(serverApi, false, squares, uniformFeatured);
     if (squares) {
-      addSquareLibraryPatch();
+      addSquareLibraryPatch(serverApi);
     }
   }
   if (!squares) {
-    removeSquareLibraryPatch();
+    removeSquareLibraryPatch(serverApi);
   }
 };
 
-const QuickAccessSettings: VFC = () => {
+const QuickAccessSettings: FC<{ serverApi: ServerAPI }> = ({ serverApi }) => {
   const { get, set } = useSettings();
   const [useCount, setUseCount] = useState<number | null>(null);
   const [squares, setSquares] = useState<boolean>(false);
@@ -77,7 +78,7 @@ const QuickAccessSettings: VFC = () => {
   const handleSquareToggle = useCallback(async (checked: boolean) => {
     set('squares', checked, true);
     setSquares(checked);
-    setPatches(checked, uniformFeatured);
+    setPatches(serverApi, checked, uniformFeatured);
 
     const currentFilters = await get('filters_grid_p', {});
     if (checked) {
@@ -88,13 +89,13 @@ const QuickAccessSettings: VFC = () => {
       currentFilters['dimensions'] = DIMENSIONS.grid_p.default;
     }
     set('filters_grid_p', currentFilters, true);
-  }, [get, set, uniformFeatured]);
+  }, [get, serverApi, set, uniformFeatured]);
 
   const handleUniformFeaturedToggle = useCallback(async (checked: boolean) => {
     set('uniform_featured', checked, true);
     setUniformFeatured(checked);
-    setPatches(squares, checked);
-  }, [set, squares]);
+    setPatches(serverApi, squares, checked);
+  }, [serverApi, set, squares]);
 
   const handleCapsuleGlowChange = useCallback(async (val: number) => {
     set('capsule_glow_amount', val, true);
@@ -169,7 +170,7 @@ const QuickAccessSettings: VFC = () => {
                 resetValue={0}
               />
               <DialogButton onClick={() => {
-                openFilePicker(
+                serverApi.openFilePickerV2(
                   FileSelectionType.FOLDER,
                   '/',
                   false,
@@ -248,7 +249,7 @@ const QuickAccessSettings: VFC = () => {
               onClick={() => {
                 showModal((
                   <ModalRoot>
-                    <SettingsProvider>
+                    <SettingsProvider serverApi={serverApi}>
                       <DialogHeader>
                         {t('LABEL_SETTINGS_ASSET_TABS', 'Asset Tab Settings')}
                       </DialogHeader>

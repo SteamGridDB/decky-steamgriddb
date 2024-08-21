@@ -39,8 +39,7 @@ export default defineConfig({
     externalGlobals({
       react: 'SP_REACT',
       'react-dom': 'SP_REACTDOM',
-      '@decky/ui': 'DFL',
-      '@decky/manifest': JSON.stringify(manifest),
+      'decky-frontend-lib': 'DFL',
     }),
     replace({
       preventAssignment: false,
@@ -61,17 +60,17 @@ export default defineConfig({
     }),
   ],
   context: 'window',
-  external: ['react', 'react-dom', '@decky/ui'],
+  external: ['react', 'react-dom', 'decky-frontend-lib'],
   treeshake: {
     // Assume all external modules have imports with side effects (the default) while allowing decky libraries to treeshake
     pureExternalImports: {
-      pure: ['@decky/ui', '@decky/api'],
+      pure: ['decky-frontend-lib'],
     },
     preset: 'smallest',
   },
   output: {
     dir: 'dist',
-    format: 'esm',
+    format: 'iife',
     sourcemap: true,
     sourcemapPathTransform: (relativeSourcePath) => relativeSourcePath.replace(/^\.\.\//, `decky://decky/plugin/${encodeURIComponent(manifest.name)}/`),
     exports: 'default',

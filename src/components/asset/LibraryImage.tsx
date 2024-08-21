@@ -1,5 +1,5 @@
 import { FC, CSSProperties } from 'react';
-import { findModuleChild, SteamAppOverview } from '@decky/ui';
+import { findModuleChild, SteamAppOverview } from 'decky-frontend-lib';
 
 export interface LibraryImageProps {
   app?: SteamAppOverview;

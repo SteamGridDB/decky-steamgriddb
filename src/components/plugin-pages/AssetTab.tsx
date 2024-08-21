@@ -1,5 +1,4 @@
-import { Focusable, joinClassNames, showModal } from '@decky/ui';
-import { toaster } from '@decky/api';
+import { Focusable, joinClassNames, showModal } from 'decky-frontend-lib';
 import { useState, FC, useRef, useEffect, useMemo } from 'react';
 
 import { useSGDB } from '../../hooks/useSGDB';
@@ -29,7 +28,7 @@ const AssetTab: FC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
     externalSgdbData,
     endReached,
   } = useAssetSearch();
-  const { appOverview, changeAssetFromUrl } = useSGDB();
+  const { appOverview, changeAssetFromUrl, serverApi } = useSGDB();
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [sizingStyles, setSizingStyles] = useState<any>(undefined);
   const [tabLoading, setTabLoading] = useState(true);
@@ -48,14 +47,14 @@ const AssetTab: FC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
         onAssetChange={async (url) => {
           try {
             await changeAssetFromUrl(url, assetType);
-            toaster.toast({
+            serverApi.toaster.toast({
               title: appOverview?.display_name,
               body: t('MSG_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
               icon: <MenuIcon />,
               duration: 1500,
             });
           } catch (err: any) {
-            toaster.toast({
+            serverApi.toaster.toast({
               title: t('MSG_ASSET_APPLY_ERROR', 'There was a problem applying this asset.'),
               body: err.message,
               icon: <MenuIcon fill="#f3171e" />,
@@ -73,14 +72,14 @@ const AssetTab: FC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
       try {
         setDownloadingId(assetId);
         await changeAssetFromUrl(url, assetType);
-        toaster.toast({
+        serverApi.toaster.toast({
           title: appOverview?.display_name,
           body: t('MSG_ASSET_APPLY_SUCCESS', '{assetType} has been successfully applied!').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType]),
           icon: <MenuIcon />,
           duration: 1500,
         });
       } catch (err: any) {
-        toaster.toast({
+        serverApi.toaster.toast({
           title: t('MSG_ASSET_APPLY_ERROR', 'There was a problem applying this asset.'),
           body: err.message,
           icon: <MenuIcon fill="#f3171e" />,

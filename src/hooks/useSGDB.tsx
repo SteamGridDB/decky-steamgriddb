@@ -8,8 +8,7 @@ import {
   useMemo,
   ReactNode,
 } from 'react';
-import { SteamAppOverview } from '@decky/ui';
-import { call, fetchNoCors, toaster } from '@decky/api';
+import { SteamAppOverview, ServerAPI } from 'decky-frontend-lib';
 
 import MenuIcon from '../components/Icons/MenuIcon';
 import getAppOverview from '../utils/getAppOverview';
@@ -35,6 +34,7 @@ export type SGDBContextType = {
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, page?: number, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   getSgdbGame: (sgdbGame: any) => Promise<any>;
+  serverApi: ServerAPI;
   changeAsset: (data: string, assetType: SGDBAssetType | eAssetType) => Promise<void>;
   changeAssetFromUrl: (location: string, assetType: SGDBAssetType | eAssetType, path?: boolean) => Promise<void>;
   clearAsset: (assetType: SGDBAssetType | eAssetType) => Promise<void>;
@@ -99,7 +99,7 @@ const getApiParams = (assetType: SGDBAssetType, filters: any, page: number) => {
 
 export const SGDBContext = createContext({});
 
-export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const SGDBProvider: FC<{ serverApi: ServerAPI, children: ReactNode }> = ({ serverApi, children }) => {
   const [appId, setAppId] = useState<number | null>(null);
   const [appOverview, setAppOverview] = useState<SteamAppOverview | null>(null);
 
@@ -107,26 +107,22 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
     assetType = getAmbiguousAssetType(assetType);
     if (assetType === ASSET_TYPE.icon) {
       if (appOverview?.BIsShortcut()) {
-        const res = await call<[
-          appid: number | null,
-          owner_id: string,
-          path: string | null,
-        ], string>('set_shortcut_icon',
-          appId,
-          getCurrentSteamUserId(),
-          null // null removes the icon
-        );
-        if (res !== 'icon_is_same_path') showRestartConfirm();
+        const res = await serverApi.callPluginMethod('set_shortcut_icon', {
+          appid: appId,
+          owner_id: getCurrentSteamUserId(),
+          path: null, // null removes the icon
+        });
+
+        if (!res.success) throw new Error(res.result);
+        if (res.result !== 'icon_is_same_path') showRestartConfirm();
       } else {
         if (appOverview) {
           // Redownload the icon from Steam
-          await call<[
-            appid: number | null,
-            url: string,
-          ]>('set_steam_icon_from_url',
-            appId,
-            window.appStore.GetIconURLForApp(appOverview)
-          );
+          const res = await serverApi.callPluginMethod('set_steam_icon_from_url', {
+            appid: appId,
+            url: window.appStore.GetIconURLForApp(appOverview),
+          });
+          if (!res.success) throw new Error(res.result);
         }
       }
     } else {
@@ -134,7 +130,7 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
       // ClearCustomArtworkForApp() resolves instantly instead of after clearing, so we need to wait a bit.
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
-  }, [appId, appOverview]);
+  }, [appId, appOverview, serverApi]);
 
   const changeAsset: SGDBContextType['changeAsset'] = useCallback(async (data, assetType) => {
     assetType = getAmbiguousAssetType(assetType);
@@ -155,7 +151,7 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
       };
 
       signal?.addEventListener('abort', abortHandler);
-      fetchNoCors(`${SGDB_API_BASE}${url}`, {
+      serverApi.fetchNoCors(`${SGDB_API_BASE}${url}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -163,19 +159,18 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
         },
       }).then((res) => {
         log(res);
-        if (res.status !== 200 && res.status >= 500) {
+        if (!res.success) {
           return reject(new Error('SGDB API request failed'));
         }
 
         try {
-          res.json().then((assetRes) => {
-            if (!assetRes.success) {
-              const apiErr = new Error(assetRes.errors.join(', '));
-              (apiErr as any).status = res.status;
-              return reject(apiErr);
-            }
-            return resolve(assetRes.data);
-          });
+          const assetRes = JSON.parse((res.result as { body: string }).body);
+          if (!assetRes.success) {
+            const apiErr = new Error(assetRes.errors.join(', '));
+            (apiErr as any).status = (res.result as { status: number }).status;
+            return reject(apiErr);
+          }
+          return resolve(assetRes.data);
         } catch (err: any) {
           return reject(new Error(err.message));
         }
@@ -183,49 +178,48 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
         signal?.removeEventListener('abort', abortHandler);
       });
     });
-  }, []);
+  }, [serverApi]);
 
   const getImageAsB64 = useCallback(async (location: string, path = false) : Promise<string | null> => {
     log('downloading', location);
-    try {
-      return await call<[path: string], string>(path ? 'read_file_as_base64' : 'download_as_base64', location);
-    } catch (error) {
+    let download;
+    if (path) {
+      download = await serverApi.callPluginMethod('read_file_as_base64', { path: location });
+    } else {
+      download = await serverApi.callPluginMethod('download_as_base64', { url: location });
+    }
+    if (!download.success) {
       return null;
     }
-  }, []);
+    return download.result as string;
+  }, [serverApi]);
 
   const changeAssetFromUrl: SGDBContextType['changeAssetFromUrl'] = useCallback(async (url, assetType, path = false) => {
     assetType = getAmbiguousAssetType(assetType);
     if (assetType === ASSET_TYPE.icon) {
       if (appOverview?.BIsShortcut()) {
-        const res = await call<[
-          appid: number | null,
-          owner_id: string,
-          path: string | null,
-        ], string | boolean>(path ? 'set_shortcut_icon_from_path' : 'set_shortcut_icon_from_url',
-          appId,
-          getCurrentSteamUserId(),
-          url
-        );
+        const res = await serverApi.callPluginMethod(path ? 'set_shortcut_icon_from_path' : 'set_shortcut_icon_from_url', {
+          owner_id: getCurrentSteamUserId(),
+          appid: appId,
+          ...(path ? { path: url } : { url }),
+        });
+        if (!res.success) throw new Error(res.result);
+        log('set_shortcut_icon result', res.result);
 
-        log('set_shortcut_icon result', res);
-        if (res === 'icon_is_same_path') {
+        if (res.result === 'icon_is_same_path') {
           // If the path is already the same as the current icon, we can force an icon re-read by setting the name to itself
           SteamClient.Apps.SetShortcutName(appOverview.appid, appOverview.display_name);
-        } else if (res === true) {
+        } else if (res.result === true) {
           // shortcuts.vdf was modified, can't figure out how to make Steam re-read it so just ask user to reboot
           showRestartConfirm();
         }
       } else {
         // Change default Steam icon by poisoning the cache like Boop does it
-        const res = await call<[
-          appid: number | null,
-          path: string | null,
-        ], string | boolean>(path ? 'set_steam_icon_from_path' : 'set_steam_icon_from_url',
-          appId,
-          url
-        );
-        log('set_steam_icon result', res);
+        const res = await serverApi.callPluginMethod(path ? 'set_steam_icon_from_path' : 'set_steam_icon_from_url', {
+          appid: appId,
+          ...(path ? { path: url } : { url }),
+        });
+        log('set_steam_icon result', res.result);
       }
     } else {
       const data = await getImageAsB64(url, path);
@@ -234,7 +228,7 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }
       await changeAsset(data, assetType);
     }
-  }, [appId, appOverview, changeAsset, getImageAsB64]);
+  }, [appId, appOverview, changeAsset, getImageAsB64, serverApi]);
 
   const searchGames = useCallback(async (term: string) => {
     try {
@@ -244,14 +238,14 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
       log('search games', res);
       return res;
     } catch (err: any) {
-      toaster.toast({
+      serverApi.toaster.toast({
         title: 'SteamGridDB API Error',
         body: err.message,
         icon: <MenuIcon fill="#f3171e" />,
       });
       return [];
     }
-  }, [apiRequest]);
+  }, [apiRequest, serverApi.toaster]);
 
   const searchAssets: SGDBContextType['searchAssets'] = useCallback(async (assetType, { gameId, filters = null, page = 0, signal }) => {
     let type = '';
@@ -282,14 +276,14 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
       log('sgdb game', gameRes);
       return gameRes;
     } catch (err: any) {
-      toaster.toast({
+      serverApi.toaster.toast({
         title: 'SteamGridDB API Error',
         body: err.message,
         icon: <MenuIcon fill="#f3171e" />,
       });
       return [];
     }
-  }, [apiRequest]);
+  }, [apiRequest, serverApi.toaster]);
 
   useEffect(() => {
     if (appId) {
@@ -313,7 +307,8 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
     changeAsset,
     changeAssetFromUrl,
     clearAsset,
-  }), [appId, appOverview, searchAssets, searchGames, getSgdbGame, changeAsset, changeAssetFromUrl, clearAsset]);
+    serverApi,
+  }), [appId, appOverview, searchAssets, searchGames, getSgdbGame, changeAsset, changeAssetFromUrl, clearAsset, serverApi]);
 
   return (
     <SGDBContext.Provider value={value}>

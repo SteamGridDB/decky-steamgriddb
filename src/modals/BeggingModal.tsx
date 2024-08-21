@@ -6,7 +6,7 @@ import {
   DialogButton,
   DialogFooter,
   ControlsList,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import { FC } from 'react';
 import { SiPatreon, SiKofi } from 'react-icons/si';
 

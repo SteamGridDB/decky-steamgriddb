@@ -1,5 +1,4 @@
-import { definePlugin, quickAccessMenuClasses } from '@decky/ui';
-import { call, routerHook } from '@decky/api';
+import { definePlugin, quickAccessMenuClasses, ServerAPI } from 'decky-frontend-lib';
 
 import QuickAccessSettings from './components/qam-contents/QuickAccessSettings';
 import MenuIcon from './components/Icons/MenuIcon';
@@ -12,14 +11,15 @@ import { removeHomePatch, addHomePatch } from './patches/homePatch';
 import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
 import { removeStyles } from './utils/styleInjector';
 
-export default definePlugin(() => {
+export default definePlugin((serverApi: ServerAPI) => {
+  console.info(serverApi);
   const getSetting = async (key: string, fallback: any): Promise<any> => {
-    return await call('get_setting', key, fallback);
+    return (await serverApi.callPluginMethod('get_setting', { key, fallback })).result;
   };
 
-  routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => (
-    <SettingsProvider>
-      <SGDBProvider>
+  serverApi.routerHook.addRoute('/steamgriddb/:appid/:assetType?', () => (
+    <SettingsProvider serverApi={serverApi}>
+      <SGDBProvider serverApi={serverApi}>
         <SGDBPage />
       </SGDBProvider>
     </SettingsProvider>
@@ -35,9 +35,9 @@ export default definePlugin(() => {
   ]).then(([squares, uniformFeatured]: [boolean, boolean]) => {
     if (squares || uniformFeatured) {
       if (squares) {
-        addSquareLibraryPatch(true);
+        addSquareLibraryPatch(serverApi, true);
       }
-      addHomePatch(true, squares, uniformFeatured);
+      addHomePatch(serverApi, true, squares, uniformFeatured);
     }
   });
 
@@ -47,14 +47,14 @@ export default definePlugin(() => {
 
   return {
     title: <div className={quickAccessMenuClasses.Title}>SteamGridDB</div>,
-    content: <SettingsProvider><QuickAccessSettings /></SettingsProvider>,
+    content: <SettingsProvider serverApi={serverApi}><QuickAccessSettings serverApi={serverApi} /></SettingsProvider>,
     icon: <MenuIcon />,
     onDismount() {
-      routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
+      serverApi.routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
       menuPatches?.unpatch();
 
-      removeSquareLibraryPatch(true);
-      removeHomePatch(true);
+      removeSquareLibraryPatch(serverApi, true);
+      removeHomePatch(serverApi, true);
 
       removeStyles(
         'sgdb-square-capsules-library',

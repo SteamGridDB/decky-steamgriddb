@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Focusable, FocusableProps, Navigation } from '@decky/ui';
+import { Focusable, FocusableProps, Navigation } from 'decky-frontend-lib';
 import { FC } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';

@@ -1,6 +1,6 @@
 
 import { memo, useEffect, useState, FC } from 'react';
-import { Tabs, TabsProps, showModal } from '@decky/ui';
+import { Tabs, TabsProps, showModal } from 'decky-frontend-lib';
 
 import t from '../../utils/i18n';
 import useAssetSearch from '../../hooks/useAssetSearch';

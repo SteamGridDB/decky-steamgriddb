@@ -1,12 +1,11 @@
 import { FC, useState, useEffect, useRef } from 'react';
-import { call } from '@decky/api';
 import {
   DialogButton,
   Focusable,
   joinClassNames,
   SteamAppOverview,
   showModal,
-} from '@decky/ui';
+} from 'decky-frontend-lib';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
 
 import useSGDB from '../../hooks/useSGDB';
@@ -127,7 +126,7 @@ const AssetBlock: FC<{
 };
 
 const LocalTab: FC = () => {
-  const { appId, appOverview } = useSGDB();
+  const { appId, appOverview, serverApi } = useSGDB();
   const [startPath, setStartPath] = useState('/');
   const [overview, setOverview] = useState<SteamAppOverview>();
 
@@ -150,10 +149,10 @@ const LocalTab: FC = () => {
       }
 
       setOverview(appoverview);
-      const path = await call('get_local_start') as string;
+      const path = (await serverApi.callPluginMethod('get_local_start', {})).result as string;
       setStartPath(path);
     })();
-  }, [appId, appOverview]);
+  }, [appId, appOverview, serverApi]);
 
   if (!overview || !appId) return null;
 

@@ -1,4 +1,4 @@
-import { SteamAppOverview } from '@decky/ui';
+import { SteamAppOverview } from 'decky-frontend-lib';
 import waitUntil from 'async-wait-until';
 
 const getAppOverview = async (appId: number): Promise<SteamAppOverview | null> => {

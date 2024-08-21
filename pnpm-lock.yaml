@@ -1,12 +1,6 @@
 lockfileVersion: '6.0'
 
 dependencies:
-  '@decky/api':
-    specifier: ^1.1.2
-    version: 1.1.2
-  '@decky/ui':
-    specifier: ^4.7.0
-    version: 4.7.0
   async-wait-until:
     specifier: ^2.0.12
     version: 2.0.12
@@ -39,9 +33,6 @@ devDependencies:
   '@commitlint/config-conventional':
     specifier: ^17.8.1
     version: 17.8.1
-  '@decky/rollup':
-    specifier: ^1.0.1
-    version: 1.0.1
   '@rollup/plugin-commonjs':
     specifier: ^26.0.1
     version: 26.0.1(rollup@4.20.0)
@@ -69,6 +60,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^5.62.0
     version: 5.62.0(eslint@8.57.0)(typescript@4.9.5)
+  decky-frontend-lib:
+    specifier: ^3.25.0
+    version: 3.25.0
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -321,31 +315,6 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
-  /@decky/api@1.1.2:
-    resolution: {integrity: sha512-lTMqRpHOrGTCyH2c1jJvkmWhOq2dcnX5/ioHbfCVmyQOBik1OM1BnzF1uROsnNDC5GkRvl3J/ATqYp6vhYpRqw==}
-    dev: false
-
-  /@decky/rollup@1.0.1:
-    resolution: {integrity: sha512-dx1VJwD7ul14PA/aZvOwAfY/GujHzqZJ+MFb4OIUVi63/z4KWMSuZrK6QWo0S4LrNW3RzB3ua6LT0WcJaNY9gw==}
-    dependencies:
-      '@rollup/plugin-commonjs': 26.0.1(rollup@4.20.0)
-      '@rollup/plugin-json': 6.1.0(rollup@4.20.0)
-      '@rollup/plugin-node-resolve': 15.2.3(rollup@4.20.0)
-      '@rollup/plugin-replace': 5.0.7(rollup@4.20.0)
-      '@rollup/plugin-typescript': 11.1.6(rollup@4.20.0)(tslib@2.6.3)(typescript@5.5.4)
-      merge-anything: 6.0.2
-      rollup: 4.20.0
-      rollup-plugin-delete: 2.0.0
-      rollup-plugin-external-globals: 0.11.0(rollup@4.20.0)
-      rollup-plugin-import-assets: 1.1.1(rollup@4.20.0)
-      tslib: 2.6.3
-      typescript: 5.5.4
-    dev: true
-
-  /@decky/ui@4.7.0:
-    resolution: {integrity: sha512-klNWF5tnZVqzuUgFbw+pThiZjK7gKEtwbEZAo4aAuPJSVobpl/euTx9NAxY95QPCFMDgxCo6X6ioEA2nMfHfLA==}
-    dev: false
-
   /@eslint-community/eslint-utils@4.4.0(eslint@8.57.0):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -585,26 +554,6 @@ packages:
       rollup: 4.20.0
       tslib: 2.6.3
       typescript: 4.9.5
-    dev: true
-
-  /@rollup/plugin-typescript@11.1.6(rollup@4.20.0)(tslib@2.6.3)(typescript@5.5.4):
-    resolution: {integrity: sha512-R92yOmIACgYdJ7dJ97p4K69I8gg6IEHt8M7dUBxN3W6nrO8uUxX5ixl0yU/N3aZTi8WhPuICvOHXQvF6FaykAA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.14.0||^3.0.0||^4.0.0
-      tslib: '*'
-      typescript: '>=3.7.0'
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-      tslib:
-        optional: true
-    dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@4.20.0)
-      resolve: 1.22.8
-      rollup: 4.20.0
-      tslib: 2.6.3
-      typescript: 5.5.4
     dev: true
 
   /@rollup/pluginutils@5.1.0(rollup@4.20.0):
@@ -1735,6 +1684,10 @@ packages:
   /decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /decky-frontend-lib@3.25.0:
+    resolution: {integrity: sha512-2lBoHS2AIRmuluq/bGdHBz+uyToQE7k3K/vDq1MQbDZ4eC+8CGDuh2T8yZOj3D0yjGP2MdikNNAWPA9Z5l2qDg==}
     dev: true
 
   /decode-named-character-reference@1.0.2:
@@ -2968,11 +2921,6 @@ packages:
       get-intrinsic: 1.2.4
     dev: true
 
-  /is-what@5.0.2:
-    resolution: {integrity: sha512-vI7Ui0qzNQ2ClDZd0bC7uqRk3T1imbX5cZODmVlqqdqiwmSIUX3CNSiRgFjFMJ987sVCMSa7xZeEDtpJduPg4A==}
-    engines: {node: '>=18'}
-    dev: true
-
   /isarray@2.0.5:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
     dev: true
@@ -3407,13 +3355,6 @@ packages:
       trim-newlines: 3.0.1
       type-fest: 0.18.1
       yargs-parser: 20.2.9
-    dev: true
-
-  /merge-anything@6.0.2:
-    resolution: {integrity: sha512-U8x6DL/YVudOcf82B6hd8GFg+6gF6hEHYwzqdo67GrH6vnDZ5YBq6BYX3hHWyCnG3CcqJDB1a9tj9fzMI3RL9Q==}
-    engines: {node: '>=18'}
-    dependencies:
-      is-what: 5.0.2
     dev: true
 
   /merge-stream@2.0.0:
@@ -4964,12 +4905,6 @@ packages:
   /typescript@4.9.5:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
     engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: true
-
-  /typescript@5.5.4:
-    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
-    engines: {node: '>=14.17'}
     hasBin: true
     dev: true
 
