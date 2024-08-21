@@ -197,6 +197,10 @@ const AssetTab: FC<{ assetType: SGDBAssetType }> = ({ assetType }) => {
                 onSecondaryButton={handleFilterClick}
                 onMenuActionDescription={t('ACTION_OPEN_DETAILS', 'Details')}
                 onMenuButton={() => openDetails(asset)}
+                onContextMenu={(evt) => {
+                  evt.preventDefault();
+                  openDetails(asset);
+                }}
               />
             ))}
             {/* Load more if spinner in view */}

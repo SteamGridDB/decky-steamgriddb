@@ -1,5 +1,5 @@
 import { ModalRoot, DialogButtonPrimary, joinClassNames, Focusable, Navigation } from '@decky/ui';
-import { FC, useState } from 'react';
+import { FC, MouseEvent, useState } from 'react';
 
 import Asset, { AssetProps } from '../components/asset/Asset';
 import Markdown from '../components/Markdown';
@@ -15,7 +15,7 @@ const DetailsModal: FC<{
 }> = ({ closeModal, asset, assetType, onAssetChange, assetProps }) => {
   const [downloading, setDownloading] = useState(false); // props don't update in modals, need to repeat this here
 
-  const handleDownload = async (evt: Event) => {
+  const handleDownload = async (evt: Event | MouseEvent) => {
     evt.preventDefault();
     setDownloading(true);
     await onAssetChange?.();
@@ -37,6 +37,7 @@ const DetailsModal: FC<{
           assetType={assetType}
           isAnimated={false}
           isDownloading={downloading}
+          onClick={handleDownload}
           {...assetProps}
         />
         <div className="info">

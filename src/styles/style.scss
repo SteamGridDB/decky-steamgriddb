@@ -39,6 +39,14 @@ $topBarHeight: var(--basicui-header-height, 40px);
       background-color: #05070a;
       height: $motdHeight;
       overflow: hidden;
+      @include cursor-outline(true);
+      transition:
+        outline-color ease-in-out 200ms,
+        transform ease-out 200ms;
+      &:hover {
+        transform: scale(1.01);
+        @include cursor-outline(false);
+      }
     }
     .motd-video-bg {
       position: absolute;
@@ -190,7 +198,8 @@ $topBarHeight: var(--basicui-header-height, 40px);
               width: 100%;
               height: 100%;
             }
-            &.gpfocus {
+            &.gpfocus,
+            &:hover {
               background-color: rgba(#fff, .75);
               > svg {
                 fill: #0e141b;

@@ -9,8 +9,8 @@ import {
 import { RoutePatch, routerHook } from '@decky/api';
 
 import { libraryAssetImageClasses, appportraitClasses, homeCarouselClasses, miscInfoClasses } from '../static-classes';
-import LibraryImage from '../components/asset/LibraryImage';
-import { ASSET_TYPE } from '../constants';
+// import LibraryImage from '../components/asset/LibraryImage';
+// import { ASSET_TYPE } from '../constants';
 import { addStyle, removeStyle } from '../utils/styleInjector';
 
 import { rerenderAfterPatchUpdate } from './patchUtils';

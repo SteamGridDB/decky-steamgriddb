@@ -7,6 +7,18 @@ $color-guide: #008ada;
     width: 100%;
     overflow: hidden;
     align-items: center;
+    z-index: 1;
+    &.is-mouse-resizing {
+      .logo-wrap-pos {
+        transition: none;
+      }
+      .logo-positioner-logo {
+        transition: none;
+        &-img {
+          transition: none;
+        }
+      }
+    }
     &.spinnyboi {
       height: var(--header-height, calc( 80px + 20vw )); // default-ish height to prevent jank when content is loaded in
       > img {
@@ -19,18 +31,14 @@ $color-guide: #008ada;
     &.logo-border {
       .logo-positioner-logo {
         outline: 3px $color-guide solid;
-      }
-      .logo-wrap::before,
-      .logo-wrap::after,
-      .logo-wrap > .logo-anchor-guide-mid {
-        display: block;
+        pointer-events: all;
       }
     }
     &.pos-UpperLeft {
       .logo-positioner-logo-img {
         object-position: top left;
       }
-      .logo-wrap::before {
+      .logo-anchor-guide.guide-upperleft {
         border-color: transparent;
       }
     }
@@ -38,7 +46,7 @@ $color-guide: #008ada;
       .logo-positioner-logo-img {
         object-position: bottom left;
       }
-      .logo-wrap::after {
+      .logo-anchor-guide.guide-bottomleft {
         border-color: transparent;
       }
     }
@@ -46,18 +54,15 @@ $color-guide: #008ada;
       .logo-positioner-logo-img {
         object-position: top center;
       }
-      .logo-wrap > .logo-anchor-guide-mid {
+      .logo-anchor-guide.guide-top {
         border-top-color: transparent;
-        &::before {
-          border-color: $color-guide;
-        }
       }
     }
     &.pos-CenterCenter {
       .logo-positioner-logo-img {
         object-position: center;
       }
-      .logo-wrap > .logo-anchor-guide-mid::before {
+      .logo-anchor-guide.guide-mid {
         border-color: transparent;
       }
     }
@@ -65,11 +70,8 @@ $color-guide: #008ada;
       .logo-positioner-logo-img {
         object-position: bottom center;
       }
-      .logo-wrap > .logo-anchor-guide-mid {
+      .logo-anchor-guide.guide-bottom {
         border-bottom-color: transparent;
-        &::before {
-          border-color: $color-guide;
-        }
       }
     }
     .logo-outer-region {
@@ -87,56 +89,62 @@ $color-guide: #008ada;
       top: 0;
       width: 100%;
       // anchor points
-      &::before,
-      &::after,
-      > .logo-anchor-guide-mid {
-        display: none;
+      .logo-anchor-guide,
+      .guide-middlecontainer {
+        display: block;
         position: absolute;
-        content: "";
+        z-index: 1;
+        box-sizing: border-box;
+      }
+      .logo-anchor-guide {
         border-color: $color-guide;
         border-width: 3px;
         width: 12px;
         height: 12px;
-        z-index: 1;
         border-radius: 3px;
-        box-sizing: border-box;
         transition: border-color linear 200ms;
         opacity: .65;
+        pointer-events: all;
+        &:hover {
+          cursor: pointer;
+          opacity: 1;
+        }
       }
-      &::before {
+      .guide-upperleft {
         border-left-style: solid;
         border-top-style: solid;
         top: 0;
         left: 0;
       }
-      &::after {
+      .guide-bottomleft {
         border-left-style: solid;
         border-bottom-style: solid;
         bottom: 0;
         left: 0;
       }
-      > .logo-anchor-guide-mid {
+      .guide-middlecontainer {
         width: 15px;
         height: 100%;
         left: 50%;
         top: 0;
         transform: translateX(-50%);
-        border-top-style: solid;
-        border-bottom-style: solid;
-        &::before {
-          content: "";
-          position: inherit;
-          border-color: inherit;
-          z-index: inherit;
-          border-radius: inherit;
-          box-sizing: inherit;
+        pointer-events: none;
+        z-index: 3; // above logo
+        .guide-top {
+          border-top-style: solid;
+          top: 0;
+        }
+        .guide-mid {
           border-width: 3px;
           width: 15px;
           height: 15px;
           top: 50%;
           border-style: solid;
           transform: translateY(-50%);
-          transition: inherit;
+        }
+        .guide-bottom {
+          border-bottom-style: solid;
+          bottom: 0;
         }
       }
     }
@@ -146,9 +154,10 @@ $color-guide: #008ada;
       height: 100%;
       transform: translate(var(--logo-left), var(--logo-top));
       transition: transform ease 250ms;
+      pointer-events: none;
       z-index: 2;
     }
-    &-logo {
+    .logo-positioner-logo {
       display: flex;
       align-items: flex-start;
       position: relative;
@@ -156,6 +165,7 @@ $color-guide: #008ada;
       width: var(--logo-width);
       height: var(--logo-height);
       transition: width ease 100ms, height ease 100ms;
+      cursor: move;
       &-img {
         width: 100%;
         height: 100%;
@@ -174,6 +184,7 @@ $color-guide: #008ada;
     gap: 2em;
     li {
       @include flex-center($x: false);
+      cursor: pointer;
       gap: .75em;
     }
     svg {

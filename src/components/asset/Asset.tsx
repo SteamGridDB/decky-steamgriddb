@@ -9,7 +9,7 @@ import Chip from '../Chips/Chip';
 
 import { LazyImage } from './LazyImage';
 
-export interface AssetProps extends FooterLegendProps {
+export interface AssetProps extends FooterLegendProps, Omit<FocusableProps, 'children'> {
   assetType: SGDBAssetType;
   width: number;
   height: number;

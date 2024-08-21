@@ -90,7 +90,14 @@ const DropdownMultiselect: FC<{
           >
             <style>
               {`
-              /* Inherit color from ".basiccontextmenu" */
+              /*
+                Hacks:
+                  Allow clicking through so cursor hits contextMenuItem instead
+                  Inherit color from ".basiccontextmenu"
+              */
+              .decky_DropdownMultiselectItem_DialogCheckbox {
+                pointer-events: none;
+              }
               .decky_DropdownMultiselectItem_DialogCheckbox > .DialogToggle_Label {
                 color: inherit;
               }

@@ -1,4 +1,11 @@
-import { FC, useState, useEffect, useMemo, useRef } from 'react';
+import {
+  FC,
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  MouseEvent,
+} from 'react';
 import {
   ModalRoot,
   DialogButtonPrimary,
@@ -31,7 +38,7 @@ const SteamModalImageSection: FC<{
   const [downloading, setDownloading] = useState(false);
   const fallbackAttempted = useRef(false);
 
-  const handleDownload = async (evt: Event) => {
+  const handleDownload = async (evt: Event | MouseEvent) => {
     evt.preventDefault();
     setDownloading(true);
     await onAssetChange?.(selectedImg);
@@ -91,6 +98,7 @@ const SteamModalImageSection: FC<{
                   isAnimated={false}
                   isDownloading={downloading}
                   onImgError={handleImgError}
+                  onClick={handleDownload}
                   {...assetProps}
                 />
               </div>

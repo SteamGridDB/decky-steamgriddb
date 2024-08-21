@@ -16,6 +16,18 @@
   }
 }
 
+@mixin cursor-outline($initial) {
+  @if $initial {
+    outline-style: solid;
+    outline-color: transparent;
+    outline-width: 2px;
+    transition: outline-color ease-in-out 200ms;
+  } @else {
+    cursor: pointer;
+    outline-color: rgba(255, 255, 255, .5);
+  }
+}
+
 @mixin asset {
   // initial wrap so focusable element can variable focus ring sizes
   .asset-box-wrap {
@@ -28,9 +40,11 @@
       position: relative;
       width: 100%;
       margin-top: auto;
+      @include cursor-outline(true);
       /* aspect-ratio: 2/3; CEF version doesn't support this, gotta do it the painful way */
 
-      &.gpfocus {
+      &.gpfocus,
+      &:hover {
         z-index: 3 + $zIndexAboveRing;
       }
 
@@ -195,7 +209,13 @@
         }
       }
     }
-    .image-wrap.gpfocus {
+    // Add outline on hover
+    .image-wrap:hover {
+      @include cursor-outline(false);
+    }
+    // Glow on hover or gamepad focus
+    .image-wrap.gpfocus,
+    .image-wrap:hover {
       &.type-hero {
         > .thumb {
           img,

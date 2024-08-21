@@ -1,5 +1,5 @@
 import { ConfirmModal, DialogButton, Focusable, Navigation, showModal } from '@decky/ui';
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { HiXMark } from 'react-icons/hi2';
 import { fetchNoCors } from '@decky/api';
 

@@ -35,9 +35,13 @@
   }
   .author {
     @include flex-center($x: false);
+    @include cursor-outline(true);
     margin-top: 1em;
     gap: .5em;
     font-weight: bold;
+    &:hover {
+      @include cursor-outline(false);
+    }
     > img {
       width: 32px;
       height: 32px;

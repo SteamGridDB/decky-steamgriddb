@@ -7,7 +7,7 @@ import {
   LogoPinPositions,
   LogoPosition,
 } from '@decky/ui';
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useEffect, useRef, useCallback } from 'react';
 
 import LibraryImage from '../components/asset/LibraryImage';
 import getCustomLogoPosition from '../utils/getCustomLogoPosition';
@@ -55,8 +55,98 @@ const getStylePositions = (pos: LogoPinPositions, widthPct: number, heightPct: n
   return positions[pos];
 };
 
-const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: LogoPosition | null, border: boolean }> = ({ app, logoPos, border }) => {
+const LogoPositioner = ({ app, logoPos, border, onAnchorClick, setLogoPos }: {
+  app: SteamAppOverview,
+  logoPos: LogoPosition | null,
+  border: boolean,
+  onAnchorClick: (position: LogoPinPositions) => void,
+  setLogoPos: React.Dispatch<React.SetStateAction<LogoPosition | null>>
+}) => {
+  const [dragging, setDragging] = useState(false);
+  // Calculations when using cursor to resize are all refs for speed
+  const positionerRef = useRef<HTMLDivElement | null>(null);
+  const lastX = useRef(0);
+  const lastY = useRef(0);
+  const heroBoundryRect = useRef<DOMRect>();
+  const logoSizerWidth = useRef(0);
+  const logoSizerHeight = useRef(0);
+
   const positions = logoPos ? getStylePositions(logoPos.pinnedPosition, logoPos.nWidthPct, logoPos.nHeightPct) : null;
+  const handleMove = useCallback((evt: MouseEvent) => {
+    const heroRect = heroBoundryRect.current;
+    if (!dragging || !logoPos || !heroRect) return;
+
+    let pctX = 0;
+    let pctY = 0;
+    const deltaX = evt.pageX - lastX.current;
+    const deltaY = evt.pageY - lastY.current;
+
+    if (['CenterCenter', 'UpperCenter', 'BottomCenter'].includes(logoPos.pinnedPosition)) {
+      if (lastX.current < heroRect.width / 2 + heroRect.x) {
+        pctX = (deltaX * -2 + logoSizerWidth.current) / heroRect.width;
+      } else {
+        pctX = (deltaX * 2 + logoSizerWidth.current) / heroRect.width;
+      }
+    } else {
+      pctX = (deltaX + logoSizerWidth.current) / heroRect.width;
+    }
+
+    if (['UpperLeft', 'UpperCenter'].includes(logoPos.pinnedPosition)) {
+      pctY = (deltaY + heroRect.height) / logoSizerHeight.current;
+    } else if (logoPos.pinnedPosition === 'CenterCenter') {
+      if (lastY.current > heroRect.height / 2 + heroRect.y) {
+        pctY = (deltaY * 2 + logoSizerHeight.current) / heroRect.height;
+      } else {
+        pctY = (logoSizerHeight.current - deltaY * 2) / heroRect.height;
+      }
+    } else {
+      pctY = (logoSizerHeight.current - deltaY) / heroRect.height;
+    }
+
+    setLogoPos((logoPos: any) => {
+      const newLogoPos = { ...logoPos };
+      newLogoPos.nWidthPct = pctX * 100;
+      newLogoPos.nHeightPct = pctY * 100;
+      newLogoPos.nWidthPct = Math.min(Math.max(newLogoPos.nWidthPct, 10), 100);
+      newLogoPos.nHeightPct = Math.min(Math.max(newLogoPos.nHeightPct, 10), 100);
+      return newLogoPos;
+    });
+  }, [dragging, logoPos, setLogoPos]);
+
+  const handleMouseDown = (evt: MouseEvent) => {
+    lastX.current = evt.pageX;
+    lastY.current = evt.pageY;
+
+    const heroRect = (evt.currentTarget as HTMLDivElement)?.closest('.logo-wrap')?.getBoundingClientRect();
+    const logoRect = (evt.currentTarget as HTMLDivElement)?.querySelector('.logo-positioner-logo')?.getBoundingClientRect();
+    if (logoRect && heroRect) {
+      heroBoundryRect.current = heroRect;
+      logoSizerWidth.current = logoRect.width;
+      logoSizerHeight.current = logoRect.height;
+    }
+    setDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+
+  useEffect(() => {
+    const positionerEl = positionerRef.current;
+    if (!positionerEl) return;
+
+    const draggyEl = positionerEl.querySelector('.logo-wrap-pos') as HTMLDivElement;
+    const modalOverlayEl = positionerEl.closest('.ModalOverlayContent.active') as HTMLDivElement;
+    draggyEl?.addEventListener('mousedown', handleMouseDown);
+    modalOverlayEl?.addEventListener('mousemove', handleMove);
+    modalOverlayEl?.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      draggyEl?.removeEventListener('mousedown', handleMouseDown);
+      modalOverlayEl?.removeEventListener('mousemove', handleMove);
+      modalOverlayEl?.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [handleMove, dragging]);
 
   if (!logoPos) return (
     <div className="logo-positioner spinnyboi">
@@ -66,7 +156,9 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: LogoPosition | null, 
 
   return (
     <div
+      ref={positionerRef}
       className={joinClassNames(
+        dragging ? 'is-mouse-resizing' : '',
         appDetailsHeaderClasses.TopCapsule,
         app.BIsModOrShortcut() ? appDetailsHeaderClasses.FallbackArt : '',
         'logo-positioner',
@@ -82,7 +174,13 @@ const LogoPositioner: FC<{ app: SteamAppOverview, logoPos: LogoPosition | null, 
     >
       <div className="logo-outer-region">
         <div className="logo-wrap">
-          <span className="logo-anchor-guide-mid" />
+          <span className="logo-anchor-guide guide-upperleft" onClick={() => onAnchorClick('UpperLeft')} />
+          <span className="logo-anchor-guide guide-bottomleft" onClick={() => onAnchorClick('BottomLeft')} />
+          <span className="guide-middlecontainer">
+            <span className="logo-anchor-guide guide-top" onClick={() => onAnchorClick('UpperCenter')} />
+            <span className="logo-anchor-guide guide-mid" onClick={() => onAnchorClick('CenterCenter')} />
+            <span className="logo-anchor-guide guide-bottom" onClick={() => onAnchorClick('BottomCenter')} />
+          </span>
           <div className="logo-wrap-pos">
             <LibraryImage
               app={app}
@@ -133,13 +231,7 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
 
   const handleDirection = (evt: GamepadEvent) => {
     // Increase speed when held down
-    if (evt.detail.is_repeat) {
-      if (resizeAmount.current !== 2) {
-        resizeAmount.current = resizeAmount.current + .25;
-      }
-    } else {
-      resizeAmount.current = .25;
-    }
+    resizeAmount.current = evt.detail.is_repeat ? Math.min(resizeAmount.current + 0.25, 2) : 0.25;
 
     setLogoPos((logoPos: any) => {
       const newLogoPos = { ...logoPos };
@@ -157,18 +249,8 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
         newLogoPos.nWidthPct = newLogoPos.nWidthPct + resizeAmount.current;
         break;
       }
-      if (newLogoPos.nWidthPct > 100) {
-        newLogoPos.nWidthPct = newLogoPos.nWidthPct = 100;
-      }
-      if (newLogoPos.nWidthPct <= 0) {
-        newLogoPos.nWidthPct = newLogoPos.nWidthPct = 0.01;
-      }
-      if (newLogoPos.nHeightPct > 100) {
-        newLogoPos.nHeightPct = newLogoPos.nHeightPct = 100;
-      }
-      if (newLogoPos.nHeightPct <= 0) {
-        newLogoPos.nHeightPct = newLogoPos.nHeightPct = 0.01;
-      }
+      newLogoPos.nWidthPct = Math.min(Math.max(newLogoPos.nWidthPct, 0.01), 100);
+      newLogoPos.nHeightPct = Math.min(Math.max(newLogoPos.nHeightPct, 0.01), 100);
       return newLogoPos;
     });
   };
@@ -176,13 +258,22 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
   const handlePinPos = () => {
     const anchorPos: LogoPinPositions[] = ['BottomLeft', 'UpperLeft', 'UpperCenter', 'CenterCenter', 'BottomCenter'];
     setLogoPos((logoPos) => {
-      const newLogoPos = { ...logoPos };
-      if (logoPos && anchorPos.indexOf(logoPos.pinnedPosition) === anchorPos.length - 1) {
-        newLogoPos.pinnedPosition = anchorPos[0];
-      } else {
-        newLogoPos.pinnedPosition = anchorPos[anchorPos.indexOf(logoPos ? logoPos.pinnedPosition : 'BottomLeft') + 1];
-      }
-      return newLogoPos as LogoPosition;
+      const currentPosIndex = anchorPos.indexOf(logoPos?.pinnedPosition ?? 'BottomLeft');
+      const nextPosIndex = (currentPosIndex + 1) % anchorPos.length;
+
+      return {
+        ...logoPos,
+        pinnedPosition: anchorPos[nextPosIndex],
+      } as LogoPosition;
+    });
+  };
+
+  const handleAnchorClick = (position: LogoPinPositions) => {
+    setLogoPos((logoPos) => {
+      return {
+        ...logoPos,
+        pinnedPosition: position,
+      } as LogoPosition;
     });
   };
 
@@ -225,11 +316,20 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
       onOptionsActionDescription={showBorder ? t('ACTION_HIDE_POS_GUIDES', 'Hide Guides') : t('ACTION_SHOW_OUTLINE', 'Show Guides')}
       onMenuButton={handleReset}
       onMenuActionDescription={t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}
+      onClick={(evt) => evt.preventDefault()} // Prevent onActivate from triggering on actual mouse click
     >
-      {overview && <LogoPositioner app={overview} logoPos={logoPos} border={showBorder} />}
+      {overview && (
+        <LogoPositioner
+          app={overview}
+          logoPos={logoPos}
+          border={showBorder}
+          onAnchorClick={handleAnchorClick}
+          setLogoPos={setLogoPos}
+        />
+      )}
       <ul className="logo-positioner-instructions">
         <li><img src={Dpad} /> {t('ACTION_ADJUST_POS_SIZE', 'Adjust Size')}</li>
-        <li><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
+        <li onClick={handlePinPos}><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
       </ul>
     </Focusable>
   );
