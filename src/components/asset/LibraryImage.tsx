@@ -1,5 +1,5 @@
 import { FC, CSSProperties } from 'react';
-import { findModuleExport, SteamAppOverview, Export } from '@decky/ui';
+import { findModuleChild, SteamAppOverview } from '@decky/ui';
 
 export interface LibraryImageProps {
   app?: SteamAppOverview;
@@ -20,6 +20,14 @@ export interface LibraryImageProps {
   style?: CSSProperties;
 }
 
-const LibraryImage = findModuleExport((e: Export) => e?.toString && e.toString().includes('Either rgSources or app must be specified')) as FC<LibraryImageProps>;
+const LibraryImage = findModuleChild((m) => {
+  if (typeof m !== 'object') return;
+  for (const prop in m) {
+    if (m[prop]?.toString && m[prop].toString().includes('Either rgSources or app must be specified')) {
+      return m[prop];
+    }
+  }
+  return;
+}) as FC<LibraryImageProps>;
 
 export default LibraryImage;

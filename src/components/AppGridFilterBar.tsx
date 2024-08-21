@@ -1,9 +1,25 @@
-import { findModuleExport, Export } from '@decky/ui';
+import { findModuleChild } from '@decky/ui';
 import { FC, HTMLAttributes } from 'react';
 
-export const appGridFilterHeaderClass = findModuleExport((e: Export, name: any) => typeof e === 'string' && name === 'AppGridFilterHeader');
+const appGridFilterHeaderClass = findModuleChild((m) => {
+  if (typeof m !== 'object') return;
+  for (const prop in m) {
+    if (typeof m[prop] === 'string' && prop === 'AppGridFilterHeader') {
+      return m[prop];
+    }
+  }
+  return;
+});
 
-const appGridFilterTextClass = findModuleExport((e: Export, name: any) => typeof e === 'string' && name === 'AppGridFilterText');
+const appGridFilterTextClass = findModuleChild((m) => {
+  if (typeof m !== 'object') return;
+  for (const prop in m) {
+    if (typeof m[prop] === 'string' && prop === 'AppGridFilterText') {
+      return m[prop];
+    }
+  }
+  return;
+});
 
 const AppGridFilterBar: FC<HTMLAttributes<HTMLDivElement>> = ({ children, ...rest }) => (
   <div {...rest}>

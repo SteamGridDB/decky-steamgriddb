@@ -2,13 +2,11 @@ import {
   afterPatch,
   fakeRenderComponent,
   findInReactTree,
-  findModuleByExport,
-  Export,
+  findModuleChild,
   MenuItem,
   Navigation,
   Patch,
 } from '@decky/ui';
-import { FC } from 'react';
 
 import t from '../utils/i18n';
 import log from '../utils/log';
@@ -88,12 +86,21 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
  * Game context menu component.
  */
 export const LibraryContextMenu = fakeRenderComponent(
-  Object.values(
-    findModuleByExport((e: Export) => e?.toString && e.toString().includes('().LibraryContextMenu'))
-  ).find((sibling) => (
-    sibling?.toString().includes('createElement') &&
-    sibling?.toString().includes('navigator:')
-  )) as FC
+  findModuleChild((m) => {
+    if (typeof m !== 'object') return;
+    for (const prop in m) {
+      if (
+        m[prop]?.toString() &&
+        m[prop].toString().includes('().LibraryContextMenu')
+      ) {
+        return Object.values(m).find((sibling) => (
+          sibling?.toString().includes('createElement') &&
+          sibling?.toString().includes('navigator:')
+        ));
+      }
+    }
+    return;
+  })
 ).type;
 
 export default contextMenuPatch;
