@@ -57,6 +57,7 @@ const Motd: FC<Motd> = ({
         }}
         onMiddleButton={() => {
           set('motd_hidden_global', true, true);
+          setMotdCurrent(null);
         }}
       />
     );
