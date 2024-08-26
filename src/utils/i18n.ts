@@ -1,4 +1,5 @@
 import * as cs from '../i18n/cs.json';
+import * as da from '../i18n/da.json';
 import * as de from '../i18n/de.json';
 import * as el from '../i18n/el.json';
 import * as es from '../i18n/es.json';
@@ -39,6 +40,11 @@ export const LANGS: {
     name: 'Čeština',
     strings: cs,
     credit: ['zenobit', 'theczechczech'],
+  },
+  da: {
+    name: 'Dansk',
+    strings: da,
+    credit: ['Jakob Frank Mogensen'],
   },
   de: {
     name: 'Deutsch',
@@ -140,11 +146,6 @@ export const LANGS: {
 //  th: {
 //    name: 'ไทย',
 //    strings: th,
-//    credit: []
-//  },
-//  da: {
-//    name: 'Dansk',
-//    strings: da,
 //    credit: []
 //  },
 //  no: {
