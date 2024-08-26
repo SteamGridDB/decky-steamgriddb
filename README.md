@@ -45,6 +45,7 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 | | |
 | - | - |
 | **Čeština** | zenobit, theczechczech |
+| **Dansk** | Jakob Frank Mogensen |
 | **Deutsch** | Kurikuo, benutzer_artur7, Anja, FL0W, Remirax, LittleFreak |
 | **Español-España** | Andrea Laguillo, Kam, m0uch0 |
 | **Español-Latinoamérica** | Kam |
