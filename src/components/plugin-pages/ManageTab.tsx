@@ -22,7 +22,7 @@ const AssetBlock: FC<{
   browseStartPath: string,
   editable?: boolean,
 }> = ({ app, browseStartPath, assetType, editable = true }) => {
-  const { clearAsset, changeAsset, changeAssetFromUrl } = useSGDB();
+  const { serverApi, clearAsset, changeAsset, changeAssetFromUrl } = useSGDB();
   const [overview, setOverview] = useState<SteamAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
   const refreshing = useRef(false);
@@ -54,7 +54,7 @@ const AssetBlock: FC<{
   const handleBrowse = async () => {
     const path = await openFilePicker(browseStartPath, true, undefined, {
       validFileExtensions: ['png','jpg','jpeg','gif','webp','apng','tiff','tga'],
-    });
+    }, serverApi);
     await changeAssetFromUrl(path.path as string, assetType, true);
     await refreshOverview();
   };
