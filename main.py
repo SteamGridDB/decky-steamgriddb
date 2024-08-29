@@ -57,7 +57,7 @@ class Plugin:
     async def get_local_start(self):
         return decky_plugin.DECKY_USER_HOME
 
-    async def download_file(self, url='', output_dir='', file_name=''):
+    async def download_file(url='', output_dir='', file_name=''):
         decky_plugin.logger.debug({url, output_dir, file_name})
         try:
             if access(dirname(output_dir), W_OK):
@@ -78,7 +78,7 @@ class Plugin:
         iconname = "%s_icon%s" % (appid, ext)
         output_file = get_userdata_config(owner_id) / 'grid' / iconname
         saved_path = str(copyfile(path, output_file))
-        return await self.set_shortcut_icon(appid, owner_id, path=saved_path)
+        return await self.set_shortcut_icon(self, appid, owner_id, path=saved_path)
 
     async def set_shortcut_icon_from_url(self, appid, owner_id, url):
         output_dir = get_userdata_config(owner_id) / 'grid'
@@ -86,7 +86,7 @@ class Plugin:
         iconname = "%s_icon%s" % (appid, ext)
         saved_path = await self.download_file(url, output_dir, file_name=iconname)
         if saved_path:
-            return await self.set_shortcut_icon(appid, owner_id, path=saved_path)
+            return await self.set_shortcut_icon(self, appid=appid, owner_id=owner_id, path=saved_path)
         else:
             raise Exception("Failed to download icon from %s" % url)
 
