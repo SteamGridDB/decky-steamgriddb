@@ -3,7 +3,7 @@ import { showModal, ConfirmModal } from '@decky/ui';
 import t from './i18n';
 
 const restartSteam = () => {
-  SteamClient.User.StartRestart();
+  SteamClient.User.StartRestart(false);
 };
 
 const showRestartConfirm = () => {
