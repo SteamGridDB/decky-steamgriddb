@@ -42,27 +42,28 @@ Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="do
 **Early Testing:** Emenesu, Mr. Mendelli  
 **Development Help:** [SDH Discord](https://discord.gg/ZU74G2NJzk)  
 **Localisation:**
-| | |
-| - | - |
-| **Čeština** | zenobit, theczechczech |
-| **Dansk** | Jakob Frank Mogensen |
-| **Deutsch** | Kurikuo, benutzer_artur7, Anja, FL0W, Remirax, LittleFreak |
-| **Español-España** | Andrea Laguillo, Kam, m0uch0 |
-| **Español-Latinoamérica** | Kam |
-| **Français** | Michael Jean |
-| **Italiano** | SpagottoB37, RodoMa92 |
-| **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde |
-| **Polski** | DRS, Michał Kwiatkowski, MAX0R |
-| **Português-Brasil** | Oregano, Thomas Eric |
-| **Português** | Kokasgui, Ev1lbl0w |
-| **Română** | Munt |
-| **Suomi** | Jage |
-| **Svenska** | Moneyman Dan, Super |
-| **Türkçe** | Bilgehan Ceviz, Sib | Twig |
-| **Ελληνικά** | Emenesu |
-| **Русский** | fycher, LostHikking |
-| **Українська** | Veydzher, Kefir |
-| **한국어** | yor42 |
-| **日本語** | Nes |
-| **正體中文** | mingyc |
-| **简体中文** | zhzy0077, XHXIAIEIN, simon3000 |
+https://crowdin.com/project/decky-steamgriddb
+| Language | Translators | ![total progress](https://badges.crowdin.net/decky-steamgriddb/localized.svg) |
+| - | - | -: |
+| **Čeština** | zenobit, theczechczech | ![cs translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27cs%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Dansk** | Jakob Frank Mogensen | ![da translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27da%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Deutsch** | Kurikuo, benutzer_artur7, Anja, FL0W, Remirax, LittleFreak | ![de translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27de%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Español-España** | Andrea Laguillo, Kam, m0uch0 | ![es-ES translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27es-ES%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Español-Latinoamérica** | Kam | ![es-419 translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27es-419%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Français** | Michael Jean | ![fr translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27fr%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Italiano** | SpagottoB37, RodoMa92 | ![it translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27it%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde | ![nl translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27nl%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Polski** | DRS, Michał Kwiatkowski, MAX0R | ![pl translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27pl%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Português-Brasil** | Oregano, Thomas Eric | ![pt-BR translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27pt-BR%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Português** | Kokasgui, Ev1lbl0w | ![pt-PT translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27pt-PT%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Română** | Munt | ![ro translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27ro%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Suomi** | Jage | ![fi translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27fi%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Svenska** | Moneyman Dan, Super | ![sv-SE translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27sv-SE%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Türkçe** | Bilgehan Ceviz, Sib &#124; Twig | ![tr translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27tr%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Ελληνικά** | Emenesu | ![el translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27el%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Русский** | fycher, LostHikking | ![ru translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27ru%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **Українська** | Veydzher, Kefir | ![uk translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27uk%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **한국어** | yor42 | ![ko translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27ko%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **日本語** | Nes | ![ja translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27ja%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **正體中文** | mingyc | ![zh-TW translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27zh-TW%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
+| **简体中文** | zhzy0077, XHXIAIEIN, simon3000 | ![zh-CN translation](https://img.shields.io/badge/dynamic/json?label=%20&style=for-the-badge&query=%24.progress[?(@.data.languageId==%27zh-CN%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-14343274-548275.json) |
