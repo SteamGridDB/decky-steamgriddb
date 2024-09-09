@@ -18,6 +18,7 @@
   "LABEL_SQUARE_CAPSULES": "Couvertures carrées",
   "LABEL_SQUARE_CAPSULES_DESC": "Utiliser des couvertures carrées au lieu de celles en portrait. Les filtres carrés seront automatiquement sélectionnés.",
   "LABEL_SETTINGS_ASSET_TABS": "Options des onglets",
+  "LABEL_SETTINGS_DISABLE_MOTD_DESC": "Les annonces sont utilisées avec parcimonie pour afficher des informations importantes ou des événements communautaires.",
   "LABEL_TRANSLATION_CREDIT_TITLE": "Traduction française",
   "LABEL_MORE_SGDB_TITLE": "Plus de contenu SteamGridDB",
   "ACTION_SGDB_DISCORD": "Rejoignez le Discord",
