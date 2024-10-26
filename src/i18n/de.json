@@ -69,14 +69,14 @@
   "LABEL_EPILEPSY": "Epilepsie",
   "ACTION_OPEN_FILTER": "Filter",
   "ACTION_OPEN_OFFICIAL_ASSETS": "Offizielle {assetType}",
-  "ACTION_ASSET_APPLY": "{assetType} übernehmen",
+  "ACTION_ASSET_APPLY": "{assetType} Übernehmen",
   "MSG_GAME_SELECTED": "{gameName} ausgewählt",
   "MSG_ASSETS_FILTERED": "Einige Inhalte könnten durch Filter ausgeblendet werden",
   "MSG_GAME_SELECTED_AND_ASSETS_FILTERED": "{gameName} mit Filter ausgewählt",
   "TITLE_MOTD_HIDE": "Ankündigung ausblenden?",
   "LABEL_MOTD_THIS": "Diese Ankündigung",
   "LABEL_MOTD_ALL": "Alle Ankündigungen",
-  "MSG_ASSET_APPLY_SUCCESS": "{assetType} wurde erfolgreich angewendet!",
+  "MSG_ASSET_APPLY_SUCCESS": "{assetType} Wurde erfolgreich angewendet!",
   "MSG_ASSET_APPLY_ERROR": "Es gab ein Problem beim hinzufügen des Inhalts.",
   "ACTION_OPEN_DETAILS": "Eigenschaften"
 }
