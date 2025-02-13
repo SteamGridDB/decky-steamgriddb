@@ -1,1 +1,12 @@
-{}
+{
+  "ASSET_TYPE_CAPSULE": "Kapsel",
+  "ASSET_TYPE_WIDECAPSULE": "Bred kapsel",
+  "ASSET_TYPE_HERO": "Banner",
+  "ASSET_TYPE_LOGO": "Logo",
+  "LABEL_TAB_CAPSULE": "Kapsel",
+  "LABEL_TAB_WIDECAPSULE": "Bred kapsel",
+  "LABEL_TAB_HERO": "Banner",
+  "LABEL_TAB_LOGO": "Logo",
+  "LABEL_TAB_ICON": "Ikon",
+  "LABEL_TAB_MANAGE": "Administrer"
+}
