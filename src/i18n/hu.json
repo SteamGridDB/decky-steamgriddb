@@ -1,1 +1,8 @@
-{}
+{
+  "ASSET_TYPE_CAPSULE": "Kapszula",
+  "ASSET_TYPE_HERO": "Kiemelés",
+  "ASSET_TYPE_LOGO": "Logó",
+  "ASSET_TYPE_ICON": "Ikon",
+  "LABEL_TAB_CAPSULE": "Kapszula",
+  "LABEL_TAB_HERO": "Kiemelés"
+}
