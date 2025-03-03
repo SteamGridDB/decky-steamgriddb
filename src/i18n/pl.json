@@ -53,6 +53,7 @@
   "ACTION_HIDE_POS_GUIDES": "Ukryj podpowiedzi",
   "ACTION_SHOW_OUTLINE": "Pokaż podpowiedzi",
   "ACTION_ADJUST_POS_SIZE": "Dostosuj Rozmiar",
+  "ACTION_CHANGE_POS_LOGO_ANCHOR_POINT": "Zmień punkt zaczepienia",
   "LABEL_ASSET_CURRENT": "Obecny {assetType}",
   "ACTION_ASSET_CUSTOM_CLEAR": "Przywróć Oryginalną Grafikę",
   "ACTION_ASSET_BROWSE_LOCAL": "Przeglądaj Pliki Lokalne",
