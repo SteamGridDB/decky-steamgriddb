@@ -63,7 +63,7 @@
   "LABEL_HUMOR": "Humor",
   "LABEL_EPILEPSY": "Epilepsia",
   "ACTION_OPEN_FILTER": "Filtros",
-  "ACTION_OPEN_OFFICIAL_ASSETS": "Oficial {assetType}",
+  "ACTION_OPEN_OFFICIAL_ASSETS": "{assetType} oficial",
   "ACTION_ASSET_APPLY": "Usar {assetType}",
   "MSG_GAME_SELECTED": "{gameName} seleccionado",
   "MSG_ASSETS_FILTERED": "Algunas imágenes podrían no mostrarse debido al filtro",
