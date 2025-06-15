@@ -35,7 +35,7 @@
   "LABEL_RESTART_STEAM_TITLE": "Starta om Steam?",
   "ACTION_RESTART_STEAM_LATER": "Senare",
   "ACTION_RESTART_STEAM_NOW": "Starta om nu",
-  "MSG_RESTART_STEAM_DESC": "Steam måste startas om för att ändringarna ska träda i kraft",
+  "MSG_RESTART_STEAM_DESC": "Steam måste startas om för att ändringarna ska träda i kraft.",
   "LABEL_GAME_SEARCH_TITLE": "Sök efter ett spel...",
   "LABEL_FILTER_MODAL_TITLE": "{assetType}-filter",
   "LABEL_FILTER_GAME": "Spel",
