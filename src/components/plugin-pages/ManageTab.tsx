@@ -4,7 +4,6 @@ import {
   DialogButton,
   Focusable,
   joinClassNames,
-  SteamAppOverview,
   showModal,
 } from '@decky/ui';
 import { HiTrash, HiFolder, HiEyeSlash } from 'react-icons/hi2';
@@ -18,13 +17,13 @@ import openFilePicker from '../../utils/openFilePicker';
 import LogoPositionerModal from '../../modals/LogoPositionerModal';
 
 const AssetBlock: FC<{
-  app: SteamAppOverview,
+  app: AppStoreAppOverview,
   assetType: SGDBAssetType,
   browseStartPath: string,
   editable?: boolean,
 }> = ({ app, browseStartPath, assetType, editable = true }) => {
   const { clearAsset, changeAsset, changeAssetFromUrl } = useSGDB();
-  const [overview, setOverview] = useState<SteamAppOverview | null>(app);
+  const [overview, setOverview] = useState<AppStoreAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
   const refreshing = useRef(false);
 
@@ -129,7 +128,7 @@ const AssetBlock: FC<{
 const LocalTab: FC = () => {
   const { appId, appOverview } = useSGDB();
   const [startPath, setStartPath] = useState('/');
-  const [overview, setOverview] = useState<SteamAppOverview>();
+  const [overview, setOverview] = useState<AppStoreAppOverview>();
 
   useEffect(() => {
     if (!appId) return;
@@ -202,7 +201,7 @@ const LocalTab: FC = () => {
         <DialogButton
           onClick={async () => {
             await (window.appDetailsStore as unknown as {
-              ClearCustomLogoPosition: (app: SteamAppOverview) => any;
+              ClearCustomLogoPosition: (app: AppStoreAppOverview) => any;
             }).ClearCustomLogoPosition(overview);
           }}
         >

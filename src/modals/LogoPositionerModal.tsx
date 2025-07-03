@@ -1,11 +1,8 @@
 import {
-  SteamAppOverview,
   joinClassNames,
   Focusable,
   GamepadEvent,
   appDetailsHeaderClasses,
-  LogoPinPositions,
-  LogoPosition,
 } from '@decky/ui';
 import { FC, useState, useEffect, useRef, useCallback } from 'react';
 
@@ -56,7 +53,7 @@ const getStylePositions = (pos: LogoPinPositions, widthPct: number, heightPct: n
 };
 
 const LogoPositioner = ({ app, logoPos, border, onAnchorClick, setLogoPos }: {
-  app: SteamAppOverview,
+  app: AppStoreAppOverview,
   logoPos: LogoPosition | null,
   border: boolean,
   onAnchorClick: (position: LogoPinPositions) => void,
@@ -206,7 +203,7 @@ const LogoPositioner = ({ app, logoPos, border, onAnchorClick, setLogoPos }: {
 };
 
 const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ closeModal, appId }) => {
-  const [overview, setOverview] = useState<SteamAppOverview | null>(null);
+  const [overview, setOverview] = useState<AppStoreAppOverview | null>(null);
   const [logoPos, setLogoPos] = useState<LogoPosition | null>(null);
   const [showBorder, setShowBorder] = useState<boolean>(true);
   const resizeAmount = useRef(.25);
@@ -224,7 +221,7 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
   const handleReset = async () => {
     if (!overview || !logoPos) return;
     await (window.appDetailsStore as unknown as {
-      ClearCustomLogoPosition: (app: SteamAppOverview) => any;
+      ClearCustomLogoPosition: (app: AppStoreAppOverview) => any;
     }).ClearCustomLogoPosition(overview);
     closeModal?.();
   };

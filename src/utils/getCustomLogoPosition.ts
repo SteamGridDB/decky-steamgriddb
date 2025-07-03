@@ -1,4 +1,3 @@
-import { LogoPosition } from '@decky/ui';
 import waitUntil from 'async-wait-until';
 
 import getAppOverview from './getAppOverview';

@@ -6,7 +6,7 @@
     "jsx": "react",
     "jsxFactory": "window.SP_REACT.createElement",
     "jsxFragmentFactory": "window.SP_REACT.Fragment",
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,

@@ -8,7 +8,6 @@ import {
   useMemo,
   ReactNode,
 } from 'react';
-import { SteamAppOverview } from '@decky/ui';
 import { call, fetchNoCors, toaster } from '@decky/api';
 
 import MenuIcon from '../components/Icons/MenuIcon';
@@ -31,7 +30,7 @@ export const SGDB_API_BASE = process.env.ROLLUP_ENV === 'development' ? 'http://
 export type SGDBContextType = {
   appId: number | null;
   setAppId: React.Dispatch<React.SetStateAction<number | null>>;
-  appOverview: SteamAppOverview;
+  appOverview: AppStoreAppOverview;
   searchAssets: (assetType: SGDBAssetType, options: {gameId?: number | null, filters?: any, page?: number, signal?: AbortSignal}) => Promise<Array<any>>;
   searchGames: (term: string) => Promise<Array<any>>;
   getSgdbGame: (sgdbGame: any) => Promise<any>;
@@ -100,8 +99,8 @@ const getApiParams = (assetType: SGDBAssetType, filters: any, page: number) => {
 export const SGDBContext = createContext({});
 
 export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [appId, setAppId] = useState<number | null>(null);
-  const [appOverview, setAppOverview] = useState<SteamAppOverview | null>(null);
+  const [appId, setAppId] = useState<number>(0);
+  const [appOverview, setAppOverview] = useState<AppStoreAppOverview | null>(null);
 
   const clearAsset: SGDBContextType['clearAsset'] = useCallback(async (assetType) => {
     assetType = getAmbiguousAssetType(assetType);

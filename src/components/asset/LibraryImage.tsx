@@ -1,8 +1,8 @@
 import { FC, CSSProperties } from 'react';
-import { findModuleExport, SteamAppOverview, Export } from '@decky/ui';
+import { findModuleExport, Export } from '@decky/ui';
 
 export interface LibraryImageProps {
-  app?: SteamAppOverview;
+  app?: AppStoreAppOverview;
   rgSources?: any;
   appid?: number;
   eAssetType: eAssetType;

@@ -1,4 +1,4 @@
-import { AppDetails } from '@decky/ui';
+import { AppDetails } from '@decky/ui/dist/globals/steam-client/App';
 
 /**
  * Tries to retrieve the app details from Steam.

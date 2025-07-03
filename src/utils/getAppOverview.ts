@@ -1,7 +1,6 @@
-import { SteamAppOverview } from '@decky/ui';
 import waitUntil from 'async-wait-until';
 
-const getAppOverview = async (appId: number): Promise<SteamAppOverview | null> => {
+const getAppOverview = async (appId: number): Promise<AppStoreAppOverview | null> => {
   try {
     return await waitUntil(() => {
       return window.appStore.GetAppOverviewByAppID(appId) ?? null as any;
