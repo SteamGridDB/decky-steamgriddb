@@ -333,7 +333,7 @@ const QuickAccessSettings: VFC = () => {
           icon={<SiBluesky fill="#0285FF" />}
           url="https://bsky.app/profile/steamgriddb.com"
         >
-          BlueSky
+          Bluesky
         </PanelSocialButton>
         <PanelSocialButton
           icon={<SiMastodon fill="#6364FF" />}
