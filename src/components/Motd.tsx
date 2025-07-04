@@ -7,6 +7,7 @@ import t from '../utils/i18n';
 import showQrModal from '../utils/showQrModal';
 import useSettings from '../hooks/useSettings';
 import { SGDB_API_BASE, SGDB_API_KEY } from '../hooks/useSGDB';
+import log from '../utils/log';
 
 export interface MotdApiResponse {
   id: string;
@@ -92,17 +93,18 @@ const Motd: FC<Motd> = ({
 
       const hiddenMotd = await get('motd_hidden', null);
       const rn = Math.floor(new Date().getTime() / 1000);
-      const lastWeek = Math.floor(new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000).getTime() / 1000);
+      const yesterday = Math.floor(new Date(new Date().getTime() - 24 * 60 * 60 * 1000).getTime() / 1000);
       const lastCheck = parseInt(await get('motd_last_fetched', 0));
 
       let motd: MotdApiResponse | null;
       // only get new motd once a week
-      if (lastWeek >= lastCheck) {
+      if (yesterday >= lastCheck) {
         motd = await fetchMotd();
       } else {
         // get cached motd if not hidden
         motd = await get('motd_cached', null);
       }
+      log('motd', motd);
 
       // Don't set if explicitly hidden by the user or already expired
       if (motd && (hiddenMotd !== motd.id)) {
