@@ -18,13 +18,14 @@ import {
   SiPatreon,
   SiGithub,
   SiDiscord,
-  SiTwitter,
   SiCrowdin,
   SiMastodon,
   SiKofi,
+  SiBluesky,
 } from 'react-icons/si';
 
 import BoopIcon from '../Icons/BoopIcon';
+import TwitterIcon from '../Icons/TwitterIcon';
 import t, { getCredits } from '../../utils/i18n';
 import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
@@ -329,16 +330,22 @@ const QuickAccessSettings: VFC = () => {
           {t('ACTION_SGDB_BOOP', 'Check out SGDBoop')}
         </PanelSocialButton>
         <PanelSocialButton
-          icon={<SiTwitter fill="#1DA1F2" />}
-          url="https://twitter.com/SteamGridDB"
+          icon={<SiBluesky fill="#0285FF" />}
+          url="https://bsky.app/profile/steamgriddb.com"
         >
-          lol
+          BlueSky
         </PanelSocialButton>
         <PanelSocialButton
           icon={<SiMastodon fill="#6364FF" />}
           url="https://mastodon.gamedev.place/@SteamGridDB"
         >
           Mastodon
+        </PanelSocialButton>
+        <PanelSocialButton
+          icon={<TwitterIcon fill="#1DA1F2" />}
+          url="https://twitter.com/SteamGridDB"
+        >
+          lol
         </PanelSocialButton>
       </PanelSection>
     </>
