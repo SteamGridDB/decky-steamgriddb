@@ -20,6 +20,8 @@ import * as tr from '../i18n/tr.json';
 import * as uk from '../i18n/uk.json';
 import * as zhCn from '../i18n/zh-cn.json';
 import * as zhTw from '../i18n/zh-tw.json';
+import * as no from '../i18n/no.json';
+import * as hu from '../i18n/hu.json';
 
 const simplifiedChinese = {
   name: '简体中文',
@@ -49,7 +51,7 @@ export const LANGS: {
   de: {
     name: 'Deutsch',
     strings: de,
-    credit: ['Kurikuo', 'benutzer_artur7', 'Anja', 'FL0W', 'Remirax', 'LittleFreak'],
+    credit: ['Kurikuo', 'benutzer_artur7', 'Anja', 'FL0W', 'Remirax', 'LittleFreak', 'bignutty', 'Tom Taylor'],
   },
   fi: {
     name: 'Suomi',
@@ -69,17 +71,17 @@ export const LANGS: {
   'es-419': {
     name: 'Español-Latinoamérica',
     strings: es419,
-    credit: ['Kam'],
+    credit: ['Kam', 'Knux03'],
   },
   fr: {
     name: 'Français',
     strings: fr,
-    credit: ['Michael Jean'],
+    credit: ['Michael Jean', 'Xunkar'],
   },
   it: {
     name: 'Italiano',
     strings: it,
-    credit: ['SpagottoB37', 'RodoMa92'],
+    credit: ['SpagottoB37', 'RodoMa92', 'federico-ntr'],
   },
   ja: {
     name: '日本語',
@@ -89,7 +91,7 @@ export const LANGS: {
   ko: {
     name: '한국어',
     strings: ko,
-    credit: ['yor42'],
+    credit: ['yor42', 'sua (sua_owo)'],
   },
   nl: {
     name: 'Nederlands',
@@ -99,7 +101,7 @@ export const LANGS: {
   pl: {
     name: 'Polski',
     strings: pl,
-    credit: ['DRS', 'Michał Kwiatkowski', 'MAX0R'],
+    credit: ['DRS', 'Michał Kwiatkowski', 'MAX0R', 'minttuNB', 'Szymon Kucharski'],
   },
   pt: {
     name: 'Português',
@@ -124,7 +126,7 @@ export const LANGS: {
   sv: {
     name: 'Svenska',
     strings: sv,
-    credit: ['Moneyman Dan', 'Super'],
+    credit: ['Moneyman Dan', 'Super', 'Daniel Nylander'],
   },
   tr: {
     name: 'Türkçe',
@@ -143,19 +145,19 @@ export const LANGS: {
     strings: zhTw,
     credit: ['mingyc'],
   },
+  no: {
+    name: 'Norsk',
+    strings: no,
+    credit: ['minttuNB'],
+  },
+  hu: {
+    name: 'Magyar',
+    strings: hu,
+    credit: ['minttuNB'],
+  },
 //  th: {
 //    name: 'ไทย',
 //    strings: th,
-//    credit: []
-//  },
-//  no: {
-//    name: 'Norsk',
-//    strings: no,
-//    credit: []
-//  },
-//  hu: {
-//    name: 'Magyar',
-//    strings: hu,
 //    credit: []
 //  },
   //  bg: {
