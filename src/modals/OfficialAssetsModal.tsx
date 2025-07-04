@@ -118,6 +118,15 @@ const SteamModalImageSection: FC<{
   );
 };
 
+type FullAssetImages = {
+	image: { [language: string]: string };
+	image2x: { [language: string]: string };
+};
+
+type FullHeaderImages = {
+	[languageCode: string]: string;
+};
+
 const OfficialAssetsModal: FC<{
   closeModal?: () => void,
   assetType: SGDBAssetType,
@@ -126,15 +135,20 @@ const OfficialAssetsModal: FC<{
     steam: {
       id: string;
       metadata: {
-        clienticon?: string | null;
-        header_image: string | null;
-        library_capsule: string | null;
-        library_hero: string | null;
-        library_logo: string | null;
-        logo_position: string | null;
-        original_release_date: number | null;
-        steam_release_date: number | null;
         store_asset_mtime: number | null;
+        library_capsule: string | null;
+        library_logo: string | null;
+        library_hero: string | null;
+        steam_release_date: number | null;
+        original_release_date: number | null;
+        logo_position: string | null;
+        header_image: string | null;
+        clienticon: string | null;
+        icon: string | null;
+        header_image_full: FullHeaderImages;
+        library_capsule_full: FullAssetImages;
+        library_hero_full: FullAssetImages;
+        library_logo_full: FullAssetImages;
       },
     }[],
   }
@@ -149,24 +163,17 @@ const OfficialAssetsModal: FC<{
       bDisableBackgroundDismiss={false}
       bHideCloseIcon={false}
     >
-      {(assetType === 'grid_l' && meta.header_image) && (
+      {(assetType === 'grid_l' && meta.header_image_full) && (
         <SteamModalImageSection
           closeModal={closeModal}
           onAssetChange={onAssetChange}
           assetType={assetType}
-          languages={meta.header_image.split(',')}
-          urlHandler={(newLang) => {
-            if (newLang == 'english') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/header.jpg?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/header_${newLang}.jpg?t=${meta.store_asset_mtime}`;
+          languages={Object.keys(meta.header_image_full)}
+          urlHandler2x={(lang) => {
+            const fileName = meta.header_image_full[lang].replace(/\.jpg$/, '_2x.jpg');
+            return `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${fileName}?t=${meta.store_asset_mtime}`;
           }}
-          urlHandler2x={(newLang) => {
-            if (newLang == 'english') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/header_2x.jpg?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/header_${newLang}_2x.jpg?t=${meta.store_asset_mtime}`;
-          }}
+          urlHandler={(lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.header_image_full[lang]}?t=${meta.store_asset_mtime}`}
           langType="api"
           assetProps={{
             width: 460,
@@ -175,19 +182,15 @@ const OfficialAssetsModal: FC<{
         />
       )}
 
-      {(assetType === 'grid_p' && meta.library_capsule) && (
+      {(assetType === 'grid_p' && meta.library_capsule_full) && (
         <SteamModalImageSection
           closeModal={closeModal}
           onAssetChange={onAssetChange}
           assetType={assetType}
-          languages={meta.library_capsule.split(',')}
-          urlHandler={(newLang) => {
-            if (newLang == 'en') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/library_600x900_2x.jpg?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/library_600x900_${SteamLang(newLang, 'webapi', 'api')}_2x.jpg?t=${meta.store_asset_mtime}`;
-          }}
-          langType="webapi"
+          languages={Object.keys(meta.library_capsule_full.image)}
+          urlHandler2x={meta.library_capsule_full?.image2x ? (lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.library_capsule_full.image2x[lang]}?t=${meta.store_asset_mtime}` : undefined}
+          urlHandler={(lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.library_capsule_full.image[lang]}?t=${meta.store_asset_mtime}`}
+          langType="api"
           assetProps={{
             width: 600,
             height: 900,
@@ -195,25 +198,15 @@ const OfficialAssetsModal: FC<{
         />
       )}
 
-      {(assetType === 'hero' && meta.library_hero) && (
+      {(assetType === 'hero' && meta.library_hero_full) && (
         <SteamModalImageSection
           closeModal={closeModal}
           onAssetChange={onAssetChange}
           assetType={assetType}
-          languages={meta.library_hero.split(',')}
-          urlHandler={(newLang) => {
-            if (newLang == 'en') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/library_hero.jpg?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/library_hero_${SteamLang(newLang, 'webapi', 'api')}.jpg?t=${meta.store_asset_mtime}`;
-          }}
-          urlHandler2x={(newLang) => {
-            if (newLang == 'en') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/library_hero_2x.jpg?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/library_hero_${SteamLang(newLang, 'webapi', 'api')}_2x.jpg?t=${meta.store_asset_mtime}`;
-          }}
-          langType="webapi"
+          languages={Object.keys(meta.library_hero_full.image)}
+          urlHandler2x={meta.library_hero_full?.image2x ? (lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.library_hero_full.image2x[lang]}?t=${meta.store_asset_mtime}` : undefined}
+          urlHandler={(lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.library_hero_full.image[lang]}?t=${meta.store_asset_mtime}`}
+          langType="api"
           assetProps={{
             width: 1920,
             height: 620,
@@ -221,25 +214,15 @@ const OfficialAssetsModal: FC<{
         />
       )}
 
-      {(assetType === 'logo' && meta.library_logo) && (
+      {(assetType === 'logo' && meta.library_logo_full) && (
         <SteamModalImageSection
           closeModal={closeModal}
           onAssetChange={onAssetChange}
           assetType={assetType}
-          languages={meta.library_logo.split(',')}
-          urlHandler={(newLang) => {
-            if (newLang == 'en') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/logo.png?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/logo_${SteamLang(newLang, 'webapi', 'api')}.png?t=${meta.store_asset_mtime}`;
-          }}
-          urlHandler2x={(newLang) => {
-            if (newLang == 'en') {
-              return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/logo_2x.png?t=${meta.store_asset_mtime}`;
-            }
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${steam.id}/logo_${SteamLang(newLang, 'webapi', 'api')}_2x.png?t=${meta.store_asset_mtime}`;
-          }}
-          langType="webapi"
+          languages={Object.keys(meta.library_logo_full.image)}
+          urlHandler2x={meta.library_logo_full?.image2x ? (lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.library_logo_full.image2x[lang]}?t=${meta.store_asset_mtime}` : undefined}
+          urlHandler={(lang) => `https://shared.steamstatic.com/store_item_assets/steam/apps/${steam.id}/${meta.library_logo_full.image[lang]}?t=${meta.store_asset_mtime}`}
+          langType="api"
         />
       )}
 
