@@ -152,5 +152,7 @@ export default defineConfig([globalIgnores(['**/dump-strings.js']), {
 
       'newlines-between': 'always',
     }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 }]);
