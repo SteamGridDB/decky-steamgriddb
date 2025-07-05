@@ -17,6 +17,8 @@
   "LABEL_USAGE_TITLE": "不知道怎么开始？",
   "LABEL_SQUARE_CAPSULES": "方形封面",
   "LABEL_SQUARE_CAPSULES_DESC": "调整库中的封面显示比例，使用方形比例代替竖版封面。资源图库的方形过滤器将自动被开启。",
+  "LABEL_UNIFORM_RECENT": "对齐最近游玩大小",
+  "LABEL_UNIFORM_RECENT_DESC": "让上一个玩过的游戏与其余游戏封面大小对齐。",
   "LABEL_CAPSULE_GLOW": "封面特效",
   "LABEL_CAPSULE_GLOW_DESC": "调整库中的封面高光效果的强度。",
   "LABEL_CAPSULE_GLOW_OFF": "无",
