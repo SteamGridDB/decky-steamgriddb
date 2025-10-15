@@ -7,6 +7,7 @@ import {
   MenuItem,
   Navigation,
   Patch,
+  findInTree,
 } from '@decky/ui';
 import { FC } from 'react';
 
@@ -49,13 +50,17 @@ const handleItemDupes = (items: any[]) => {
 
 const patchMenuItems = (menuItems: any[], appid: number) => {
   let updatedAppid: number = appid;
-  // find the first menu component that has the correct appid assigned to _owner
+  // find the first menu component that has the correct appid, sometimes the one passed is cached from another context menu
   const parentOverview = menuItems.find((x: any) => x?._owner?.pendingProps?.overview?.appid &&
     x._owner.pendingProps.overview.appid !== appid
   );
   // if found then use that appid
   if (parentOverview) {
     updatedAppid = parentOverview._owner.pendingProps.overview.appid;
+  }
+  // Oct 2025 client
+  if (updatedAppid === appid) {
+    updatedAppid = findInTree(menuItems, (x) => x?.app?.appid, { walkable: ['props', 'children'] }).app.appid;
   }
   spliceArtworkItem(menuItems, updatedAppid);
 };
@@ -73,7 +78,13 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
   } = { unpatch: () => {return null;} };
   patches.outer = afterPatch(LibraryContextMenu.prototype, 'render', (_: Record<string, unknown>[], component: any) => {
     log(component);
-    const appid: number = component._owner.pendingProps.overview.appid;
+    let appid: number = 1018880;
+    if (component._owner) {
+      appid = component._owner.pendingProps.overview.appid;
+    } else {
+      // Oct 2025 client
+      appid = findInTree(component.props.children, (x) => x?.app?.appid, { walkable: ['props', 'children'] }).app.appid;
+    }
 
     if (!patches.inner) {
       patches.inner = afterPatch(component, 'type', (_: any, ret: any) => {
