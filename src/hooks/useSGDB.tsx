@@ -17,6 +17,7 @@ import { ASSET_TYPE, MIMES, STYLES, DIMENSIONS } from '../constants';
 import getAppDetails from '../utils/getAppDetails';
 import showRestartConfirm from '../utils/showRestartConfirm';
 import getCurrentSteamUserId from '../utils/getCurrentSteamUserId';
+import getCustomLogoPosition from '../utils/getCustomLogoPosition';
 
 /*
   special key only for use with this decky plugin
@@ -140,10 +141,19 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       await clearAsset(assetType);
       await SteamClient.Apps.SetCustomArtworkForApp(appId, data, 'png', assetType);
+
+      // force create a position json if no custom position is set yet
+      // fixes blank logos on shortcuts
+      if (assetType === ASSET_TYPE.logo && appOverview?.BIsShortcut()) {
+        const logoPos = await getCustomLogoPosition(appId); // Loads from json
+        if (!logoPos) {
+          await window.appDetailsStore.SaveCustomLogoPosition(appOverview, { pinnedPosition: 'BottomLeft', nWidthPct: 50, nHeightPct: 50 });
+        }
+      }
     } catch (error) {
       log(error);
     }
-  }, [appId, clearAsset]);
+  }, [appId, appOverview, clearAsset]);
 
   const apiRequest = useCallback((url: string, signal?: AbortSignal): Promise<any[]> => {
     return new Promise((resolve, reject) => {
