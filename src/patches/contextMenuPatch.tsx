@@ -60,7 +60,10 @@ const patchMenuItems = (menuItems: any[], appid: number) => {
   }
   // Oct 2025 client
   if (updatedAppid === appid) {
-    updatedAppid = findInTree(menuItems, (x) => x?.app?.appid, { walkable: ['props', 'children'] }).app.appid;
+    const foundApp = findInTree(menuItems, (x) => x?.app?.appid, { walkable: ['props', 'children'] });
+    if (foundApp) {
+      updatedAppid = foundApp.app.appid;
+    }
   }
   spliceArtworkItem(menuItems, updatedAppid);
 };
@@ -83,7 +86,10 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
       appid = component._owner.pendingProps.overview.appid;
     } else {
       // Oct 2025 client
-      appid = findInTree(component.props.children, (x) => x?.app?.appid, { walkable: ['props', 'children'] }).app.appid;
+      const foundApp = findInTree(component.props.children, (x) => x?.app?.appid, { walkable: ['props', 'children'] });
+      if (foundApp) {
+        appid = foundApp.app.appid;
+      }
     }
 
     if (!patches.inner) {
@@ -93,9 +99,12 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
           const menuItems = ret2.props.children[0]; // always the first child
           if (!isOpeningAppContextMenu(menuItems)) return ret2;
           try {
+            // check if menu is the right one by looking for the play button
+            if (!findInReactTree(menuItems, (x) => x?.props?.onSelected && x?.props?.onSelected.toString().includes('launchSource'))) {
+              return ret2;
+            }
             handleItemDupes(menuItems);
           } catch (error) {
-            // wrong context menu (probably)
             return ret2;
           }
           patchMenuItems(menuItems, appid);
@@ -105,6 +114,10 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
         // when steam decides to regresh app overview
         afterPatch(ret.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
           try {
+            // check if menu is the right one by looking for the play button
+            if (!findInReactTree(nextProps.children, (x) => x?.props?.onSelected && x?.props?.onSelected.toString().includes('launchSource'))) {
+              return shouldUpdate;
+            }
             handleItemDupes(nextProps.children);
           } catch (error) {
             // wrong context menu (probably)
