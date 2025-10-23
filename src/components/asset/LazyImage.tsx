@@ -5,6 +5,7 @@ import {
   useRef,
   SVGAttributes,
   ImgHTMLAttributes,
+  useCallback,
 } from 'react';
 import { IconsModule } from '@decky/ui';
 
@@ -34,19 +35,11 @@ export const LazyImage: FC<LazyImage> = ({
   const [inViewport, setInViewport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const imgRef = useRef<HTMLElement>(null);
   const intersectRef = useRef<HTMLDivElement>(null);
 
-  // reset some state when src changes
-  useEffect(() => {
-    setInViewport(false);
-    setError(false);
-    setLoading(true);
-  }, [src]);
+  const imgRefCb = useCallback((img: HTMLImageElement | HTMLVideoElement | null) => {
+    if (!img) return;
 
-  useEffect(() => {
-    if (!imgRef.current) return;
-    const img = imgRef.current;
     const onLoad = () => {
       if (isVideo) {
         (img as HTMLVideoElement).play();
@@ -69,7 +62,14 @@ export const LazyImage: FC<LazyImage> = ({
       }
       img.removeEventListener('error', onError);
     };
-  }, [src, isVideo, inViewport]);
+  }, [isVideo]);
+
+  // reset some state when src changes
+  useEffect(() => {
+    setInViewport(false);
+    setError(false);
+    setLoading(true);
+  }, [src]);
 
   useEffect(() => {
     if (!intersectRef.current) return;
@@ -119,7 +119,7 @@ export const LazyImage: FC<LazyImage> = ({
             />
           )}
           <img
-            ref={imgRef as React.RefObject<HTMLImageElement>}
+            ref={imgRefCb}
             data-loaded={loading ? 'false' : 'true'}
             src={src}
             {...props}
@@ -129,7 +129,7 @@ export const LazyImage: FC<LazyImage> = ({
 
       {(inViewport && isVideo && error !== true) && (
         <video
-          ref={imgRef as React.RefObject<HTMLVideoElement>}
+          ref={imgRefCb}
           data-loaded={loading ? 'false' : 'true'}
           src={src}
           autoPlay={false}
