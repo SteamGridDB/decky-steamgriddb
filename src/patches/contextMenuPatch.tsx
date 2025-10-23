@@ -35,12 +35,10 @@ const spliceArtworkItem = (children: any[], appid: number) => {
 // Check if correct menu by looking at the code of the onSelected function
 // Should be enough to ignore the screenshots and other menus.
 const isOpeningAppContextMenu = (items: any[]) => {
-  if (items.length === 0 || items.length === undefined) {
+  if (!items?.length) {
     return false;
   }
-  return items.findIndex((item) => findInReactTree(item, (x) => x?.onSelected &&
-    x.onSelected.toString().includes('AddToNewCollection')
-  )) !== -1;
+  return !!findInReactTree(items, (x) => x?.props?.onSelected && x?.props?.onSelected.toString().includes('launchSource'));
 };
 
 const handleItemDupes = (items: any[]) => {
@@ -99,10 +97,6 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
           const menuItems = ret2.props.children[0]; // always the first child
           if (!isOpeningAppContextMenu(menuItems)) return ret2;
           try {
-            // check if menu is the right one by looking for the play button
-            if (!findInReactTree(menuItems, (x) => x?.props?.onSelected && x?.props?.onSelected.toString().includes('launchSource'))) {
-              return ret2;
-            }
             handleItemDupes(menuItems);
           } catch (error) {
             return ret2;
@@ -114,10 +108,6 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
         // when steam decides to regresh app overview
         afterPatch(ret.type.prototype, 'shouldComponentUpdate', ([nextProps]: any, shouldUpdate: any) => {
           try {
-            // check if menu is the right one by looking for the play button
-            if (!findInReactTree(nextProps.children, (x) => x?.props?.onSelected && x?.props?.onSelected.toString().includes('launchSource'))) {
-              return shouldUpdate;
-            }
             handleItemDupes(nextProps.children);
           } catch (error) {
             // wrong context menu (probably)
