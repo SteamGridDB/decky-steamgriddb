@@ -48,7 +48,7 @@ export const addSquareLibraryPatch = (mounting = false) => {
 
           const { tabs, activeTab } = findInReactTree(ret3, (x) => x?.tabs && x?.activeTab);
           const tab = tabs.find((x: any) => x.id == activeTab);
-          console.info('tab', tab);
+          //console.info('tab', tab);
           if (tab.content.props?.collectionid === null) { // this is null if on the base collections page
             return ret3;
           }
@@ -61,7 +61,7 @@ export const addSquareLibraryPatch = (mounting = false) => {
               if (!ret4) return ret4;
 
               const p1 = findInReactTree(ret4, (x) => x?.type && x.props?.appOverviews);
-              console.log('p1', p1);
+              //console.log('p1', p1);
               if (p1 && collection) {
                 afterPatch(p1, 'type', (_: Record<string, unknown>[], ret5) => {
                   // console.info('ret5', ret5);

@@ -7,7 +7,6 @@ import t from '../utils/i18n';
 import showQrModal from '../utils/showQrModal';
 import useSettings from '../hooks/useSettings';
 import { SGDB_API_BASE, SGDB_API_KEY } from '../hooks/useSGDB';
-import log from '../utils/log';
 
 export interface MotdApiResponse {
   id: string;
@@ -104,7 +103,6 @@ const Motd: FC<Motd> = ({
         // get cached motd if not hidden
         motd = await get('motd_cached', null);
       }
-      log('motd', motd);
 
       // Don't set if explicitly hidden by the user or already expired
       if (motd && (hiddenMotd !== motd.id)) {
