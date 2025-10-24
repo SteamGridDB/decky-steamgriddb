@@ -184,7 +184,7 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
               */
               let siblingWidth = 0;
               afterPatch(carouselProps, 'fnGetColumnWidth', ([index], colWidth: number) => {
-                if (index === 1) {
+                if (index === 2) { // always refereces the second item in case the separator is present
                   siblingWidth = colWidth;
                 }
                 return colWidth;
@@ -197,6 +197,10 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
                   height: a - parseInt(or().LabelHeight)
                 */
                 const capsuleHeight = itemHeight - parseInt(homeCarouselClasses.LabelHeight);
+                // the separator item should not be changed, also matches the second item, but it doesn't matter
+                if (index === 1) {
+                  return callOriginal;
+                }
                 if (square) return capsuleHeight;
                 return siblingWidth ? siblingWidth : calculateDefaultCapsuleWidth(capsuleHeight);
               });
