@@ -104,7 +104,7 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
             afterPatch(ret4.type, 'type', (_: Record<string, unknown>[], ret5?: any) => {
               const carouselProps = findInReactTree(ret5, (x) => x?.nItemHeight && x?.fnItemRenderer && x?.fnGetColumnWidth);
               const itemHeight = carouselProps.nItemHeight;
-
+              let hasSeparator = false;
               /*
                 Instead of hacking around with CSS to make the image square, make the featured
                 item render the portrait component by changing the `bFeatured` flag to false.
@@ -117,6 +117,15 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
               afterPatch(carouselProps, 'fnItemRenderer', (_: Record<string, unknown>[], ret6?: any) => {
                 if (ret6.props.nLeft <= 0 && ('bFeatured' in ret6.props)) {
                   ret6.props.bFeatured = !matchFeatured;
+                }
+
+                // find the separator item if it's there
+                if (
+                  !('bFeatured' in ret6.props) &&
+                  ret6.props?.focusable === false &&
+                  ret6.props?.className?.includes(homeCarouselClasses.FeaturedSeparator)
+                ) {
+                  hasSeparator = true;
                 }
 
                 /*
@@ -184,7 +193,9 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
               */
               let siblingWidth = 0;
               afterPatch(carouselProps, 'fnGetColumnWidth', ([index], colWidth: number) => {
-                if (index === 2) { // always refereces the second item in case the separator is present
+                if (hasSeparator && index === 2) {
+                  siblingWidth = colWidth;
+                } else if (!hasSeparator && index === 1) {
                   siblingWidth = colWidth;
                 }
                 return colWidth;
@@ -197,8 +208,8 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
                   height: a - parseInt(or().LabelHeight)
                 */
                 const capsuleHeight = itemHeight - parseInt(homeCarouselClasses.LabelHeight);
-                // the separator item should not be changed, also matches the second item, but it doesn't matter
-                if (index === 1) {
+                // the separator item should not be changed
+                if (index === 1 && hasSeparator) {
                   return callOriginal;
                 }
                 if (square) return capsuleHeight;
