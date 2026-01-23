@@ -17,6 +17,8 @@
   "LABEL_USAGE_TITLE": "迷ったの？ご利用方法はこちら",
   "LABEL_SQUARE_CAPSULES": "正方形カプセル",
   "LABEL_SQUARE_CAPSULES_DESC": "縦方向のカプセルの代わりに正方形カプセルを使用する。正方形フィルターは自動的に選択されます。",
+  "LABEL_UNIFORM_RECENT": "「レシェントカプセルの一致」",
+  "LABEL_UNIFORM_RECENT_DESC": "最新プレイのゲームを、ホーム画面上で他のカプセルと同じ見た目に揃える。",
   "LABEL_CAPSULE_GLOW": "カプセルグロー",
   "LABEL_CAPSULE_GLOW_DESC": "ライブラリ内のカプセルの輝き強度を調整します",
   "LABEL_CAPSULE_GLOW_OFF": "なし",
