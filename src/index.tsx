@@ -10,6 +10,7 @@ import contextMenuPatch, { LibraryContextMenu } from './patches/contextMenuPatch
 import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
 import { removeHomePatch, addHomePatch } from './patches/homePatch';
 import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
+import { addGameLabelsStyle } from './patches/gameLabelsStyle';
 import { removeStyles } from './utils/styleInjector';
 
 export default definePlugin(() => {
@@ -45,6 +46,10 @@ export default definePlugin(() => {
     addCapsuleGlowPatch(parseInt(amount, 10));
   });
 
+  getSetting('show_game_labels', false).then((enabled) => {
+    if (enabled) addGameLabelsStyle();
+  });
+
   return {
     title: <div className={quickAccessMenuClasses.Title}>SteamGridDB</div>,
     content: <SettingsProvider><QuickAccessSettings /></SettingsProvider>,
@@ -60,7 +65,8 @@ export default definePlugin(() => {
         'sgdb-square-capsules-library',
         'sgdb-square-capsules-home',
         'sgdb-capsule-glow',
-        'sgdb-carousel-logo'
+        'sgdb-carousel-logo',
+        'sgdb-always-show-game-labels'
       );
     },
   };

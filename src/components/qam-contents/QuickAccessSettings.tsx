@@ -32,6 +32,7 @@ import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 import { addHomePatch, removeHomePatch } from '../../patches/homePatch';
 import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
 import { addCapsuleGlowPatch } from '../../patches/capsuleGlowPatch';
+import { addGameLabelsStyle, removeGameLabelsStyle } from '../../patches/gameLabelsStyle';
 import { DIMENSIONS } from '../../constants';
 import { appgridClasses } from '../../static-classes';
 
@@ -66,9 +67,20 @@ const QuickAccessSettings: VFC = () => {
   const [useCount, setUseCount] = useState<number | null>(null);
   const [squares, setSquares] = useState<boolean>(false);
   const [uniformFeatured, setUniformFeatured] = useState<boolean>(false);
+  const [showGameLabels, setShowGameLabels] = useState<boolean>(false);
   const [motdToggle, setMotdToggle] = useState<boolean>(false);
   const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
+
+  const handleGameLabelsToggle = useCallback(async (checked: boolean) => {
+    set('show_game_labels', checked, true);
+    setShowGameLabels(checked);
+    if (checked) {
+      addGameLabelsStyle();
+    } else {
+      removeGameLabelsStyle();
+    }
+  }, [set]);
 
   const handleMotdToggle = useCallback(async (val: boolean) => {
     set('motd_hidden_global', val, true);
@@ -113,6 +125,9 @@ const QuickAccessSettings: VFC = () => {
       setUseCount(await get('plugin_use_count', 0));
       setSquares(await get('squares', false));
       setUniformFeatured(await get('uniform_featured', false));
+      const labelsEnabled = await get('show_game_labels', false);
+      setShowGameLabels(labelsEnabled);
+      if (labelsEnabled) addGameLabelsStyle();
       setCapsuleGlowAmount(await get('capsule_glow_amount', 100));
       setMotdToggle(await get('motd_hidden_global', false));
     })();
@@ -219,6 +234,14 @@ const QuickAccessSettings: VFC = () => {
             description={t('LABEL_UNIFORM_RECENT_DESC', 'Make the most recently played game on the home screen match the rest of the capsules.')}
             checked={uniformFeatured}
             onChange={handleUniformFeaturedToggle}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <ToggleField
+            label={t('LABEL_SHOW_GAME_LABELS', 'Always Show Game Labels')}
+            description={t('LABEL_SHOW_GAME_LABELS_DESC', 'Always display game names below their capsules in the library.')}
+            checked={showGameLabels}
+            onChange={handleGameLabelsToggle}
           />
         </PanelSectionRow>
         {appgridClasses?.LibraryImageBackgroundGlow && (
