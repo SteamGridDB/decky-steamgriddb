@@ -10,7 +10,7 @@ import contextMenuPatch, { LibraryContextMenu } from './patches/contextMenuPatch
 import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squareLibraryPatch';
 import { removeHomePatch, addHomePatch } from './patches/homePatch';
 import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
-import { addGameLabelsStyle } from './patches/gameLabelsStyle';
+import { addGameLabelsStyle, removeGameLabelsStyle, addGameLabelSizeStyle, removeGameLabelSizeStyle, STYLE_GAME_LABEL, STYLE_GAME_LABEL_SIZE } from './patches/gameLabelsStyle';
 import { removeStyles } from './utils/styleInjector';
 
 export default definePlugin(() => {
@@ -40,14 +40,16 @@ export default definePlugin(() => {
       }
       addHomePatch(true, squares, uniformFeatured);
     }
+
+    addGameLabelSizeStyle(squares);
   });
 
   getSetting('capsule_glow_amount', 100).then((amount) => {
     addCapsuleGlowPatch(parseInt(amount, 10));
   });
 
-  getSetting('show_game_labels', false).then((enabled) => {
-    if (enabled) addGameLabelsStyle();
+  getSetting('show_game_labels', false).then((showGameLabels) => {
+    if (showGameLabels) addGameLabelsStyle(true);
   });
 
   return {
@@ -60,13 +62,16 @@ export default definePlugin(() => {
 
       removeSquareLibraryPatch(true);
       removeHomePatch(true);
+      removeGameLabelsStyle(true);
+      removeGameLabelSizeStyle(true);
 
       removeStyles(
         'sgdb-square-capsules-library',
         'sgdb-square-capsules-home',
         'sgdb-capsule-glow',
         'sgdb-carousel-logo',
-        'sgdb-always-show-game-labels'
+        STYLE_GAME_LABEL,
+        STYLE_GAME_LABEL_SIZE
       );
     },
   };

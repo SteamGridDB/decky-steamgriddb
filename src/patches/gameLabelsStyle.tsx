@@ -1,22 +1,29 @@
 import { findSP } from "@decky/ui";
 
-import { appportraitClasses } from "../static-classes";
+import { appportraitClasses, gamepadLibraryClasses } from "../static-classes";
 import { addStyle } from "../utils/styleInjector";
 
-const STYLE_ID = "sgdb-always-show-game-labels";
+export const STYLE_GAME_LABEL = "sgdb-always-show-game-labels";
+export const STYLE_GAME_LABEL_SIZE= "sgdb-always-show-game-labels-size"
+
+
 
 export const addGameLabelsStyle = (
-  _mounting = false,
-  square: boolean = false,
+  _mounting = false
 ) => {
+  // The game name label has no associated classes.
+  // It has only an id like "<<rex>>" and an inline style "display: none".
+  // Overwrite the inline style with !important.
+  //
+  // TODO: Add .${gamepadLibraryClasses.GamepadLibrary} if different style for library and recently played
   addStyle(
-    STYLE_ID,
+    STYLE_GAME_LABEL,
     `
     .${appportraitClasses.LibraryItemBox} + div[id] {
       display: block !important;
       text-align: center;
       margin-top: 4px;
-      font-size: 0.7em;
+      margin-bottom: 4px;
       white-space: normal;
       overflow: visible;
       word-wrap: break-word;
@@ -25,6 +32,26 @@ export const addGameLabelsStyle = (
   );
 };
 
+export const addGameLabelSizeStyle = (
+  _mounting = false,
+  square: boolean = false,
+) => {
+  let font_size = '0.7em';
+  if (square)
+    font_size = '0.8em';
+
+  addStyle(
+    STYLE_GAME_LABEL_SIZE,
+    `
+    .${appportraitClasses.LibraryItemBox} + div[id]
+    font-size: ${font_size};
+    `,);
+};
+
 export const removeGameLabelsStyle = (_unmounting = false) => {
-  findSP()?.window?.document?.getElementById(STYLE_ID)?.remove();
+  findSP()?.window?.document?.getElementById(STYLE_GAME_LABEL)?.remove();
+};
+
+export const removeGameLabelSizeStyle = (_unmounting = false) => {
+  findSP()?.window?.document?.getElementById(STYLE_GAME_LABEL_SIZE)?.remove();
 };

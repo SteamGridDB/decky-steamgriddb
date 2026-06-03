@@ -32,7 +32,7 @@ import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 import { addHomePatch, removeHomePatch } from '../../patches/homePatch';
 import { addSquareLibraryPatch, removeSquareLibraryPatch } from '../../patches/squareLibraryPatch';
 import { addCapsuleGlowPatch } from '../../patches/capsuleGlowPatch';
-import { addGameLabelsStyle, removeGameLabelsStyle } from '../../patches/gameLabelsStyle';
+import { addGameLabelsStyle, removeGameLabelsStyle, addGameLabelSizeStyle, removeGameLabelSizeStyle } from '../../patches/gameLabelsStyle';
 import { DIMENSIONS } from '../../constants';
 import { appgridClasses } from '../../static-classes';
 
@@ -45,23 +45,49 @@ const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
   return w === h;
 }).map((x) => x.value);
 
-// Set square/uniform featured game using logic written at 3am
-const setPatches = (
-  squares: boolean,
-  uniformFeatured: boolean,
-  gamelabel: boolean = false,
-): void => {
+const setPatches = (squares: boolean, uniformFeatured: boolean): void => {
+  // needs to be rerendered in any case depending on parameters
+  removeHomePatch();
+
+  if (squares || uniformFeatured) addHomePatch(false, squares, uniformFeatured);
+
   if (squares) {
-    addSquareLibraryPatch();
+    addSquareLibraryPatch(false);
   } else {
     removeSquareLibraryPatch();
   }
 
-  removeHomePatch();
-  if (uniformFeatured) addHomePatch(false, squares, uniformFeatured);
+  removeGameLabelSizeStyle();
+  addGameLabelSizeStyle(squares);
 
-  removeGameLabelsStyle();
-  if (gamelabel) addGameLabelsStyle(squares);
+  // if (!uniformFeatured && !squares) {
+  //   removeHomePatch();
+  // } else if (squares || uniformFeatured) {
+  //   // Remove the home patch then patch it again
+  //   removeHomePatch();
+  //   addHomePatch(false, squares, uniformFeatured);
+  // }
+
+  // if (squares) {
+  //   addSquareLibraryPatch();
+  // }
+  // else {
+  //   removeSquareLibraryPatch();
+  // }
+
+  // if (squares) {
+  //   addSquareLibraryPatch(false);
+  // } else {
+  //   removeSquareLibraryPatch();
+  // }
+
+  // // needs to be rerendered in any case depending on parameters
+  // removeHomePatch();
+  // if (squares || uniformFeatured) addHomePatch(false, squares, uniformFeatured);
+
+  // // needs to be rerendered in any case depending on parameters
+  // removeGameLabelsStyle();
+  // if (gamelabel) addGameLabelsStyle(false, squares);
 };
 
 const QuickAccessSettings: VFC = () => {
@@ -78,7 +104,11 @@ const QuickAccessSettings: VFC = () => {
     async (checked: boolean) => {
       set("show_game_labels", checked, true);
       setShowGameLabels(checked);
-      setPatches(squares, uniformFeatured, showGameLabels);
+
+      if (checked)
+        addGameLabelsStyle(false);
+      else
+        removeGameLabelsStyle();
     },
     [set],
   );
@@ -92,7 +122,7 @@ const QuickAccessSettings: VFC = () => {
     async (checked: boolean) => {
       set("squares", checked, true);
       setSquares(checked);
-      setPatches(squares, uniformFeatured, showGameLabels);
+      setPatches(checked, uniformFeatured);
 
     const currentFilters = await get('filters_grid_p', {});
     if (checked) {
@@ -109,7 +139,7 @@ const QuickAccessSettings: VFC = () => {
     async (checked: boolean) => {
       set("uniform_featured", checked, true);
       setUniformFeatured(checked);
-      setPatches(squares, uniformFeatured, showGameLabels);
+      setPatches(squares, checked);
     },
     [set, squares],
   );
