@@ -19,7 +19,16 @@ export const addGameLabelsStyle = (
   addStyle(
     STYLE_GAME_LABEL,
     `
-    .${appportraitClasses.LibraryItemBox} + div[id] {
+    .${gamepadLibraryClasses.GamepadLibrary} .${appportraitClasses.LibraryItemBox} + div[id] {
+      display: block !important;
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 4px;
+      white-space: normal;
+      overflow: visible;
+      word-wrap: break-word;
+    }
+    .${appportraitClasses.LibraryItemBox}.Panel:not(:hover,:focus) + div[id] {
       display: block !important;
       text-align: center;
       margin-top: 4px;
