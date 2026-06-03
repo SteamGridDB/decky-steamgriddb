@@ -46,20 +46,22 @@ const squareGridSizes = DIMENSIONS.grid_p.options.filter((x) => {
 }).map((x) => x.value);
 
 // Set square/uniform featured game using logic written at 3am
-const setPatches = (squares: boolean, uniformFeatured: boolean): void => {
-  if (!uniformFeatured && !squares) {
-    removeHomePatch();
-  } else if (squares || uniformFeatured) {
-    // Remove the home patch then patch it again
-    removeHomePatch();
-    addHomePatch(false, squares, uniformFeatured);
-    if (squares) {
-      addSquareLibraryPatch();
-    }
-  }
-  if (!squares) {
+const setPatches = (
+  squares: boolean,
+  uniformFeatured: boolean,
+  gamelabel: boolean = false,
+): void => {
+  if (squares) {
+    addSquareLibraryPatch();
+  } else {
     removeSquareLibraryPatch();
   }
+
+  removeHomePatch();
+  if (uniformFeatured) addHomePatch(false, squares, uniformFeatured);
+
+  removeGameLabelsStyle();
+  if (gamelabel) addGameLabelsStyle(squares);
 };
 
 const QuickAccessSettings: VFC = () => {
@@ -72,25 +74,25 @@ const QuickAccessSettings: VFC = () => {
   const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
 
-  const handleGameLabelsToggle = useCallback(async (checked: boolean) => {
-    set('show_game_labels', checked, true);
-    setShowGameLabels(checked);
-    if (checked) {
-      addGameLabelsStyle();
-    } else {
-      removeGameLabelsStyle();
-    }
-  }, [set]);
+  const handleGameLabelsToggle = useCallback(
+    async (checked: boolean) => {
+      set("show_game_labels", checked, true);
+      setShowGameLabels(checked);
+      setPatches(squares, uniformFeatured, showGameLabels);
+    },
+    [set],
+  );
 
   const handleMotdToggle = useCallback(async (val: boolean) => {
     set('motd_hidden_global', val, true);
     setMotdToggle(val);
   }, [set]);
 
-  const handleSquareToggle = useCallback(async (checked: boolean) => {
-    set('squares', checked, true);
-    setSquares(checked);
-    setPatches(checked, uniformFeatured);
+  const handleSquareToggle = useCallback(
+    async (checked: boolean) => {
+      set("squares", checked, true);
+      setSquares(checked);
+      setPatches(squares, uniformFeatured, showGameLabels);
 
     const currentFilters = await get('filters_grid_p', {});
     if (checked) {
@@ -103,11 +105,14 @@ const QuickAccessSettings: VFC = () => {
     set('filters_grid_p', currentFilters, true);
   }, [get, set, uniformFeatured]);
 
-  const handleUniformFeaturedToggle = useCallback(async (checked: boolean) => {
-    set('uniform_featured', checked, true);
-    setUniformFeatured(checked);
-    setPatches(squares, checked);
-  }, [set, squares]);
+  const handleUniformFeaturedToggle = useCallback(
+    async (checked: boolean) => {
+      set("uniform_featured", checked, true);
+      setUniformFeatured(checked);
+      setPatches(squares, uniformFeatured, showGameLabels);
+    },
+    [set, squares],
+  );
 
   const handleCapsuleGlowChange = useCallback(async (val: number) => {
     set('capsule_glow_amount', val, true);

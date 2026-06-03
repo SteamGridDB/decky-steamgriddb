@@ -5,7 +5,10 @@ import { addStyle } from "../utils/styleInjector";
 
 const STYLE_ID = "sgdb-always-show-game-labels";
 
-export const addGameLabelsStyle = (_mounting = false) => {
+export const addGameLabelsStyle = (
+  _mounting = false,
+  square: boolean = false,
+) => {
   addStyle(
     STYLE_ID,
     `
