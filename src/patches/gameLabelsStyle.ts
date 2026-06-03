@@ -1,18 +1,26 @@
-import { appportraitClasses, gamepadLibraryClasses } from '../static-classes';
-import { addStyle, removeStyle } from '../utils/styleInjector';
+import { findSP } from "@decky/ui";
 
-const STYLE_ID = 'sgdb-always-show-game-labels';
+import { addStyle } from "../utils/styleInjector";
 
-export const addGameLabelsStyle = () => {
-  addStyle(STYLE_ID, `
-    .${gamepadLibraryClasses.GamepadLibrary} .${appportraitClasses.AppPortraitBanner} {
-      opacity: 1 !important;
-      visibility: visible !important;
+const STYLE_ID = "sgdb-always-show-game-labels";
+
+export const addGameLabelsStyle = (_mounting = false) => {
+  addStyle(
+    STYLE_ID,
+    `
+    [role="gridcell"] div[id][style*="display"] {
       display: block !important;
+      text-align: center;
+      margin-top: 4px;
+      font-size: 0.7em;
+      white-space: normal;
+      overflow: visible;
+      word-wrap: break-word;
     }
-  `);
+  `,
+  );
 };
 
-export const removeGameLabelsStyle = () => {
-  removeStyle(STYLE_ID);
+export const removeGameLabelsStyle = (_unmounting = false) => {
+  findSP()?.window?.document?.getElementById(STYLE_ID)?.remove();
 };
