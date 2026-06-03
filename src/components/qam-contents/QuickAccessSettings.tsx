@@ -59,35 +59,6 @@ const setPatches = (squares: boolean, uniformFeatured: boolean): void => {
 
   removeGameLabelSizeStyle();
   addGameLabelSizeStyle(squares);
-
-  // if (!uniformFeatured && !squares) {
-  //   removeHomePatch();
-  // } else if (squares || uniformFeatured) {
-  //   // Remove the home patch then patch it again
-  //   removeHomePatch();
-  //   addHomePatch(false, squares, uniformFeatured);
-  // }
-
-  // if (squares) {
-  //   addSquareLibraryPatch();
-  // }
-  // else {
-  //   removeSquareLibraryPatch();
-  // }
-
-  // if (squares) {
-  //   addSquareLibraryPatch(false);
-  // } else {
-  //   removeSquareLibraryPatch();
-  // }
-
-  // // needs to be rerendered in any case depending on parameters
-  // removeHomePatch();
-  // if (squares || uniformFeatured) addHomePatch(false, squares, uniformFeatured);
-
-  // // needs to be rerendered in any case depending on parameters
-  // removeGameLabelsStyle();
-  // if (gamelabel) addGameLabelsStyle(false, squares);
 };
 
 const QuickAccessSettings: VFC = () => {
