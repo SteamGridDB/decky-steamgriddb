@@ -1,5 +1,6 @@
 import { findSP } from "@decky/ui";
 
+import { appportraitClasses } from "../static-classes";
 import { addStyle } from "../utils/styleInjector";
 
 const STYLE_ID = "sgdb-always-show-game-labels";
@@ -8,7 +9,7 @@ export const addGameLabelsStyle = (_mounting = false) => {
   addStyle(
     STYLE_ID,
     `
-    [role="gridcell"] div[id][style*="display"] {
+    .${appportraitClasses.LibraryItemBox} + div[id] {
       display: block !important;
       text-align: center;
       margin-top: 4px;
