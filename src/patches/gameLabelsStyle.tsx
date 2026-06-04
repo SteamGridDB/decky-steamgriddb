@@ -15,12 +15,12 @@ export const addGameLabelsStyle = (
   // It has only an id like "<<rex>>" and an inline style "display: none".
   // Overwrite the inline style with !important.
   //
-  // TODO: Add .${gamepadLibraryClasses.GamepadLibrary} if different style for library and recently played
+  // In the home menu, the currently hovered over (mouse) or focused (gamepad selection) game will show its title anyways.
+  // So we need to differentiate and disable the label in that case.
   addStyle(
     STYLE_GAME_LABEL,
     `
-    .${gamepadLibraryClasses.GamepadLibrary} .${appportraitClasses.LibraryItemBox} + div[id] {
-      display: block !important;
+    .${appportraitClasses.LibraryItemBox}.Panel + div[id] {
       text-align: center;
       margin-top: 4px;
       margin-bottom: 4px;
@@ -28,14 +28,11 @@ export const addGameLabelsStyle = (
       overflow: visible;
       word-wrap: break-word;
     }
-    .${appportraitClasses.LibraryItemBox}.Panel:not(:hover,:focus) + div[id] {
+    .${gamepadLibraryClasses.GamepadLibrary} .${appportraitClasses.LibraryItemBox}.Panel + div[id] {
       display: block !important;
-      text-align: center;
-      margin-top: 4px;
-      margin-bottom: 4px;
-      white-space: normal;
-      overflow: visible;
-      word-wrap: break-word;
+    }
+    .${appportraitClasses.InRecentGames}.${appportraitClasses.LibraryItemBox}.Panel:not(:hover,:focus) + div[id] {
+      display: block !important;
     }
   `,
   );
