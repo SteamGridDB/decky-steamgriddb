@@ -58,7 +58,7 @@ const setPatches = (squares: boolean, uniformFeatured: boolean): void => {
   }
 
   removeGameLabelSizeStyle();
-  addGameLabelSizeStyle(squares);
+  addGameLabelSizeStyle(false, squares);
 };
 
 const QuickAccessSettings: VFC = () => {

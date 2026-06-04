@@ -43,17 +43,22 @@ export const addGameLabelsStyle = (
 
 export const addGameLabelSizeStyle = (
   _mounting = false,
-  square: boolean = false,
+  squares: boolean = false,
 ) => {
   let font_size = '0.7em';
-  if (square)
-    font_size = '0.8em';
+  if (squares)
+    font_size = '0.85em';
 
+  // TODO: Different font_sizes for library and home?
   addStyle(
     STYLE_GAME_LABEL_SIZE,
     `
-    .${appportraitClasses.LibraryItemBox} + div[id]
-    font-size: ${font_size};
+    .${gamepadLibraryClasses.GamepadLibrary} .${appportraitClasses.LibraryItemBox}.Panel + div[id] {
+      font-size: ${font_size};
+    }
+    .${appportraitClasses.InRecentGames}.${appportraitClasses.LibraryItemBox}.Panel + div[id] {
+      font-size: ${font_size};
+    }
     `,);
 };
 

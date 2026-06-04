@@ -41,7 +41,7 @@ export default definePlugin(() => {
       addHomePatch(true, squares, uniformFeatured);
     }
 
-    addGameLabelSizeStyle(squares);
+    addGameLabelSizeStyle(true, squares);
   });
 
   getSetting('capsule_glow_amount', 100).then((amount) => {
