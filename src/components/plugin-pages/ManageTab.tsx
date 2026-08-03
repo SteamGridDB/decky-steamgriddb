@@ -27,7 +27,6 @@ const AssetBlock: FC<{
   const innerFocusRef = useRef<HTMLDivElement>(null);
   const refreshing = useRef(false);
 
-  // god is dead
   const refreshOverview = async () => {
     if (refreshing.current) return;
     refreshing.current = true;
