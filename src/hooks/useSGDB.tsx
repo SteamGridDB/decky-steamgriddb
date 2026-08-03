@@ -118,14 +118,16 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
         );
         if (res !== 'icon_is_same_path') showRestartConfirm();
       } else {
-        if (appOverview) {
+        if (appOverview?.icon_hash) {
           // Redownload the icon from Steam
           await call<[
             appid: number | null,
             url: string,
+            icon_hash: string,
           ]>('set_steam_icon_from_url',
             appId,
-            window.appStore.GetIconURLForApp(appOverview)
+            window.appStore.GetIconURLForApp(appOverview),
+            appOverview.icon_hash
           );
         }
       }
@@ -227,12 +229,18 @@ export const SGDBProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }
       } else {
         // Change default Steam icon by poisoning the cache like Boop does it
+        if (!appOverview?.icon_hash) {
+          throw new Error('Could not find the current icon hash for this app');
+        }
+
         const res = await call<[
           appid: number | null,
-          path: string | null,
+          location: string,
+          icon_hash: string,
         ], string | boolean>(path ? 'set_steam_icon_from_path' : 'set_steam_icon_from_url',
           appId,
-          url
+          url,
+          appOverview.icon_hash
         );
         log('set_steam_icon result', res);
       }

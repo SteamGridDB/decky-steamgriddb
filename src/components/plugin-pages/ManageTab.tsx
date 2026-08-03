@@ -27,7 +27,6 @@ const AssetBlock: FC<{
   const innerFocusRef = useRef<HTMLDivElement>(null);
   const refreshing = useRef(false);
 
-  // god is dead
   const refreshOverview = async () => {
     if (refreshing.current) return;
     refreshing.current = true;
@@ -36,15 +35,8 @@ const AssetBlock: FC<{
     const appoverview = await getAppOverview(app.appid);
 
     if (assetType === 'icon' && appoverview?.icon_hash) {
-      // Today i choose violence
-      const hash = appoverview.icon_hash;
-      // fuck up the hash to force render the icon file from the cache
-      appoverview.icon_hash = String(new Date().getTime());
-      setOverview(appoverview);
-      // vibe for a bit
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      // now put that shit back
-      appoverview.icon_hash = hash;
+      // bump the icon url's cache buster so it gets read from disk again
+      appoverview.local_cache_version = Date.now();
     }
 
     setOverview(appoverview);
@@ -136,16 +128,9 @@ const LocalTab: FC = () => {
       const appoverview = await getAppOverview(appId);
       if (!appoverview) return;
 
-      // Today i choose violence
       if (appoverview.icon_hash) {
-        const hash = appoverview.icon_hash;
-        // fuck up the hash to force render the icon file from the cache
-        appoverview.icon_hash = String(new Date().getTime());
-        setOverview(appoverview);
-        // vibe for a bit
-        await new Promise((resolve) => setTimeout(resolve, 300));
-        // now put that shit back
-        appoverview.icon_hash = hash;
+        // bump the icon url's cache buster so it gets read from disk again
+        appoverview.local_cache_version = Date.now();
       }
 
       setOverview(appoverview);
