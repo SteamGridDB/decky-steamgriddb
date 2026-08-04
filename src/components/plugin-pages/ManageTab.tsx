@@ -51,6 +51,15 @@ const AssetBlock: FC<{
     refreshing.current = false;
   };
 
+  const isShortcutIcon = assetType === 'icon' && app.BIsShortcut();
+  const [isShortcutIconLoaded] = useState(() => Boolean(app.icon_data));
+
+  // Steam reads shortcut icon into icon_data as a result of this first render,
+  // so check again to pick up what just landed
+  useEffect(() => {
+    if (isShortcutIcon && !isShortcutIconLoaded) refreshOverview();
+  }, [isShortcutIcon, isShortcutIconLoaded]);
+
   const handleBrowse = async () => {
     const path = await openFilePicker(browseStartPath, true, undefined, {
       validFileExtensions: ['png','jpg','jpeg','gif','webp','apng','tiff','tga'],
