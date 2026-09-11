@@ -1,4 +1,4 @@
-import { Field, ProgressBar } from '@decky/ui';
+import { Field } from '@decky/ui';
 import { useState } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi2';
 import reactStringReplace from 'react-string-replace';
@@ -64,7 +64,24 @@ const GuideVideoField: typeof Field = (props) => {
         onPlay={handlePlay}
         onEnded={handleEnded}
       />
-      <ProgressBar focusable={false} nProgress={progress} nTransitionSec={duration} />
+      <div
+        aria-hidden
+        style={{
+          width: '100%',
+          height: '4px',
+          overflow: 'hidden',
+          background: 'rgba(255, 255, 255, 0.2)',
+        }}
+      >
+        <div
+          style={{
+            width: `${progress}%`,
+            height: '100%',
+            background: 'white',
+            transition: `width ${duration}s linear`,
+          }}
+        />
+      </div>
     </Field>
   );
 };
