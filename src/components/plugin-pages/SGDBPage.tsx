@@ -1,4 +1,4 @@
-import { ReactRouter } from '@decky/ui';
+import { useParams } from '@decky/ui';
 import { useEffect, useState, VFC, useCallback } from 'react';
 
 import { AssetSearchContext } from '../../hooks/useAssetSearch';
@@ -8,10 +8,6 @@ import { DEFAULT_TABS } from '../../constants';
 import style from '../../styles/style.scss';
 
 import AssetTabs from './AssetTabs';
-
-const useParams = Object.values(ReactRouter).find((value) =>
-  /return ([\w$]+)\?\1\.params:{}/.test(`${value}`)
-) as <T>() => T;
 
 const SGDBPage: VFC = () => {
   const { get } = useSettings();
