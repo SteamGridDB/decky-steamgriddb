@@ -35,6 +35,12 @@ def get_steam_userdata():
 def get_steam_libcache():
     return get_steam_path() / 'appcache' / 'librarycache'
 
+def get_steam_icon_dir(appid):
+    return get_steam_libcache() / str(appid)
+
+def get_steam_icon_name(icon_hash):
+    return "%s.jpg" % icon_hash
+
 def get_userdata_config(steam32):
     return get_steam_userdata() / steam32 / 'config'
 
@@ -109,11 +115,31 @@ class Plugin:
                 return True
         raise Exception('Could not find shortcut to edit')
 
-    async def set_steam_icon_from_url(self, appid, url):
-        await self.download_file(url, get_steam_libcache(), file_name=("%s_icon.jpg" % appid))
+    async def set_steam_icon_from_url(self, appid, url, icon_hash):
+        # Poison the cache through a temp file, Steam restores the original icon
+        # if it catches its cache file being written to directly
+        output_dir = get_steam_icon_dir(appid)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        icon_name = get_steam_icon_name(icon_hash)
+        temp_path = output_dir / ("%s_temp" % icon_name)
+        if not await self.download_file(url, str(output_dir), file_name=temp_path.name):
+            temp_path.unlink(missing_ok=True)
+            raise Exception("Failed to download icon from %s" % url)
+        output_file = output_dir / icon_name
+        temp_path.replace(output_file)
+        return str(output_file)
 
-    async def set_steam_icon_from_path(self, appid, path):
-        copyfile(path, get_steam_libcache() / str("%s_icon.jpg" % appid))
+    async def set_steam_icon_from_path(self, appid, path, icon_hash):
+        # Poison the cache through a temp file, Steam restores the original icon
+        # if it catches its cache file being written to directly
+        output_dir = get_steam_icon_dir(appid)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        icon_name = get_steam_icon_name(icon_hash)
+        temp_path = output_dir / ("%s_temp" % icon_name)
+        copyfile(path, temp_path)
+        output_file = output_dir / icon_name
+        temp_path.replace(output_file)
+        return str(output_file)
 
     async def set_setting(self, key, value):
         self.settings.setSetting(key, value)
