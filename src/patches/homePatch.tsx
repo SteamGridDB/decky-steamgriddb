@@ -31,7 +31,17 @@ const calculateDefaultCapsuleWidth = (newHeight: number) => {
 };
 
 export const addHomePatch = (mounting = false, square = false, matchFeatured = false, carouselLogo = false) => {
+  // Fail-soft: without the carousel classes the column width math can't work, so disable the feature.
+  if (!homeCarouselClasses?.LabelHeight) {
+    console.warn('[SGDB] homeCarouselClasses not found; home page capsule patch disabled');
+    return;
+  }
+
   if (square) {
+    if (!appportraitClasses?.InRecentGames || !libraryAssetImageClasses?.Container || !libraryAssetImageClasses?.PortraitImage) {
+      console.warn('[SGDB] Home page capsule class modules not found; square home capsules disabled');
+      return;
+    }
     addStyle('sgdb-square-capsules-home', `
       /* only select home page */
       .${appportraitClasses.InRecentGames} .${libraryAssetImageClasses.Container}.${libraryAssetImageClasses.PortraitImage} {
@@ -42,7 +52,10 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
     removeStyle('sgdb-square-capsules-home');
   }
 
-  if (carouselLogo) {
+  if (carouselLogo && (!homeCarouselClasses?.CarouselGameLabelWrapper || !miscInfoClasses?.Container || !miscInfoClasses?.Content)) {
+    console.warn('[SGDB] Carousel logo class modules not found; carousel logo style disabled');
+    removeStyle('sgdb-carousel-logo');
+  } else if (carouselLogo) {
     addStyle('sgdb-carousel-logo', `
       .${homeCarouselClasses.CarouselGameLabelWrapper} {
         /* margin-top: -30px; */
@@ -74,7 +87,9 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
   }
 
   patch = routerHook.addPatch('/library/home', (props) => {
+    if (!props?.children) return props;
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {
+      if (!ret?.type) return ret;
       let cache2: any = null;
       wrapReactType(ret);
       afterPatch(ret.type, 'type', (_: Record<string, unknown>[], ret2?: any) => {
@@ -85,6 +100,7 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
 
         let cache3: any = null;
         const recents = findInReactTree(ret2, (x) => x?.props && ('autoFocus' in x.props) && ('showBackground' in x.props));
+        if (!recents?.type) return ret2;
 
         wrapReactType(recents);
         afterPatch(recents.type, 'type', (_: Record<string, unknown>[], ret3?: any) => {
@@ -96,13 +112,16 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
           }
 
           const p = findInReactTree(ret3, (x) => x?.props?.games && x?.props.onItemFocus);
+          if (!p?.type) return ret3;
           afterPatch(p, 'type', (_: Record<string, unknown>[], ret4?: any) => {
             // const cache6: any[] = []; // cache carousel items
             cache3 = ret3;
 
+            if (!ret4?.type) return ret4;
             wrapReactType(ret4);
             afterPatch(ret4.type, 'type', (_: Record<string, unknown>[], ret5?: any) => {
               const carouselProps = findInReactTree(ret5, (x) => x?.nItemHeight && x?.fnItemRenderer && x?.fnGetColumnWidth);
+              if (!carouselProps) return ret5;
               const itemHeight = carouselProps.nItemHeight;
               let hasSeparator = false;
               /*
@@ -115,6 +134,7 @@ export const addHomePatch = (mounting = false, square = false, matchFeatured = f
                 position of the item (`nLeft`) in the carousel is leftmost (0) or out of the screen (negative float)
               */
               afterPatch(carouselProps, 'fnItemRenderer', (_: Record<string, unknown>[], ret6?: any) => {
+                if (!ret6?.props) return ret6;
                 if (ret6.props.nLeft <= 0 && ('bFeatured' in ret6.props)) {
                   ret6.props.bFeatured = !matchFeatured;
                 }

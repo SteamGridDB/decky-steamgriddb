@@ -12,7 +12,7 @@ import {
   ToggleField,
   SliderField,
 } from '@decky/ui';
-import { FileSelectionType, openFilePicker } from '@decky/api';
+import { FileSelectionType, openFilePicker, call } from '@decky/api';
 import { useState, useEffect, VFC, useCallback } from 'react';
 import {
   SiPatreon,
@@ -27,6 +27,7 @@ import {
 import BoopIcon from '../Icons/BoopIcon';
 import TwitterIcon from '../Icons/TwitterIcon';
 import t, { getCredits } from '../../utils/i18n';
+import { setDebugLogging } from '../../utils/log';
 import TabSorter from '../TabSorter';
 import useSettings, { SettingsProvider } from '../../hooks/useSettings';
 import { addHomePatch, removeHomePatch } from '../../patches/homePatch';
@@ -69,6 +70,39 @@ const QuickAccessSettings: VFC = () => {
   const [motdToggle, setMotdToggle] = useState<boolean>(false);
   const [capsuleGlowAmount, setCapsuleGlowAmount] = useState(100);
   const [debugAppid] = useState('70');
+  const [debugLogging, setDebugLoggingState] = useState<boolean>(false);
+
+  const handleDebugLoggingToggle = useCallback(async (val: boolean) => {
+    set('debug_logging', val, true);
+    setDebugLogging(val);
+    setDebugLoggingState(val);
+  }, [set]);
+
+  const showDiagnostics = useCallback(async () => {
+    let info: Record<string, unknown> = {};
+    try {
+      info = await call<[], Record<string, unknown>>('get_debug_info');
+    } catch (err: any) {
+      info = { error: String(err?.message ?? err) };
+    }
+    const frontend = {
+      steam_ui_mode: window.location.pathname,
+      user_agent: navigator.userAgent,
+    };
+    const lines = Object.entries({ ...info, ...frontend })
+      .filter(([, v]) => v !== undefined)
+      .map(([k, v]) => `${k}: ${String(v)}`);
+    showModal(
+      <ModalRoot>
+        <DialogHeader>SteamGridDB Diagnostics</DialogHeader>
+        <DialogBody>
+          <div style={{ fontFamily: 'monospace', fontSize: '12px', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+            {lines.join('\n')}
+          </div>
+        </DialogBody>
+      </ModalRoot>
+    );
+  }, []);
 
   const handleMotdToggle = useCallback(async (val: boolean) => {
     set('motd_hidden_global', val, true);
@@ -115,6 +149,7 @@ const QuickAccessSettings: VFC = () => {
       setUniformFeatured(await get('uniform_featured', false));
       setCapsuleGlowAmount(await get('capsule_glow_amount', 100));
       setMotdToggle(await get('motd_hidden_global', false));
+      setDebugLoggingState(await get('debug_logging', false));
     })();
   }, [get]);
 
@@ -273,6 +308,23 @@ const QuickAccessSettings: VFC = () => {
             checked={motdToggle}
             onChange={handleMotdToggle}
           />
+        </PanelSectionRow>
+      </PanelSection>
+      <PanelSection title={t('LABEL_TROUBLESHOOTING_TITLE', 'Troubleshooting')}>
+        <PanelSectionRow>
+          <ToggleField
+            label={t('LABEL_DEBUG_LOGGING', 'Debug Logging')}
+            description={t('LABEL_DEBUG_LOGGING_DESC', 'Write verbose plugin logs to the Steam console (CEF debugger).')}
+            checked={debugLogging}
+            onChange={handleDebugLoggingToggle}
+          />
+        </PanelSectionRow>
+        <PanelSectionRow>
+          <Field padding="none" childrenContainerWidth="max">
+            <DialogButton onClick={showDiagnostics}>
+              {t('ACTION_SHOW_DIAGNOSTICS', 'Show Diagnostics')}
+            </DialogButton>
+          </Field>
         </PanelSectionRow>
       </PanelSection>
       {/* Uncomment this out should there be a need for experiments again. */}

@@ -43,6 +43,12 @@ const patchDeepComponent = (element: any, cacheKey: string, patcher: (args: any[
 };
 
 export const addSquareLibraryPatch = (mounting = false) => {
+  // Fail-soft: without the class modules the square CSS can't target anything, so disable the feature.
+  if (!gamepadLibraryClasses?.GamepadLibrary || !libraryAssetImageClasses?.Container || !libraryAssetImageClasses?.PortraitImage) {
+    console.warn('[SGDB] Library capsule class modules not found; square library capsules disabled');
+    return;
+  }
+
   patch = routerHook.addPatch('/library', (props) => {
     addStyle('sgdb-square-capsules-library', `
       .${gamepadLibraryClasses.GamepadLibrary} .${libraryAssetImageClasses.Container}.${libraryAssetImageClasses.PortraitImage} {
@@ -51,11 +57,14 @@ export const addSquareLibraryPatch = (mounting = false) => {
       }
     `);
 
+    if (!props?.children) return props;
     afterPatch(props.children, 'type', (_: Record<string, unknown>[], ret?: any) => {
+      if (!ret?.type) return ret;
 
       let tabsWrapperCache: any = null;
 
       afterPatch(ret, 'type', (_: Record<string, unknown>[], ret2?: any) => {
+        if (!ret2?.type) return ret2;
 
         if (tabsWrapperCache) {
           ret2.type = tabsWrapperCache;
@@ -67,19 +76,21 @@ export const addSquareLibraryPatch = (mounting = false) => {
         afterPatch(ret2.type, 'type', (_: Record<string, unknown>[], ret3?: any) => {
           tabsWrapperCache = ret2.type;
 
-          const { tabs, activeTab } = findInReactTree(ret3, (x) => x?.tabs && x?.activeTab);
+          const tabsState = findInReactTree(ret3, (x) => x?.tabs && x?.activeTab);
+          if (!tabsState) return ret3;
+          const { tabs, activeTab } = tabsState;
           const tab = tabs?.find((x: any) => x.id == activeTab);
 
-          if (!tab || tab.content.props?.collectionid === null) {
+          if (!tab?.content || tab.content.props?.collectionid === null) {
             return ret3;
           }
 
-          if (tab.content.props.children || tab.content.props.collection || tab.content.type) {
+          if (tab.content.props?.children || tab.content.props?.collection || tab.content.type) {
             const collection = tab.content.props?.children || tab.content;
             const uniqueTabKey = activeTab || 'unknown-tab';
 
             patchDeepComponent(collection, uniqueTabKey, (_: Record<string, unknown>[], ret4) => {
-              if (!ret4) return ret4;
+              if (!ret4?.props) return ret4;
 
               const p1 = findInReactTree(ret4, (x) => x?.type && x.props?.appOverviews);
               const coverSizeComponent = findInReactTree(ret4.props.children, (x) => x?.type && x.type.toString().includes('coverSize'));
@@ -94,7 +105,7 @@ export const addSquareLibraryPatch = (mounting = false) => {
               } else if (coverSizeComponent) {
                 return ret4;
               } else {
-                if (ret4.props.children[0]?.props?.collectionid) {
+                if (ret4.props.children?.[0]?.props?.collectionid) {
                   // User Collections
                   const collectionContainer = ret4.props.children[0];
 

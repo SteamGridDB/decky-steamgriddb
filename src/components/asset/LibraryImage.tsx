@@ -20,6 +20,23 @@ export interface LibraryImageProps {
   style?: CSSProperties;
 }
 
-const LibraryImage = findModuleExport((e: Export) => e?.toString && e.toString().includes('Either rgSources or app must be specified')) as FC<LibraryImageProps>;
+const findSteamLibraryImage = (): FC<LibraryImageProps> | undefined => {
+  try {
+    return findModuleExport((e: Export) => e?.toString && e.toString().includes('Either rgSources or app must be specified')) as FC<LibraryImageProps> | undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const SteamLibraryImage: FC<LibraryImageProps> | undefined = findSteamLibraryImage();
+
+if (!SteamLibraryImage) {
+  console.warn('[SGDB] LibraryImage module not found; images hidden');
+}
+
+const LibraryImage: FC<LibraryImageProps> = (props) => {
+  if (!SteamLibraryImage) return null;
+  return <SteamLibraryImage {...props} />;
+};
 
 export default LibraryImage;

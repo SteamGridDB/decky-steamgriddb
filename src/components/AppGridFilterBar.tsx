@@ -1,9 +1,18 @@
 import { findModuleExport, Export } from '@decky/ui';
 import { FC, HTMLAttributes } from 'react';
 
-export const appGridFilterHeaderClass = findModuleExport((e: Export, name: any) => typeof e === 'string' && name === 'AppGridFilterHeader');
+const findClassName = (name: string): string => {
+  try {
+    const found = findModuleExport((e: Export, exportName: any) => typeof e === 'string' && exportName === name);
+    return typeof found === 'string' ? found : '';
+  } catch {
+    return '';
+  }
+};
 
-const appGridFilterTextClass = findModuleExport((e: Export, name: any) => typeof e === 'string' && name === 'AppGridFilterText');
+export const appGridFilterHeaderClass: string = findClassName('AppGridFilterHeader');
+
+const appGridFilterTextClass: string = findClassName('AppGridFilterText');
 
 const AppGridFilterBar: FC<HTMLAttributes<HTMLDivElement>> = ({ children, ...rest }) => (
   <div {...rest}>

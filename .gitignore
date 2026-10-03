@@ -48,3 +48,6 @@ backend/out
 
 /py_modules/
 decky_plugin.py
+# sideload bundle
+bundle/
+bundle.zip
