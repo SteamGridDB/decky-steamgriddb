@@ -1,4 +1,10 @@
-import { Module, findModuleByExport, fakeRenderComponent } from '@decky/ui';
+import {
+  Module,
+  Export,
+  findModuleByExport,
+  fakeRenderComponent,
+  createModuleMapping,
+} from '@decky/ui';
 
 type AdaptiveNavGlyphProps = {
   button: number;
@@ -7,7 +13,24 @@ type AdaptiveNavGlyphProps = {
   className?: string;
 };
 
-const glyphModules = findModuleByExport((e) => typeof e === 'function' && e.toString().includes('GamepadUI_KeyboardNavGlyphsDisabled'));
+let glyphModules = findModuleByExport((e) => typeof e === 'function' && e.toString().includes('GamepadUI_KeyboardNavGlyphsDisabled'));
+if (!glyphModules) {
+  // filter down to modules that only have 2 exports that are memoized components
+  // super unstable but all this will never run once steam switches thge current beta to stable
+  const glyphModulesOld = createModuleMapping((mod) => {
+    if (!mod || typeof mod !== 'object') return false;
+
+    const exports = Object.values(mod);
+
+    return exports.length === 2 &&
+    exports.every((e: Export) =>
+      e?.$$typeof === Symbol.for('react.memo') &&
+      typeof e.type === 'function'
+    );
+  }).values();
+
+  glyphModules = Array.from(glyphModulesOld).flatMap((mod) => Object.values(mod));
+}
 
 const AdaptiveNavGlyph = Object.values(glyphModules).find((mod: Module) => {
   if (typeof mod?.type !== 'function') return false;
