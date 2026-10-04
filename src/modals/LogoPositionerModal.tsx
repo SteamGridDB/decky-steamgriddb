@@ -12,7 +12,7 @@ import log from '../utils/log';
 import { ASSET_TYPE } from '../constants';
 import t from '../utils/i18n';
 import Dpad from '../../assets/dpad.svg';
-import FooterGlyph from '../components/FooterGlyph';
+import AdaptiveNavGlyph from '../components/AdaptiveNavGlyph';
 import getAppOverview from '../utils/getAppOverview';
 import getAppDetails from '../utils/getAppDetails';
 
@@ -298,37 +298,40 @@ const LogoPositionerModal: FC<{ closeModal?: () => void, appId: number }> = ({ c
   }, [overview]);
 
   return (
-    <Focusable
-      noFocusRing={false}
-      className="sgdb-modal sgdb-modal-logo-position"
-      onGamepadDirection={handleDirection}
-      onCancel={handleCancel}
-      onCancelButton={handleCancel}
-      onCancelActionDescription={t('Button_Cancel', 'Cancel', true)}
-      onActivate={handleSave}
-      onOKActionDescription={t('Button_Save', 'Save', true)}
-      onSecondaryButton={handlePinPos}
-      onSecondaryActionDescription={t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}
-      onOptionsButton={() => setShowBorder((x) => !x)}
-      onOptionsActionDescription={showBorder ? t('ACTION_HIDE_POS_GUIDES', 'Hide Guides') : t('ACTION_SHOW_OUTLINE', 'Show Guides')}
-      onMenuButton={handleReset}
-      onMenuActionDescription={t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}
-      onClick={(evt) => evt.preventDefault()} // Prevent onActivate from triggering on actual mouse click
-    >
-      {overview && (
-        <LogoPositioner
-          app={overview}
-          logoPos={logoPos}
-          border={showBorder}
-          onAnchorClick={handleAnchorClick}
-          setLogoPos={setLogoPos}
-        />
-      )}
+    <div className="sgdb-modal sgdb-modal-logo-position">
+      <Focusable
+        noFocusRing={false}
+        onGamepadDirection={handleDirection}
+        onCancel={handleCancel}
+        onCancelButton={handleCancel}
+        onCancelActionDescription={t('Button_Cancel', 'Cancel', true)}
+        onActivate={handleSave}
+        onOKActionDescription={t('Button_Save', 'Save', true)}
+        onSecondaryButton={handlePinPos}
+        onSecondaryActionDescription={t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}
+        onOptionsButton={() => setShowBorder((x) => !x)}
+        onOptionsActionDescription={showBorder ? t('ACTION_HIDE_POS_GUIDES', 'Hide Guides') : t('ACTION_SHOW_OUTLINE', 'Show Guides')}
+        onMenuButton={handleReset}
+        onMenuActionDescription={t('CustomArt_ResetLogoPosition', 'Reset Logo Position', true)}
+        onClick={(evt) => evt.preventDefault()} // Prevent onActivate from triggering on actual mouse click
+      >
+        {overview && (
+          <LogoPositioner
+            app={overview}
+            logoPos={logoPos}
+            border={showBorder}
+            onAnchorClick={handleAnchorClick}
+            setLogoPos={setLogoPos}
+          />
+        )}
+      </Focusable>
       <ul className="logo-positioner-instructions">
         <li><img src={Dpad} /> {t('ACTION_ADJUST_POS_SIZE', 'Adjust Size')}</li>
-        <li onClick={handlePinPos}><FooterGlyph button={2} size={1} type={0} /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}</li>
+        <li onClick={handlePinPos}>
+          <AdaptiveNavGlyph button={2} bAllowKeyboard bKnockout /> {t('ACTION_CHANGE_POS_LOGO_ANCHOR_POINT', 'Change Anchor Point')}
+        </li>
       </ul>
-    </Focusable>
+    </div>
   );
 };
 

@@ -202,6 +202,9 @@
             transition-delay: #{$i * 100 * 1.2}ms;
           }
         }
+        > img {
+          max-height: 1.75em;
+        }
       }
       &.chips-left {
         right: auto;

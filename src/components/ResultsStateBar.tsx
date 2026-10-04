@@ -5,7 +5,7 @@ import { Marquee } from '@decky/ui';
 import t from '../utils/i18n';
 
 import AppGridFilterBar from './AppGridFilterBar';
-import FooterGlyph from './FooterGlyph';
+import AdaptiveNavGlyph from './AdaptiveNavGlyph';
 
 const strGameSelected = t('MSG_GAME_SELECTED', 'Selected {gameName}');
 const strFilterActive = t('MSG_ASSETS_FILTERED', 'Some assets may be hidden due to filter');
@@ -24,14 +24,15 @@ const ResultsStateBar: FC<{
         {reactStringReplace(strGameSelected, '{gameName}', (_, i) => (
           <Marquee key={i} fadeLength={5} style={{ maxWidth: '350px' }}>&quot;{selectedGame.name}&quot;</Marquee>
         ))}
-        <FooterGlyph button={2} type={0} size={0} />
+        <AdaptiveNavGlyph button={2} bAllowKeyboard />
       </AppGridFilterBar>
     );
   }
   if (!selectedGame && isFiltered) {
     return (
       <AppGridFilterBar style={{ marginTop: '1em' }} onClick={onClick}>
-        {strFilterActive} <FooterGlyph button={2} type={0} size={0} />
+        {strFilterActive}
+        <AdaptiveNavGlyph button={2} bAllowKeyboard />
       </AppGridFilterBar>
     );
   }
@@ -41,7 +42,7 @@ const ResultsStateBar: FC<{
         {reactStringReplace(strFilterAndGame, '{gameName}', (_, i) => (
           <Marquee key={i} fadeLength={5} style={{ maxWidth: '350px' }}>&quot;{selectedGame.name}&quot;</Marquee>
         ))}
-        <FooterGlyph button={2} type={0} size={0} />
+        <AdaptiveNavGlyph button={2} bAllowKeyboard />
       </AppGridFilterBar>
     );
   }

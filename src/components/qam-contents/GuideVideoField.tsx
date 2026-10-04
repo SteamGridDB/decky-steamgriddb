@@ -4,15 +4,15 @@ import { HiOutlineChevronRight } from 'react-icons/hi2';
 import reactStringReplace from 'react-string-replace';
 
 import HowToVideo from '../../../assets/howto.webm';
-import FooterGlyph from '../FooterGlyph';
 import t from '../../utils/i18n';
+import AdaptiveNavGlyph from '../AdaptiveNavGlyph';
 
 const strInstructions = t('MSG_USAGE_INSTRUCTIONS', 'Select a game {arrow} {optionsButton} {arrow} "{ACTION_CHANGE_ARTWORK}"')
   .replace('{ACTION_CHANGE_ARTWORK}', t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'));
 const changeInstructions = reactStringReplace(reactStringReplace(strInstructions, '{arrow}', (_, i) => (
   <HiOutlineChevronRight key={i} strokeWidth="4" style={{ height: '0.65em' }} />
 )), '{optionsButton}', (_, i) => (
-  <FooterGlyph key={i} button={11} type={0} size={0} />
+  <AdaptiveNavGlyph key={i} button={11} bAllowKeyboard />
 ));
 
 const GuideVideoField: typeof Field = (props) => {

@@ -7,3 +7,4 @@ export const appportraitClasses = findModule((mod) => typeof mod === 'object' &&
 export const appgridClasses = findModule((mod) => typeof mod === 'object' && mod?.LibraryImageBackgroundGlow);
 // seems to have Marquee, info box, and subheader stuff
 export const miscInfoClasses = findClassModule((m) => m.ResetOnPause && m.Content && m.Playing && m.BackgroundAnimation && m.Container) as any;
+export const keyboardGlyphClasses = findClassModule((m) => m.KeyCap && m.Inner && m.KeyboardChordGlyph) as any;

@@ -3,9 +3,9 @@ import { Focusable, FocusableProps, FooterLegendProps, joinClassNames } from '@d
 
 import t from '../../utils/i18n';
 import Spinner from '../../../assets/spinner.svg';
-import FooterGlyph from '../FooterGlyph';
 import Chips from '../Chips';
 import Chip from '../Chips/Chip';
+import AdaptiveNavGlyph from '../AdaptiveNavGlyph';
 
 import { LazyImage } from './LazyImage';
 
@@ -54,7 +54,7 @@ const Asset: FC<AssetProps> = ({
       <Chips>
         {notes ? (
           <Chip color="#8a8a8a">
-            <FooterGlyph button={11} type={0} size={0} style={{ width: '1em' }} /> {t('LABEL_NOTES', 'Notes')}
+            <AdaptiveNavGlyph button={11} bAllowKeyboard /> {t('LABEL_NOTES', 'Notes')}
           </Chip>
         ) : null}
         {isAnimated ? (

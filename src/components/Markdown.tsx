@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Focusable, FocusableProps, Navigation } from '@decky/ui';
 import { FC } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';

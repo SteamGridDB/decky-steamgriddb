@@ -50,6 +50,7 @@ const AssetBlock: FC<{
   // so check again to pick up what just landed
   useEffect(() => {
     if (isShortcutIcon && !isShortcutIconLoaded) refreshOverview();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isShortcutIcon, isShortcutIconLoaded]);
 
   const handleBrowse = async () => {
