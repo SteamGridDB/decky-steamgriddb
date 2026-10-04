@@ -1,4 +1,6 @@
-@include modal('official-assets') {
+@use "../mixins";
+
+@include mixins.modal('official-assets') {
   .official-steam-asset {
     margin: 0 auto;
     &.grid_l {
@@ -15,5 +17,5 @@
       max-width: 100%;
     }
   }
-  @include asset;
+  @include mixins.asset;
 }

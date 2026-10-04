@@ -1,4 +1,6 @@
-@include modal('filters') {
+@use "../mixins";
+
+@include mixins.modal('filters') {
   .game-filter-content {
     display: flex;
     flex-direction: row;

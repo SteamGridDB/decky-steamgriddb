@@ -1,22 +1,16 @@
 @use 'sass:math';
-$image-load-timing: 200ms linear;
-$color-toolbar-bg: #0E141B;
-$zIndexAboveRing: 10002;
-$easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);
-$easeOutCubic: cubic-bezier(0.33, 1, 0.68, 1);
-$topBarHeight: var(--basicui-header-height, 40px);
-
-@import 'mixins';
-@import 'modals/details';
-@import 'modals/filters';
-@import 'modals/gameselect';
-@import 'modals/logo_position';
-@import 'modals/official_assets';
+@use 'variables';
+@use 'mixins';
+@use 'modals/details';
+@use 'modals/filters';
+@use 'modals/gameselect';
+@use 'modals/logo_position';
+@use 'modals/official_assets';
 
 #sgdb-wrap {
   --asset-size: 120px;
-  margin-top: $topBarHeight;
-  height: calc(100% - $topBarHeight);
+  margin-top: variables.$topBarHeight;
+  height: calc(100% - variables.$topBarHeight);
   background: var(--gpSystemDarkestGrey, #0E141B);
 
   // Background for tab pages
@@ -32,20 +26,20 @@ $topBarHeight: var(--basicui-header-height, 40px);
     margin-top: 1em;
     .motd {
       flex: 1;
-      @include flex-center;
+      @include mixins.flex-center;
       position: relative;
       background-size: cover;
       background-repeat: no-repeat;
       background-color: #05070a;
       height: $motdHeight;
       overflow: hidden;
-      @include cursor-outline(true);
+      @include mixins.cursor-outline(true);
       transition:
         outline-color ease-in-out 200ms,
         transform ease-out 200ms;
       &:hover {
         transform: scale(1.01);
-        @include cursor-outline(false);
+        @include mixins.cursor-outline(false);
       }
     }
     .motd-video-bg {
@@ -81,7 +75,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
       }
     }
     .motd-hide {
-      @include flex-center;
+      @include mixins.flex-center;
       padding: 0;
       width: $motdHeight;
       min-width: $motdHeight;
@@ -96,7 +90,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
   }
 
   .spinnyboi {
-    @include flex-center;
+    @include mixins.flex-center;
     width: 100%;
     position: fixed;
     height: 100vh; // centering should be based on full device height
@@ -104,8 +98,8 @@ $topBarHeight: var(--basicui-header-height, 40px);
     flex: 1;
     left: 0;
     right: 0;
-    z-index: $zIndexAboveRing + 6; // above settings
-    background: $color-toolbar-bg;
+    z-index: variables.$zIndexAboveRing + 6; // above settings
+    background: variables.$color-toolbar-bg;
     transition: opacity ease-out 250ms, z-index 0s;
     will-change: opacity;
     > img {
@@ -128,7 +122,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
     display: flex;
     width: 100%;
     gap: var(--gpSpace-Gap, .6em);
-    // background-color: var(--gpSystemDarkestGrey, $color-toolbar-bg);
+    // background-color: var(--gpSystemDarkestGrey, variables.$color-toolbar-bg);
     .filter-buttons {
       align-items: center;
       display: flex;
@@ -155,7 +149,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
     row-gap: 1em;
     column-gap: .65em;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--asset-size), 100%), var(--asset-size)));
-    @include asset;
+    @include mixins.asset;
   }
 
   #local-images-container {
@@ -184,7 +178,7 @@ $topBarHeight: var(--basicui-header-height, 40px);
           padding: .5em;
           z-index: 2;
           .action-button {
-            @include flex-center;
+            @include mixins.flex-center;
             cursor: pointer;
             box-sizing: border-box;
             width: 2.5em;

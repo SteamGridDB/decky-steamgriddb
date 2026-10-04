@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
@@ -7,12 +8,11 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import importAssets from 'rollup-plugin-import-assets';
 import { defineConfig } from 'rollup';
-import scss from 'rollup-plugin-scss';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import externalGlobals from 'rollup-plugin-external-globals';
 import replace from '@rollup/plugin-replace';
 import del from 'rollup-plugin-delete';
-import * as sass from 'sass';
+import scss from 'rollup-plugin-scss';
 
 const manifest = JSON.parse(readFileSync(join('.', 'plugin.json'), 'utf-8'));
 
@@ -34,7 +34,7 @@ export default defineConfig({
       sourceMap: false,
       include: ['src/styles/**/*.scss', 'src/styles/**/*.sass'],
       watch: 'src/styles',
-      sass: sass,
+      api: 'modern',
     }),
     externalGlobals({
       react: 'SP_REACT',

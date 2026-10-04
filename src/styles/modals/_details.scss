@@ -1,4 +1,6 @@
-@include modal('details') {
+@use "../mixins";
+
+@include mixins.modal('details') {
   &-wrapper {
     display: flex;
     gap: 1em;
@@ -16,7 +18,7 @@
       }
     }
   }
-  @include asset {
+  @include mixins.asset {
     .asset-box-wrap {
       width: 100%;
       max-width: 46%;
@@ -34,13 +36,13 @@
     text-align: right;
   }
   .author {
-    @include flex-center($x: false);
-    @include cursor-outline(true);
+    @include mixins.flex-center($x: false);
+    @include mixins.cursor-outline(true);
     margin-top: 1em;
     gap: .5em;
     font-weight: bold;
     &:hover {
-      @include cursor-outline(false);
+      @include mixins.cursor-outline(false);
     }
     > img {
       width: 32px;

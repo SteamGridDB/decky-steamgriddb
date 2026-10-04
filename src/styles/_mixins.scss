@@ -1,3 +1,5 @@
+@use 'variables';
+
 @mixin flex-center($y: true, $x: true) {
   display: flex;
   @if $y {
@@ -45,7 +47,7 @@
 
       &.gpfocus,
       &:hover {
-        z-index: 3 + $zIndexAboveRing;
+        z-index: 3 + variables.$zIndexAboveRing;
       }
 
       // fixed height for logos
@@ -91,7 +93,7 @@
         position: absolute;
         height: 2em;
         opacity: 1;
-        transition: opacity $image-load-timing;
+        transition: opacity variables.$image-load-timing;
         &[data-loaded="true"] {
           opacity: 0;
         }
@@ -117,7 +119,7 @@
           margin: 0 auto;
           z-index: 1;
           opacity: 0;
-          transition: opacity $image-load-timing;
+          transition: opacity variables.$image-load-timing;
           &[data-loaded="true"] {
             opacity: 1;
           }
@@ -160,7 +162,7 @@
       padding-top: .15em;
       margin-top: auto;
       overflow: hidden;
-      z-index: 4 + $zIndexAboveRing; // above blur
+      z-index: 4 + variables.$zIndexAboveRing; // above blur
       text-shadow: 0px 1px 1px #000;
       > span {
         white-space: nowrap;
@@ -193,7 +195,7 @@
         min-height: 2em;
         gap: .3em;
         border-radius: 0 5px 5px 0;
-        transition: transform $easeOutCubic 300ms;
+        transition: transform variables.$easeOutCubic 300ms;
         will-change: transform;
         @for $i from 1 through 5 {
           &:nth-child(#{$i}n) {

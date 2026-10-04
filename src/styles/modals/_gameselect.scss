@@ -1,4 +1,6 @@
-@include modal('gameselect') {
+@use "../mixins";
+
+@include mixins.modal('gameselect') {
   .gamelabel {
     display: flex;
     width: 100%;
@@ -9,7 +11,7 @@
       opacity: .5;
     }
     .platform-types {
-      @include flex-center($x: false);
+      @include mixins.flex-center($x: false);
       gap: .2em;
       margin-left: auto;
     }

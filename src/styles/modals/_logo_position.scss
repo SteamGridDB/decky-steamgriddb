@@ -1,9 +1,12 @@
+@use "../mixins";
+@use "../variables";
+
 $color-guide: #008ada;
-@include modal('logo-position') {
+@include mixins.modal('logo-position') {
   .logo-positioner {
     display: flex;
     position: relative;
-    margin-top: calc($topBarHeight + 1em);
+    margin-top: calc(variables.$topBarHeight + 1em);
     width: 100%;
     overflow: hidden;
     align-items: center;
@@ -185,12 +188,12 @@ $color-guide: #008ada;
     }
   }
   .logo-positioner-instructions {
-    @include flex-center($y: false);
+    @include mixins.flex-center($y: false);
     flex-wrap: wrap;
     list-style: none;
     gap: 2em;
     li {
-      @include flex-center($x: false);
+      @include mixins.flex-center($x: false);
       cursor: pointer;
       gap: .75em;
     }
