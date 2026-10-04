@@ -51,7 +51,7 @@ https://crowdin.com/project/decky-steamgriddb
 | **Español-España** | Andrea Laguillo, Kam, m0uch0 |
 | **Español-Latinoamérica** | Kam, Knux03 |
 | **Français** | Michael Jean, Xunkar |
-| **Magyar** | minttuNB |
+| **Magyar** | minttuNB, BudaiChris |
 | **Italiano** | SpagottoB37, RodoMa92, federico-ntr |
 | **Nederlands** | Phanpy100 (Fanny), Jannes Verlinde |
 | **Norsk** | minttuNB |

@@ -153,7 +153,7 @@ export const LANGS: {
   hu: {
     name: 'Magyar',
     strings: hu,
-    credit: ['minttuNB'],
+    credit: ['minttuNB', 'BudaiChris'],
   },
 //  th: {
 //    name: 'ไทย',
