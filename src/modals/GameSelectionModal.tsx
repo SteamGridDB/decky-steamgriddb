@@ -13,7 +13,6 @@ import {
 } from '@decky/ui';
 import {
   FC,
-  SVGAttributes,
   useMemo,
   useState,
   useEffect,
@@ -28,9 +27,6 @@ import t from '../utils/i18n';
 import FlashpointIcon from '../components/Icons/FlashpointIcon';
 import EshopIcon from '../components/Icons/EshopIcon';
 import GogIcon from '../components/Icons/GogIcon';
-
-// @todo: find a better way to get this
-const SearchIcon = Object.values(IconsModule).find((mod: any) => mod?.toString().includes('M27.5 24C29.4972 21.1283 30.3471')) as FC<SVGAttributes<SVGElement>>;
 
 const utcYear = (date: number) => new Date(date * 1000).toLocaleString('en-US', { year: 'numeric', timeZone: 'UTC' });
 
@@ -89,7 +85,7 @@ const SearchTextField: FC<TextFieldProps> = (props) => {
   return (
     <Field
       bottomSeparator="thick"
-      icon={<SearchIcon />}
+      icon={<IconsModule.Search />}
       label={t('LABEL_GAME_SEARCH_TITLE', 'Search for a Game...')}
       childrenLayout="below"
     >

@@ -3,14 +3,10 @@ import {
   useEffect,
   useState,
   useRef,
-  SVGAttributes,
   ImgHTMLAttributes,
   useCallback,
 } from 'react';
 import { IconsModule } from '@decky/ui';
-
-// @todo: find a better way to get this
-const ErrorIcon = Object.values(IconsModule).find((mod: any) => mod?.toString().includes('M27.7974 10L26.6274 2H33.3674L32.2374 10H27.7974Z')) as FC<SVGAttributes<SVGElement>>;
 
 interface LazyImage extends ImgHTMLAttributes<HTMLImageElement | HTMLVideoElement> {
   isVideo?: boolean,
@@ -106,7 +102,7 @@ export const LazyImage: FC<LazyImage> = ({
       }}
       {...wrapperProps}
     >
-      {error && <ErrorIcon style={{ height: '2em' }} />}
+      {error && <IconsModule.WiredNetworkWarning style={{ height: '2em' }} />}
 
       {(inViewport && !isVideo && error !== true) && (
         <>
