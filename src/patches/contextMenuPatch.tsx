@@ -20,6 +20,8 @@ const spliceArtworkItem = (children: any[], appid: number) => {
   const propertiesMenuItemIdx = children.findIndex((item) =>
     findInReactTree(item, (x) => x?.onSelected && x.onSelected.toString().includes('AppProperties'))
   );
+  // Submenus (e.g. "Manage") have no "Properties...", so leave them alone.
+  if (propertiesMenuItemIdx === -1) return;
   children.splice(propertiesMenuItemIdx, 0, (
     <MenuItem
       key="sgdb-change-artwork"
