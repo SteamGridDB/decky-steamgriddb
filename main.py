@@ -11,6 +11,7 @@ from shutil import copyfile
 from settings import SettingsManager # type: ignore
 from helpers import get_ssl_context # type: ignore
 import decky # type: ignore
+from steam_browser_hook import SteamBrowserHook
 
 WINDOWS = system() == "Windows"
 
@@ -47,9 +48,12 @@ def get_userdata_config(steam32):
 class Plugin:
     async def _main(self):
         self.settings = SettingsManager(name="steamgriddb", settings_directory=decky.DECKY_PLUGIN_SETTINGS_DIR)
+        self.steam_browser_hook = SteamBrowserHook()
+        await self.steam_browser_hook.start()
 
     async def _unload(self):
-        pass
+        if hasattr(self, "steam_browser_hook"):
+            await self.steam_browser_hook.stop()
 
     async def download_as_base64(self, url=''):
         req = Request(url, headers={'User-Agent': 'decky-steamgriddb backend'})

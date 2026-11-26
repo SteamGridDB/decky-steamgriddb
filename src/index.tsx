@@ -1,4 +1,4 @@
-import { definePlugin, quickAccessMenuClasses } from '@decky/ui';
+import { definePlugin, Navigation, quickAccessMenuClasses } from '@decky/ui';
 import { call, routerHook } from '@decky/api';
 
 import QuickAccessSettings from './components/qam-contents/QuickAccessSettings';
@@ -11,8 +11,43 @@ import { removeSquareLibraryPatch, addSquareLibraryPatch } from './patches/squar
 import { removeHomePatch, addHomePatch } from './patches/homePatch';
 import { addCapsuleGlowPatch } from './patches/capsuleGlowPatch';
 import { removeStyles } from './utils/styleInjector';
+import t from './utils/i18n';
 
 export default definePlugin(() => {
+  const contextMenuInstanceToken = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  let isContextMenuInstanceSelected = false;
+  const contextMenuChannel = typeof BroadcastChannel === 'function'
+    ? new BroadcastChannel('steamgriddb-context-menu')
+    : null;
+  const onContextMenuMessage = (event: MessageEvent) => {
+    const message = event.data;
+    if (message?.type === 'request-register') {
+      contextMenuChannel?.postMessage({ type: 'register', token: contextMenuInstanceToken });
+    } else if (message?.type === 'registered') {
+      isContextMenuInstanceSelected = message.token === contextMenuInstanceToken;
+      if (isContextMenuInstanceSelected) {
+        contextMenuChannel?.postMessage({
+          type: 'label',
+          token: contextMenuInstanceToken,
+          label: t('ACTION_CHANGE_ARTWORK', 'Change Artwork...'),
+        });
+      }
+    } else if (
+      message?.type === 'navigate' &&
+      isContextMenuInstanceSelected &&
+      message.token === contextMenuInstanceToken &&
+      typeof message.appId === 'number' &&
+      Number.isSafeInteger(message.appId) &&
+      message.appId > 0
+    ) {
+      Navigation.Navigate(`/steamgriddb/${message.appId}`);
+    }
+  };
+  contextMenuChannel?.addEventListener('message', onContextMenuMessage);
+  contextMenuChannel?.postMessage({ type: 'register', token: contextMenuInstanceToken });
+
   const getSetting = async (key: string, fallback: any): Promise<any> => {
     return await call('get_setting', key, fallback);
   };
@@ -50,6 +85,11 @@ export default definePlugin(() => {
     content: <SettingsProvider><QuickAccessSettings /></SettingsProvider>,
     icon: <MenuIcon />,
     onDismount() {
+      if (isContextMenuInstanceSelected) {
+        contextMenuChannel?.postMessage({ type: 'unregister', token: contextMenuInstanceToken });
+      }
+      contextMenuChannel?.removeEventListener('message', onContextMenuMessage);
+      contextMenuChannel?.close();
       routerHook.removeRoute('/steamgriddb/:appid/:assetType?');
       menuPatches?.unpatch();
 

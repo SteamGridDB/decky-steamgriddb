@@ -74,6 +74,14 @@ const patchMenuItems = (menuItems: any[], appid: number) => {
  * @returns A patch to remove when the plugin dismounts.
  */
 const contextMenuPatch = (LibraryContextMenu: any) => {
+  // Steam's context-menu component is an internal implementation detail and
+  // can move or change between client releases. Keep the rest of the plugin
+  // usable when the component cannot be located.
+  if (typeof LibraryContextMenu !== 'function' || !LibraryContextMenu.prototype ||
+    typeof LibraryContextMenu.prototype.render !== 'function') {
+    return { unpatch: () => {} };
+  }
+
   const patches: {
     outer?: Patch,
     inner?: Patch,
@@ -139,12 +147,33 @@ const contextMenuPatch = (LibraryContextMenu: any) => {
 /**
  * Game context menu component.
  */
-export const LibraryContextMenu = fakeRenderComponent(
-  Object.values(
-    findModuleByExport((e: Export) => e?.toString && e.toString().includes('().LibraryContextMenu'))
-  ).find((sibling) => (
-    sibling?.toString().includes('navigator:')
-  )) as FC
-).type;
+const findLibraryContextMenu = (): FC | undefined => {
+  try {
+    const module = findModuleByExport((e: Export) =>
+      e?.toString && e.toString().includes('().LibraryContextMenu')
+    );
+    if (!module) {
+      console.warn('[SteamGridDB] Steam library context-menu module was not found.');
+      return undefined;
+    }
+
+    const component = Object.values(module).find((sibling) =>
+      typeof sibling === 'function' && sibling.toString().includes('navigator:')
+    );
+    if (!component) {
+      console.warn('[SteamGridDB] Steam library context-menu component was not found.');
+      return undefined;
+    }
+
+    return fakeRenderComponent(component as FC).type;
+  } catch (error) {
+    // This Steam UI component is private API. A failed lookup should disable
+    // only the artwork context-menu entry, not prevent SteamGridDB from loading.
+    console.warn('[SteamGridDB] Could not locate Steam library context menu.', error);
+    return undefined;
+  }
+};
+
+export const LibraryContextMenu = findLibraryContextMenu();
 
 export default contextMenuPatch;
