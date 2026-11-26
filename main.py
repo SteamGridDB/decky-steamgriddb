@@ -8,6 +8,10 @@ from urllib.parse import urlparse
 from base64 import b64encode
 from pathlib import Path
 from shutil import copyfile
+PLUGIN_DIR = Path(__file__).resolve().parent
+if str(PLUGIN_DIR) not in sys.path:
+    sys.path.insert(0, str(PLUGIN_DIR))
+
 from settings import SettingsManager # type: ignore
 from helpers import get_ssl_context # type: ignore
 import decky # type: ignore
