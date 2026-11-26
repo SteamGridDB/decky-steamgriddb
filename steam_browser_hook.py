@@ -18,6 +18,13 @@ STEAM_CDP_ENDPOINT = "http://127.0.0.1:8080/json/list"
 POLL_INTERVAL = 3
 
 
+def describe_cdp_error(error, timeout_context):
+    if isinstance(error, (TimeoutError, asyncio.TimeoutError)):
+        return f"{type(error).__name__}: {timeout_context} timed out"
+    details = str(error).strip()
+    return f"{type(error).__name__}: {details or 'no additional details'}"
+
+
 PAGE_HOOK = r'''(() => {
   if (location.hostname !== "steamloopback.host" || window.__sgdbContextMenuHook) return;
 
@@ -411,7 +418,11 @@ class SteamBrowserHook:
                     raise
                 except Exception as error:
                     if not self._reported_unavailable:
-                        decky.logger.info(f"SteamGridDB context-menu bridge waiting for Steam UI CDP: {error}")
+                        decky.logger.info(
+                            "SteamGridDB context-menu bridge waiting for Steam UI CDP "
+                            f"at {STEAM_CDP_ENDPOINT}: "
+                            f"{describe_cdp_error(error, 'HTTP request')}"
+                        )
                         self._reported_unavailable = True
                 await asyncio.sleep(POLL_INTERVAL)
         finally:
@@ -453,5 +464,10 @@ class SteamBrowserHook:
             if tab:
                 await tab.close()
             if not self._reported_unavailable:
-                decky.logger.info(f"SteamGridDB context-menu hook could not attach: {error}")
+                endpoint = target.get("webSocketDebuggerUrl", STEAM_CDP_ENDPOINT)
+                decky.logger.info(
+                    "SteamGridDB context-menu hook could not attach to Steam UI CDP "
+                    f"at {endpoint}: "
+                    f"{describe_cdp_error(error, 'WebSocket attachment')}"
+                )
                 self._reported_unavailable = True
