@@ -98,8 +98,8 @@ const SteamModalImageSection: FC<{
                   isAnimated={false}
                   isDownloading={downloading}
                   onImgError={handleImgError}
-                  onClick={handleDownload}
-                  onActivate={handleDownload}
+                  onClick={() => {}}
+                  onActivate={() => {}}
                   {...assetProps}
                 />
               </div>
