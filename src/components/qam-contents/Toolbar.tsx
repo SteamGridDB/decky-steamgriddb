@@ -13,6 +13,7 @@ import t from '../../utils/i18n';
 import useSettings from '../../hooks/useSettings';
 import useAssetSearch from '../../hooks/useAssetSearch';
 import { SGDB_ASSET_TYPE_READABLE } from '../../constants';
+import { hasOfficialAssetSource } from '../../utils/officialAssets';
 
 const sliderProps = {
   grid_p: {
@@ -69,15 +70,6 @@ export type ToolbarRefType = {
   assetSizeStyleAttr: any;
 };
 
-// map SGDBAssetType to steam response
-const defaultAssetMap = {
-  grid_p: 'library_capsule',
-  grid_l: 'header_image',
-  hero: 'library_hero',
-  logo: 'library_logo',
-  icon: 'clienticon',
-};
-
 const Toolbar = forwardRef(({
   assetType,
   onSizeChange,
@@ -108,6 +100,11 @@ const Toolbar = forwardRef(({
       ['--asset-size' as string]: `${sliderValue}px`,
     };
   }, [assetType, sliderValue]);
+
+  const hasOfficialSource = useMemo(
+    () => hasOfficialAssetSource(externalSgdbData, assetType),
+    [externalSgdbData, assetType]
+  );
 
   useImperativeHandle(ref, () => ({
     focus: () => {
@@ -142,11 +139,7 @@ const Toolbar = forwardRef(({
         >
           {t('ACTION_OPEN_FILTER', 'Filter')}
         </DialogButton>
-        {(
-          externalSgdbData &&
-          Object.keys(externalSgdbData).length !== 0 &&
-          externalSgdbData?.steam[0]?.metadata[defaultAssetMap[assetType]]
-        ) && (
+        {hasOfficialSource && (
           <DialogButton
             noFocusRing
             onOKActionDescription={t('ACTION_OPEN_OFFICIAL_ASSETS', 'Official {assetType}').replace('{assetType}', SGDB_ASSET_TYPE_READABLE[assetType])}

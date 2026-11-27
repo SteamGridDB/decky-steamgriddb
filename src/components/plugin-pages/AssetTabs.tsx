@@ -4,7 +4,7 @@ import { Tabs, TabsProps, showModal } from '@decky/ui';
 
 import t from '../../utils/i18n';
 import useAssetSearch from '../../hooks/useAssetSearch';
-import useSGDB from '../../hooks/useSGDB';
+import useOfficialAssets from '../../hooks/useOfficialAssets';
 import { tabStrs, DEFAULT_TABS } from '../../constants';
 import useSettings from '../../hooks/useSettings';
 import BeggingModal from '../../modals/BeggingModal';
@@ -17,10 +17,14 @@ const AssetTabs: FC<{
   onShowTab: TabsProps['onShowTab']
 }> = ({ currentTab, onShowTab }) => {
   const { get, set } = useSettings();
-  const { appOverview } = useSGDB();
   const { openFilters } = useAssetSearch();
   const [tabPositions, setTabPositions] = useState<string[] | null>(null);
   const [hiddenTabs, setHiddenTabs] = useState<string[] | null>(null);
+  const [manageRefreshKey, setManageRefreshKey] = useState(0);
+
+  const { canEditIcon, sources: officialSources, openApplyAll } = useOfficialAssets({
+    onApplied: () => setManageRefreshKey((value) => value + 1),
+  });
 
   useEffect(() => {
     (async () => {
@@ -47,10 +51,7 @@ const AssetTabs: FC<{
           - App is a mod, editing edit liblist.gam/gameinfo.txt is destructive and out of scope for this plugin
           - Shortcut is not locally installed, can't edit shortcuts.vdf remotely.
       */
-      .filter((type) => !(type === 'icon' && (
-        appOverview.third_party_mod ||
-        (appOverview.BIsShortcut() && appOverview.selected_clientid != '0')
-      )))
+      .filter((type) => !(type === 'icon' && !canEditIcon))
       // Filter hidden tabs
       .filter((x) => !hiddenTabs.includes(x)),
   ];
@@ -71,8 +72,12 @@ const AssetTabs: FC<{
         if (type === 'manage') {
           return {
             title: tabStrs[type],
-            content: <ManageTab />,
+            content: <ManageTab refreshKey={manageRefreshKey} />,
             id: 'manage',
+            footer: officialSources.length > 0 ? {
+              onOptionsActionDescription: t('ACTION_APPLY_ALL_OFFICIAL', 'Apply All Official Assets'),
+              onOptionsButton: openApplyAll,
+            } : undefined,
           };
         }
         return {
