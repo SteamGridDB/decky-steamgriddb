@@ -12,6 +12,7 @@ Easily browse and manage Steam artwork from SteamGridDB or your local files from
 
 ## Features
 - Browse assets from SteamGridDB for the selected game.
+- Apply all available official Steam artwork at once from the Manage tab.
 - Support for non-Steam shortcuts and Source/GoldSrc mods.
 - Ability to change icons for Steam or non-Steam shortcuts.
 - Manually select images from the local file system.
@@ -37,6 +38,13 @@ You can access the menu by focusing on a game in your library and pressing <pict
 Or by using the <picture><source media="(prefers-color-scheme: dark)" srcset="docs/menucog-light.svg"><source media="(prefers-color-scheme: light)" srcset="docs/menucog-dark.svg"><img height="16px" alt="Cog" src="docs/menucog-dark.svg"></picture> button on a game page.
 
 <img src="docs/gamecontextmenu.png" height="300px">  
+
+### Apply all official Steam artwork
+1. Open **Change Artwork...** for a game.
+2. Select the **Manage** tab.
+3. Press **Y** and confirm the preview.
+
+The confirmation lists the official assets that will be applied. Applying a Steam icon may require restarting Steam.
 
 # Credits
 **Early Testing:** Emenesu, Mr. Mendelli  

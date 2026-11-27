@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useEffect, useRef, useCallback } from 'react';
 import { call } from '@decky/api';
 import {
   DialogButton,
@@ -15,13 +15,16 @@ import getAppOverview from '../../utils/getAppOverview';
 import { ASSET_TYPE, SGDB_ASSET_TYPE_READABLE } from '../../constants';
 import openFilePicker from '../../utils/openFilePicker';
 import LogoPositionerModal from '../../modals/LogoPositionerModal';
+import canEditSteamIcon from '../../utils/canEditSteamIcon';
 
 const AssetBlock: FC<{
   app: AppStoreAppOverview,
   assetType: SGDBAssetType,
   browseStartPath: string,
+  refreshKey?: number,
+  onRefresh: () => Promise<AppStoreAppOverview | undefined>,
   editable?: boolean,
-}> = ({ app, browseStartPath, assetType, editable = true }) => {
+}> = ({ app, browseStartPath, assetType, refreshKey = 0, onRefresh, editable = true }) => {
   const { clearAsset, changeAsset, changeAssetFromUrl } = useSGDB();
   const [overview, setOverview] = useState<AppStoreAppOverview | null>(app);
   const innerFocusRef = useRef<HTMLDivElement>(null);
@@ -31,16 +34,13 @@ const AssetBlock: FC<{
     if (refreshing.current) return;
     refreshing.current = true;
     setOverview(null);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const appoverview = await getAppOverview(app.appid);
 
-    if (assetType === 'icon' && appoverview?.icon_hash) {
-      // bump the icon url's cache buster so it gets read from disk again
-      appoverview.local_cache_version = Date.now();
+    try {
+      const appoverview = await onRefresh();
+      setOverview(appoverview ?? app);
+    } finally {
+      refreshing.current = false;
     }
-
-    setOverview(appoverview);
-    refreshing.current = false;
   };
 
   const isShortcutIcon = assetType === 'icon' && app.BIsShortcut();
@@ -52,6 +52,12 @@ const AssetBlock: FC<{
     if (isShortcutIcon && !isShortcutIconLoaded) refreshOverview();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isShortcutIcon, isShortcutIconLoaded]);
+
+  useEffect(() => {
+    if (!refreshKey) return;
+    refreshOverview();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshKey]);
 
   const handleBrowse = async () => {
     const path = await openFilePicker(browseStartPath, true, undefined, {
@@ -127,10 +133,11 @@ const AssetBlock: FC<{
   );
 };
 
-const LocalTab: FC = () => {
+const LocalTab: FC<{ refreshKey?: number }> = ({ refreshKey = 0 }) => {
   const { appId, appOverview } = useSGDB();
   const [startPath, setStartPath] = useState('/');
   const [overview, setOverview] = useState<AppStoreAppOverview>();
+  const refreshPromise = useRef<Promise<AppStoreAppOverview | undefined> | null>(null);
 
   useEffect(() => {
     if (!appId) return;
@@ -149,6 +156,32 @@ const LocalTab: FC = () => {
     })();
   }, [appId, appOverview]);
 
+  // All five AssetBlocks share one refresh so applying all official assets only
+  // fetches the updated overview once.
+  const refreshOverview = useCallback(async () => {
+    if (!appId) return undefined;
+
+    if (!refreshPromise.current) {
+      refreshPromise.current = (async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const appoverview = await getAppOverview(appId);
+
+        if (appoverview?.icon_hash) {
+          // bump the icon url's cache buster so it gets read from disk again
+          appoverview.local_cache_version = Date.now();
+        }
+
+        return appoverview ?? undefined;
+      })().finally(() => {
+        refreshPromise.current = null;
+      });
+    }
+
+    return refreshPromise.current;
+  }, [appId]);
+
+  const canEditIcon = canEditSteamIcon(overview);
+
   if (!overview || !appId) return null;
 
   return (
@@ -158,12 +191,16 @@ const LocalTab: FC = () => {
           app={overview}
           assetType="grid_p"
           browseStartPath={startPath}
+          refreshKey={refreshKey}
+          onRefresh={refreshOverview}
         />
         <AssetBlock
           app={overview}
           assetType="icon"
           browseStartPath={startPath}
-          editable={!(overview.third_party_mod || (overview.BIsShortcut() && overview.selected_clientid != '0'))}
+          refreshKey={refreshKey}
+          onRefresh={refreshOverview}
+          editable={canEditIcon}
         />
       </Focusable>
       <Focusable flow-children="right" style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
@@ -171,11 +208,15 @@ const LocalTab: FC = () => {
           app={overview}
           assetType="grid_l"
           browseStartPath={startPath}
+          refreshKey={refreshKey}
+          onRefresh={refreshOverview}
         />
         <AssetBlock
           app={overview}
           assetType="logo"
           browseStartPath={startPath}
+          refreshKey={refreshKey}
+          onRefresh={refreshOverview}
         />
       </Focusable>
       <div style={{ gridColumn: 'span 2' }}>
@@ -183,6 +224,8 @@ const LocalTab: FC = () => {
           app={overview}
           assetType="hero"
           browseStartPath={startPath}
+          refreshKey={refreshKey}
+          onRefresh={refreshOverview}
         />
       </div>
       <Focusable flow-children="right" style={{ gridColumn: 'span 2', display: 'flex', gap: '.5em' }}>
